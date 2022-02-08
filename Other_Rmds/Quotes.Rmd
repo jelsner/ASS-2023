@@ -1,0 +1,56 @@
+---
+title: "Quotes"
+output: html_document
+---
+
+From @CodeWisdom
+
+**"When debugging, novices insert corrective code; experts remove defective code."** – Richard Pattis
+
+**"Statistics is such a powerful language for describing data in ways that reveal nothing about their causes. Of course statistics is powerful for revealing causes as well. But it takes some care. Like the difference between talking and making sense."** -- Richard McElreath
+
+**"The first step of any project is to grossly underestimate its complexity and difficulty."** – Nicoll Hunt
+
+**"Beyond basic mathematical aptitude, the difference between good programmers and great programmers is verbal ability."** – Marissa Mayer
+
+**"Rarely is anyone thanked for the work they did to prevent the disaster that didn't happen."** – Mikko Hypponen
+
+**"Machines take me by surprise with great frequency."** – Alan Turing
+
+**"Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week debugging Monday's code."** - Christopher Thompson
+
+**"Weeks of coding can save you hours of planning."** - Unknown
+
+**"Good code is its own best documentation. As you're about to add a comment, ask yourself, 'How can I improve the code so that this comment isn't needed?' Improve the code and then document it to make it even clearer."** - Steve McConnell
+
+**"To me programming is more than an important practical art. It is also a gigantic undertaking in the foundations of knowledge."** – Grace Hopper
+
+**"So much complexity in software comes from trying to make one thing do two things."** - Ryan Singer
+
+**"Give someone a program, you frustrate them for a day; teach them how to program, you frustrate them for a lifetime."** - David Leinweber
+
+**"Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!"** – Vanessa Hurst
+
+**"Measuring programming progress by lines of code is like measuring aircraft building progress by weight."** – Bill Gates
+
+**"An awful lot of time I spend "coding" is actually spent copying and pasting (And much of the rest is spent googling)."** – Meghan Duffy
+
+**"If you're stuck on a coding issue, sleep on it. That way when you wake up and try to fix it and it's still broken, at least you got some sleep."** – Kelly Vaughn
+
+**"Hell isn't other people's code. Hell is your own code from 3 years ago."** – Jeff Atwood
+
+**"Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."** – Hadley Wickham
+
+**"Maps invest information with meaning by translating it into visual form."** – Susan Schulten
+
+**"We build our computer systems the way we build or cities; over time, without plan, on top of ruins."** – Ellen Ullman
+
+**"The most important single aspect of software development is to be clear about what you are trying to build."** – Bjarne Stroustrup
+
+**""You haven't mastered a tool until you understand when it should not be used."** – Kelsey Hightower
+
+**"Be curious. Read widely. Try new things. I think a lot of what people call intelligence boils down to curiosity."** - Aaron Swartz
+
+**"The trouble with programmers is that you can never tell what a programmer is doing until it’s too late."** – Seymour Cray
+
+**"When I'm explaining some of the tidy verse principles and philosophy in R statistics, I often break down a home baked chunk of code and illustrate that 'it says what it does and it does what it says.'** --- Diane Beldame

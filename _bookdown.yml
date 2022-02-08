@@ -1,0 +1,8 @@
+book_filename: "ASS-2022"
+#chapter_name: "Lesson "
+delete_merged_file: true
+repo: https://github.com/jelsner/ASS-2022
+output_dir: docs
+#rmd_files: ["index.Rmd", "00-Syllabus.Rmd", "01-Lesson.Rmd"]
+clean: [packages.bib, bookdown.bbl]
+new_session: no

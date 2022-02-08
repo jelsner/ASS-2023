@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Tuesday, August 23, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022</title>
+  <meta name="description" content="Tuesday, August 23, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Tuesday, August 23, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Tuesday, August 23, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+<meta name="date" content="2022-02-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#course-description"><i class="fa fa-check"></i>Course description</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#grades"><i class="fa fa-check"></i>Grades</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#ethics"><i class="fa fa-check"></i>Ethics</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#outline-of-topics"><i class="fa fa-check"></i>Outline of topics</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-setup-for-this-course"><i class="fa fa-check"></i>Getting setup for this course</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#the-rstudio-ide"><i class="fa fa-check"></i>The RStudio IDE</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GISXXXX: Applied Spatial Statistics Fall 2022</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tuesday-august-23-2022" class="section level1 unnumbered">
+<h1>Tuesday, August 23, 2022</h1>
+<p><strong>“Any fool can write code that a computer can understand. Good programmers write code that humans can understand.”</strong> — Martin Fowler</p>
+<p>In this lesson I talk a bit about my journey into data science and then tell you what this course is about. I give details about lessons, assignments, and grading, and about how to get the most out of this course. If time permits I will talk a bit about why I present the course in this way.</p>
+<ul>
+<li>Is Milwaukee snowier than Madison?</li>
+<li>Is global warming making hurricanes stronger?</li>
+<li>Are tornadoes more likely to form over smooth terrain?</li>
+</ul>
+<div id="contact-information" class="section level2 unnumbered">
+<h2>Contact information</h2>
+<ul>
+<li>Instructor Location: Bellamy Building, Room 323a</li>
+<li>Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m.</li>
+<li>Lab Hours: Fri 9:05 a.m. - 9:55 a.m.</li>
+<li>Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m.</li>
+<li>Email: <a href="mailto:jelsner@fsu.edu" class="email">jelsner@fsu.edu</a></li>
+</ul>
+<p>Links to my stuff (if you are curious)</p>
+<ul>
+<li><a href="http://myweb.fsu.edu/jelsner/_site/">Website</a></li>
+<li><a href="https://github.com/jelsner/">GitHub</a></li>
+<li><a href="https://twitter.com/JBElsner">Twitter</a></li>
+</ul>
+</div>
+<div id="course-description" class="section level2 unnumbered">
+<h2>Course description</h2>
+<p>This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes students know some basic statistics through multiple linear regression. It also assumes students have some prior experience with using R. Students without knowledge of R should seek help through various online tutorials (see below).</p>
+<p>In this course we survey the methods used to describe, analyze, and model <em>spatial</em> data. Focus is on applications. Emphasis is given to how spatial statistical methods are related through the concept of spatial autocorrelation.</p>
+<p>Expected learning outcomes</p>
+<ol style="list-style-type: decimal">
+<li>Learn how and when to apply statistical methods and models to spatial data,</li>
+<li>learn various packages in R for analyzing and modeling spatial data, and</li>
+<li>learn how to interpret the results of a spatial data model.</li>
+</ol>
+<p>Course materials</p>
+<ul>
+<li>Access to the internet and a computer.</li>
+<li>Lesson and assignment files are available through Canvas (and GitHub).</li>
+<li>There is no required textbook.</li>
+<li>Many excellent online resources are available. Here are some of my favorites.
+<ul>
+<li>R for Data Science <a href="https://r4ds.had.co.nz/" class="uri">https://r4ds.had.co.nz/</a></li>
+<li><a href="https://dominicroye.github.io/en/2020/a-very-short-introduction-to-tidyverse/" class="uri">https://dominicroye.github.io/en/2020/a-very-short-introduction-to-tidyverse/</a></li>
+<li><a href="https://tinystats.github.io/teacups-giraffes-and-statistics/index.html" class="uri">https://tinystats.github.io/teacups-giraffes-and-statistics/index.html</a></li>
+</ul></li>
+</ul>
+<p>Class meetings</p>
+<ul>
+<li>Remote lessons</li>
+<li>Remote/F2F lab assignments</li>
+</ul>
+<p>During each lesson I will work through and explain the R code within an <code>xx-Lesson.Rmd</code> file on Zoom. The notes in the lesson files are comprehensive, so you can work through them on your own. The notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix <code>.Rmd</code> (R markdown file). The file is opened using the RStudio application.</p>
+</div>
+<div id="grades" class="section level2 unnumbered">
+<h2>Grades</h2>
+<p>You are responsible for:</p>
+<ol style="list-style-type: decimal">
+<li>Reading and running the code in the lesson R markdown files (<code>.Rmd</code>) files. You can do this during the remote lessons as I talk and run my code or outside of class on your own.</li>
+<li>Completing and returning the lab assignments on time.</li>
+</ol>
+<p>Grades are determined only by how well you do on the assignments.</p>
+<p>Grading standard</p>
+<ul>
+<li>A: Outstanding: few, in any, errors/omissions</li>
+<li>B: Good: only minor errors/omissions</li>
+<li>C: Satisfactory: minor omissions, at least one major error/omission</li>
+<li>D: Poor: several major errors/omissions</li>
+<li>F: Fail: many major errors/omissions</li>
+</ul>
+<p>I’ll use the +/- grading system.</p>
+<p>Grades will be posted as they are recorded on <a href="https://canvas.fsu.edu">FSU Canvas</a></p>
+</div>
+<div id="ethics" class="section level2 unnumbered">
+<h2>Ethics</h2>
+<p>Academic honor code</p>
+<p><a href="https://fda.fsu.edu/academic-resources/academic-integrity-and-grievances/academic-honor-policy" class="uri">https://fda.fsu.edu/academic-resources/academic-integrity-and-grievances/academic-honor-policy</a></p>
+<p>Americans With Disabilities Act</p>
+<p>Students with disabilities needing academic accommodation should: (1) register with and provide documentation to the Student Disability Resource Center; (2) bring a letter indicating the need for accommodation and what type. This should be done during the first week of classes.</p>
+<p>Diversity and inclusiveness</p>
+<p>It is my intent to present notes and data that are respectful of diversity: gender identity, sexuality, disability, age, socioeconomic status, ethnicity, race, nationality, religion, and culture.</p>
+<p>Learning during a pandemic</p>
+<p>The pandemic has made it difficult for most of us. I am committed to making sure that you learn everything you were hoping to learn from this class. I will make whatever accommodations are needed to help you learn the material and finish your assignments. Under normal conditions I am quite flexible and lenient with grading with students facing difficult challenges. My generosity is amplified under these pandemic conditions.</p>
+</div>
+<div id="outline-of-topics" class="section level2 unnumbered">
+<h2>Outline of topics</h2>
+<p>This is a guide for the course and is subject to change with advanced notice.</p>
+<p>Topics:</p>
+<ol style="list-style-type: decimal">
+<li>Working with data and making graphs (~ 4 lessons)</li>
+<li>Working with spatial data and making maps (~ 5 lessons)</li>
+<li>Quantifying spatial autocorrelation and spatial regression (~ 5 lessons)</li>
+<li>Analyzing and modeling point pattern data (~ 6 lessons)</li>
+<li>Estimating variograms and spatial interpolation (~ 6 lessons)</li>
+<li>Other topics (~ 2 lessons)</li>
+</ol>
+<p>Calendars</p>
+<p>Remote Lessons:</p>
+<ul>
+<li>January 6</li>
+<li>January 11, 13</li>
+<li>January 20</li>
+<li>January 25, 27</li>
+<li>February 1, 3</li>
+<li>February 8, 10</li>
+<li>February 15, 17</li>
+<li>February 22, 24</li>
+<li>March 1, 3</li>
+<li>March 8, 10</li>
+<li>March 15, 17</li>
+<li>March 22, 24</li>
+<li>March 29, 31</li>
+<li>April 5, 7</li>
+<li>April 12, 14</li>
+</ul>
+<p>Lab Assignments:</p>
+<ul>
+<li>January 8 (no assignment, get setup with the R &amp; RStudio)</li>
+<li>January 15</li>
+<li>January 22</li>
+<li>January 29</li>
+<li>February 5</li>
+<li>February 12</li>
+<li>February 19</li>
+<li>February 26</li>
+<li>March 5</li>
+<li>March 12</li>
+<li>March 19 (no assignment)</li>
+<li>March 26</li>
+<li>April 2 (no assignment)</li>
+<li>April 9</li>
+<li>April 16</li>
+</ul>
+</div>
+<div id="reference-materials" class="section level2 unnumbered">
+<h2>Reference materials</h2>
+<ol style="list-style-type: decimal">
+<li>Bivand, R. S., E. J. Pebesma, and V. G. Gomez-Rubio, 2013: Applied Spatial Data Analysis with R, 2nd Edition, Springer. A source for much of the material in the lesson notes.</li>
+<li>Lovelace, R. Nowosad, J. and Muenchow, J. Geocomputation with R. <a href="https://geocompr.robinlovelace.net/" class="uri">https://geocompr.robinlovelace.net/</a> A source for some of the material in the lesson notes.</li>
+<li>Healy, K., 2018: Data Visualization: A practical introduction, <a href="https://socviz.co/" class="uri">https://socviz.co/</a>. This book teaches you how to really look at your data. A source for some of the early material in the lesson notes.</li>
+<li>Waller, L. A., and C. A. Gotway, 2004: Applied Spatial Statistics for Public Health Data, John Wiley &amp; Sons, Inc. (Available as an e-book in the FSU library). Good overall reference material for analyzing and modeling spatial data.</li>
+</ol>
+<ul>
+<li>Cheat Sheets: <a href="https://rstudio.com/resources/cheatsheets/" class="uri">https://rstudio.com/resources/cheatsheets/</a></li>
+<li>R Cookbook: How to do specific things: <a href="https://rc2e.com/" class="uri">https://rc2e.com/</a></li>
+<li>R for Geospatial Processing: <a href="https://bakaniko.github.io/FOSS4G2019_Geoprocessing_with_R_workshop/" class="uri">https://bakaniko.github.io/FOSS4G2019_Geoprocessing_with_R_workshop/</a></li>
+<li>Spatial Data Science: <a href="https://keen-swartz-3146c4.netlify.com/" class="uri">https://keen-swartz-3146c4.netlify.com/</a></li>
+</ul>
+<p>Maps/graphs:</p>
+<ul>
+<li>Inset maps: <a href="https://geocompr.github.io/post/2019/ggplot2-inset-maps/" class="uri">https://geocompr.github.io/post/2019/ggplot2-inset-maps/</a></li>
+<li>{cartography} package in R: <a href="https://riatelab.github.io/cartography/docs/articles/cartography.html" class="uri">https://riatelab.github.io/cartography/docs/articles/cartography.html</a></li>
+<li>geovisualization with {mapdeck}: <a href="https://spatial.blog.ryerson.ca/2019/11/21/geovis-mapdeck-package-in-r/" class="uri">https://spatial.blog.ryerson.ca/2019/11/21/geovis-mapdeck-package-in-r/</a></li>
+<li>3D elevation with {rayshader}: <a href="https://www.rayshader.com/" class="uri">https://www.rayshader.com/</a></li>
+<li>3D elevation to 3D printer: <a href="https://blog.hoxo-m.com/entry/2019/12/19/080000" class="uri">https://blog.hoxo-m.com/entry/2019/12/19/080000</a></li>
+<li>Accelerate your plots with {ggforce}: <a href="https://rviews.rstudio.com/2019/09/19/intro-to-ggforce/" class="uri">https://rviews.rstudio.com/2019/09/19/intro-to-ggforce/</a></li>
+<li>Summary statistics and ggplot: <a href="https://ggplot2tutor.com/summary_statistics/summary_statistics/" class="uri">https://ggplot2tutor.com/summary_statistics/summary_statistics/</a></li>
+</ul>
+<p>Space-time statistics:</p>
+<ul>
+<li>Space-time Bayesian modeling package: <a href="https://cran.r-project.org/web/packages/spTimer/spTimer.pdf" class="uri">https://cran.r-project.org/web/packages/spTimer/spTimer.pdf</a></li>
+<li>Working with space-time rasters: <a href="https://github.com/surfcao/geog5330/blob/master/week12/raster.Rmd" class="uri">https://github.com/surfcao/geog5330/blob/master/week12/raster.Rmd</a></li>
+</ul>
+<p>Bayesian models:</p>
+<ul>
+<li>Bayesian Linear Mixed Models: Random intercepts, slopes and missing data: <a href="https://willhipson.netlify.com/post/bayesian_mlm/bayesian_mlm/" class="uri">https://willhipson.netlify.com/post/bayesian_mlm/bayesian_mlm/</a></li>
+<li>Doing Bayesian Data Analysis in {brms} and the {tidyverse}: <a href="https://bookdown.org/ajkurz/DBDA_recoded/" class="uri">https://bookdown.org/ajkurz/DBDA_recoded/</a></li>
+<li>Spatial models with INLA: <a href="https://becarioprecario.bitbucket.io/inla-gitbook/index.html" class="uri">https://becarioprecario.bitbucket.io/inla-gitbook/index.html</a></li>
+<li>Geospatial Health Data: Modeling and Visualization with {RINLA} and {shiny}: <a href="https://paula-moraga.github.io/book-geospatial/" class="uri">https://paula-moraga.github.io/book-geospatial/</a></li>
+<li>Bayesian workflow: <a href="https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html#1_questioning_authority" class="uri">https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html#1_questioning_authority</a></li>
+</ul>
+<p>Spatial data:</p>
+<ul>
+<li>Progress in the R ecosystem for representing and handling spatial data <a href="https://link.springer.com/article/10.1007/s10109-020-00336-0" class="uri">https://link.springer.com/article/10.1007/s10109-020-00336-0</a></li>
+<li>Google earthengine: <a href="https://earthengine.google.com/" class="uri">https://earthengine.google.com/</a></li>
+<li>Burden of roof: Revisiting housing costs with {tidycensus}: <a href="https://austinwehrwein.com/data-visualization/housing/" class="uri">https://austinwehrwein.com/data-visualization/housing/</a></li>
+<li>The Care and Feeding of Spatial Data: <a href="https://docs.google.com/presentation/d/1BHlrSZWmw9tRWfYFVsRLNhAoX6KzhOhsnezTqL-R0sU/edit#slide=id.g6aeb55b281_0_550" class="uri">https://docs.google.com/presentation/d/1BHlrSZWmw9tRWfYFVsRLNhAoX6KzhOhsnezTqL-R0sU/edit#slide=id.g6aeb55b281_0_550</a></li>
+<li>Accessing remotely sensed imagery: <a href="https://twitter.com/mouthofmorrison/status/1212840820019208192/photo/1" class="uri">https://twitter.com/mouthofmorrison/status/1212840820019208192/photo/1</a></li>
+<li>Spatial data sets from Brazil: <a href="https://github.com/ipeaGIT/geobr" class="uri">https://github.com/ipeaGIT/geobr</a></li>
+</ul>
+<p>Machine learning:</p>
+<ul>
+<li>Supervised machine learning case studies: <a href="https://supervised-ml-course.netlify.com/" class="uri">https://supervised-ml-course.netlify.com/</a></li>
+<li>Machine learning for spatial prediction: <a href="https://www.youtube.com/watch?v=2pdRk4cj1P0&amp;feature=youtu.be" class="uri">https://www.youtube.com/watch?v=2pdRk4cj1P0&amp;feature=youtu.be</a></li>
+</ul>
+<p>Spatial networks:</p>
+<ul>
+<li>Spatial Networks in R with {sf} and {tidygraph}: <a href="https://www.r-spatial.org/r/2019/09/26/spatial-networks.html" class="uri">https://www.r-spatial.org/r/2019/09/26/spatial-networks.html</a></li>
+<li>Travel times/distances: <a href="https://github.com/rCarto/osrm" class="uri">https://github.com/rCarto/osrm</a></li>
+</ul>
+<p>Transport planning/routing:</p>
+<p><a href="https://docs.ropensci.org/stplanr/index.html" class="uri">https://docs.ropensci.org/stplanr/index.html</a>
+<a href="https://www.urbandemographics.org/post/r5r-fast-multimodal-transport-routing-in-r/" class="uri">https://www.urbandemographics.org/post/r5r-fast-multimodal-transport-routing-in-r/</a></p>
+<p>Time series forecasting:</p>
+<p><a href="https://weecology.github.io/MATSS/" class="uri">https://weecology.github.io/MATSS/</a></p>
+<p>Movement:</p>
+<p><a href="https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2656.13116" class="uri">https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2656.13116</a></p>
+<p>Bookdown:</p>
+<ul>
+<li>Introduction: <a href="https://bookdown.org/yihui/bookdown/introduction.html" class="uri">https://bookdown.org/yihui/bookdown/introduction.html</a></li>
+<li>Learning more: <a href="https://ropensci.org/blog/2020/04/07/bookdown-learnings/" class="uri">https://ropensci.org/blog/2020/04/07/bookdown-learnings/</a></li>
+</ul>
+<p>Climate datasets:</p>
+<p><a href="https://cran.r-project.org/web/packages/climate/vignettes/getstarted.html" class="uri">https://cran.r-project.org/web/packages/climate/vignettes/getstarted.html</a>
+<a href="https://www.ncdc.noaa.gov/teleconnections/enso/indicators/soi/data.csv" class="uri">https://www.ncdc.noaa.gov/teleconnections/enso/indicators/soi/data.csv</a>
+USGS water data: <a href="https://waterdata.usgs.gov/blog/dataretrieval/" class="uri">https://waterdata.usgs.gov/blog/dataretrieval/</a></p>
+<p>Reference books</p>
+<ul>
+<li>Anselin, L., 2005: Spatial Regression Analysis in R, Spatial Analysis Laboratory, Center for Spatially Integrated Social Science.</li>
+<li>Baddeley, A., and R. Turner, 2005: spatstat: An R Package for Analyzing Spatial Point Patterns, Journal of Statistical Software, v12.</li>
+<li>Blangiardo, M., and M. Cameletti, 2015: Spatial and Spatio-temporal Bayesian Models with R-INLA, John Wiley &amp; Sons, Inc., New York. An introduction to Bayesian models for spatial data.</li>
+<li>Cressie, N. A. C., 1993: Statistics for Spatial Data, Wiley Series in Probability and Mathematical Statistics, John Wiley &amp; Sons, Inc., New York. A mathematical treatment of spatial data analysis.</li>
+<li>Cressie, N. A. C., and C. K. Wikle, 2011: Statistics for Spatio-Temporal Data, Wiley Series in Probability and Mathematical Statistics, John Wiley &amp; Sons, Inc., New York. A mathematical treatment of space-time statistics with an emphasis on Bayesian models.</li>
+<li>Diggle, P. J., 2003: Statistical Analysis of Spatial Point Patterns, Second Edition, Arnold Publishers. An introduction to the concepts and methods of statistical analysis of spatial point patterns.</li>
+<li>Fotherhingham, A. S., C. Brunsdon, and M. Charlton, 2000: Quantitative Geography: Perspectives on Spatial Data Analysis, SAGE Publications, London. A survey of spatial data analysis from the perspective of modern geography.</li>
+<li>Haining, R., 2003: Spatial Data Analysis: Theory and Practice, Cambridge University Press. A confluence of geographic information science and applied spatial statistics.</li>
+<li>Illian, J., A. Penttinen, H. Stoyan, and D. Stoyan, 2008: Statistical Analysis and Modeling of Spatial Point Patterns, Wiley Series in Statistics in Practice, John Wiley &amp; Sons, Inc., New York. A mathematical treatment of spatial point processes.</li>
+<li>Ripley, B. D., 1981: Spatial Statistics, Wiley, New York. A reference book on spatial data analysis with emphasis on point pattern analysis.</li>
+<li>Wickham, H., 2009: ggplot2: Elegant Graphics for Data Analysis, Springer UseR! Series, Springer, New York. An introduction to the ggplot package for graphics.</li>
+</ul>
+<p>Recent research examples</p>
+<ul>
+<li><a href="https://eartharxiv.org/q4y8z/">More hots</a></li>
+<li><a href="https://eartharxiv.org/wpkt9/">Stronger tornadoes</a></li>
+</ul>
+</div>
+<div id="reproducible-research" class="section level2 unnumbered">
+<h2>Reproducible research</h2>
+<p>A scientific paper has at least two goals: announce a new result and convince readers that the result is correct. Scientific papers should describe the results <em>and</em> provide a clear protocol to allow repetition and extension.</p>
+<p>Analysis and modeling tools should integrate text with code to make it easier to provide a clear protocol of what was done.</p>
+<ul>
+<li>Such tools make doing research efficient. Changes are made with little effort.</li>
+<li>Such tools allow others to build on what you’ve done. Research achieves more faster.</li>
+<li>Collaboration is easier.</li>
+<li>Code sharing leads to greater research impact. Research impact leads to promotion &amp; tenure.</li>
+</ul>
+<p>Free and open source software for geospatial data has progressed at an astonishing rate. High performance spatial libraries are now widely available.</p>
+<p>However, much of it is still not easy to script. Open source Geographic Information Systems (GIS) such as QGIS (see <a href="https://qgis.org" class="uri">https://qgis.org</a>) have greatly reduced the ‘barrier to entry’ but emphasis on the graphical user interface (GUI) makes reproducible research difficult.</p>
+<p>Instead this course focuses on a command line interface (CLI), enabling reproducible, and ‘computational’ work flows.</p>
+<p>You might be interested in this article: <a href="https://myweb.fsu.edu/jelsner/NustPebesma2020.pdf">Practical reproducibility in geography and geosciences</a></p>
+</div>
+<div id="getting-setup-for-this-course" class="section level2 unnumbered">
+<h2>Getting setup for this course</h2>
+<p>First get R</p>
+<ul>
+<li>Go to <a href="http://www.r-project.org" class="uri">http://www.r-project.org</a>.</li>
+<li>Select the CRAN (Comprehensive R Archive Network). Scroll to a mirror site.</li>
+<li>Choose the appropriate file for your hardware.</li>
+<li>Follow the instructions to install R.</li>
+</ul>
+<p>Then get RStudio</p>
+<ul>
+<li>Go to on <a href="http://rstudio.org" class="uri">http://rstudio.org</a></li>
+<li>Download RStudio Desktop</li>
+<li>Install and open RStudio</li>
+</ul>
+<p>Finally (Optional), learn git</p>
+<p><a href="https://happygitwithr.com/install-git.html" class="uri">https://happygitwithr.com/install-git.html</a></p>
+</div>
+<div id="the-rstudio-ide" class="section level2 unnumbered">
+<h2>The RStudio IDE</h2>
+<ul>
+<li>Written in HTML</li>
+<li>Top menus
+<ul>
+<li>File &gt; New File &gt; R Markdown</li>
+<li>Tools &gt; Global Options &gt; Appearance</li>
+</ul></li>
+<li>Upper left panel is the markdown file. This is where we put our text and code.
+<ul>
+<li>Run code chunks from this panel</li>
+<li>Output from the operations can be placed in this panel or in the Console (see the gear icon above)</li>
+<li>All the text, code, and output can be rendered to an HTML file or a PDF or Word document (see the Knit button above)</li>
+</ul></li>
+<li>Upper right panel shows what is in your current environment and the history of the commands you issued.
+<ul>
+<li>This is also where you can connect to github</li>
+</ul></li>
+<li>Lower left panel is the Console
+<ul>
+<li>I think of this as a sandbox where you try out small bits of code. If it works and is relevant move it to the markdown file.</li>
+<li>This is also where output from running code will be placed.</li>
+<li>Not a place for plain text</li>
+</ul></li>
+<li>Lower right panel shows your project files, the plots that get made, and all the packages associated with the project.
+<ul>
+<li>The File tab shows the files in the project. The most important one is the .Rmd.</li>
+<li>The Plot tab currently shows a blank sheet</li>
+<li>The Packages tab shows all the packages that have been downloaded from CRAN and are associated with this project.</li>
+</ul></li>
+</ul>
+</div>
+<div id="lab-assignments" class="section level2 unnumbered">
+<h2>Lab assignments</h2>
+<p>You will do your assignments inside an Rmd file.</p>
+<ol style="list-style-type: decimal">
+<li>Download the assignment <code>Rmd</code> file from Canvas and rename it to <code>yourLastName_yourFirstName.Rmd</code></li>
+<li>Open the <code>Rmd</code> file with RStudio</li>
+<li>Replace ‘Your Name’ with your name in the preamble (YAML)</li>
+<li>Answer the questions by typing appropriate code between the code-chunk delimiters</li>
+<li>Select the Knit button to generate an HTML file</li>
+<li>Fix any errors</li>
+<li>Email your completed assignment <code>Rmd</code> file to <a href="mailto:jelsner@fsu.edu" class="email">jelsner@fsu.edu</a></li>
+</ol>
+</div>
+<div id="getting-started-with-r" class="section level2 unnumbered">
+<h2>Getting started with R</h2>
+<p>The {swirl} package contains functions to help you learn the basics of R. To install the package use the <code>install.packages()</code> function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using <code>update.packages()</code> function.</p>
+<p>To make the functions work in your current session use the <code>library()</code> function with the name of the package (without quotes). This needs to be done for every session, but only once per session.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-august-23-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;swirl&quot;</span>)</span>
+<span id="cb1-2"><a href="tuesday-august-23-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swirl)</span></code></pre></div>
+<p>Type:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="tuesday-august-23-2022.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swirl</span>()</span></code></pre></div>
+<p>Choose the lesson: R Programming. Work through lessons 1:8</p>
+<p>Getting help: <a href="https://www.r-project.org/help.html" class="uri">https://www.r-project.org/help.html</a></p>
+<p>Applied statistics is the analysis and modeling of data. Use the <code>c()</code> function to input small bits of data into R. The function combines (concatenates) items in a list together. For example, consider a set of hypothetical annual land falling hurricane counts over a ten-year period.</p>
+<p>2 3 0 3 1 0 0 1 2 1</p>
+<p>We get save these counts in our working directory by typing them into the console as follows. The console is the lower left window.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-august-23-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="tuesday-august-23-2022.html#cb3-2" aria-hidden="true" tabindex="-1"></a>counts</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
+<p>We assign the values to an object called <code>counts</code>. The assignment operator is an equal sign (<code>&lt;-</code> or <code>=</code>). Values do not print. They are assigned to an object name. They are printed by typing the object name as we did on the second line. When printed the values are prefaced with a <code>[1]</code>. This indicates that the object is a vector and the first entry in the vector has a value of 2 (The number immediately to the right of <code>[1]</code>).</p>
+<p>We use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.</p>
+<p>We apply functions to data stored in objects.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tuesday-august-23-2022.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tuesday-august-23-2022.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tuesday-august-23-2022.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)<span class="sc">/</span><span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tuesday-august-23-2022.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<p>The function <code>sum()</code> totals the number of hurricanes over all years, <code>length()</code> gives the number of elements in the vector. Other functions include, <code>sort()</code>, <code>min()</code>, <code>max()</code>, <code>range()</code>, <code>diff()</code>, and <code>cumsum()</code>. Try these functions on the landfall counts. What does <code>range()</code> function do? What does <code>diff()</code> do?</p>
+<p>The hurricane count data stored in the object <code>counts</code> is a vector. This means that R keeps track of the order that the data were entered. There is a first element, a second element, and so on. This is good for several reasons.</p>
+<p>The vector of counts has a natural order; year 1, year 2, etc. We don’t want to mix these. We would like to be able to make changes to the data item by item instead of entering the values again. Also, vectors are math objects so that math operations can be performed on them.</p>
+<p>For example, suppose <code>counts</code> contain the annual landfall count from the first decade of a longer record. We want to keep track of counts over other decades. This could be done by the following, example.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="tuesday-august-23-2022.html#cb13-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> counts</span>
+<span id="cb13-2"><a href="tuesday-august-23-2022.html#cb13-2" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<p>Most functions operate on each element of the data vector at the same time.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tuesday-august-23-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">+</span> d2</span></code></pre></div>
+<pre><code>##  [1] 2 8 4 5 4 0 3 4 4 2</code></pre>
+<p>The first year of the first decade is added from the first year of the second decade and so on.</p>
+<p>What happens if we apply the <code>c()</code> function to these two vectors? Try it.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tuesday-august-23-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(d1, d2)</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1 0 5 4 2 3 0 3 3 2 1</code></pre>
+<p>If we are interested in each year’s count as a difference from the decade mean, we type:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="tuesday-august-23-2022.html#cb18-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">-</span> <span class="fu">mean</span>(d1)</span></code></pre></div>
+<pre><code>##  [1]  0.7  1.7 -1.3  1.7 -0.3 -1.3 -1.3 -0.3  0.7 -0.3</code></pre>
+<p>In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector. This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
