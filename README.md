@@ -1,1 +1,1 @@
-# ASS-2022
+# Applied Spatial Statistics, Fall 2022
