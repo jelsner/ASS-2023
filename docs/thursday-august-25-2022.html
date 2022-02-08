@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Thursday, August 25, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022</title>
+  <meta name="description" content="Thursday, August 25, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Thursday, August 25, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Thursday, August 25, 2022 | GISXXXX: Applied Spatial Statistics Fall 2022" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+<meta name="date" content="2022-02-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tuesday-august-23-2022.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#course-description"><i class="fa fa-check"></i>Course description</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#grades"><i class="fa fa-check"></i>Grades</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#ethics"><i class="fa fa-check"></i>Ethics</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#outline-of-topics"><i class="fa fa-check"></i>Outline of topics</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-setup-for-this-course"><i class="fa fa-check"></i>Getting setup for this course</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#the-rstudio-ide"><i class="fa fa-check"></i>The RStudio IDE</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#main-take-aways-from-the-syllabus"><i class="fa fa-check"></i>Main take aways from the Syllabus</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#working-with-data-using-functions-from-the-base-r-packages"><i class="fa fa-check"></i>Working with data using functions from the {base} R packages</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GISXXXX: Applied Spatial Statistics Fall 2022</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thursday-august-25-2022" class="section level1 unnumbered">
+<h1>Thursday, August 25, 2022</h1>
+<p><strong>“The trouble with programmers is that you can never tell what a programmer is doing until it’s too late.”</strong> — Seymour Cray</p>
+<div id="main-take-aways-from-the-syllabus" class="section level2 unnumbered">
+<h2>Main take aways from the Syllabus</h2>
+<p>Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m., Lab Hours: Fri 9:05 a.m. - 9:55 a.m., Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m. The best way to contact me is through email: <a href="mailto:jelsner@fsu.edu" class="email">jelsner@fsu.edu</a>.</p>
+<p>This course is a survey of methods to describe, analyze, and model <em>spatial</em> data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.</p>
+<p>Lessons are presented (and recorded) on Zoom Mondays and Wednesdays. Lab assignments are done on Zoom (no recording) on Fridays without much direct supervision.</p>
+<p>During each lesson I will work through and explain the R code within an <code>xx-Lesson.Rmd</code> file. The notes in the files are comprehensive, so you can work through them on your own. The notes are written using the markdown language (I will explain this a bit today). Think of this as a master class in spatial data science using R.</p>
+<p>Grades are determined by how well you do on the weekly assignments.</p>
+<p>There are many online sites dedicated to all aspects of the R programming language. A list of some of the ones related to spatial analysis and modeling are in Lesson 1.</p>
+<p>You should now be set up with R and RStudio. If not, please stay after class today and I will help you. I will spend the first several lessons teaching you how I work with R. For some of you this might be mostly a review. If this is entirely new don’t get discouraged. Most of what we will do does not involve complex R syntax.</p>
+<p>In this lesson I provide a review (or an introduction) to working with data using functions from the {base} R packages. The {base} R packages are part of the initial installation of R. They form the scaffolding for working in R, but much of what we will do in this class will involve functions from other packages.</p>
+<p>The one exception today is that I will introduce functions from the {readr} package (as part of the {tidyverse} set of packages) that simplify importing data into R. These functions are very similar to the corresponding functions in {base} R.</p>
+</div>
+<div id="data-science-workflow-with-r-markdown" class="section level2 unnumbered">
+<h2>Data science workflow with R markdown</h2>
+<p>A scientific paper is advertisement for a claim. But the <em>proof</em> is the procedure that was used to obtain the result. The code is the exact procedure. Code is the recipe for what we did. It is the most efficient way to communicate precisely what was done. Communication to others and to our future self.</p>
+<p>When we use a spreadsheet, it’s hard to explain to someone precisely what we did. Click here, then right click here, then choose menu X, etc. The words we use to describe these procedures are not standard. If you’ve ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code with new data is simple.</p>
+<p>Code is an efficient way to communicate because all important information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.</p>
+<p>The person most likely to reproduce our work a few months later is us. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code we write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.</p>
+<p>In data science we toggle between:</p>
+<ol style="list-style-type: decimal">
+<li><p>Writing code: Code to get our data into R, code to look at tables and summary statistics, code to make graphs, code to compute spatial statistics, code to model and plot our results.</p></li>
+<li><p>Looking at output: Our code is a set of instructions that produces the output we want: a table, a model, or a figure. It is helpful to be able to see that output.</p></li>
+<li><p>Taking notes: We also write text about what we are doing, why we are doing it, and what our results mean.</p></li>
+</ol>
+<p>To do be efficient we write our code and our comments <em>together</em> in the same file. This is where R markdown comes in (files that end with <code>.Rmd</code>). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When we <code>Knit</code> this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output.</p>
+<p>The resulting file is converted into a HTML, PDF, or Word document. The text in the markdown file they has simple format instructions. For example, the following symbols are used for emphasis <em>italics</em>, <strong>bold</strong>, and <code>code font</code>. When we create a <em>new</em> markdown document in R Studio, it contains a sample example.</p>
+<p>Lesson notes for this class are written in text using markdown formatting as needed. Text is interspersed with code. The format for code chunks is</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="thursday-august-25-2022.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lines of code here</span></span></code></pre></div>
+<p>Three back-ticks (on a U.S. keyboard, the character under the escape key) followed by a pair of curly braces containing the name of the language we are using. The back-ticks-and-braces part signal that code is about to begin. We write our code as needed, and then end the chunk with a new line containing three more back-ticks. We can use the <em>Insert</em> button above to save time.</p>
+<p>In the markdown file, the lines between the first and second set of back ticks is grayed and a few small icons are noted in the upper-right corner of the grayed area. The green triangle is used to execute the code and either post the results in the console below or in the line below.</p>
+<p>When we keep our notes in this way, we are able to see everything together, the code, the output it produces, and our commentary or clarification on it. Also we can turn it into a good-looking document with one click. This is how we will do everything in this course.</p>
+<p>For example, select the <em>Knit</em> button above.</p>
+<p>Finally, note the <em>Outline</em> button in the upper right corner of the markdown file. We can organize and navigate through the markdown file section by section based on the pound symbol (<code>#</code>).</p>
+</div>
+<div id="working-with-data-using-functions-from-the-base-r-packages" class="section level2 unnumbered">
+<h2>Working with data using functions from the {base} R packages</h2>
+<p>Applied spatial statistics is the analysis and modeling of spatial data. To begin our journey we need to know somethings about data objects in R.</p>
+<p>Perhaps the most important function is also one of the simplest. The <code>c()</code> function creates a ‘vector’ data object (vector object). The function combines (concatenates) individual data values, where each data value is separated by a comma, into a vector object with a length equal to the number of data values.</p>
+<p>Consider a set of hypothetical annual land falling hurricane counts over a ten-year period. In the first year there were two, the next year there were three, and so on.</p>
+<p>2 3 0 3 1 0 0 1 2 1</p>
+<p>We save these ten values to our working environment by assigning them to an object that we call <code>counts</code>. The assignment operator is an equal sign (<code>&lt;-</code> or <code>=</code>).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="thursday-august-25-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<p>By clicking on the <em>Environment</em> tab in the upper-right panel we see that the object <code>counts</code> with numerical values (<code>num</code>) 2 3, etc below word <em>Values</em>. We see that the elements are indexed between 1 and 10 (<code>1:10</code>).</p>
+<p>We print the values to the console by typing the name of the data object.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="thursday-august-25-2022.html#cb22-1" aria-hidden="true" tabindex="-1"></a>counts</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
+<p>When printed to the console, the values are prefaced with a <code>[1]</code>. This indicates that the object is a vector and the first element in the vector has a value of 2 (The number immediately to the right of <code>[1]</code>).</p>
+<p>Note: We can assign and print by wrapping the entire line of code in parentheses.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="thursday-august-25-2022.html#cb24-1" aria-hidden="true" tabindex="-1"></a>( counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>) )</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
+<p>We can use the arrow keys on our keyboard to retrieve previous commands. Each command is stored in the history file (click on the <em>History</em> tab in the upper-right panel). The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.</p>
+<p>We then apply functions to the vector data object. A function has a name and parentheses. Inside the parentheses are the function arguments. Many functions have only a single argument like a data vector. Examples include:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="thursday-august-25-2022.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="thursday-august-25-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="thursday-august-25-2022.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)<span class="sc">/</span><span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="thursday-august-25-2022.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<p>The function <code>sum()</code> totals the hurricane counts over all years, <code>length()</code> returns the number of elements in the vector. Other functions include <code>sort()</code>, <code>min()</code>, <code>max()</code>, <code>range()</code>, <code>diff()</code>, and <code>cumsum()</code>.</p>
+<p>The object <code>counts</code> that we created is a vector containing the hurricane data. This means that the elements are ordered. There is a first element, a second element, and so on. This is good for data objects for several reasons.</p>
+<p>The hurricane counts have a chronological order: year 1, year 2, etc and we want that ordered reflected in our data object. Also, we would like to be able to make changes to the data values by element. Finally, vectors are mathematical objects so that math operations can be performed on them in a natural way.</p>
+<p>For example, math tells us that a scalar multiplied by a vector is a vector where each element of the product has been multiplied by the scalar. The asterisk <code>*</code> is used for multiplication.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="thursday-august-25-2022.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">*</span> counts</span></code></pre></div>
+<pre><code>##  [1] 20 30  0 30 10  0  0 10 20 10</code></pre>
+<p>Further, suppose <code>counts</code> contain the annual landfall count from the first decade of a longer record. We want to keep track of counts over other decades. This could be done by the following, example.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="thursday-august-25-2022.html#cb36-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> counts</span>
+<span id="cb36-2"><a href="thursday-august-25-2022.html#cb36-2" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<p>Most functions operate on each element of the data vector all at once.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="thursday-august-25-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">+</span> d2</span></code></pre></div>
+<pre><code>##  [1] 2 8 4 5 4 0 3 4 4 2</code></pre>
+<p>The first year of the first decade is added to the first year of the second decade and so on.</p>
+<p>What happens if we apply the <code>c()</code> function to these two vectors?</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="thursday-august-25-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(d1, d2)</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1 0 5 4 2 3 0 3 3 2 1</code></pre>
+<p>That’s correct. We get a vector with elements from both <code>d1</code> and <code>d2</code> in the order of first the first decade counts and then the second decade counts.</p>
+<p>If we are interested in each year’s count as a difference from the decade average, we type</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="thursday-august-25-2022.html#cb41-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">-</span> <span class="fu">mean</span>(d1)</span></code></pre></div>
+<pre><code>##  [1]  0.7  1.7 -1.3  1.7 -0.3 -1.3 -1.3 -0.3  0.7 -0.3</code></pre>
+<p>In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector.</p>
+<p>Suppose we are interested in the variance of the set of landfall counts. The variance is computed as
+<span class="math display">\[
+\hbox{var}(x) = \frac{(x_1 - \bar x)^2 + (x_2 - \bar x)^2 + \cdots + (x_n - \bar x)^2}{n-1} = \frac{1}{n-1}\sum_{i=1}^n (x_i - \bar x)^2
+\]</span></p>
+<p>Although the <code>var()</code> function computes this, here we see how to do this using simpler functions. The key is to find the squared differences and then sum.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="thursday-august-25-2022.html#cb43-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> d1</span>
+<span id="cb43-2"><a href="thursday-august-25-2022.html#cb43-2" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb43-3"><a href="thursday-august-25-2022.html#cb43-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> xbar</span></code></pre></div>
+<pre><code>##  [1]  0.7  1.7 -1.3  1.7 -0.3 -1.3 -1.3 -0.3  0.7 -0.3</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="thursday-august-25-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a>(x <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<pre><code>##  [1] 0.49 2.89 1.69 2.89 0.09 1.69 1.69 0.09 0.49 0.09</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="thursday-august-25-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((x <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 12.1</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="thursday-august-25-2022.html#cb49-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb49-2"><a href="thursday-august-25-2022.html#cb49-2" aria-hidden="true" tabindex="-1"></a>n</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="thursday-august-25-2022.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((x <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(n <span class="sc">-</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 1.344444</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="thursday-august-25-2022.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x)</span></code></pre></div>
+<pre><code>## [1] 1.344444</code></pre>
+<p>Elements in a vector object must all have the same type. This type can be numeric, as in counts, character strings, as in</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="thursday-august-25-2022.html#cb55-1" aria-hidden="true" tabindex="-1"></a>simpsons <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Homer&#39;</span>, <span class="st">&#39;Marge&#39;</span>, <span class="st">&#39;Bart&#39;</span>, <span class="st">&#39;Lisa&#39;</span>, <span class="st">&#39;Maggie&#39;</span>)</span>
+<span id="cb55-2"><a href="thursday-august-25-2022.html#cb55-2" aria-hidden="true" tabindex="-1"></a>simpsons</span></code></pre></div>
+<pre><code>## [1] &quot;Homer&quot;  &quot;Marge&quot;  &quot;Bart&quot;   &quot;Lisa&quot;   &quot;Maggie&quot;</code></pre>
+<p>Character strings are made with matching quotes, either double, <code>"</code>, or single, <code>'</code>. If we mix types the values will be coerced into a common type, which is usually a character string. Arithmetic operations do not work on character strings.</p>
+<p>Returning to the land falling hurricane counts. Now suppose the National Hurricane Center (NHC) reanalyzes a storm, and that the 6th year of the 2nd decade is a 1 rather than a 0 for the number of landfalls. In this case we type:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="thursday-august-25-2022.html#cb57-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="dv">6</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
+<p>This assigns to the 6th year of the decade a value of one. The assignment to the 6th entry in the vector <code>d2</code> is done by referencing the entry with square brackets <code>[]</code>.</p>
+<p>It is important to keep this straight: Parentheses <code>()</code> are used for functions and square brackets <code>[]</code> are used to extract values from vectors (and data frames, arrays, lists, etc).</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="thursday-august-25-2022.html#cb58-1" aria-hidden="true" tabindex="-1"></a>d2</span></code></pre></div>
+<pre><code>##  [1] 0 5 4 2 3 1 3 3 2 1</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="thursday-august-25-2022.html#cb60-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="thursday-august-25-2022.html#cb62-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="sc">-</span><span class="dv">4</span>]</span></code></pre></div>
+<pre><code>## [1] 0 5 4 3 1 3 3 2 1</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="thursday-august-25-2022.html#cb64-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>)]</span></code></pre></div>
+<pre><code>## [1] 0 4 3 3 2</code></pre>
+<p>The first line prints all the elements of the vector <code>df2</code>. The second prints only the 2nd value of the vector. The third prints all but the 4th value. The fourth prints the values with odd element numbers.</p>
+<p>To create structured data, for example the integers 1 through 99 we use the <code>:</code> operator.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="thursday-august-25-2022.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">99</span></span>
+<span id="cb66-2"><a href="thursday-august-25-2022.html#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rev</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">99</span>)</span>
+<span id="cb66-3"><a href="thursday-august-25-2022.html#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="dv">99</span><span class="sc">:</span><span class="dv">1</span></span></code></pre></div>
+<p>The <code>seq()</code> function is more general. We specify the sequence interval with the <code>by =</code> or <code>length =</code> arguments.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="thursday-august-25-2022.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">9</span>, <span class="at">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="thursday-august-25-2022.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="thursday-august-25-2022.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">9</span>, <span class="at">length =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<p>The <code>rep()</code> function is to create repetitive sequences. The first argument is a value or vector that we want repeated and the second argument is the number of times we want it repeated.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="thursday-august-25-2022.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="thursday-august-25-2022.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(simpsons, <span class="at">times =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;Homer&quot;  &quot;Marge&quot;  &quot;Bart&quot;   &quot;Lisa&quot;   &quot;Maggie&quot; &quot;Homer&quot;  &quot;Marge&quot;  &quot;Bart&quot;  
+##  [9] &quot;Lisa&quot;   &quot;Maggie&quot;</code></pre>
+<p>In the second example the vector <code>simpsons</code> containing the Simpson characters is repeated twice.</p>
+<p>To repeat each element of the vector use the <code>each =</code> argument.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="thursday-august-25-2022.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(simpsons, <span class="at">each =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;Homer&quot;  &quot;Homer&quot;  &quot;Marge&quot;  &quot;Marge&quot;  &quot;Bart&quot;   &quot;Bart&quot;   &quot;Lisa&quot;   &quot;Lisa&quot;  
+##  [9] &quot;Maggie&quot; &quot;Maggie&quot;</code></pre>
+<p>More complicated patterns can be repeated by specifying pairs of equal length vectors. In this case, each element of the first vector is repeated the corresponding number of times specified by the element in the second vector.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="thursday-august-25-2022.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;short&quot;</span>),  <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;long&quot;  &quot;long&quot;  &quot;short&quot; &quot;short&quot; &quot;short&quot;</code></pre>
+<p>To find the maximum number of landfalls in the first decade we type.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="thursday-august-25-2022.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>What years had the maximum?</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="thursday-august-25-2022.html#cb83-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">==</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>##  [1] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<p>Notice the double equals signs (<code>==</code>). This is a logical operator that tests each value in <code>d1</code> to see if it is equal to 3. The 2nd and 4th values are equal to 3 so <code>TRUE</code>s are returned.</p>
+<p>Think of this as asking R a question. Is the value equal to 3? R answers all at once with a vector of <code>TRUE</code>’s and <code>FALSE</code>’s.</p>
+<p>What years had fewer than 2 hurricanes?</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="thursday-august-25-2022.html#cb85-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">&lt;</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>##  [1] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE</code></pre>
+<p>Now the question is how do we get the vector element corresponding to the <code>TRUE</code> values? That is, which years have 3 landfalls?</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="thursday-august-25-2022.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(d1 <span class="sc">==</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 2 4</code></pre>
+<p>The function <code>which.max()</code> can be used to get the first maximum.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="thursday-august-25-2022.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>We might also want to know the total number of landfalls in each decade and the number of years in a decade without a landfall. Or how about the ratio of the mean number of landfalls over the two decades.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="thursday-august-25-2022.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="thursday-august-25-2022.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d2)</span></code></pre></div>
+<pre><code>## [1] 24</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="thursday-august-25-2022.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d1 <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="thursday-august-25-2022.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d2 <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="thursday-august-25-2022.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(d2)<span class="sc">/</span><span class="fu">mean</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 1.846154</code></pre>
+<p>So there are 85% more landfalls during the second decade. Is this difference statistically significant?</p>
+<p>To remove an object from the environment use the <code>rm()</code> function.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="thursday-august-25-2022.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(d1, d2)</span></code></pre></div>
+</div>
+<div id="data-frames" class="section level2 unnumbered">
+<h2>Data frames</h2>
+<p>The data frame is the most important data object in this course. A data frame stores data in a tabular format like a spreadsheet. It is a list of vectors each with the same length. It has column names (and sometimes row names).</p>
+<p>For example, we create a data frame object <code>df</code> containing three vectors <code>n</code>, <code>s</code>, <code>b</code> each with three elements using the <code>data.frame()</code> function.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="thursday-august-25-2022.html#cb102-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>) </span>
+<span id="cb102-2"><a href="thursday-august-25-2022.html#cb102-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;aa&quot;</span>, <span class="st">&quot;bb&quot;</span>, <span class="st">&quot;cc&quot;</span>) </span>
+<span id="cb102-3"><a href="thursday-august-25-2022.html#cb102-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>) </span>
+<span id="cb102-4"><a href="thursday-august-25-2022.html#cb102-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-5"><a href="thursday-august-25-2022.html#cb102-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, s, b)</span></code></pre></div>
+<p>To see that the object is a data frame we use the <code>class()</code> function with the name of the object inside the parentheses.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="thursday-august-25-2022.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>The object <code>df</code> is of class <code>data.frame</code>. Note that the object name shows up in our <em>Environment</em> under <em>Data</em> and it includes a little blue arrow indicating that we can view it by clicking on the row.</p>
+<p>The data frame shows up as a table (like a spreadsheet) in the <code>View()</code> mode (see the command in the console below). Caution: This is not advised for large data frames. The top line of the table is called the header. Each line below the header contains a row of data, which begins with the name (or number) of the row followed by the data values.</p>
+<p>Each data element is in a cell. To retrieve a data value from a cell, we enter its row and column coordinates in that order in the single square bracket <code>[]</code> operator and separated by a column.</p>
+<p>Here is the cell value from the first row, second column of <code>df</code>.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="thursday-august-25-2022.html#cb105-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">1</span>, <span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] &quot;aa&quot;</code></pre>
+<p>We can print the column names (located in the top row in the <code>View()</code> mode) with the <code>names()</code> function.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="thursday-august-25-2022.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span></code></pre></div>
+<pre><code>## [1] &quot;n&quot; &quot;s&quot; &quot;b&quot;</code></pre>
+<p>The list of names is a vector of length three containing the elements “n,” “s,” and “b” in that order.</p>
+<p>We access individual columns of a data frame as vectors by appending the dollar sign (<code>$</code>) to the object name. For example, to print the values of the column labeled <code>s</code> we type</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="thursday-august-25-2022.html#cb109-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>s</span></code></pre></div>
+<pre><code>## [1] &quot;aa&quot; &quot;bb&quot; &quot;cc&quot;</code></pre>
+<p>Base R and many of the packages we will use this semester include example data frames. The data frame called <code>mtcars</code>, for instance, contains information extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="thursday-august-25-2022.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mtcars)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="thursday-august-25-2022.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mtcars)</span></code></pre></div>
+<pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+## [11] &quot;carb&quot;</code></pre>
+<p>The number of data rows and data columns in the data frame are printed using the <code>nrow()</code> and <code>ncol()</code> functions.</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="thursday-august-25-2022.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mtcars)</span></code></pre></div>
+<pre><code>## [1] 32</code></pre>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="thursday-august-25-2022.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(mtcars)</span></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<p>Further details of built-in data frames like <code>mtcars</code> is available in the R documentation accessed with the <code>help()</code> (or <code>?</code>) function.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="thursday-august-25-2022.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(mtcars)</span></code></pre></div>
+<p>If we type the name of the data frame in the console (this is not advisable!) all the data are printed.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="thursday-august-25-2022.html#cb120-1" aria-hidden="true" tabindex="-1"></a>mtcars</span></code></pre></div>
+<pre><code>##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+<p>Instead, to get a glimpse of our data we used the functions <code>head()</code>, which prints the first six rows, or <code>str()</code>, which lists all the columns by data type.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="thursday-august-25-2022.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code></pre></div>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="thursday-august-25-2022.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mtcars)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tuesday-august-23-2022.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

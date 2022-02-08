@@ -1,0 +1,330 @@
+# Thursday, August 25, 2022 {-}
+
+**"The trouble with programmers is that you can never tell what a programmer is doing until it’s too late."** --- Seymour Cray
+
+## Main take aways from the Syllabus {-}
+
+Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m., Lab Hours: Fri 9:05 a.m. - 9:55 a.m., Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m. The best way to contact me is through email: <jelsner@fsu.edu>.
+
+This course is a survey of methods to describe, analyze, and model _spatial_ data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.
+
+Lessons are presented (and recorded) on Zoom Mondays and Wednesdays. Lab assignments are done on Zoom (no recording) on Fridays without much direct supervision. 
+
+During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own. The notes are written using the markdown language (I will explain this a bit today). Think of this as a master class in spatial data science using R.
+
+Grades are determined by how well you do on the weekly assignments.
+
+There are many online sites dedicated to all aspects of the R programming language. A list of some of the ones related to spatial analysis and modeling are in Lesson 1.
+
+You should now be set up with R and RStudio. If not, please stay after class today and I will help you. I will spend the first several lessons teaching you how I work with R. For some of you this might be mostly a review. If this is entirely new don't get discouraged. Most of what we will do does not involve complex R syntax.
+
+In this lesson I provide a review (or an introduction) to working with data using functions from the {base} R packages. The {base} R packages are part of the initial installation of R. They form the scaffolding for working in R, but much of what we will do in this class will involve functions from other packages.
+
+The one exception today is that I will introduce functions from the {readr} package (as part of the {tidyverse} set of packages) that simplify importing data into R. These functions are very similar to the corresponding functions in {base} R.
+
+## Data science workflow with R markdown {-}
+
+A scientific paper is advertisement for a claim. But the _proof_ is the procedure that was used to obtain the result. The code is the exact procedure. Code is the recipe for what we did. It is the most efficient way to communicate precisely what was done. Communication to others and to our future self.
+
+When we use a spreadsheet, it's hard to explain to someone precisely what we did. Click here, then right click here, then choose menu X, etc. The words we use to describe these procedures are not standard.  If you've ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code with new data is simple. 
+
+Code is an efficient way to communicate because all important information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.
+
+The person most likely to reproduce our work a few months later is us. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code we write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.
+
+In data science we toggle between:
+
+(1) Writing code: Code to get our data into R, code to look at tables and summary statistics, code to make graphs, code to compute spatial statistics, code to model and plot our results.
+
+(2) Looking at output: Our code is a set of instructions that produces the output we want: a table, a model, or a figure. It is helpful to be able to see that output.
+
+(3) Taking notes: We also write text about what we are doing, why we are doing it, and what our results mean.
+
+To do be efficient we write our code and our comments _together_ in the same file. This is where R markdown comes in (files that end with `.Rmd`). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When we `Knit` this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output. 
+
+The resulting file is converted into a HTML, PDF, or Word document. The text in the markdown file they has simple format instructions. For example, the following symbols are used for emphasis  _italics_, **bold**, and `code font`. When we create a _new_ markdown document in R Studio, it contains a sample example.
+
+Lesson notes for this class are written in text using markdown formatting as needed. Text is interspersed with code. The format for code chunks is
+```{r}
+# lines of code here
+```
+
+
+Three back-ticks (on a U.S. keyboard, the character under the escape key) followed by a pair of curly braces containing the name of the language we are using. The back-ticks-and-braces part signal that code is about to begin. We write our code as needed, and then end the chunk with a new line containing three more back-ticks. We can use the _Insert_ button above to save time. 
+
+In the markdown file, the lines between the first and second set of back ticks is grayed and a few small icons are noted in the upper-right corner of the grayed area. The green triangle is used to execute the code and either post the results in the console below or in the line below.
+
+When we keep our notes in this way, we are able to see everything together, the code, the output it produces, and our commentary or clarification on it. Also we can turn it into a good-looking document with one click. This is how we will do everything in this course.
+
+For example, select the _Knit_ button above.
+
+Finally, note the _Outline_ button in the upper right corner of the markdown file. We can organize and navigate through the markdown file section by section based on the pound symbol (`#`).
+
+## Working with data using functions from the {base} R packages {-}
+
+Applied spatial statistics is the analysis and modeling of spatial data. To begin our journey we need to know somethings about data objects in R.
+
+Perhaps the most important function is also one of the simplest. The `c()` function creates a 'vector' data object (vector object). The function combines (concatenates) individual data values, where each data value is separated by a comma, into a vector object with a length equal to the number of data values.
+
+Consider a set of hypothetical annual land falling hurricane counts over a ten-year period. In the first year there were two, the next year there were three, and so on.
+
+2  3  0  3  1  0  0  1  2  1
+
+We save these ten values to our working environment by assigning them to an object that we call `counts`. The assignment operator is an equal sign (`<-` or `=`). 
+```{r}
+counts <- c(2, 3, 0, 3, 1, 0, 0, 1, 2, 1)
+```
+
+By clicking on the _Environment_ tab in the upper-right panel we see that the object `counts` with numerical values (`num`) 2 3, etc below word _Values_. We see that the elements are indexed between 1 and 10 (`1:10`).
+
+We print the values to the console by typing the name of the data object.
+```{r}
+counts
+```
+
+When printed to the console, the values are prefaced with a `[1]`. This indicates that the object is a vector and the first element in the vector has a value of 2 (The number immediately to the right of `[1]`).
+
+Note: We can assign and print by wrapping the entire line of code in parentheses.
+```{r}
+( counts <- c(2, 3, 0, 3, 1, 0, 0, 1, 2, 1) )
+```
+
+We can use the arrow keys on our keyboard to retrieve previous commands. Each command is stored in the history file (click on the _History_ tab in the upper-right panel). The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.
+
+We then apply functions to the vector data object. A function has a name and parentheses. Inside the parentheses are the function arguments. Many functions have only a single argument like a data vector. Examples include:
+```{r}
+sum(counts)
+length(counts)
+sum(counts)/length(counts)
+mean(counts)
+```
+
+The function `sum()` totals the hurricane counts over all years, `length()` returns the number of elements in the vector. Other functions include `sort()`, `min()`, `max()`, `range()`, `diff()`, and `cumsum()`.
+
+The object `counts` that we created is a vector containing the hurricane data. This means that the elements are ordered. There is a first element, a second element, and so on. This is good for data objects for several reasons.
+
+The hurricane counts have a chronological order: year 1, year 2, etc and we want that ordered reflected in our data object. Also, we would like to be able to make changes to the data values by element. Finally, vectors are mathematical objects so that math operations can be performed on them in a natural way.
+
+For example, math tells us that a scalar multiplied by a vector is a vector where each element of the product has been multiplied by the scalar. The asterisk `*` is used for multiplication.
+```{r}
+10 * counts
+```
+
+Further, suppose `counts` contain the annual landfall count from the first decade of a longer record.  We want to keep track of counts over other decades. This could be done by the following, example.
+```{r}
+d1 <- counts
+d2 <- c(0, 5, 4, 2, 3, 0, 3, 3, 2, 1)
+```
+
+Most functions operate on each element of the data vector all at once.
+```{r}
+d1 + d2
+```
+
+The first year of the first decade is added to the first year of the second decade and so on.
+
+What happens if we apply the `c()` function to these two vectors?
+```{r}
+c(d1, d2)
+```
+
+That's correct. We get a vector with elements from both `d1` and `d2` in the order of first the first decade counts and then the second decade counts.
+
+If we are interested in each year's count as a difference from the decade average, we type
+```{r}
+d1 - mean(d1)
+```
+
+In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector.
+
+Suppose we are interested in the variance of the set of landfall counts. The variance is computed as
+$$
+\hbox{var}(x) = \frac{(x_1 - \bar x)^2 + (x_2 - \bar x)^2 + \cdots + (x_n - \bar x)^2}{n-1} = \frac{1}{n-1}\sum_{i=1}^n (x_i - \bar x)^2
+$$
+
+
+Although the `var()` function computes this, here we see how to do this using simpler functions. The key is to find the squared differences and then sum.
+```{r}
+x <- d1
+xbar <- mean(x)
+x - xbar
+(x - xbar)^2
+sum((x - xbar)^2)
+n <- length(x)
+n
+sum((x - xbar)^2)/(n - 1)
+var(x)
+```
+
+Elements in a vector object must all have the same type. This type can be numeric, as in counts, character strings, as in
+```{r}
+simpsons <- c('Homer', 'Marge', 'Bart', 'Lisa', 'Maggie')
+simpsons
+```
+
+Character strings are made with matching quotes, either double, `"`, or single, `'`. If we mix types the values will be coerced into a common type, which is usually a character string. Arithmetic operations do not work on character strings.
+
+Returning to the land falling hurricane counts. Now suppose the National Hurricane Center (NHC) reanalyzes a storm, and that the 6th year of the 2nd decade is a 1 rather than a 0 for the number of landfalls. In this case we type:
+```{r}
+d2[6] <- 1
+```
+
+This assigns to the 6th year of the decade a value of one. The assignment to the 6th entry in the vector `d2` is done by referencing the entry with square brackets `[]`. 
+
+It is important to keep this straight: Parentheses `()` are used for functions and square brackets `[]` are used to extract values from vectors (and data frames, arrays, lists, etc).
+```{r}
+d2
+d2[2]
+d2[-4]
+d2[c(1, 3, 5, 7, 9)]
+```
+
+The first line prints all the elements of the vector `df2`. The second prints only the 2nd value of the vector. The third prints all but the 4th value. The fourth prints the values with odd element numbers.
+
+To create structured data, for example the integers 1 through 99 we use the `:` operator.
+```{r, eval=FALSE}
+1:99
+rev(1:99)
+99:1
+```
+
+The `seq()` function is more general. We specify the sequence interval with the `by =` or `length =` arguments.
+```{r}
+seq(from = 1, to = 9, by = 2)
+seq(from = 1, to = 10, by = 2)
+seq(from = 1, to = 9, length = 5)
+```
+
+The `rep()` function is to create repetitive sequences. The first argument is a value or vector that we want repeated and the second argument is the number of times we want it repeated.
+```{r}
+rep(1, times = 10)
+rep(simpsons, times = 2)
+```
+
+In the second example the vector `simpsons` containing the Simpson characters is repeated twice.
+
+To repeat each element of the vector use the `each =` argument.
+```{r}
+rep(simpsons, each = 2)
+```
+
+More complicated patterns can be repeated by specifying pairs of equal length vectors. In this case, each element of the first vector is repeated the corresponding number of times specified by the element in the second vector.
+```{r}
+rep(c("long", "short"),  times = c(2, 3))
+```
+
+To find the maximum number of landfalls in the first decade we type.
+```{r}
+max(d1)
+```
+
+What years had the maximum?
+```{r}
+d1 == 3
+```
+
+Notice the double equals signs (`==`).  This is a logical operator that tests each value in `d1` to see if it is equal to 3. The 2nd and 4th values are equal to 3 so `TRUE`s are returned. 
+
+Think of this as asking R a question. Is the value equal to 3?  R answers all at once with a vector of `TRUE`'s and `FALSE`'s.
+
+What years had fewer than 2 hurricanes?
+```{r}
+d1 < 2
+```
+
+Now the question is how do we get the vector element corresponding to the `TRUE` values?  That is, which years have 3 landfalls?
+```{r}
+which(d1 == 3)
+```
+
+The function `which.max()` can be used to get the first maximum.
+```{r}
+which.max(d1)
+```
+
+We might also want to know the total number of landfalls in each decade and the number of years in a decade without a landfall. Or how about the ratio of the mean number of landfalls over the two decades.
+```{r}
+sum(d1)
+sum(d2)
+sum(d1 == 0)
+sum(d2 == 0)
+mean(d2)/mean(d1)
+```
+
+So there are 85% more landfalls during the second decade. Is this difference statistically significant?
+
+To remove an object from the environment use the `rm()` function.
+```{r}
+rm(d1, d2)
+```
+
+## Data frames {-}
+
+The data frame is the most important data object in this course. A data frame stores data in a tabular format like a spreadsheet. It is a list of vectors each with the same length. It has column names (and sometimes row names).
+
+For example, we create a data frame object `df` containing three vectors `n`, `s`, `b` each with three elements using the `data.frame()` function.
+```{r}
+n <- c(2, 3, 5) 
+s <- c("aa", "bb", "cc") 
+b <- c(TRUE, FALSE, TRUE) 
+
+df <- data.frame(n, s, b)
+```
+
+To see that the object is a data frame we use the `class()` function with the name of the object inside the parentheses. 
+```{r}
+class(df)
+```
+
+The object `df` is of class `data.frame`. Note that the object name shows up in our _Environment_ under _Data_ and it includes a little blue arrow indicating that we can view it by clicking on the row.
+
+The data frame shows up as a table (like a spreadsheet) in the `View()` mode (see the command in the console below). Caution: This is not advised for large data frames. The top line of the table is called the header. Each line below the header contains a row of data, which begins with the name (or number) of the row followed by the data values. 
+
+Each data element is in a cell. To retrieve a data value from a cell, we enter its row and column coordinates in that order in the single square bracket `[]` operator and separated by a column.
+
+Here is the cell value from the first row, second column of `df`.
+```{r}
+df[1, 2]
+```
+
+We can print the column names (located in the top row in the `View()` mode)  with the `names()` function.
+```{r}
+names(df)
+```
+
+The list of names is a vector of length three containing the elements "n", "s", and "b" in that order. 
+
+We access individual columns of a data frame as vectors by appending the dollar sign (`$`) to the object name. For example, to print the values of the column labeled `s` we type
+```{r}
+df$s
+```
+
+Base R and many of the packages we will use this semester include example data frames. The data frame called `mtcars`, for instance, contains information extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+```{r}
+class(mtcars)
+
+names(mtcars)
+```
+
+The number of data rows and data columns in the data frame are printed using the `nrow()` and `ncol()` functions.
+```{r}
+nrow(mtcars)
+ncol(mtcars)
+```
+
+Further details of built-in data frames like `mtcars` is available in the R documentation accessed with the `help()` (or `?`) function.
+```{r, eval=FALSE}
+help(mtcars)
+```
+
+If we type the name of the data frame in the console (this is not advisable!) all the data are printed. 
+```{r}
+mtcars
+```
+
+Instead, to get a glimpse of our data we used the functions `head()`, which prints the first six rows, or `str()`, which lists all the columns by data type. 
+```{r}
+head(mtcars)
+
+str(mtcars)
+```
