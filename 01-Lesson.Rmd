@@ -2,6 +2,8 @@
 
 **"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."** --- Martin Fowler
 
+## GIS5122: Applied Spatial Statistics {-}
+
 In this lesson I talk a bit about my journey into data science and then tell you what this course is about. I give details about lessons, assignments, and grading, and about how to get the most out of this course. If time permits I will talk a bit about why I present the course in this way.
 
 * Is Milwaukee snowier than Madison?
@@ -12,8 +14,8 @@ In this lesson I talk a bit about my journey into data science and then tell you
 
 * Instructor Location: Bellamy Building, Room 323a
 * Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m.
-* Lab Hours: Fri 9:05 a.m. - 9:55 a.m.
-* Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m.
+* Lesson Hours: TR 3:05-4:20 p.m.
+* Student Hours: TR 9-10 a.m., 2-3 p.m.
 * Email: <jelsner@fsu.edu>
 
 Links to my stuff (if you are curious)

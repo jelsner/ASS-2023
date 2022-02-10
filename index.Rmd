@@ -1,5 +1,5 @@
 ---
-title: "GISXXXX: Applied Spatial Statistics Fall 2022"
+title: "GIS5122: Applied Spatial Statistics (Fall 2022)"
 author: "James B. Elsner"
 date: "`r Sys.Date()`"
 bibliography: ["References.bib"]
