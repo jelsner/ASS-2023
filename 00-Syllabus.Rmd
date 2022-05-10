@@ -23,28 +23,25 @@ This course is for students who want to learn how to analyze, map, and model spa
 
 In this course we survey the methods used to describe, analyze, and model _spatial_ data. Focus is on applications. Emphasis is given to how spatial statistical methods are related through the concept of spatial autocorrelation.
 
-Expected learning outcomes
+## Expected learning outcomes {-}
 
 1. Learn how and when to apply statistical methods and models to spatial data, 
 2. learn various packages in R for analyzing and modeling spatial data, and 
 3. learn how to interpret the results of a spatial data model.
 
-Course materials
+## Materials {-}
 
 * Access to the internet and a computer.
-* Lesson and assignment files are available through Canvas (and GitHub).
+* Lesson and assignment files on GitHub.
 * There is no required textbook.
 * Many excellent online resources are available. Here are some of my favorites.
   - R for Data Science https://r4ds.had.co.nz/
   - https://dominicroye.github.io/en/2020/a-very-short-introduction-to-tidyverse/
   - https://tinystats.github.io/teacups-giraffes-and-statistics/index.html
 
-Class meetings
+## Class meetings {-}
 
-* Remote lessons
-* Remote/F2F lab assignments
-
-During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file on Zoom. The notes in the lesson files are comprehensive, so you can work through them on your own. The notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
+During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file in the physical classroom. The notes in the lesson files are comprehensive, so you can work through them on your own if you can't make it to class. The notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
 
 ## Grades {-}
 
@@ -53,9 +50,7 @@ You are responsible for:
 1. Reading and running the code in the lesson R markdown files (`.Rmd`) files. You can do this during the remote lessons as I talk and run my code or outside of class on your own.
 2. Completing and returning the lab assignments on time.
 
-Grades are determined only by how well you do on the assignments.
-
-Grading standard
+Grades are determined only by how well you do on the assignments. based on the following standard:
 
 * A: Outstanding: few, in any, errors/omissions
 * B: Good: only minor errors/omissions
@@ -81,15 +76,7 @@ Diversity and inclusiveness
 
 It is my intent to present notes and data that are respectful of diversity: gender identity, sexuality, disability, age, socioeconomic status, ethnicity, race, nationality, religion, and culture.
 
-Learning during a pandemic
-
-The pandemic has made it difficult for most of us. I am committed to making sure that you learn everything you were hoping to learn from this class. I will make whatever accommodations are needed to help you learn the material and finish your assignments. Under normal conditions I am quite flexible and lenient with grading with students facing difficult challenges. My generosity is amplified under these pandemic conditions.
-
 ## Outline of topics {-}
-
-This is a guide for the course and is subject to change with advanced notice.
-
-Topics:
 
 1. Working with data and making graphs (~ 4 lessons)
 2. Working with spatial data and making maps (~ 5 lessons)
@@ -98,43 +85,40 @@ Topics:
 5. Estimating variograms and spatial interpolation (~ 6 lessons)
 6. Other topics (~ 2 lessons)
 
-Calendars
+## Schedule (subject to change with notice) {-}
 
-Remote Lessons:
+Week | Dates                       | Topic
+-----|-----------------------------|-------
+1    | August 23, 25               | RStudio Cloud and R
+2    | August 30, September 1      | Working with R
+3    | September 6, 8              | Data and data frames
+4    | September 13, 15            | Data analysis
+5    | September 20, 22            | Graphical analysis
+6    | September 27, 29            | Mapping data
+7    | October 4, 6                | Bayesian data analysis
+8    | October 11, 13              | Regression
+9    | October 18, 20              | Multiple regression
+10   | October 25, 27              | Regression trees
+11   | November 1, 3               | Spatial data
+12   | November 8, 10              | Spatial autocorrelation
+13   | November 15, 17             | Geographic regression
+14   | November 29, December 1     | Finish assignments
 
-* January 6
-* January 11, 13 
-* January 20
-* January 25, 27
-* February 1, 3
-* February 8, 10
-* February 15, 17
-* February 22, 24
-* March 1, 3
-* March 8, 10
-* March 15, 17
-* March 22, 24
-* March 29, 31
-* April 5, 7
-* April 12, 14
+28 dates 26 lessons
 
-Lab Assignments: 
-
-* January 8 (no assignment, get setup with the R & RStudio)
-* January 15
-* January 22
-* January 29
-* February 5
-* February 12
-* February 19
-* February 26
-* March 5
-* March 12
-* March 19 (no assignment)
-* March 26
-* April 2 (no assignment)
-* April 9
-* April 16
+Assignment | Due Date (5 pm)
+-----------|---------------
+1          | August 30
+2          | September 6
+3          | September 13
+4          | September 27
+5          | October 4
+6          | October 18
+7          | October 25
+8          | November 1
+9          | November 8
+10         | November 15
+11         | November 29
 
 ## Reference materials {-}
 
@@ -327,3 +311,31 @@ swirl()
 Choose the lesson: R Programming. Work through lessons 1:8
 
 Getting help: https://www.r-project.org/help.html
+
+## Julia programming language {-}
+
+Julia programming language https://julialang.org/
+Download > Open
+
+Jupyter Notebook
+(1) Anaconda > Individual > Download > Install
+(2) In the Julia REPL type:
+using Pkg
+Pkg.add("IJulia")
+(3) Then click on the Anaconda-Navigator icon and Launch Jupyter Notebook
+(4) Click on the New button and select Julia.
+Problems? watch https://www.youtube.com/watch?v=oyx8M1yoboY
+
+Pluto Notebook
+In the Julia REPL type:
+import Pkg; Pkg.add("Pluto")
+import Pluto
+Pluto.run()
+
+md"""
+# This Pluto notebook is a test.
+"""
+begin
+a = [1, 4, 7, 22]
+	a * 10
+end
