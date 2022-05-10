@@ -247,9 +247,9 @@ Analysis and modeling tools should integrate text with code to make it easier to
 
 Free and open source software for geospatial data has progressed at an astonishing rate. High performance spatial libraries are now widely available. 
 
-However, much of it is still not easy to script. Open source Geographic Information Systems (GIS) such as QGIS (see https://qgis.org) have greatly reduced the 'barrier to entry' but emphasis on the graphical user interface (GUI) makes reproducible research difficult. 
+However, much of it is still not easy to script. Open source Geographic Information Systems (GIS) like QGIS (see https://qgis.org) have greatly reduced the 'barrier to entry' but emphasis on the graphical user interface (GUI) makes reproducible research difficult. 
 
-Instead this course focuses on a command line interface (CLI), enabling reproducible, and 'computational' work flows.
+Instead here we focus on a command line interface (CLI) to enable reproducible work flows.
 
 You might be interested in this article: [Practical reproducibility in geography and geosciences](https://myweb.fsu.edu/jelsner/NustPebesma2020.pdf)
 
