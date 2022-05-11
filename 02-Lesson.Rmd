@@ -2,7 +2,14 @@
 
 **"The trouble with programmers is that you can never tell what a programmer is doing until it’s too late."** --- Seymour Cray
 
-## Main take aways from the Syllabus {-}
+## Today {-}
+
+- Review of class expectations
+- Data science workflow with R markdown
+- Working with data using functions from {base} packages
+- Data frames
+
+## Review of class expectations {-}
 
 Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m., Lab Hours: Fri 9:05 a.m. - 9:55 a.m., Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m. The best way to contact me is through email: <jelsner@fsu.edu>.
 
@@ -60,7 +67,7 @@ For example, select the _Knit_ button above.
 
 Finally, note the _Outline_ button in the upper right corner of the markdown file. We can organize and navigate through the markdown file section by section based on the pound symbol (`#`).
 
-## Working with data using functions from the {base} R packages {-}
+## Working with data using functions from {base} packages {-}
 
 Applied spatial statistics is the analysis and modeling of spatial data. To begin our journey we need to know somethings about data objects in R.
 
