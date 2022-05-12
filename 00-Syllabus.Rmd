@@ -173,6 +173,7 @@ Spatial networks:
 
 * Spatial Networks in R with {sf} and {tidygraph}: https://www.r-spatial.org/r/2019/09/26/spatial-networks.html
 * Travel times/distances: https://github.com/rCarto/osrm
+* Making network graphs in R - {ggraph} and {tidygraph} introduction https://youtu.be/geYZ83Aidq4
 
 Transport planning/routing: 
 
