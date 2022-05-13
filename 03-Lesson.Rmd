@@ -2,19 +2,23 @@
 
 **"Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!"** --- Vanessa Hurst
 
+## Today {-}
 
-In this lesson I show you how I work with data frames using functions from the {base} R set of packages using examples from my research on tornadoes, hurricanes, and rainfall. I then introduce a syntax for working with data using functions from the {tidyverse} set of packages starting with the piping operator.
+- Working with data frames
+- Working with data frames using functions from the {dplyr} package
 
-## Working with data frames using functions from {base} packages
+## Working with data frames
 
-Consider the built-in data frame `studentdata` from the {LearnBayes} package. To get access to this data frame, we first install the package with the `install.packages()` function. We put the name of the package {LearnBayes} in quotes (single or double). Then to make the functions from the package available to our current session we use the `library()` function with the name of the package (unquoted) inside the parentheses.
+Consider the data frame `studentdata` from the {LearnBayes} package. To access this data frame, you first install the package with the `install.packages()` function. You put the name of the package {LearnBayes} in quotes (single or double). Then to make the functions from the package available to your current session use the `library()` function with the name of the package (unquoted) inside the parentheses.
 ```{r}
 if(!require(LearnBayes)) install.packages(pkgs = "LearnBayes", repos = "http://cran.us.r-project.org")
 
 library(LearnBayes)
 ```
 
-Note: The argument `repos =` in the `install.packages()` function directs where the package can be obtained on CRAN (comprehensive R archive network). The CRAN repository is set automatically when using RStudio and we can install packages by clicking on _Packages_ > _Install_ in the lower-right panel. But for interactive use we need to specify the repository and when we use the `Knit` button we don't want to install packages that already exist on our computer so we add the conditional `if()` function that says "only install the package IF it is not (`!`) available".
+Note: The argument `repos =` in the `install.packages()` function directs where the package can be obtained on CRAN (comprehensive R archive network). The CRAN repository is set automatically when using RStudio and you can install packages by clicking on _Packages_ > _Install_ in the lower-right panel.
+
+For interactive use you need to specify the repository and when you use the `Knit` button you don't want to install packages that already exist on your computer so you add the conditional `if()` function that says "only install the package IF it is not (`!`) available".
 
 Make a copy of the data frame by assigning it to an object with the name `df` and print the first six rows using the `head()` function.
 ```{r}
@@ -31,14 +35,19 @@ names(df)
 
 All columns are of the same length, but not all students answered all questions so some of the data frame cells contain the missing-value indicator `NA`.
 
-We specify elements (data values) of the data frame using the bracket notation [row, column] where row is the row number and column is the column number like a matrix. For example here we specify all the data values in the 10th row.
+Data values in a data frame are stored in rows and columns and are accessed with bracket notation [row, column] where row is the row number and column is the column number like a matrix. 
+
+For example here you specify the data value in the 10th row and 2nd column (`Height` column) of the `df` data frame.
+```{r}
+df[10, 2]
+```
+
+By specifying only the row index and leaving the column index blank you get all values in that row which corresponds to all the responses given by the 10th student.
 ```{r}
 df[10, ]
 ```
 
-By specifying only the row index and leaving the column index blank we get all data in that row corresponding to all the responses by the 10th student.
-
-Drink preference was one of the questions. Responses across all students are available in the column labeled `Drink` as a vector of character values. We list all the drink preferences by typing
+Drink preference was one of the questions. Responses across all students are available in the column labeled `Drink` as a vector of character values. You list all the different drink preferences by typing
 ```{r}
 df$Drink
 ```
@@ -61,43 +70,43 @@ plot(x = df$Drink)
 
 Notice that the sum of the responses is `r sum(table(df$Drink))`, which is less than the total number of students (`r nrow(df)`).
 
-Students who left that question blank are ignored in the `table()` function. To include the missing values we add the argument `useNA = "ifany"` to the `table()` function.
+Students who left that question blank are ignored in the `table()` function. To include the missing values you add the argument `useNA = "ifany"` to the `table()` function.
 ```{r}
 table(df$Drink,
       useNA = "ifany")
 ```
 
-Note: When we want code executed in the text we separate the code using single back ticks. This is useful when we write reports that need periodic updates. If we hard code the values then we need to search the document for these values during each update.
+Note: When you want code executed directly within the text you separate the code using single back ticks. This is useful when you write reports that need periodic updates when new data becomes available. Instead if you hard code the values in the text then you need to search the document for these values during each update.
 
-Suppose we are interested in examining how long students slept. This was not asked directly. We compute it from the `ToSleep` and `WakeUp` times columns. We assign the result of the difference to a column we call `SleepHrs`.
+Suppose you are interested in examining how long students reported sleeping. This was not asked directly. You compute it from the `ToSleep` and `WakeUp` times columns. You assign the result of the difference to a column we call `SleepHrs`.
 ```{r}
 df$SleepHrs <- df$WakeUp - df$ToSleep
 head(df)
 ```
 
-Now we have a new numeric variable in the data frame called `SleepHrs`.
+Now you have a new numeric variable in the data frame called `SleepHrs`.
 
-We can't table numeric variables, but the `summary()` method prints a set of summary statistics for the set of values.
+You can't table numeric variables, but the `summary()` method prints a set of summary statistics for the set of values.
 ```{r}
 summary(df$SleepHrs)
 ```
 
 The average number of hours slept is 7.4 with a maximum of 12.5 and a minimum of 2.5. There are four students that did not answer either when they went to sleep or when they woke up questions. 
 
-We use the `hist()` function to construct a histogram of sleep hours.
+You use the `hist()` function to construct a histogram of sleep hours.
 ```{r}
 hist(x = df$SleepHrs)
 ```
 
-The histogram function divides the number of sleep hours into one-hour bins and counts the number of students whose computed number of sleep hours falls into each bin. For example based on when they said they went to sleep and when the said they woke up, about 100 students slept between five and six hours the night before the survey.
+The histogram function divides the number of sleep hours into one-hour bins and counts the number of students whose reported sleep hours falls into each bin. For example based on when they said they went to sleep and when the said they woke up, about 100 students slept between five and six hours the night before the survey.
 
-Since the gender of each student is reported, we can make comparisons between those who identify as male and those who identify as female. For instance, do men sleep more than women? We can answer this question graphically with box plots using the `plot()` method. We specify the character variable on the horizontal axis (x) to be gender with the `x =` argument and the numeric variable on the vertical axis (y) with the `y =` argument.
+Since the gender of each student is reported, you can make comparisons between those who identify as male and those who identify as female. For instance, do men sleep more than women? You can answer this question graphically with box plots using the `plot()` method. You specify the character variable on the horizontal axis (x) to be gender with the `x =` argument and the numeric variable on the vertical axis (y) with the `y =` argument.
 ```{r}
 plot(x = df$Gender, 
      y = df$SleepHrs)
 ```
 
-The plot reveals very little difference in the amount of sleep.
+The plot reveals little difference in the amount of sleep.
 
 Repeat for hair cut prices.
 ```{r}
@@ -107,7 +116,7 @@ plot(x = df$Gender,
 
 Big difference.
 
-Finally, is the amount of sleep for a student related to bedtime? If we use numeric variables on both the x and y axes then we get a scatter plot.
+Finally, is the amount of sleep for a student related to when they go to bed? If you use numeric variables on both the x and y axes then you get a scatter plot.
 ```{r}
 plot(x = df$ToSleep,
      y = df$SleepHrs)
@@ -125,7 +134,7 @@ plot(x = df$ToSleep,
 abline(model)
 ```
 
-### Past tornadoes in the United States
+Tornadoe data 
 
 Most of the time we need to import our data into R. If possible, secondary source data should be imported directly from repositories on the Web. When there is no API (application programming interface) to the repository, we need to first download the data.
 
@@ -190,7 +199,7 @@ plot(x = Torn2.df$EF,
      y = Torn2.df$Length/1000)
 ```
 
-### Past hurricanes in the United States
+Hurricane data
 
 Here we import data directly from the Web by specifying the URL as a character string using the `file =` argument.
 ```{r}
@@ -216,7 +225,7 @@ table(USHur.df$FL)
 
 There are 93 years without a FL hurricane, 43 years with exactly one hurricane, 24 years with two hurricanes, and so on.
 
-### Past rainfall in Florida
+Rainfall data {-}
 
 Here is an example of how I get answers to questions using functions from {base} R applied to a data frame. The data are monthly statewide average rainfall (in inches) starting in 1895 from http://www.esrl.noaa.gov/psd/data/timeseries/. I put values into a text editor and then uploaded the file to the Web at location http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt.
 
