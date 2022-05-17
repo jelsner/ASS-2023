@@ -1,4 +1,4 @@
-# Tuesday August 30, 2022
+# Tuesday August 30, 2022 {-}
 
 **"Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!"** --- Vanessa Hurst
 
@@ -7,7 +7,7 @@
 - Working with data frames
 - Working with data frames using functions from the {dplyr} package
 
-## Working with data frames
+## Working with data frames {-}
 
 Consider the data frame `studentdata` from the {LearnBayes} package. To access this data frame, you first install the package with the `install.packages()` function. You put the name of the package {LearnBayes} in quotes (single or double). Then to make the functions from the package available to your current session use the `library()` function with the name of the package (unquoted) inside the parentheses.
 ```{r}
@@ -116,15 +116,15 @@ plot(x = df$Gender,
 
 Big difference.
 
-Finally, is the amount of sleep for a student related to when they go to bed? If you use numeric variables on both the x and y axes then you get a scatter plot.
+Finally, is the amount of sleep for a student related to when they go to bed? If you place numeric variables on the x and y axes then you get a scatter plot.
 ```{r}
 plot(x = df$ToSleep,
      y = df$SleepHrs)
 ```
 
-The `ToSleep` variable is centered on midnight so that -2 means they went to sleep at 10p.
+The `ToSleep` variable is centered on midnight so that -2 means a student went to sleep at 10p.
 
-We describe the decreasing relationship with a line through the points. The least-squares line is fit using the `lm()` function and the line is drawn on the existing plot with the `abline()` function applied to the linear regression object `model`.
+You describe the decreasing relationship with a line through the points. The least-squares line is fit using the `lm()` function and the line is drawn on the existing plot with the `abline()` function applied to the linear regression object `model`.
 ```{r}
 model <- lm(SleepHrs ~ ToSleep, 
             data = df)
@@ -134,27 +134,25 @@ plot(x = df$ToSleep,
 abline(model)
 ```
 
-Tornadoe data 
+Tornadoes
 
-Most of the time we need to import our data into R. If possible, secondary source data should be imported directly from repositories on the Web. When there is no API (application programming interface) to the repository, we need to first download the data.
+Most of the time you will start by getting your data stored in a file into R. Secondary source data should be imported directly from repositories on the Web. When there is no API (application programming interface) to the repository, you need to first download the data.
 
 For example, consider the regularly updated reports of tornadoes in the United States. The data repository is the Storm Prediction Center (SPC) https://www.spc.noaa.gov/wcm/index.html#data.
 
-Here we are interested in the file called `1950-2019_actual_tornadoes.csv`. First we download the file from the site with the `download.file()` function specifying the location (`url =`) and a name we want the file to be called on our computer (`destfile =`).
+Here you are interested in the file called `1950-2020_actual_tornadoes.csv`. First you download the file from the site with the `download.file()` function specifying the location (`url =`) and a name you want the file to be called on your computer (`destfile =`).
 ```{r}
 download.file(url = "http://www.spc.noaa.gov/wcm/data/1950-2019_actual_tornadoes.csv",
-              destfile = "Tornadoes.csv")
+              destfile = "data/Tornadoes.csv")
 ```
 
-A file called `Tornadoes.csv` should now be located in our list of files under the _Files_ tab in the lower-right panel.
+A file called `Tornadoes.csv` should now be located in the directory `data`. Click on the _Files_ tab in the lower-right panel, then select the `data` folder.
 
-Then we read (import) the file into R as a data frame using the `read_csv()` function from the {tidyverse} group of packages. 
+Next you read (import) the file as a data frame using the `readr::read_csv()` function from the {tidyverse} group of packages. 
 ```{r}
 if(!require(tidyverse)) install.packages(pkgs = "tidyverse", repos = "http://cran.us.r-project.org")
 
-library(tidyverse)
-
-Torn.df <- read_csv(file = "Tornadoes.csv")
+Torn.df <- readr::read_csv(file = here::here("data", "Tornadoes.csv"))
 ```
 
 We preview the data frame using the `head()` function.
@@ -164,24 +162,24 @@ head(Torn.df)
 
 Each row is a unique tornado report. Observations for each report include the day and time, the state (`st`), the maximum EF rating (`mag`), the number of injuries (`inj`), the number of fatalities (`fat`), estimated property losses (`loss`), estimated crop losses (`closs`), start and end locations in decimal degrees longitude and latitude, length of the damage path in miles (`len`), width of the damage in yards (`wid`).
 
-The total number of tornado reports in the data set is returned from the `nrow()` function.
+The total number of tornado reports in the data set is returned using the `nrow()` function.
 ```{r}
 nrow(Torn.df)
 ```
 
-To create a subset of the data frame that contains only tornadoes in years (`yr`) since 2001, we include the logical operator `yr >= 2001` inside the subset operator. The logical operator is placed in front of the comma since we want all _rows_ where the result of the operator returns a value `TRUE`.
+To create a subset of the data frame that contains only tornadoes in years (`yr`) since 2001, you include the logical operator `yr >= 2001` inside the subset operator. The logical operator is placed in front of the comma since you want all _rows_ where the result of the operator returns a value `TRUE`.
 ```{r}
 Torn2.df <- Torn.df[Torn.df$yr >= 2001, ]
 ```
 
-We see that there are fewer rows (tornado reports) in this new data frame assigned the object name `Torn2.df`.
+You see that there are fewer rows (tornado reports) in this new data frame assigned the object name `Torn2.df`.
 
-We subset again, keeping only tornadoes with EF ratings (`mag` variable) greater than zero. Here we _recycle_ the name `Torn2.df`.
+You subset again, keeping only tornadoes with EF ratings (`mag` variable) greater than zero. Here you _recycle_ the name `Torn2.df`.
 ```{r}
 Torn2.df <- Torn2.df[Torn2.df$mag > 0, ]
 ```
 
-Now we compute the correlation between EF rating (`mag`) and path length (`len`) with the `cor()` function. The first argument is the vector of EF ratings and the second argument is the vector of path lengths.
+Now you compute the correlation between EF rating (`mag`) and path length (`len`) with the `cor()` function. The first argument is the vector of EF ratings and the second argument is the vector of path lengths.
 ```{r}
 cor(Torn2.df$mag, Torn2.df$len)
 ```
@@ -201,9 +199,10 @@ plot(x = Torn2.df$EF,
 
 Hurricane data
 
-Here we import data directly from the Web by specifying the URL as a character string using the `file =` argument.
+Here you import the data directly from the Web by specifying the URL as a character string using the `file =` argument.
 ```{r}
-USHur.df <- read_table(file = "http://myweb.fsu.edu/jelsner/temp/data/US.txt")
+loc <- "http://myweb.fsu.edu/jelsner/temp/data/US.txt"
+USHur.df <- readr::read_table(file = loc)
 ```
 
 The `dim()` function returns the size of the data frame defined as the number of rows and the number of columns.
@@ -213,7 +212,7 @@ dim(USHur.df)
 
 There are 166 rows and 6 columns in the data frame. Each row is a year and the columns include `Year`, number of hurricanes (`All`), number of major hurricanes (`MUS`), number of Gulf coast hurricanes (`G`), number of Florida hurricanes (`FL`), and number of East coast hurricanes (`E`) in that order. 
 
-To get a glimpse of the data values we list the first six lines of the data frame using the `head()` function.
+To get a glimpse of the data values you list the first six lines of the data frame using the `head()` function.
 ```{r}
 head(USHur.df)
 ```
@@ -225,14 +224,14 @@ table(USHur.df$FL)
 
 There are 93 years without a FL hurricane, 43 years with exactly one hurricane, 24 years with two hurricanes, and so on.
 
-Rainfall data {-}
+Rainfall data
 
-Here is an example of how I get answers to questions using functions from {base} R applied to a data frame. The data are monthly statewide average rainfall (in inches) starting in 1895 from http://www.esrl.noaa.gov/psd/data/timeseries/. I put values into a text editor and then uploaded the file to the Web at location http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt.
+The data are monthly statewide average rainfall (in inches) for Florida starting in 1895 from http://www.esrl.noaa.gov/psd/data/timeseries/. Note: I put values into a text editor and then uploaded the file to the Web at location http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt.
 
-To import the data into R we use the `read_table()` function from the {tidyverse} packages since this is a space-delimited text file. We assign the object the name `FLp.df`.  We type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns.
+To import the data you use the `readr::read_table()` function and assign the object the name `FLp.df`.  You type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns.
 ```{r}
-FLp.df <- read_table(file = "http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt")
-
+loc <- "http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt"
+FLp.df <- read_table(file = loc)
 FLp.df
 ```
 
@@ -269,18 +268,13 @@ which.max(FLp.df[FLp.df$Year == 1965, 2:12])
 max(FLp.df[FLp.df$Year == 1965, 2:12])
 ```
 
-## Working with data frames using functions from the {dplyr} package
+## Working with data frames using functions from the {dplyr} package {-}
 
-Working with data frames using functions from the {base} R packages requires that we understand data frames as list objects. This fact makes these functions harder to learn and to remember. 
+The functions in the {dplyr} package simplify working with data frames. The functions work only on data frames. 
 
-The functions in the {dplyr} package as part of the {tidyverse} set of packages simplify working with data frames. They work only on data frames. 
+The function names are English language _verbs_ so they are easy to remember. The verbs help you to translate your thoughts into code.
 
-The function names are _verbs_ so they are easy to remember. Verbs help us to translate our thoughts into code. Recall, functions from packages are made available to the current session with the `library()` function.
-```{r}
-library(tidyverse)
-```
-
-We will look at the verbs one at a time using the `airquality` data frame. The data frame contains air quality measurements taken in New York City between May and September 1973. (`?airquality`). 
+We consider the verbs one at a time using the `airquality` data frame. The data frame contains air quality measurements taken in New York City between May and September 1973. (`?airquality`). 
 ```{r}
 dim(airquality)
 head(airquality)
@@ -293,50 +287,50 @@ We get summary statistics on the values in each column with the `summary()` meth
 summary(airquality)
 ```
 
-Note that columns that have missing values are tabulated. For example, there are 37 missing ozone measurements and 7 missing radiation meaurements.
+Note that columns that have missing values are tabulated. For example, there are 37 missing ozone measurements and 7 missing radiation measurements.
 
-Before we get started we need to talk about pipes and tibbles.
-
-Importantly for literate programming we can apply the `summary()` function using the pipe operator (`%>%`). The pipe operator is a function in the {dplyr} package.
+Importantly for making your code more human readable you can apply the `summary()` function on the `airquality` data frame using the pipe operator (`|>`).
 ```{r}
-airquality %>% summary()
+airquality |> summary()
 ```
 
-We read the pipe as THEN. "airquality data frame THEN summarize".
+You read the pipe as THEN. "take the airquality data frame THEN summarize the columns".
 
-The pipe operator allows us to string together a bunch of functions that when read makes it easy to understand what was done.
+The pipe operator allows you to string together functions that when read by a human makes it easy to understand what is being done.
 
-For example, suppose the object of my interest is called `me`. I could apply a function called `wake_up()` in two ways.
+Hypothetically, suppose the object of interest is called `me` and there was a function called `wake_up()`. I could apply this function called `wake_up()` in two ways.
 ```{r, eval=FALSE}
 wake_up(me)  # way number one
 
-me %>% wake_up()  # way number two
+me |> wake_up()  # way number two
 ```
 
-The second way involves a bit more typing but it is easier to read in a literal sense and thus easier to understand.
+The second way involves a bit more typing but it is easier to read (the subject comes before the predicate) and thus easier to understand. This becomes clear when stringing together functions. 
 
-This becomes clear when stringing together functions. For example, what happens to the result of `me` after the function `wake_up()` has been applied? How about `get_out_of_bed()` and the `get_dressed()`? 
+Continuing with the hypothetical example, what happens to the result of `me` after the function `wake_up()` has been applied? I `get_out_of_bed()` and then `get_dressed()`. 
 
-Again, I can apply these functions in two ways.
+Again, you can apply these functions in two ways.
 ```{r, eval=FALSE}
 get_dressed(get_out_of_bed(wake_up(me)))
 
-me %>%
-  wake_up() %>%
-  get_out_of_bed() %>%
+me |>
+  wake_up() |>
+  get_out_of_bed() |>
   get_dressed()
 ```
 
 The order of the functions usually matters to the outcome. 
 
-Note that I format the code to make it easy to read. Each line is gets only one verb and each line ends with the pipe. Continuing...
+Note that I format the code to make it easy to read. Each line is gets only one verb and each line ends with the pipe (except the last one).
+
+Continuing...
 ```{r, eval=FALSE}
-me %>%
-  wake_up() %>%
-  get_out_of_bed() %>%
-  get_dressed() %>%
-  make_coffee() %>%
-  drink_coffee() %>%
+me |>
+  wake_up() |>
+  get_out_of_bed() |>
+  get_dressed() |>
+  make_coffee() |>
+  drink_coffee() |>
   leave_house()
 ```
 
@@ -349,144 +343,144 @@ airquality <- as_tibble(airquality)
 class(airquality)
 ```
 
-Click on `airquality` in the environment. It is a data frame. We will use the terms 'tibble' and 'data frame' interchangeably (mostly).
+Click on `airquality` in the environment. It is a data frame. We use the terms 'tibble' and 'data frame' interchangeably in this class.
 
-Now we are ready to look at some of the commonly used verbs and how to apply them to the data frame `airquality`.
+Now we are ready to look at some of the commonly used verbs and to see how to apply them to a data frame.
 
-The function `select()` chooses variables by name. For example, choose the month, day, and temperature columns.
+The function `select()` chooses variables by name. For example, choose the month (`Month`), day (`Day`), and temperature (`Temp`) columns.
 ```{r}
-airquality %>%
-  select(Month, Day, Temp)
+airquality |>
+  dplyr::select(Month, Day, Temp)
 ```
 
-Suppose we want a new data frame with only the temperature and ozone concentrations.
+The result is a data frame containing only the three columns with column names listed in the `select()` function.
+
+Suppose you want a new data frame with only the temperature and ozone concentrations. You include an assignment operator (`<-`) and an object name (here `df`).
 ```{r}
-df <- airquality %>%
-        select(Temp, Ozone)
+df <- airquality |>
+        dplyr::select(Temp, Ozone)
 df
 ```
 
-We include an assignment operator (`<-`) and an object name (here `df`).
+The verbs take only data frames as input and return only data frames.
 
-Note: The result of applying a {dplyr} verb is a data frame. From a data frame object to a data frame object.
-
-The function `filter()` chooses observations based on specific values. Suppose we want only the observations where the temperature is at or above 80F.
+The function `filter()` chooses observations based on specific values. Suppose we want only the observations where the temperature is at or above 80 F.
 ```{r}
-airquality %>%
-  filter(Temp >= 80)
+airquality |>
+  dplyr::filter(Temp >= 80)
 ```
 
-The result is a data frame with the same 6 columns but now only 73 observations. Each of the observations has a temperature of at least 80F.
+The result is a data frame with the same 6 columns but now only 73 observations. Each of the observations has a temperature of at least 80 F.
 
-Suppose we want a new data frame keeping only observations where temperature is at least 80F AND winds less than 5 mph.
+Suppose you want a new data frame keeping only observations when temperature is at least 80 F and when winds are less than 5 mph.
 ```{r}
-df <- airquality %>% 
-  filter(Temp >= 80 & Wind < 5)
+df <- airquality |> 
+  dplyr::filter(Temp >= 80 & Wind < 5)
 df
 ```
 
 The function `arrange()` orders the rows by values given in a particular column.
 ```{r}
-airquality %>%
-  arrange(Solar.R)
+airquality |>
+  dplyr::arrange(Solar.R)
 ```
 
-The ordering is from lowest value of radiation to highest value. Here we see the first 10 rows. Note `Month` and `Day` are no longer chronological.
+The ordering is done from the lowest value of radiation to highest value. Here you see the first 10 rows. Note `Month` and `Day` are no longer chronological.
 
 Repeat but order by the value of air temperature.
 ```{r}
-airquality %>%
-  arrange(Temp)
+airquality |>
+  dplyr::arrange(Temp)
 ```
 
-Importantly we can string the functions together. For example select the variables radiation, wind, and temperature then filter by temperatures above 90F and arrange by temperature.
+Importantly you can string the functions together. For example select the variables radiation, wind, and temperature then filter by temperatures above 90 F and arrange by temperature.
 ```{r}
-airquality %>%
-  select(Solar.R, Wind, Temp) %>%
-  filter(Temp > 90) %>%
-  arrange(Temp)
+airquality |>
+  dplyr::select(Solar.R, Wind, Temp) |>
+  dplyr::filter(Temp > 90) |>
+  dplyr::arrange(Temp)
 ```
 
-The result is a data frame with three columns and 14 rows arranged by increasing temperatures above 90F. 
+The result is a data frame with three columns and 14 rows arranged by increasing temperatures above 90 F. 
 
-The `mutate()` function adds new columns to the data frame. For example, create a new column called `TempC` as the temperature in degrees Celcius. Also create a column called `WindMS` as the wind speed in meters per second.
+The `mutate()` function adds new columns to the data frame. For example, create a new column called `TempC` as the temperature in degrees Celsius. Also create a column called `WindMS` as the wind speed in meters per second.
 ```{r}
-airquality %>%
-  mutate(TempC = (Temp - 32) * 5/9,
-         WindMS = Wind * .44704) 
+airquality |>
+  dplyr::mutate(TempC = (Temp - 32) * 5/9,
+                WindMS = Wind * .44704) 
 ```
 
 The resulting data frame has 8 columns (two new ones) labeled `TempC` and `WindMS`.
 
 On days when the temperature is below 60 F add a column giving the apparent temperature based on the cooling effect of the wind (wind chill) and then arrange from coldest to warmest apparent temperature.
 ```{r}
-airquality %>%
-  filter(Temp < 60) %>%
-  mutate(TempAp = 35.74 + .6215 * Temp - 35.75 * Wind^.16 + .4275 * Temp * Wind^.16) %>%
-  arrange(TempAp)
+airquality |>
+  dplyr::filter(Temp < 60) |>
+  dplyr::mutate(TempAp = 35.74 + .6215 * Temp - 35.75 * Wind^.16 + .4275 * Temp * Wind^.16) |>
+  dplyr::arrange(TempAp)
 ```
 
-The `summarize()` function reduces (flattens) the data frame based on a function that computes a statistic. For example, to compute the average wind speed during July type
+The `summarize()` function reduces the data frame based on a function that computes a statistic. For examples, to compute the average wind speed during July or the average temperature during June type
 ```{r}
-airquality %>%
-  filter(Month == 7) %>%
-  summarize(Wavg = mean(Wind))
+airquality |>
+  dplyr::filter(Month == 7) |>
+  dplyr::summarize(Wavg = mean(Wind))
 
-airquality %>%
-  filter(Month == 6) %>%
-  summarize(Tavg = mean(Temp))
+airquality |>
+  dplyr::filter(Month == 6) |>
+  dplyr::summarize(Tavg = mean(Temp))
 ```
 
 We've seen functions that compute statistics including `sum()`, `sd()`, `min()`, `max()`, `var()`, `range()`, `median()`. Others include:
 
 Summary function  | Description
 -----------------:|:-----------
-`n()`             | Length of the column
-`first()`         | First value of the column
-`last()`          | Last value of the column
-`n_distinct()`    | Number of distinct values
+`dplyr::n()`             | Length of the column
+`dplyr::first()`         | First value of the column
+`dplyr::last()`          | Last value of the column
+`dplyr::n_distinct()`    | Number of distinct values
 
 Find the maximum and median wind speed and maximum ozone concentration values during the month of May. Also determine the number of observations during May.
 ```{r}
-airquality %>%
-  filter(Month == 5) %>%
-  summarize(Wmax = max(Wind),
-            Wmed = median(Wind),
-            OzoneMax = max(Ozone),
-            NumDays = n())
+airquality |>
+  dplyr::filter(Month == 5) |>
+  dplyr::summarize(Wmax = max(Wind),
+                   Wmed = median(Wind),
+                   OzoneMax = max(Ozone),
+                   NumDays = dplyr::n())
 ```
 
-We get an `NA` for `OzoneMax` because there is at least one missing value. We fix this with the `na.rm = TRUE` argument in the function `max()`.
+The result gives an `NA` for the maximum value of ozone (`OzoneMax`) because there is at least one missing value in the `Ozone` column. You fix this with the `na.rm = TRUE` argument in the function `max()`.
 ```{r}
-airquality %>%
-  filter(Month == 5) %>%
-  summarize(Wmax = max(Wind),
-            Wmed = median(Wind),
-            OzoneMax = max(Ozone, na.rm = TRUE),
-            NumDays = n())
+airquality |>
+  dplyr::filter(Month == 5) |>
+  dplyr::summarize(Wmax = max(Wind),
+                   Wmed = median(Wind),
+                   OzoneMax = max(Ozone, na.rm = TRUE),
+                   NumDays = dplyr::n())
 ```
 
-If we want to summarize separately for each month we use the `group_by()` function. We split the data frame by some variable (e.g., `Month`), apply a function to the individual data frames, and then combine the output.
+If you want to summarize separately for each month you use the `group_by()` function. You split the data frame by some variable (e.g., `Month`), apply a function to the individual data frames, and then combine the output.
 
 Find the highest ozone concentration by month. Include the number of observations (days) in the month.
 ```{r}
-airquality %>%
-  group_by(Month) %>%
-  summarize(OzoneMax =  max(Ozone, na.rm = TRUE),
-            NumDays = n())
+airquality |>
+  dplyr::group_by(Month) |>
+  dplyr::summarize(OzoneMax =  max(Ozone, na.rm = TRUE),
+                  NumDays = dplyr::n())
 ```
 
 Find the average ozone concentration when temperatures are above and below 70 F. Include the number of observations (days) in the two groups.
 ```{r}
-airquality %>%
-  group_by(Temp >= 70) %>%
+airquality |>
+  group_by(Temp >= 70) |>
   summarize(OzoneAvg =  mean(Ozone, na.rm = TRUE),
             NumDays = n())
 ```
 
 On average ozone concentration is higher on warm days (Temp >= 70 F) days. Said another way; mean ozone concentration statistically depends on temperature.
 
-The mean is a model for the data. The statistical dependency of the mean implies that a model for ozone concentration will likely be improved by including temperature as an explanatory variable.
+The mean is a model for the data. The statistical dependency of the mean implies that a model for ozone concentration will be improved by including temperature as an explanatory variable.
 
 In summary, the important verbs are
 
@@ -499,12 +493,12 @@ Verb          | Description
 `summarize()` | summarizes values; collapse many values down to a single summary
 `group_by()`  | allows operations to be grouped
 
-The six functions form the basis of a grammar for data. We can only alter a data frame by reordering the rows (`arrange()`), picking observations and variables of interest (`filter()` and `select()`), adding new variables that are functions of existing variables (`mutate()`), collapsing many values to a summary (`summarise()`), and conditioning on variables (`group_by()`).
+The six functions form the basis of a grammar for data. You can only alter a data frame by reordering the rows (`arrange()`), picking observations and variables of interest (`filter()` and `select()`), adding new variables that are functions of existing variables (`mutate()`), collapsing many values to a summary (`summarise()`), and conditioning on variables (`group_by()`).
 
 The syntax of the functions are all the same:
 
-* The first argument is a data frame. This argument is implicit when using the `%>%` operator.
-* The subsequent arguments describe what to do with the data frame. We refer to columns in the data frame directly (without using `$`).
+* The first argument is a data frame. This argument is implicit when using the `|>` operator.
+* The subsequent arguments describe what to do with the data frame. You refer to columns in the data frame directly (without using `$`).
 * The result is a new data frame
 
-These properties make it easy to chain together many simple lines of code to do complex data manipulations and summaries.
+These properties make it easy to chain together many simple lines of code to do complex data manipulations and summaries all while making it easy to read by humans.
