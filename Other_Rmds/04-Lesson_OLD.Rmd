@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Thursday September 1, 2022 {-}
 
 **"Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."** --- Hadley Wickham
@@ -328,36 +323,41 @@ The data are [daily weather observations](http://www.ncdc.noaa.gov/cdo-web/datas
 
 Import the data.
 ```{r}
-loc <- "http://myweb.fsu.edu/jelsner/temp/data/TLH_Daily1940-2021.csv"
-TLH.df <- readr::read_csv(file = loc)
+loc <- "http://myweb.fsu.edu/jelsner/temp/data/TLH_DailySummary.csv"
+TLH.df <- readr::read_csv(file = loc,
+                           na = "-9999")
 ```
 
-The variables of interest are the daily high (and low) temperature in the column labeled `TMAX` (`TMIN`). The values are in degrees F.
+The warning concerns the column labeled `TOBS`. By default the column type is logical but there are cases when the values are numbers. This can be ignored without problems.
+
+The variable of interest is the daily high temperature in the column labeled `TMAX`. The values are in tens of degrees C so the value of 128 is 12.8 C.
 
 Add new columns giving the temperatures (daily maximum and daily minimum) in degrees F (original measuring unit) and the dates in calendar days. This is done with the `mutate()` function. Then select only the date and maximum and minimum temperature columns.
 ```{r}
 TLH.df <- TLH.df |>
-  dplyr::rename(TmaxF = TMAX,
-                TminF = TMIN,
-                Date = DATE) |>
+  dplyr::mutate(TmaxF = round(9/5 * TMAX/10 + 32),
+                TminF = round(9/5 * TMIN/10 + 32),
+                Date = as.Date(as.character(DATE), 
+                               format = "%Y%m%d")) |>
   dplyr::select(Date, TmaxF, TminF) |>
   dplyr::glimpse()
 ```
 
+In the code above you create the column `Date` with the `as.Date()` function ({base} see `?as.Date`). The format in the `DATE` column is a concatenation of a four-digit year, a two-digit month, and a two-digit day and stored as numeric variable. You first make it a character variable and then use the `as.Date()` function with the format argument specified as `format = "%Y%m%d"`). The `%` symbol in the format argument separates the year, month, and day specifications.
+
 Q: Based on these data, is it getting hotter in Tallahassee? Let's compute the annual average high temperature and create a time series graph.
 
-You use the `year()` function from the {lubridate} package to get a column called `Year`. Since the data only has values through mid May 2022 you keep all observations with the `Year` column value less than 2021. You then use the `group_by()` function to group by `Year`, and the `summarize()` function to get the average daily maximum temperature for each year.
+You use the `year()` function from the {lubridate} package to get a column called `Year`, the `group_by()` function to group by `Year`, and the `summarize()` function from the {dplyr} package to get the average daily maximum temperature for each year.
 
 ```{r}
 df <- TLH.df |>
   dplyr::mutate(Year = lubridate::year(Date)) |>
-  dplyr::filter(Year < 2022) |>
   dplyr::group_by(Year) |>
-  dplyr::summarize(AvgT = mean(TmaxF, na.rm = TRUE)) |>
+  dplyr::summarize(AvgT = mean(TmaxF)) |>
 dplyr::glimpse()
 ```
 
-You now have a data frame with two columns: `Year` and `AvgT` (annual average daily high temperature in degrees F). If a day is missing a value it is skipped when computing the average because of the `na.rm = TRUE` argument in the `mean()` function.
+You now have a data frame with two columns: `Year` and `AvgT` (annual average daily high temperature in degrees F).
 
 Next you use functions from the {ggplot2} package to make a time series graph. You specify the x aesthetic as `Year` and the y aesthetic as the `AvgT` and include point and line layers.
 ```{r}
@@ -368,11 +368,13 @@ ggplot(data = df,
   ylab("Average Annual Temperature in Tallahassee, FL (F)")
 ```
 
-You can go directly to the graph without saving the resulting data frame. That is, you pipe `|>` the resulting data frame after applying the {dplyr} verbs to the `ggplot()` function. The object in the first argument of the `ggplot()` function is the result (data frame) from the code above. Here you also add a smooth curve through the set of averages with the `geom_smooth()` layer.
+Q: What's wrong with the graph?
+
+You fix it and add a trend line layer. You go directly to the graph without saving the resulting data frame. That is, you pipe `|>` the resulting data frame after applying the {dplyr} verbs to the `ggplot()` function. The object in the first argument of the `ggplot()` function is the result (data frame) from the code above.
 ```{r}
 TLH.df |>
   dplyr::mutate(Year = lubridate::year(Date)) |>
-  dplyr::filter(Year < 2022) |>
+  dplyr::filter(Year < 2014) |>
   dplyr::group_by(Year) |>
   dplyr::summarize(AvgT = mean(TmaxF, na.rm = TRUE)) |>
 ggplot(mapping = aes(x = Year, y = AvgT)) +
@@ -389,30 +391,29 @@ Here you count the number of days at or above 100F using the `summarize()` funct
 ```{r}
 TLH.df |>
   dplyr::mutate(Year = lubridate::year(Date)) |>
-  dplyr::filter(Year < 2022) |>
+  dplyr::filter(Year < 2014) |>
   dplyr::group_by(Year) |>
   dplyr::summarize(N100 = sum(TmaxF >= 100, na.rm = TRUE)) |>
 ggplot(mapping = aes(x = Year, y = N100, fill = N100)) + 
   geom_bar(stat = 'identity') + 
   scale_fill_continuous(low = 'orange', high = 'red') +
   geom_text(aes(label = N100), vjust = 1.5, size = 3) +
-  scale_x_continuous(breaks = seq(1940, 2020, 10)) +
-  labs(title = expression(paste("Number of days in Tallahassee, Florida at or above 100", {}^o, " F")),
-       subtitle = "Last official 100+ day was September 18, 2019",
-       x = "", y = "") +
-#  ylab(expression(paste("Number of days in Tallahassee, FL at or above 100", {}^o, " F"))) +
+  scale_x_continuous(breaks = seq(1950, 2013, 10)) +
+  ylab(expression(paste("Number of days in Tallahassee, FL at or above 100", {}^o, " F"))) +
   theme_minimal() +
   theme(axis.text.x  = element_text(size = 11), legend.position = "none")
 ```
 
-What does the histogram of daily high temperatures look like?
+
+
+How does a histogram of daily high temperatures look?
 ```{r}
 ( gTLH <- ggplot(data = TLH.df, 
                mapping = aes(x = TmaxF)) + 
   geom_histogram(binwidth = 1, aes(fill = ..count..)) +
   scale_fill_continuous(low = 'green', high = 'blue') +
-  scale_x_continuous() +
-  scale_y_continuous() +
+  scale_x_continuous(limits = c(30, 120)) +
+  scale_y_continuous(limits = c(0, 1000)) +
   ylab("Number of Days") + 
   xlab(expression(paste("Daily High Temperature in Tallahassee, FL (", {}^o, " F)"))) +
   theme_minimal() +
@@ -423,22 +424,22 @@ Q: The most common high temperatures are in the low 90s, but there are relativel
 
 Compare the histogram of daily high temperatures in Tallahassee with a histogram of daily high temperatures in Las Vegas, Nevada. Here we repeat the code above but for the data frame `LVG.df`. We then use the operators from the {patchwork} package to plot them side by side.
 ```{r}
-LVG.df <- readr::read_csv(file = "http://myweb.fsu.edu/jelsner/temp/data/LV_DailySummary.csv",
+LVG.df <- read_csv(file = "http://myweb.fsu.edu/jelsner/temp/data/LV_DailySummary.csv",
                      na = "-9999")
 
 LVG.df <- LVG.df |>
-  dplyr::mutate(TmaxF = round(9/5 * TMAX/10 + 32),
-                TminF = round(9/5 * TMIN/10 + 32),
-                Date = as.Date(as.character(DATE), 
-                               format = "%Y%m%d")) |>
-  dplyr::select(Date, TmaxF, TminF)
+  mutate(TmaxF = round(9/5 * TMAX/10 + 32),
+         TminF = round(9/5 * TMIN/10 + 32),
+         Date = as.Date(as.character(DATE), 
+                        format = "%Y%m%d")) |>
+  select(Date, TmaxF, TminF)
 
 gLVG <- ggplot(data = LVG.df, 
                mapping = aes(x = TmaxF)) + 
   geom_histogram(binwidth = 1, aes(fill = ..count..)) +
   scale_fill_continuous(low = 'green', high = 'blue') +
-  scale_x_continuous() +
-  scale_y_continuous() +
+  scale_x_continuous(limits = c(30, 120)) +
+  scale_y_continuous(limits = c(0, 1000)) +
   ylab("Number of Days") + 
   xlab(expression(paste("Daily High Temperature in Las Vegas, NV (", {}^o, " F)"))) +
   theme_minimal() +
@@ -463,20 +464,20 @@ head(us_states)
 
 The object `us_states` has two classes: simple feature and data frame. It is a data frame that has spatial information stored in the column labeled `geometry`. More about this next lesson.
 
-Note also that the variable `AREA` is numeric with units (km\^2). Thus in order to perform some operations you need to specify units. For example, if you want to filter by area keeping only states with an area greater than 500,000 square km you need to use `set_units()` from the {units} package.
+Note also that the variable `AREA` is numeric with units (km\^2). Thus in order to perform some operations we need to specify units. For example, if we want to filter by area keeping only states with an area greater than 500,000 square km we need to use `set_units()` from the {units} package.
 ```{r}
 us_states |> 
-  dplyr::filter(AREA > units::set_units(500000, km^2))
+  filter(AREA > units::set_units(500000, km^2))
 ```
 
-For now, suppose you want to plot area versus population for each state including state names on the plot. We note large differences between the minimum and maximum values for both variables.
+For now, suppose we want to plot area versus population for each state including state names on the plot. We note large differences between the minimum and maximum values for both variables.
 ```{r}
 us_states |>
-  dplyr::summarize(rA = range(AREA),
-                   rP = range(total_pop_15))
+  summarize(rA = range(AREA),
+            rP = range(total_pop_15))
 ```
 
-Let's start with a simple scatter plot using logarithmic scales. The variable `AREA` has units so you convert it to a numeric with the `as.numeric()` function.
+Let's start with a simple scatter plot using logarithmic scales. The variable `AREA` has units so we convert it to a numeric with the `as.numeric()` function.
 ```{r}
 ggplot(data = us_states,
        mapping = aes(x = as.numeric(AREA),
@@ -486,7 +487,7 @@ ggplot(data = us_states,
   scale_y_log10()
 ```
 
-Next you use the {scales} package so the tic labels can be expressed in whole numbers with commas.
+Next we use the {scales} package so the tic labels can be expressed in whole numbers with commas.
 ```{r}
 library(scales)
 
@@ -498,7 +499,7 @@ ggplot(data = us_states,
   scale_y_log10(labels = comma)
 ```
 
-Next you add text labels. You can do this with `geom_text()` or `geom_label()`
+Next we add text labels. We can do this with `geom_text()` or `geom_label()`
 ```{r}
 ggplot(data = us_states,
        mapping = aes(x = as.numeric(AREA),
@@ -509,7 +510,7 @@ ggplot(data = us_states,
   scale_y_log10(labels = comma)
 ```
 
-The labels are centered on top of the points. To fix this you use functions from the {grepel} package.
+The labels are centered on top of the points. To fix this we use functions from the {grepel} package.
 ```{r}
 library(ggrepel)
 
@@ -522,7 +523,7 @@ ggplot(data = us_states,
   scale_y_log10(labels = comma)
 ```
 
-Finally, since the data object is a simple feature data frame you can make a map.
+Finally, since the data object is a simple feature data frame we can make a map.
 ```{r}
 ggplot(us_states) + 
   geom_sf(aes(fill = total_pop_15)) +
