@@ -128,6 +128,7 @@ Assignment | Due Date (5 pm)
 2. Lovelace, R. Nowosad, J. and Muenchow, J. Geocomputation with R. https://geocompr.robinlovelace.net/ A source for some of the material in the lesson notes.
 3. Healy, K., 2018: Data Visualization: A practical introduction, https://socviz.co/. This book teaches you how to really look at your data. A source for some of the early material in the lesson notes.
 4. Waller, L. A., and C. A. Gotway, 2004: Applied Spatial Statistics for Public Health Data, John Wiley & Sons, Inc. (Available as an e-book in the FSU library). Good overall reference material for analyzing and modeling spatial data.
+5. Analyzing US Census Data: Methods, Maps, and Models in R https://walker-data.com/census-r/index.html
 
 * Cheat Sheets: https://rstudio.com/resources/cheatsheets/
 * R Cookbook: How to do specific things: https://rc2e.com/
