@@ -82,7 +82,7 @@ It is my intent to present notes and data that are respectful of diversity: gend
 2. Working with spatial data and making maps (~ 5 lessons)
 3. Quantifying spatial autocorrelation and spatial regression (~ 5 lessons)
 4. Analyzing and modeling point pattern data (~ 6 lessons)
-5. Estimating variograms and spatial interpolation (~ 6 lessons)
+5. Estimating variograms and interpolating spatially (~ 6 lessons)
 6. Other topics (~ 2 lessons)
 
 ## Schedule (subject to change with notice) {-}
