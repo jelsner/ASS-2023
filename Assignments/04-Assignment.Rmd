@@ -1,0 +1,28 @@
+---
+title: "Assignment 4"
+author: "Your Name"
+date: February 5, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: February 5, 2021, 3pm
+
+Total Points: 45
+
+**1** Tornadoes in the South
+
+(a) Use the `us_states()` function from the {USAboundaries} package to get a simple feature data frame (assign it to `MSAL.sf`) containing information from the states of Mississippi and Alabama. Hints: (1) Make sure you have the {sf} package loaded and, (2) with the `states =` argument in the `us_states()` function use the `c()` function to specify both states by their two-letter abbreviation. (5)
+
+(b) Use the `st_union()` function on the simple feature data frame from part (a) to create a single `sfc` geometry. Assign it to `Union.sfc` and make a plot of the geometry using either the `ggplot()` syntax or the `plot()` method. (5)
+
+(c) Import the tornado point data from http://myweb.fsu.edu/jelsner/temp/data/1950-2018-torn-initpoint.zip as a simple feature data frame. Assign it to `Torn.sf`. (5)
+
+(d) Use the `st_intersection()` function to create a new simple feature data frame (assign it to `MSAL_Torn.sf`) of the tornado simple feature data frame returning only the tornado points that intersect the simple feature column polygon in the object `Union.sfc` from part (b). (5)
+
+(e) Visualize the result with a plot showing the polygon borders of the states and the tornado points using either the `ggplot()` syntax or the `plot()` method. (5)
+
+**2** Use the `raster()` function from the {raster} package to create a raster with 30 rows and 30 columns between 92 and 86 W longitudes and 30 and 36 N latitudes. Use the `setValues()` function together with `rnorm()` function to assign a  random number from a standard normal distribution to each cell in the raster. Make a plot of the resulting raster values using the `plot()` method and compute the spatial autocorrelation of the values using the `Moran()` function. (20)

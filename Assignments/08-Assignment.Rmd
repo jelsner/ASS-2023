@@ -1,0 +1,41 @@
+---
+title: "Assignment 8"
+author: "Your Name"
+date: March 12, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: March 12, 2021, 3pm
+
+Total Points: 45
+
+Import the Florida wildfire data as a simple feature data frame called `FL_Fires.sf` and transform the native CRS to a Florida GDL Albers (EPSG 3086) using the following code chunk.
+```{r}
+if(!"FL_Fires" %in% list.files()){
+  download.file("http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip",
+                "FL_Fires.zip")
+unzip("FL_Fires.zip")
+}
+
+library(sf)
+library(tidyverse)
+
+FL_Fires.sf <- st_read(dsn = "FL_Fires") %>%
+  st_transform(crs = 3086)
+
+dim(FL_Fires.sf)
+```
+
+(a) Use the `us_counties()` function from the {USAboundaries} package to get county boundaries in Florida as a simple feature data frame called `Bay.sf`. Filter on `name` to keep only Bay County. Transform the geometry using EPSG 3086. (5)
+
+(b) Use the function `st_intersection()` (see Lesson 7) to create a new simple feature data frame called `BayFires.sf` from the `FL_Fires.sf` simple feature data frame that contains only the lightning caused wildfires inside the Bay County polygon. (10)
+
+(c) Create a `ppp` object of the lightning caused wildfire locations in Bay County as unmarked events. Create an `owin` object of the county polygon (see Assignment 7). (10)
+
+(d) Plot a map displaying the local intensity. (5)
+
+(e) Compute the nearest neighbor function (G) using the `Gest()` function without correction for borders (see Lesson 18). Make a plot of the estimated values for this function and include the theoretical curve under the null hypothesis of complete spatial randomness. From the plot eyeball an estimate of the percentage of lightning caused wildfires there were within 500 meters of another wildfire. (15)

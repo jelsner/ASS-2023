@@ -1,0 +1,39 @@
+---
+title: "Assignment 1"
+author: "Your Name"
+date: January 15, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: January 15, 2021, 3pm
+
+Total Points: 85
+
+**1** Assign to the vector object `rn` 100 random values from the standard normal distribution using the code chunk below then answer the questions using {base} R code following the model in 'a'.
+```{r}
+rn <- rnorm(n = 100)
+```
+
+a. What is the value in the 25th element (5)
+```{r}
+rn[25]
+```
+
+b. What are the highest and lowest values (10)
+c. What is the average over these 100 values? (5)
+d. What is the median over these 100 values? (5)
+e. How many values are less than 0? (10)
+f. How many values are between 1 and 2? (10)
+
+**2** The Palmer penguins data set is available from https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv as a csv file.
+
+a. Import the data as a tabled data frame with the name `penguins` using the `read_csv()` function. (10)
+b. Print the number of rows and columns in the data frame. (5)
+c. Print the column names. (5)
+d. Compute the average bill length in millimeters (`bill_length_mm`) ignoring the missing values. (10)
+e. How many missing values are there in the vector containing the bill lengths (`penguins$bill_length_mm`)? (10)
+

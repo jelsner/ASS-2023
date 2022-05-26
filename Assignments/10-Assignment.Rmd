@@ -1,0 +1,22 @@
+---
+title: "Assignment 10"
+author: "Your Name"
+date: April 2, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: April 2, 2021, 3pm
+
+Total Points: 40
+
+Consider the file `http://myweb.fsu.edu/jelsner/temp/data/Tally_Weather.csv` containing a list of wind speeds (mph) and temperatures (C) recorded across Tallahassee at the automated WeatherSTEM (https://leon.weatherstem.com/) stations a few days ago.
+
+(a) Import the data as a regular data frame and assign with object name `Wx.df`. (5)
+(b) Create a simple feature data frame from the `Wx.df` data frame with CRS of 4326 and then use functions from the {tmap} package to make a dot map showing the locations of the stations color coded by the temperature values (`Temp_C`). Hint: Use the `tm_dots()` layer. (10)
+(c) Create a `geodata` object with name `Wx.gdf` from the `Wx.df` data frame using the `as.geodata()` function from the {geoR} package. Specify `Temp_C` as the data column. (5)
+(d) Create a four-panel graph of the data using the `plot()` method. Is there any evidence of a trend in the temperatures? (5)
+(e) Compute an empirical variogram with the `variog()` function after removing the first-order trend. Plot the variogram values as a function of lag distance with the `plot()` method or with `ggplot()`. Eyeball estimates for values of the nugget, sill, and range. (15)

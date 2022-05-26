@@ -1,0 +1,72 @@
+---
+title: "Assignment 4"
+author: "Answers"
+date: February 5, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: February 5, 2021, 3pm
+
+Total Points: 45
+
+**1**
+(a) Use the `us_states()` function from the {USAboundaries} package to get a simple feature data frame (assign it to `MSAL.sf`) containing information from the states of Mississippi and Alabama. Hints: (1) Make sure you have the {sf} package loaded and, (2) with the `states =` argument in the `us_states()` function use the `c()` function to specify both states by their two-letter abbreviation. (5)
+```{r}
+library(USAboundaries)
+library(sf)
+
+MSAL.sf <- us_states(states = c("MS", "AL"))
+```
+
+(b) Use the `st_union()` function on the simple feature data frame from part (a) to create a single `sfc` geometry. Assign it to `Union.sfc` and make a plot of the geometry using either the `ggplot()` syntax or the `plot()` method. (5)
+```{r}
+library(tidyverse)
+
+Union.sfc <- MSAL.sf %>%
+  st_union()
+
+ggplot(data = Union.sfc) +
+  geom_sf()
+```
+
+(c) Import the tornado point data from http://myweb.fsu.edu/jelsner/temp/data/1950-2018-torn-initpoint.zip as a simple feature data frame. Assign it to `Torn.sf`. (5)
+```{r}
+if(!"1950-2018-torn-initpoint" %in% list.files()){
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/1950-2018-torn-initpoint.zip",
+              destfile = "1950-2018-torn-initpoint.zip")
+unzip("1950-2018-torn-initpoint.zip")
+}
+
+Torn.sf <- st_read(dsn = "1950-2018-torn-initpoint", 
+                   layer = "1950-2018-torn-initpoint")
+```
+
+(d) Use the `st_intersection()` function to create a new simple feature data frame (assign it to `MSAL_Torn.sf`) of the tornado simple feature data frame returning only the tornado points that intersect the simple feature column polygon in the object `Union.sfc` from part (b). (5)
+```{r}
+MSAL_Torn.sf <- Torn.sf %>%
+      st_intersection(y = Union.sfc)
+```
+
+(e) Visualize the result with a plot showing the polygon borders of the states and the tornado points using either the `ggplot()` syntax or the `plot()` method. (5)
+```{r}
+ggplot(data = Union.sfc) +
+  geom_sf() +
+  geom_sf(data = MSAL_Torn.sf)
+```
+
+**2** Use the `raster()` function from the {raster} package to create a raster with 30 rows and 30 columns between 92 and 86 W longitudes and 30 and 36 N latitudes. Use the `setValues()` function together with `rnorm()` function to assign a  random number from a standard normal distribution to each cell in the raster. Make a plot of the resulting raster values using the `plot()` method and compute the spatial autocorrelation using the `Moran()` function. (20)
+```{r}
+library(raster)
+
+r <- raster(xmn = -92, xmx = -86, 
+            ymn = 30, ymx = 36, 
+            ncols = 30, nrows = 30)
+r <- setValues(r, rnorm(ncell(r)))
+
+plot(r)
+Moran(r)
+```

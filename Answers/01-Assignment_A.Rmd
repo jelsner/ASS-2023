@@ -1,0 +1,65 @@
+---
+title: "Assignment 1"
+author: "Your Name"
+date: January 15, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: January 15, 2021, 3pm
+
+Total Points: 85
+
+**1** Assign to the vector object `rn` 100 random numbers from the standard normal distribution then answer the questions using {base} R code.
+```{r}
+rn <- rnorm(n = 100)
+```
+
+a. What is the value in the 25th element (5)
+b. What are the highest and lowest values (10)
+c. What are the mean and median values? (10)
+d. How many values are less than 0? (10)
+e. How many values are between 1 and 2? (10)
+
+```{r}
+rn[25]
+range(rn)
+mean(rn)
+median(rn)
+sum(rn < 0)
+sum(rn > 1 & rn < 2)
+```
+
+**2** The Palmer penguins data set is available from https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv
+
+a. Import the data as a tabled data frame with the name `penguins` using the `read_csv()` function. (10)
+```{r}
+library(tidyverse)
+
+penguins <- read_csv(file = "https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv")
+```
+
+b. Print the number of rows and columns in the data frame. (5)
+```{r}
+dim(penguins)
+```
+
+c. Print the column names. (5)
+```{r}
+names(penguins)
+```
+
+d. Compute the average bill length in millimeters (`bill_length_mm`) ignoring the missing values. (10)
+```{r}
+mean(penguins$bill_length_mm, 
+     na.rm = TRUE)
+```
+
+e. How many missing values are there in the vector of bill lengths? (10)
+```{r}
+sum(is.na(penguins$bill_length_mm))
+```
+

@@ -1,0 +1,27 @@
+---
+title: "Assignment 9"
+author: "Your Name"
+date: March 26, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: March 26, 2021, 3pm
+
+Total Points: 20
+
+Write a short paragraph in this Rmd file describing your research interest as it relates (or might relate) to spatial statistics. 
+
+Rubric:
+
+(a) Sentence about what you study (5)
+(b) Sentence about the type of data you use in your investigations (5)
+(c) Sentence about how your data are spatial (5)
+(d) Sentence on how you might use what you've learned in this class in future investigations (5)
+
+As an example, here is my paragraph.
+
+"I study tornadoes and hurricanes and how they might change as climate continues to warm. Historical records of past storms provide clues as to  how things are already changing. Records that include the location and intensity of past storm events are spatial data. I am interested in the distribution and clustering of events as a way to understand the underlying physical processes. Spatial statistics including spatial regression, point pattern data, and spatial interpolation help me distinguish between signal and noise and thus quantify how storms might be different in a future world."
