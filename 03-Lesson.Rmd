@@ -143,19 +143,17 @@ For example, consider the regularly updated reports of tornadoes in the United S
 Here you are interested in the file called `1950-2020_actual_tornadoes.csv`. First you download the file from the site with the `download.file()` function specifying the location (`url =`) and a name you want the file to be called on your computer (`destfile =`).
 ```{r}
 download.file(url = "http://www.spc.noaa.gov/wcm/data/1950-2019_actual_tornadoes.csv",
-              destfile = "data/Tornadoes.csv")
+              destfile = here::here("data", "Tornadoes.csv"))
 ```
 
 A file called `Tornadoes.csv` should now be located in the directory `data`. Click on the _Files_ tab in the lower-right panel, then select the `data` folder.
 
 Next you read (import) the file as a data frame using the `readr::read_csv()` function from the {tidyverse} group of packages. 
 ```{r}
-if(!require(tidyverse)) install.packages(pkgs = "tidyverse", repos = "http://cran.us.r-project.org")
-
 Torn.df <- readr::read_csv(file = here::here("data", "Tornadoes.csv"))
 ```
 
-We preview the data frame using the `head()` function.
+You preview the data frame using the `head()` function.
 ```{r}
 head(Torn.df)
 ```
