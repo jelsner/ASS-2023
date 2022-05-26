@@ -1,9 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: inline
----
-
 # Tuesday, August 23, 2022 {.unnumbered}
 
 **"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."** --- Martin Fowler
@@ -22,7 +16,7 @@ In this lesson I tell you what this course is about. In do so I give you a bit o
 
 -   Getting set to work with R and RStudio
 
-## ![]()Install R and RStudio on your computer {.unnumbered}
+## Install R and RStudio on your computer {.unnumbered}
 
 First get R
 
@@ -41,15 +35,15 @@ Finally (not required for success in this class), learn git with R
 
 <https://happygitwithr.com/install-git.html>
 
-## Download course materials and open the syllabus file {.unnumbered}
+## Download course materials {.unnumbered}
 
--   Navigate to [<https://github.com/jelsner/ASS-2022>](https://github.com/jelsner/QG-2022){.uri}
+-   Navigate to [\<https://github.com/jelsner/ASS-2022\>](https://github.com/jelsner/QG-2022){.uri}
 -   Click on the bright green Code button
 -   Download ZIP
 -   Unzip the file on your computer
 -   Open the `ASS-2022.Rproj` file
 
-## Open the syllabus file {.unnumbered}
+## Read the syllabus {.unnumbered}
 
 -   Open the `00-Syllabus.Rmd` file under the `Files` tab
 
@@ -97,25 +91,6 @@ You will do all assignments inside a Rmd file.
 7.  Email your completed assignment `Rmd` file to [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}
 
 ## Getting started with R {.unnumbered}
-
-The {swirl} package contains functions to get you started with the basics of R. To install the package use the `install.packages()` function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using `update.packages()` function.
-
-To make the functions work in your current session use the `library()` function with the name of the package (without quotes). This needs to be done for every session, but only once per session.
-
-```{r, eval=FALSE}
-install.packages("swirl")
-library(swirl)
-```
-
-Type:
-
-```{r, eval=FALSE}
-swirl()
-```
-
-Choose the lesson: R Programming. Work through lessons 1:8
-
-Getting help: <https://www.r-project.org/help.html>
 
 Applied statistics is the analysis and modeling of data. Use the `c()` function to input small bits of data into R. The function combines (concatenates) items in a list together.
 
@@ -185,3 +160,24 @@ d1 - mean(d1)
 In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector.
 
 This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times.
+
+## Are you completely new to R?
+
+The {swirl} package contains functions to get you started with the basics of R. To install the package use the `install.packages()` function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using `update.packages()` function.
+
+To make the functions work in your current session use the `library()` function with the name of the package (without quotes). This needs to be done for every session, but only once per session.
+
+```{r, eval=FALSE}
+install.packages("swirl")
+library(swirl)
+```
+
+Type:
+
+```{r, eval=FALSE}
+swirl()
+```
+
+Choose the lesson: R Programming. Work through lessons 1:8
+
+Getting help: <https://www.r-project.org/help.html>
