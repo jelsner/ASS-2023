@@ -140,7 +140,7 @@ NEEDS TO BE CHANGED
 -   R for Geospatial Processing: <https://bakaniko.github.io/FOSS4G2019_Geoprocessing_with_R_workshop/>
 -   Spatial Data Science: <https://keen-swartz-3146c4.netlify.com/>
 
-Maps/graphs:
+Maps/graphs
 
 -   Inset maps: <https://geocompr.github.io/post/2019/ggplot2-inset-maps/>
 -   {cartography} package in R: <https://riatelab.github.io/cartography/docs/articles/cartography.html>
@@ -150,12 +150,12 @@ Maps/graphs:
 -   Accelerate your plots with {ggforce}: <https://rviews.rstudio.com/2019/09/19/intro-to-ggforce/>
 -   Summary statistics and ggplot: <https://ggplot2tutor.com/summary_statistics/summary_statistics/>
 
-Space-time statistics:
+Space-time statistics
 
 -   Space-time Bayesian modeling package: <https://cran.r-project.org/web/packages/spTimer/spTimer.pdf>
 -   Working with space-time rasters: <https://github.com/surfcao/geog5330/blob/master/week12/raster.Rmd>
 
-Bayesian models:
+Bayesian models
 
 -   Bayesian Linear Mixed Models: Random intercepts, slopes and missing data: <https://willhipson.netlify.com/post/bayesian_mlm/bayesian_mlm/>
 -   Doing Bayesian Data Analysis in {brms} and the {tidyverse}: <https://bookdown.org/ajkurz/DBDA_recoded/>
@@ -163,7 +163,7 @@ Bayesian models:
 -   Geospatial Health Data: Modeling and Visualization with {RINLA} and {shiny}: <https://paula-moraga.github.io/book-geospatial/>
 -   Bayesian workflow: <https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html#1_questioning_authority>
 
-Spatial data:
+Spatial data
 
 -   Progress in the R ecosystem for representing and handling spatial data <https://link.springer.com/article/10.1007/s10109-020-00336-0>
 -   Google earthengine: <https://earthengine.google.com/>
@@ -172,35 +172,35 @@ Spatial data:
 -   Accessing remotely sensed imagery: <https://twitter.com/mouthofmorrison/status/1212840820019208192/photo/1>
 -   Spatial data sets from Brazil: <https://github.com/ipeaGIT/geobr>
 
-Machine learning:
+Machine learning
 
 -   Supervised machine learning case studies: <https://supervised-ml-course.netlify.com/>
 -   Machine learning for spatial prediction: <https://www.youtube.com/watch?v=2pdRk4cj1P0&feature=youtu.be>
 
-Spatial networks:
+Spatial networks
 
 -   Spatial Networks in R with {sf} and {tidygraph}: <https://www.r-spatial.org/r/2019/09/26/spatial-networks.html>
 -   Travel times/distances: <https://github.com/rCarto/osrm>
 -   Making network graphs in R - {ggraph} and {tidygraph} introduction <https://youtu.be/geYZ83Aidq4>
 
-Transport planning/routing:
+Transport planning/routing
 
 <https://docs.ropensci.org/stplanr/index.html> <https://www.urbandemographics.org/post/r5r-fast-multimodal-transport-routing-in-r/>
 
-Time series forecasting:
+Time series forecasting
 
 <https://weecology.github.io/MATSS/>
 
-Movement:
+Movement
 
 <https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2656.13116>
 
-Bookdown:
+Bookdown
 
 -   Introduction: <https://bookdown.org/yihui/bookdown/introduction.html>
 -   Learning more: <https://ropensci.org/blog/2020/04/07/bookdown-learnings/>
 
-Climate datasets:
+Climate data
 
 <https://cran.r-project.org/web/packages/climate/vignettes/getstarted.html> <https://www.ncdc.noaa.gov/teleconnections/enso/indicators/soi/data.csv> USGS water data: <https://waterdata.usgs.gov/blog/dataretrieval/>
 
