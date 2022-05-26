@@ -31,7 +31,7 @@ Before moving on, let's consider another data frame. The data frame contains obs
 You import the data frame using the `read_csv()` function.
 ```{r}
 loc <- "https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv"
-penguins <- read_csv(file = loc)
+penguins <- readr::read_csv(file = loc)
 penguins
 ```
 
@@ -47,32 +47,32 @@ There are 152 Adelie, 68 Chinstrap, and 124 Gentoo penguins.
 To create a data frame that includes only the female penguins you type
 ```{r}
 ( df <- penguins |> 
-          filter(sex == "female") )
+          dplyr::filter(sex == "female") )
 ```
   
 To create a data frame that includes only penguins that are not of species Adalie you type
 ```{r}
 ( df <- penguins |> 
-          filter(species != "Adelie") )
+          dplyr::filter(species != "Adelie") )
 ```
 
 To create a data frame containing only penguins that weigh more than 6000 grams you type
 ```{r}
 ( df <- penguins |> 
-          filter(body_mass_g > 6000) )
+          dplyr::filter(body_mass_g > 6000) )
 ```
 
 To create a data frame with female penguins that have flippers longer than 220 mm we type
 ```{r}
 ( df <- penguins |> 
-          filter(flipper_length_mm > 220 & 
-                 sex == "female") )
+          dplyr::filter(flipper_length_mm > 220 & 
+                        sex == "female") )
 ```
 
 To create a data frame containing rows where the bill length value is NOT missing.
 ```{r}
 ( df <- penguins |> 
-          filter(!is.na(bill_length_mm)) )
+          dplyr::filter(!is.na(bill_length_mm)) )
 ```
 
 Note that this filtering will keep rows with other column values missing values but there will be no penguins where the `bill_length` value is `NA`.
@@ -80,8 +80,8 @@ Note that this filtering will keep rows with other column values missing values 
 Finally, to compute the average bill length for each species.
 ```{r}
 penguins |>
-  group_by(species) |>
-  summarize(AvgBL = mean(bill_length_mm, na.rm = TRUE))
+  dplyr::group_by(species) |>
+  dplyr::summarize(AvgBL = mean(bill_length_mm, na.rm = TRUE))
 ```
 
 ## Making graphs {-}
@@ -94,8 +94,6 @@ The {ggplot2} package is a popular graphics tool among data scientists (e.g., Ne
 
 You make the functions available to your current working directory by typing
 ```{r}
-if(!require(ggplot2)) install.packages(pkgs = "ggplot2", repos = "http://cran.us.r-project.org")
-
 library(ggplot2)
 ```
 
@@ -164,13 +162,8 @@ The principle of layering is important. To create good visualizations you often 
 
 Let's modify the bubble chart by getting additional data and plotting it as a new layer below the bubbles. First get the data from the {maps} package using the `map_data()` function and specifying the name of the map (here `"World"`) and assigning it to a data frame with the name `df2`.
 ```{r}
-if(!require(maps)) install.packages(pkgs = "maps", repos = "http://cran.us.r-project.org")
-library(maps)
-
-library(tidyverse)
-
 df2 <- map_data(map = "world") |>
-  glimpse()
+  dplyr::glimpse()
 ```
 
 Plot the new data as a new layer underneath the bubbles.
@@ -222,26 +215,24 @@ p1 + xlab("Longitude") +
      scale_size_continuous(name = "Venture Capital Investment\n(USD, Millions)\n")
 ```
 
-The `facet_wrap()` function is a layer to iterate (repeat) the entire plot conditional on another variable. It is like the `group_by()` function in the data grammar.
+The `facet_wrap()` function is a layer to iterate (repeat) the entire plot conditional on another variable. It is like the `dplyr::group_by()` function in the data grammar.
 
 US tornadoes
 
-Consider the tornado records in the file `Tornadoes.csv`. Import the data using the `read_csv()` function then create new columns called `Year`, `Month` and `EF` using the `mutate()` function.
+Consider the tornado records in the file `Tornadoes.csv`. Import the data using the `readr::read_csv()` function then create new columns called `Year`, `Month` and `EF` using the `dplyr::mutate()` function.
 ```{r}
-library(tidyverse)
-
-( Torn.df <- read_csv(file = "Tornadoes.csv") |>
-  mutate(Year = yr,
-         Month = as.integer(mo),
-         EF = mag) )
+( Torn.df <- readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
+  dplyr::mutate(Year = yr,
+                Month = as.integer(mo),
+                EF = mag) )
 ```
 
 Next create a data frame (`df`) containing the number of tornadoes by year for the state of Kansas.
 ```{r}
 ( df <- Torn.df |>
-  filter(st == "KS") |>
-  group_by(Year) |>
-  summarize(nT = n()) )
+  dplyr::filter(st == "KS") |>
+  dplyr::group_by(Year) |>
+  dplyr::summarize(nT = dplyr::n()) )
 ```
 
 Then use the functions from the {ggplot2} package to plot the number of tornadoes by year using lines to connect the values in order of the variable on the x-axis. 
@@ -255,13 +246,13 @@ Note: In the early production stage of research, I like to break the code into s
 
 Below you bring together the above code to create the time series of Kansas tornado frequency without producing intermediary objects.
 ```{r, eval=FALSE}
-read_csv(file = "Tornadoes.csv") |>
-  mutate(Year = yr,
-         Month = as.integer(mo),
-         EF = mag) |>
-  filter(st == "KS") |>
-  group_by(Year) |>
-  summarize(nT = n()) |>
+readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
+  dplyr::mutate(Year = yr,
+                Month = as.integer(mo),
+                EF = mag) |>
+  dplyr::filter(st == "KS") |>
+  dplyr::group_by(Year) |>
+  dplyr::summarize(nT = dplyr::n()) |>
 ggplot(mapping = aes(x = Year, y = nT)) +
   geom_line() +
   geom_point()
@@ -270,9 +261,9 @@ ggplot(mapping = aes(x = Year, y = nT)) +
 Recall that the `group_by()` function allows you to repeat an operation depending on the value (or level) of some variable. For example to count the number of tornadoes by EF damage rating since 2007 and ignoring missing ratings
 ```{r}
 Torn.df |>
-  filter(Year >= 2007, EF != -9) |>
-  group_by(EF) |>
-  summarize(Count = n()) 
+  dplyr::filter(Year >= 2007, EF != -9) |>
+  dplyr::group_by(EF) |>
+  dplyr::summarize(Count = dplyr::n()) 
 ```
 
 The result is a table listing the number of tornadoes grouped by EF rating.
@@ -280,9 +271,9 @@ The result is a table listing the number of tornadoes grouped by EF rating.
 Instead of printing the table, you create a bar chart using the `geom_col()` function.
 ```{r}
 Torn.df |>
-  filter(Year >= 2007, EF != -9) |>
-  group_by(EF) |>
-  summarize(Count = n()) |>
+  dplyr::filter(Year >= 2007, EF != -9) |>
+  dplyr::group_by(EF) |>
+  dplyr::summarize(Count = dplyr::n()) |>
 ggplot(mapping = aes(x = EF, y = Count)) +
   geom_col()
 ```
@@ -290,7 +281,7 @@ ggplot(mapping = aes(x = EF, y = Count)) +
 The `geom_bar()` function counts the number of cases at each x position so you don't need the `group_by()` and `summarize()` functions.
 ```{r}
 Torn.df |>
-  filter(Year >= 2007, EF != -9) |>
+  dplyr::filter(Year >= 2007, EF != -9) |>
 ggplot(mapping = aes(x = EF)) +
   geom_bar()
 ```
@@ -298,9 +289,9 @@ ggplot(mapping = aes(x = EF)) +
 Improve the bar chart and to make it ready for publication.
 ```{r}
 Torn.df |>
-  filter(Year >= 2007, EF != -9) |>
-  group_by(EF) |>
-  summarize(Count = n()) |>
+  dplyr::filter(Year >= 2007, EF != -9) |>
+  dplyr::group_by(EF) |>
+  dplyr::summarize(Count = dplyr::n()) |>
 ggplot(mapping = aes(x = factor(EF), y = Count, fill = Count)) +
   geom_bar(stat = "identity") +
   xlab("EF Rating") + 
@@ -316,7 +307,7 @@ You create a set of plots with the `facet_wrap()` function. Here you create a se
 You add the function after the `geom_bar()` layer and use the formula syntax (`~ Year`) inside the parentheses. You interpret the syntax as "plot bar charts conditioned on the variable year."
 ```{r}
 Torn.df |>
-  filter(Year >= 2004, EF != -9) |>
+  dplyr::filter(Year >= 2004, EF != -9) |>
 ggplot(mapping = aes(x = factor(EF))) +
   geom_bar() +
   facet_wrap(~ Year)
@@ -334,7 +325,7 @@ TLH.df <- readr::read_csv(file = loc)
 
 The variables of interest are the daily high (and low) temperature in the column labeled `TMAX` (`TMIN`). The values are in degrees F.
 
-Add new columns giving the temperatures (daily maximum and daily minimum) in degrees F (original measuring unit) and the dates in calendar days. This is done with the `mutate()` function. Then select only the date and maximum and minimum temperature columns.
+Rename the columns then select only the date and temperature columns.
 ```{r}
 TLH.df <- TLH.df |>
   dplyr::rename(TmaxF = TMAX,
@@ -385,7 +376,7 @@ ggplot(mapping = aes(x = Year, y = AvgT)) +
 
 Q: Is the frequency of extremely hot days increasing over time? Let's consider a daily high temperature of 100 F and above as extremely hot.
 
-Here you count the number of days at or above 100F using the `summarize()` function together with the `sum()` function on the logical operator `>=`. If a day is missing a high temperature, you remove it with the `na.rm = TRUE` argument in the `sum()` function.
+Here you count the number of days at or above 100F using the `summarize()` function together with the `sum()` function on the logical operator `>=`. If a day is missing a temperature, you remove it with the `na.rm = TRUE` argument in the `sum()` function.
 ```{r}
 TLH.df |>
   dplyr::mutate(Year = lubridate::year(Date)) |>
@@ -424,7 +415,7 @@ Q: The most common high temperatures are in the low 90s, but there are relativel
 Compare the histogram of daily high temperatures in Tallahassee with a histogram of daily high temperatures in Las Vegas, Nevada. Here we repeat the code above but for the data frame `LVG.df`. We then use the operators from the {patchwork} package to plot them side by side.
 ```{r}
 LVG.df <- readr::read_csv(file = "http://myweb.fsu.edu/jelsner/temp/data/LV_DailySummary.csv",
-                     na = "-9999")
+                          na = "-9999")
 
 LVG.df <- LVG.df |>
   dplyr::mutate(TmaxF = round(9/5 * TMAX/10 + 32),
@@ -454,19 +445,18 @@ US population and area by state
 
 The object `us_states` from the {spData} package is a data frame from the U.S. Census Bureau. The variables include the state `GEOID` and `NAME`, the `REGION` (`South`, `West`, etc), `AREA` (in square km), and total population in 2010 (`total_pop_10`) and in 2015 (`total_pop_15`).
 ```{r}
-library(sf)
-library(spData)
-
+us_states <- spData::us_states
 class(us_states)
 head(us_states)
 ```
 
 The object `us_states` has two classes: simple feature and data frame. It is a data frame that has spatial information stored in the column labeled `geometry`. More about this next lesson.
 
-Note also that the variable `AREA` is numeric with units (km\^2). Thus in order to perform some operations you need to specify units. For example, if you want to filter by area keeping only states with an area greater than 500,000 square km you need to use `set_units()` from the {units} package.
-```{r}
+Note also that the variable `AREA` is numeric with units (km\^2). Thus in order to perform some operations you need to specify units or convert the column using `as.numeric()`. For example, if you want to filter by area keeping only states with an area greater than 300,000 square km you could do the following
+```{r, eval = FALSE}
 us_states |> 
-  dplyr::filter(AREA > units::set_units(500000, km^2))
+  dplyr::mutate(Area = as.numeric(AREA)) |>
+  dplyr::filter(Area > 300000)
 ```
 
 For now, suppose you want to plot area versus population for each state including state names on the plot. We note large differences between the minimum and maximum values for both variables.
@@ -488,14 +478,12 @@ ggplot(data = us_states,
 
 Next you use the {scales} package so the tic labels can be expressed in whole numbers with commas.
 ```{r}
-library(scales)
-
 ggplot(data = us_states,
        mapping = aes(x = as.numeric(AREA),
                      y = total_pop_15)) +
   geom_point() +
-  scale_x_log10(labels = comma) +
-  scale_y_log10(labels = comma)
+  scale_x_log10(labels = scales::comma) +
+  scale_y_log10(labels = scales::comma)
 ```
 
 Next you add text labels. You can do this with `geom_text()` or `geom_label()`
@@ -505,28 +493,27 @@ ggplot(data = us_states,
                      y = total_pop_15)) +
   geom_point() +
   geom_text(aes(label = NAME)) +
-  scale_x_log10(labels = comma) +
-  scale_y_log10(labels = comma)
+  scale_x_log10(labels = scales::comma) +
+  scale_y_log10(labels = scales::comma)
 ```
 
 The labels are centered on top of the points. To fix this you use functions from the {grepel} package.
 ```{r}
-library(ggrepel)
-
 ggplot(data = us_states,
        mapping = aes(x = as.numeric(AREA),
                      y = total_pop_15)) +
   geom_point() +
-  geom_text_repel(aes(label = NAME)) +
-  scale_x_log10(labels = comma) +
-  scale_y_log10(labels = comma)
+  ggrepel::geom_text_repel(aes(label = NAME)) +
+  scale_x_log10(labels = scales::comma) +
+  scale_y_log10(labels = scales::comma)
 ```
 
 Finally, since the data object is a simple feature data frame you can make a map.
 ```{r}
 ggplot(us_states) + 
   geom_sf(aes(fill = total_pop_15)) +
-  scale_fill_continuous(labels = comma)
+  scale_fill_continuous(labels = scales::comma) +
+  theme_void()
 ```
 
 ## More resources and additional examples {-}

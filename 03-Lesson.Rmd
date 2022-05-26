@@ -229,7 +229,7 @@ The data are monthly statewide average rainfall (in inches) for Florida starting
 To import the data you use the `readr::read_table()` function and assign the object the name `FLp.df`.  You type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns.
 ```{r}
 loc <- "http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt"
-FLp.df <- read_table(file = loc)
+FLp.df <- readr::read_table(file = loc)
 FLp.df
 ```
 
@@ -337,13 +337,13 @@ Which is much better in terms of 'readability' then `leave_house(drink_coffee(ma
 Tibbles are data frames that make life a little easier. R is an old language, and some things that were useful 10 or 20 years ago now get in your way. To make a data frame a tibble (tabular data frame) use the `as_tibble()` function.
 ```{r}
 class(airquality)
-airquality <- as_tibble(airquality)
+airquality <- dplyr::as_tibble(airquality)
 class(airquality)
 ```
 
-Click on `airquality` in the environment. It is a data frame. We use the terms 'tibble' and 'data frame' interchangeably in this class.
+Click on `airquality` in the environment. It is a data frame. We will use the terms 'tibble' and 'data frame' interchangeably in this class.
 
-Now we are ready to look at some of the commonly used verbs and to see how to apply them to a data frame.
+Now you are ready to look at some of the commonly used verbs and to see how to apply them to a data frame.
 
 The function `select()` chooses variables by name. For example, choose the month (`Month`), day (`Day`), and temperature (`Temp`) columns.
 ```{r}
@@ -471,9 +471,9 @@ airquality |>
 Find the average ozone concentration when temperatures are above and below 70 F. Include the number of observations (days) in the two groups.
 ```{r}
 airquality |>
-  group_by(Temp >= 70) |>
-  summarize(OzoneAvg =  mean(Ozone, na.rm = TRUE),
-            NumDays = n())
+  dplyr::group_by(Temp >= 70) |>
+  dplyr::summarize(OzoneAvg =  mean(Ozone, na.rm = TRUE),
+                   NumDays = dplyr::n())
 ```
 
 On average ozone concentration is higher on warm days (Temp >= 70 F) days. Said another way; mean ozone concentration statistically depends on temperature.

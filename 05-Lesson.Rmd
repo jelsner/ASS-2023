@@ -140,7 +140,7 @@ For example, to combine two simple features into one object with two features, y
 ```{r}
 point1 <- sf::st_point(c(5, 2))
 point2 <- sf::st_point(c(1, 3))
-st_sfc(point1, point2)
+sf::st_sfc(point1, point2)
 ```
 
 In most cases, a `sfc` object contains objects of the same geometry type. Thus, when you convert `sfg` objects of type `polygon` into a simple feature geometry column, you end up with an `sfc` object of type `polygon`. A geometry column of multiple line strings would result in an `sfc` object of type `multilinestring`.
@@ -151,7 +151,7 @@ poly.list1 <- list(rbind(c(1, 5), c(2, 2), c(4, 1), c(4, 4), c(1, 5)))
 polygon1 <- sf::st_polygon(poly.list1)
 poly.list2 <- list(rbind(c(0, 2), c(1, 2), c(1, 3), c(0, 3), c(0, 2)))
 polygon2 <- sf::st_polygon(poly.list2)
-st_sfc(polygon1, polygon2)
+sf::st_sfc(polygon1, polygon2)
 
 plot(sf::st_sfc(polygon1, polygon2))
 ```
@@ -164,7 +164,7 @@ mls1 <- sf::st_multilinestring((mls.list1))
 mls.list2 <- list(rbind(c(2, 9), c(7, 9), c(5, 6), c(4, 7), c(2, 7)), 
                   rbind(c(1, 7), c(3, 8)))
 mls2 <- sf::st_multilinestring((mls.list2))
-st_sfc(mls1, mls2)
+sf::st_sfc(mls1, mls2)
 
 plot(sf::st_sfc(mls1, mls2))
 ```
@@ -304,7 +304,6 @@ df2 <- us_states |>
   dplyr::summarize(TotalPop2010 = sum(total_pop_10),
                    TotalPop2015 = sum(total_pop_15))
 head(df2)
-plot(df2)
 ```
 
 Why use the {sf} package when {sp} is already tried and tested?
@@ -319,8 +318,6 @@ These advantages led to the development of spatial packages (including {tmap}, {
 
 It is easy to convert between the two classes. Consider the `world` S3 spatial data frame from the {spData} package. You convert it to a S4 spatial data frame with the `as()` method.
 ```{r}
-library(sp)
-
 world.sp <- world |>
   as(Class = "Spatial")
 ```
@@ -350,7 +347,7 @@ unzip(here::here("data", "police.zip"),
 
 sfdf <- sf::st_read(dsn = here::here("data", "police"), 
                     layer = "police") 
-st_crs(sfdf) <- 4326
+sf::st_crs(sfdf) <- 4326
 ```
 
 The geometry type is polygon and there are 82 polygons, one for each county.
@@ -441,6 +438,6 @@ states <- spData::us_states |>
 sf::st_length(states) # returns zeroes because geometry is polygon
 
 states |>
-  st_cast(to = "MULTILINESTRING") |>
-  st_length()
+  sf::st_cast(to = "MULTILINESTRING") |>
+  sf::st_length()
 ```
