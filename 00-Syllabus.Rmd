@@ -94,7 +94,7 @@ It is my intent to present notes and data that are respectful of diversity: gend
 
 | Week | Dates                   | Topic         |
 |------|-------------------------|---------------|
-| 1    | August 23, 25           | Course setups |
+| 1    | August 23, 25           | Course setup  |
 | 2    | August 30, September 1  | Data frames   |
 | 3    | September 6, 8          |               |
 | 4    | September 13, 15        |               |
