@@ -336,9 +336,9 @@ You can create basic maps from simple feature data frames with the base `plot()`
 
 Geo-computation on simple features is done with routines in the geometry engine-open source (GEOS) library that functions in the {sf} package make use of.
 
-As an example, consider the file `police.zip` on my website contains shapefiles in a folder called `police`. The variables include police expenditures (POLICE), crime (CRIME), income (INC), unemployment (UNEMP) and other socio-economic variables for counties in Mississippi.
+As an example, consider the file `police.zip` on my website that contains shapefiles in a folder called `police`. The variables include police expenditures (POLICE), crime (CRIME), income (INC), unemployment (UNEMP) and other socio-economic variables for counties in Mississippi.
 
-it with the `st_read()` function from the {sf} package and then assign a geographic coordinate reference system (CRS) to it using the EPSG number 4326.
+Input the data using the `st_read()` function from the {sf} package and then assign a geographic coordinate reference system (CRS) to it using the EPSG number 4326.
 ```{r}
 download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/police.zip",
               destfile = here::here("data", "police.zip"))
@@ -350,9 +350,9 @@ sfdf <- sf::st_read(dsn = here::here("data", "police"),
 sf::st_crs(sfdf) <- 4326
 ```
 
-The geometry type is polygon and there are 82 polygons, one for each county.
+The geometries are polygons and there are 82 of them, one for each county.
 
-You transform the geographic coordinate system to a specific projected CRS as suggested by the function `suggest_crs()` from the {crsuggest} package.
+You transform the geographic coordinate system of the polygons to a specific projected CRS as suggested by the function `suggest_crs()` from the {crsuggest} package.
 ```{r}
 crsuggest::suggest_crs(sfdf)
 ```
@@ -363,27 +363,27 @@ sfdf <- sfdf |>
     sf::st_transform(crs = 6508)
 ```
 
-The `st_centroid()` function computes the geographic center of each simple feature geometry (`sfg`) in the data frame.
+The `st_centroid()` function computes the geographic center of each polygon in the spatial data frame.
 ```{r}
 countyCenters.sf <- sfdf |>
     sf::st_centroid()
 ```
 
-The warning is to let you know that the attributes attached to each geometry (polygons) might be misleading when attached to the new geometry (points). Different geometric support can mean different interpretations of the attribute.
+The warning lets you know that the attributes attached to each polygon might result in misleading information when attached to the new geometry (points). Different geometries can mean different interpretations of the attribute.
 ```{r}
 sf::st_geometry(countyCenters.sf)
 ```
 
-To get the centroid location for the state, you first take the a union of all the counties using the `st_union()` function, then use the `st_centroid()` function.
+To get the centroid location for the state, you first join all the counties using the `st_union()` function, then use the `st_centroid()` function.
 ```{r}
 stateCenter.sfc <- sfdf |>
   sf::st_union() |>
   sf::st_centroid()
 ```
 
-The result is a simple feature geometry column of length one where the geometry contains the centroid location.
+The result is a simple feature geometry column (`sfc`) with a single row where the geometry contains the centroid location.
 
-Which county contains the geographic center of the state? Here we use the geometric binary predicate `st_contains()`.
+Which county contains the geographic center of the state? Here you use the geometric binary predicate `st_contains()`.
 ```{r}
 ( Contains <- sfdf |>
     sf::st_contains(stateCenter.sfc,
@@ -392,7 +392,7 @@ Which county contains the geographic center of the state? Here we use the geomet
 
 You include the `sparse = FALSE` argument so the result is a matrix containing `TRUE`s and `FALSE`s. Since there are 82 counties and one centroid the matrix has 82 rows and 1 column. All matrix entries are `FALSE` except the one containing the center.
 
-To map the result you first plot the county geometries, then add the county geometry for the center county and fill it red. Note that you use the matrix you called `Contains` to subset this county. Finally you add the location of the state centroid to the plot.
+To map the result you first plot the county polygons, then add the county geometry for the center county and fill it red. Note that you use the matrix you called `Contains` to subset this county. Finally you add the location of the state centroid to the plot.
 ```{r}
 library(ggplot2)
 
@@ -409,9 +409,9 @@ sfdf |>
   sf::st_area()
 ```
 
-The vector values have units which are derived from the CRS.
+The vector values have units of square meters (m^2), which are derived from the CRS.
 
-There is an attribute called `AREA` in the data frame but it is better to calculate it from the spatial geometries because you are sure then of the units.
+There is an attribute called `AREA` in the data frame but it is better to calculate it from the spatial polygons because then you are sure of the units.
 
 What happens when you apply the area function on the centroid object?
 ```{r}

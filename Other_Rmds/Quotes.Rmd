@@ -3,6 +3,9 @@ title: "Quotes"
 output: html_document
 ---
 
+“Practice any art, music, singing, dancing, acting, drawing, painting, sculpting, poetry, fiction, essays, reportage, no matter how well or badly, not to get money & fame, but to experience becoming, to find out what's inside you, to make your soul grow.”
+- Kurt Vonnegut
+
 From @CodeWisdom
 
 **"When debugging, novices insert corrective code; experts remove defective code."** – Richard Pattis

@@ -155,11 +155,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
 <ul>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#today"><i class="fa fa-check"></i>Today</a></li>
-<li><a href="tuesday-august-23-2022.html#syllabus-1"><img src="" />Syllabus</a></li>
-<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-setup-for-this-course"><i class="fa fa-check"></i>Getting setup for this course</a></li>
-<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#the-rstudio-ide"><i class="fa fa-check"></i>The RStudio IDE</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="0.1" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i><b>0.1</b> Are you completely new to R?</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
 <ul>
@@ -221,17 +223,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Getting set to work with R and RStudio</p></li>
 </ul>
 </div>
-<div id="syllabus-1" class="section level2 unnumbered">
-<h2><img src="" />Syllabus</h2>
-<ul>
-<li>Navigate to <a href="https://github.com/jelsner/QG-2022" class="uri">https://github.com/jelsner/QG-2022</a></li>
-<li>Click on the file labeled <code>00-Syllabus.Rmd</code></li>
-<li>Click on the button <code>[Raw]</code></li>
-<li>You can <code>Save as</code> to download a copy to your computer</li>
-</ul>
-</div>
-<div id="getting-setup-for-this-course" class="section level2 unnumbered">
-<h2>Getting setup for this course</h2>
+<div id="install-r-and-rstudio-on-your-computer" class="section level2 unnumbered">
+<h2>Install R and RStudio on your computer</h2>
 <p>First get R</p>
 <ul>
 <li>Go to <a href="http://www.r-project.org" class="uri">http://www.r-project.org</a></li>
@@ -248,8 +241,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Finally (not required for success in this class), learn git with R</p>
 <p><a href="https://happygitwithr.com/install-git.html" class="uri">https://happygitwithr.com/install-git.html</a></p>
 </div>
-<div id="the-rstudio-ide" class="section level2 unnumbered">
-<h2>The RStudio IDE</h2>
+<div id="download-course-materials" class="section level2 unnumbered">
+<h2>Download course materials</h2>
+<ul>
+<li>Navigate to &lt;<a href="https://github.com/jelsner/ASS-2022\" class="uri">https://github.com/jelsner/ASS-2022\</a>&gt;</li>
+<li>Click on the bright green Code button</li>
+<li>Download ZIP</li>
+<li>Unzip the file on your computer</li>
+<li>Open the <code>ASS-2022.Rproj</code> file</li>
+</ul>
+</div>
+<div id="read-the-syllabus" class="section level2 unnumbered">
+<h2>Read the syllabus</h2>
+<ul>
+<li>Open the <code>00-Syllabus.Rmd</code> file under the <code>Files</code> tab</li>
+</ul>
+</div>
+<div id="about-rstudio" class="section level2 unnumbered">
+<h2>About RStudio</h2>
 <ul>
 <li><p>Written in HTML (like your Web browser)</p></li>
 <li><p>Top menus</p>
@@ -296,53 +305,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="getting-started-with-r" class="section level2 unnumbered">
 <h2>Getting started with R</h2>
-<p>The {swirl} package contains functions to get you started with the basics of R. To install the package use the <code>install.packages()</code> function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using <code>update.packages()</code> function.</p>
-<p>To make the functions work in your current session use the <code>library()</code> function with the name of the package (without quotes). This needs to be done for every session, but only once per session.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-august-23-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;swirl&quot;</span>)</span>
-<span id="cb1-2"><a href="tuesday-august-23-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swirl)</span></code></pre></div>
-<p>Type:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="tuesday-august-23-2022.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swirl</span>()</span></code></pre></div>
-<p>Choose the lesson: R Programming. Work through lessons 1:8</p>
-<p>Getting help: <a href="https://www.r-project.org/help.html" class="uri">https://www.r-project.org/help.html</a></p>
 <p>Applied statistics is the analysis and modeling of data. Use the <code>c()</code> function to input small bits of data into R. The function combines (concatenates) items in a list together.</p>
 <p>For example, consider a set of hypothetical annual land falling hurricane counts over a ten-year period.</p>
 <p>2 3 0 3 1 0 0 1 2 1</p>
 <p>You save these 10 integer values in your working directory by typing them into the console as follows. The console is the lower left window.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-august-23-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb3-2"><a href="tuesday-august-23-2022.html#cb3-2" aria-hidden="true" tabindex="-1"></a>counts</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-august-23-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb1-2"><a href="tuesday-august-23-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a>counts</span></code></pre></div>
 <pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
 <p>You assign the values to an object called <code>counts</code>. The assignment operator is an equal sign (<code>&lt;-</code> or <code>=</code>). Values do not print. They are assigned to an object name. They are printed by typing the object name as we did on the second line. When printed the values are prefaced with a <code>[1]</code>. This indicates that the object is a vector and the first entry in the vector has a value of 2 (The number immediately to the right of <code>[1]</code>).</p>
 <p>You can use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.</p>
 <p>Then you apply functions to data stored in an object.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tuesday-august-23-2022.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-august-23-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)</span></code></pre></div>
 <pre><code>## [1] 13</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tuesday-august-23-2022.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(counts)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tuesday-august-23-2022.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(counts)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tuesday-august-23-2022.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)<span class="sc">/</span><span class="fu">length</span>(counts)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tuesday-august-23-2022.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)<span class="sc">/</span><span class="fu">length</span>(counts)</span></code></pre></div>
 <pre><code>## [1] 1.3</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tuesday-august-23-2022.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(counts)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tuesday-august-23-2022.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(counts)</span></code></pre></div>
 <pre><code>## [1] 1.3</code></pre>
 <p>The function <code>sum()</code> totals the number of hurricanes over all ten years, <code>length()</code> gives the number of elements in the vector. There is one element (integer value) for each year, so the function returns a value of 10.</p>
-<p>Other functions include, <code>sort()</code>, <code>min()</code>, <code>max()</code>, <code>range()</code>, <code>diff()</code>, and <code>cumsum()</code>. Try these functions on the landfall counts. What does <code>range()</code> function do? What does <code>diff()</code> do?</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="tuesday-august-23-2022.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span>(counts)</span></code></pre></div>
+<p>Other functions include <code>sort()</code>, <code>min()</code>, <code>max()</code>, <code>range()</code>, <code>diff()</code>, and <code>cumsum()</code>. Try these functions on the landfall counts. What does the <code>range()</code> function do? What does the function <code>diff()</code> do?</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tuesday-august-23-2022.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span>(counts)</span></code></pre></div>
 <pre><code>## [1]  1 -3  3 -2 -1  0  1  1 -1</code></pre>
 <p>The hurricane count data stored in the object <code>counts</code> is a vector. This means that R keeps track of the order that the data were entered. There is a first element, a second element, and so on. This is good for several reasons.</p>
 <p>The vector of counts has a natural order; year 1, year 2, etc. You don’t want to mix these. You would like to be able to make changes to the data item by item instead of entering the values again. Also, vectors are math objects so that math operations can be performed on them.</p>
 <p>For example, suppose <code>counts</code> contain the annual landfall count from the first decade of a longer record. You want to keep track of counts over other decades. This is done here as follows.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="tuesday-august-23-2022.html#cb15-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> counts</span>
-<span id="cb15-2"><a href="tuesday-august-23-2022.html#cb15-2" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="tuesday-august-23-2022.html#cb13-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> counts</span>
+<span id="cb13-2"><a href="tuesday-august-23-2022.html#cb13-2" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
 <p>Most functions operate on each element of the data vector at the same time.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tuesday-august-23-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">+</span> d2</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tuesday-august-23-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">+</span> d2</span></code></pre></div>
 <pre><code>##  [1] 2 8 4 5 4 0 3 4 4 2</code></pre>
 <p>The first year of the first decade is added from the first year of the second decade and so on.</p>
 <p>What happens if you apply the <code>c()</code> function to these two vectors? Try it.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="tuesday-august-23-2022.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(d1, d2)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tuesday-august-23-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(d1, d2)</span></code></pre></div>
 <pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1 0 5 4 2 3 0 3 3 2 1</code></pre>
 <p>If you are interested in each year’s count as a difference from the decade mean, you type</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tuesday-august-23-2022.html#cb20-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">-</span> <span class="fu">mean</span>(d1)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="tuesday-august-23-2022.html#cb18-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">-</span> <span class="fu">mean</span>(d1)</span></code></pre></div>
 <pre><code>##  [1]  0.7  1.7 -1.3  1.7 -0.3 -1.3 -1.3 -0.3  0.7 -0.3</code></pre>
 <p>In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector.</p>
 <p>This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times.</p>
+</div>
+<div id="are-you-completely-new-to-r" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Are you completely new to R?</h2>
+<p>The {swirl} package contains functions to get you started with the basics of R. To install the package use the <code>install.packages()</code> function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using <code>update.packages()</code> function.</p>
+<p>To make the functions work in your current session use the <code>library()</code> function with the name of the package (without quotes). This needs to be done for every session, but only once per session.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tuesday-august-23-2022.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;swirl&quot;</span>)</span>
+<span id="cb20-2"><a href="tuesday-august-23-2022.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swirl)</span></code></pre></div>
+<p>Type:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tuesday-august-23-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swirl</span>()</span></code></pre></div>
+<p>Choose the lesson: R Programming. Work through lessons 1:8</p>
+<p>Getting help: <a href="https://www.r-project.org/help.html" class="uri">https://www.r-project.org/help.html</a></p>
 
 </div>
 </div>
@@ -406,6 +418,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
