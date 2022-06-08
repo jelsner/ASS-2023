@@ -510,8 +510,9 @@ ggplot(data = us_states,
 
 Finally, since the data object is a simple feature data frame you can make a map.
 ```{r}
-ggplot(us_states) + 
-  geom_sf(aes(fill = total_pop_15)) +
+ggplot() + 
+  geom_sf(data = spData::us_states, 
+          mapping = aes(fill = total_pop_15)) +
   scale_fill_continuous(labels = scales::comma) +
   theme_void()
 ```

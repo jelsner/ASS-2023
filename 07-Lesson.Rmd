@@ -1,0 +1,409 @@
+# Tuesday September 13, 2022 {.unnumbered}
+
+**"Measuring programming progress by lines of code is like measuring aircraft building progress by weight."** – Bill Gates
+
+## Today {.unnumbered}
+
+- S4 spatial data objects
+- Working with raster data
+
+## S4 spatial data objects
+
+The {sp} package also has methods for working with spatial data. A few of the packages we will use this semester for analyzing/modeling spatial data work only with {sp} objects so it is helpful to see how these objects are structured.
+
+Install and load the package.
+```{r}
+if(!require(sp)) install.packages(pkgs = "sp", repos = "http://cran.us.r-project.org")
+
+library(sp)
+```
+
+Spatial objects from the {sp} package fall into two types: 
+
+1) spatial-only information (the geometry). Geometries include `SpatialPoints`, `SpatialLines`, `SpatialPolygons`, etc, and 
+2) extensions to these types where attribute information is available and stored in a data frame. These include `SpatialPointsDataFrame`, `SpatialLinesDataFrame`, etc.
+
+The typical situation is that you have a simple feature data frame (an S3 spatial object) that we've imported and we need to convert it to an {sp} spatial data frame (an S4 spatial object) before the information can be used to fit a model.
+
+Consider again the the tornado tracks that you import as a simple feature data frame.
+```{r}
+FL_Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-aspath"), 
+                          layer = "1950-2020-torn-aspath") |>
+  dplyr::filter(st == "FL")
+class(FL_Torn.sf)
+```
+
+The object `FL_Torn.sf` is a simple feature data frame. You convert the simple feature data frame to an S4 spatial object using the `sf::as_Spatial()` function.
+```{r}
+FL_Torn.sp <- FL_Torn.sf |>
+  sf::as_Spatial()
+
+class(FL_Torn.sp)
+```
+
+The file `FL_Torn.sp` is a S4 spatial object of class `SpatialLinesDataFrame`. 
+
+Information in S4 spatial objects is stored in _slots_. Slot names are listed with the `slotNames()` function.
+```{r}
+FL_Torn.sp |>
+  slotNames()
+```
+
+The `data` slot contains the data frame (attribute table), the `lines` slot contains the spatial geometries (in this case lines), the `bbox` slot is the boundary box and the `proj4string` slot is the CRS.
+
+The object name followed by the `@` symbol allows access to information in the slot. The `@` symbol is similar to the `$` symbol for regular data frames. For example to see the first three rows of the data frame we type
+```{r}
+FL_Torn.sp@data[1:3, ]
+```
+
+You should recognize this as information about the first three tornadoes in the record. In fact, the object name together with the slot name `data` has class `data.frame`.
+```{r}
+class(FL_Torn.sp@data)
+```
+
+When using the `$` symbol on S4 spatial objects, you can access the data as a data frame. For example, to list the EF rating (column labeled `mag`) of the first 3 tornadoes.
+```{r}
+FL_Torn.sp$mag[1:3]
+```
+
+Selecting, retrieving, or replacing attributes in S4 spatial data frames is done with methods in {base} R package. For example `[]` is used to select rows and/or columns. To select `mag` of the 7th tornado type
+```{r}
+FL_Torn.sp$mag[7]
+```
+
+Other methods include: `plot()`, `summary()`,`dim()` and `names()` (operate on the data slot), `as.data.frame()`, `as.matrix()` and `image()` (for spatial data on a grid), and `length()` (number of features).
+
+You can't use the {dplyr} verbs on S4 data frames. To convert from an S4 spatial data frame to a simple feature data frame, use `sf::st_as_sf()`.
+
+The first spatial geometry is given as the first element of the lines list.
+```{r}
+FL_Torn.sp@lines[1]
+```
+
+It is an object of class `Lines`. The line is identified by a matrix indicating the longitude and latitude of the start point in row one and the longitude and latitude of the end point in row two.
+
+The `bbox` slot is an object of class `matrix` and `array` and the `proj4string` slot is of class `CRS`.
+
+The interface to the geometry engine-open source (GEOS) is through the {rgeos} package.
+
+## Working with raster data
+
+The _raster data model_ divides geographic space into a grid of cells of constant size (resolution) and we use classes from the {raster} package to work with raster data.
+
+A raster is a data structure that divides space into rectangles called 'cells' (or 'pixels'). Each cell has an attribute value.
+
+The {terra} package has functions for creating, reading, manipulating, and writing raster data and functions for raster manipulation common in GIS.
+
+The `terra::rast()` function creates a raster with a geographic (longitude/latitude) CRS and a 1 by 1 degree grid of cells across the globe.
+```{r}
+r <- terra::rast()
+r
+```
+
+Arguments including `xmin`, `nrows`, `ncols`, and `crs` are used to change these default settings.
+
+The object has class `SpatRaster` with geographic coordinates spanning the globe at one-degree resolution in the north-south and the east-west directions.
+
+To create a raster with 36 longitudes -100 and 0 degrees East longitude and 18 latitudes between the equator and 50 degrees N latitude we specify the number of columns, the number of rows and the extent as follows.
+```{r}
+r <- terra::rast(ncols = 36, nrows = 18, 
+                 xmin = -100, xmax = 0, 
+                 ymin = 0, ymax = 50)
+r
+terra::res(r)
+```
+
+This results in raster with cell resolution of 2.7 degrees of longitude and 2.7 degrees of latitude.
+
+The parameters can be changed after the raster is created. Here we change the resolution to exactly 3 degrees. This changes the number of rows and columns.
+```{r}
+res(r) <- 3
+ncol(r)
+nrow(r)
+```
+
+The raster object `r` is a template with no values in the cells. By default it will have an extent that spans the globe.
+```{r}
+r <- raster(ncol = 10, nrow = 10)
+ncell(r)
+hasValues(r)
+```
+
+Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells.
+
+We use the `values()` function to place values in the cells. The function is specified on the left-hand side of the assignment operator. First we assign to a vector of length `ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1.
+```{r}
+v <- runif(ncell(r))
+head(v)
+values(r) <- v
+head(r)
+```
+
+The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with the values in the vector in this order.
+
+The `plot()` method creates a choropleth map of the values in cells.
+```{r}
+plot(r)
+```
+
+The default CRS is geographic.
+```{r}
+projection(r)
+```
+
+To project the raster use the function `projectRaster()`. Projections are performed using the `PROJ4` protocol accessed through the {rgdal} package (same as with {sf} and {sp} objects).
+
+We can also use the `setValues()` function to place values in the cells. Here we create a new raster layer with cell numbers as values using the `setValues()` function to place the numbers in the cells.
+```{r}
+r <- raster(xmn = -110, xmx = -90, 
+            ymn = 40, ymx = 60, 
+            ncols = 10, nrows = 10)
+r <- setValues(r, 1:ncell(r))
+plot(r)
+```
+
+The numbers increase from top right to bottom left.
+
+Next we create a projected raster.
+```{r}
+rp <- projectRaster(r, 
+                    crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m")
+plot(rp)
+```
+
+The projection is performed using bi-linear interpolation (default). In the case where the values are categorical we use `method = "ngb"` for nearest neighbor.
+
+The `raster()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Most formats that can import a raster can also be used to export a raster. 
+
+Consider the `Meuse` dataset (from the {sp} package), using a file in the native 'raster- file' format.
+```{r}
+f <- system.file("external/test.grd", 
+                 package = "raster")
+r <- raster(f)
+```
+
+Do the cells contain values? Is the raster stored in memory? Create a plot.
+```{r}
+hasValues(r)
+inMemory(r)
+plot(r, main = "Raster layer from file")
+```
+
+Note the raster layer is a rectangle of cells with values. Values that are coded as `NA` are not plotted.
+```{r}
+head(r)
+```
+
+We can combine raster layers into stacks and bricks. A stack (and a brick) is a collection of raster layers having the same spatial extent and resolution. 
+
+A brick is typically imported from a multi-layer (band) external file. They can also exist entirely in memory. A raster brick can only point to a single external file.
+
+For example, here we create three rasters and assign random values to the cells.
+```{r}
+r1 <- raster(nrow = 10, ncol = 10)
+values(r1) <- runif(ncell(r1))
+r2 <- raster(nrow = 10, ncol = 10)
+values(r2) <- runif(ncell(r2))
+r3 <- raster(nrow = 10, ncol = 10)
+values(r3) <- runif(ncell(r3))
+```
+
+Then combine the rasters into a stack with `stack()` (or into a brick with `brick()`).
+```{r}
+s <- stack(r1, r2, r3)
+s
+dim(s)
+nlayers(s)
+plot(s)
+```
+
+So each raster in a stack is a layer.
+
+Here we import a raster brick from a file.
+```{r}
+f <- system.file("external/rlogo.grd", 
+                 package = "raster")
+b <- brick(f)
+b
+plot(b)
+```
+
+We extract a single layer from a brick or stack with the `layer =` or `band =` arguments.
+```{r}
+r <- raster(b, layer = 2)
+plot(r)
+```
+
+Most {base} R functions (`+`, `*`, `round()`, `ceiling()`, `log()`, etc) work on raster objects. Operations are done on all cells at once.
+
+Here we place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root.
+```{r}
+r <- raster(ncol = 10, nrow = 10)
+values(r) <- 1:ncell(r)
+s <- r + 100
+s <- sqrt(s)
+plot(s)
+```
+
+Here we replace the cell values with random uniform numbers between 0 and 1. Then round to the nearest integer and add one.
+```{r}
+r <- setValues(r, runif(ncell(r)))
+r <- round(r)
+r <- r + 1
+plot(r)
+```
+
+Replace only certain values with the subset function `[]`.
+```{r}
+r <- raster(xmn = -90, xmx = 90, ymn = -30, ymx = 30)
+values(r) <- rnorm(ncell(r))
+plot(r)
+s <- raster(xmn = -60, xmx = 60, ymn = -10, ymx = 10)
+r[s] <- 0
+plot(r)
+r[r > 2] <- 0
+plot(r)
+```
+
+To get summary statistics across all values _within_ a particular raster we use the `cellStats()` function.
+```{r}
+cellStats(r1, stat = 'mean')
+cellStats(b, stat = 'sum')
+```
+
+In the first case with a single raster we get a single number representing the average value over all cells. In the second case with a brick we get the three numbers representing the sum over all the cells separately in each layer.
+
+Functions for manipulating a raster
+
+The `crop()` function takes a geographic subset of a larger raster object. A raster is cropped by providing an extent object or other spatial object from which an extent can be extracted (objects from classes deriving from raster and from spatial in the {sp} package). 
+
+The function `drawExtent()` is used to visually see the new extent (bounding box) that is given to the `crop()` function.
+
+The `trim()` function crops a raster layer by removing the outer rows and columns that only contain `NA` values. The `extend()` function adds new rows and/or columns with `NA` values.
+
+The `extract()` function retrieves values from a raster object at the locations of other spatial data.
+
+The `merge()` function combines two or more objects into a single object. The input objects must have the same resolution and origin (such that their cells fit into a single larger raster). If this is not the case, first adjust one of the objects with the functions `aggregate()` or `resample()`.
+
+The `aggregate()` and `disaggregate()` functions change the resolution (cell size) of a raster object.
+
+Here we crop the raster into two pieces and then merge them into one with the `merge()` function. The function has an argument that allows us to export to `test.grd`.
+```{r}
+r1 <- crop(r, extent(-180, 0, 0, 30)) 
+r2 <- crop(r, extent(-10, 180, -20, 10))
+m <- merge(r1, r2, 
+           filename = 'test.grd', 
+           overwrite = TRUE)
+plot(m)
+```
+
+The `flip()` function flips the data (reverse order) in the horizontal or vertical direction. The `rotate()` function rotates a raster that have longitudes from 0 to 360 degrees (often used by climatologists) to the standard -180 to 180 degrees system.
+
+Polygon to raster conversion is typically done to create a `RasterLayer` that can act as a mask, i.e. to set to `NA` a set of cells of a raster object, or to summarize values on a raster by zone. For example a country polygon is transferred to a raster that is then used to set all the cells outside that country to `NA`; whereas polygons representing administrative regions such as states can be transferred to a raster to summarize raster values by region.
+
+To convert the values of a raster layer to points or polygons we use `rasterToPoints()` and `rasterToPolygons()`. These functions return values only for cells that are not missing (`NA`).
+
+Point-to-raster conversion is often done to analyze location data (location of a specific species of tree in a forest). This is done with the `rasterize()` function, which takes a raster object to set the spatial extent and resolution together with a function to determine how to summarize the location information by grid cell.
+
+Example: the number of tornadoes by grid cell
+
+For example, here we create a raster of counts indicating the location of all tornado reports since 2003 in 1/2 degree latitude/longitude grid. First import the data as a simple feature data frame.
+```{r}
+Torn.sf <- st_read(dsn = "1950-2018-torn-initpoint",
+                   layer = "1950-2018-torn-initpoint") |>
+  filter(yr >= 2003)
+```
+
+We note that the bounding box (`bbox`) dimensions.
+
+Next we check the native CRS.
+```{r}
+st_crs(Torn.sf)
+```
+
+The CRS is geographic.
+
+Next create a raster template (assign it to the object called `frame`) with a domain that covers the area of interest and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the `extent()` function.
+```{r}
+frame <- raster(xmn = -106, xmx = -67, 
+                ymn = 24, ymx = 50)
+res(frame) <- .5
+extent(frame)
+```
+
+Then use the `rasterize()` function to count the number of times each raster cell contains a tornado genesis location. The first argument is the spatial data frame and the second is the raster without values. The argument `field =` specifies a column name in the spatial data frame (here just an identifier) and the argument `fun =` specifies what to do (here simply count the unique instances of the field in each cell). Raster cells without tornadoes are given a value of 0 based on the `background =` argument.
+```{r}
+Torn.r <- rasterize(x = Torn.sf, 
+                    y = frame, 
+                    field = "om", 
+                    fun = "count",
+                    background = 0)
+class(Torn.r)
+dim(Torn.r)
+```
+
+The result is a raster layer. The number of tornadoes occurring in each cell are the values.
+
+We print out the first 200 values (lexicographical order).
+```{r}
+values(Torn.r)[1:200]
+```
+
+To visualize the raster we use the `plot()` method.
+```{r}
+plot(Torn.r)
+```
+
+We can recognize the broad shape of the eastern 2/3rds of the United States. Some cells across the Plains and the South have quite a few tornadoes.
+
+A spatial statistic indicating how similar values in neighboring cells tend to be is called Moran I. It is a global measure of clustering (high values near high values and low values near low values). Values range from -1 to +1 where positive values indicate clustering and negative values indicate regularity (e.g., chessboard). It is implemented on a raster with the `Moran()` function. 
+```{r}
+Moran(Torn.r)
+```
+
+The value of .74 indicates a high level of tornado clustering at this scale. Under the null hypothesis of no spatial autocorrelation the expected value for Moran I is close to zero [-1/(n-1), where n is the number of cells].
+
+With raster data the neighborhood definition is constant across the study region.
+
+Clusters at a local level can be found using a local indicator of spatial autocorrelation. One such indicator is local Moran I, which is computed at each cell (using the `MoranLocal()` function) so the result is a raster.
+```{r}
+Torn_lmi.r <- MoranLocal(Torn.r)
+plot(Torn_lmi.r)
+```
+
+This type of plot makes is easier to see the hot spots of tornadoes over parts of the South and the Central Plains.
+
+To convert the tornado raster to a S4 spatial data frame with polygon geometries we use the `rasterToPolygons()` function. 
+```{r}
+TornCounts.sp <- rasterToPolygons(Torn.r)
+class(TornCounts.sp)
+```
+
+Then we convert the `SpatialPolygonsDataFrame` to a simple features data frame and make a plot.
+```{r}
+TornCounts.sf <- st_as_sf(TornCounts.sp)
+
+ggplot(data = TornCounts.sf) +
+  geom_sf(aes(fill = layer))
+```
+
+Focal (neighborhood) functions
+
+The functions: `focal()`, `focalFilter()`, `focalNA()` compute statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. 
+
+With `focal()`, the neighborhood can only be a rectangle. With `focalFilter()`, the neighborhood is a user-defined a matrix of weights and could approximate any shape by giving some cells zero weight. The `focalNA()` function only computes new values for cells that are `NA` in the input raster.
+
+The `distance()` function computes the shortest distance to cells that are not NA. The `pointDistance()` function computes the shortest distance to any point in a set of points. 
+
+The `gridDistance()` function computes the distance when following grid cells that can be traversed (e.g. excluding water bodies). The `direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `adjacency()` function determines which cells are adjacent to other cells, and the `pointDistance()` function computes distance between points. 
+
+Summary functions
+
+The function `cellStats()` computes summary statistics on a raster. For example:
+```{r}
+cellStats(Torn.r, mean)
+cellStats(Torn.r, max)
+freq(Torn.r)
+```
+
+Use `zonal()` to summarize a raster object using zones (areas with the same integer number) defined in a `RasterLayer` and `crosstab()` to cross-tabulate two `RasterLayer` objects.

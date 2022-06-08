@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Thursday September 8, 2022 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Thursday September 8, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Thursday September 8, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Thursday September 8, 2022 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tuesday-september-6-2022.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i>Syllabus</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#gis5122-applied-spatial-statistics"><i class="fa fa-check"></i>GIS5122: Applied Spatial Statistics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i>Course description</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#expected-learning-outcomes"><i class="fa fa-check"></i>Expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#materials"><i class="fa fa-check"></i>Materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#class-meetings"><i class="fa fa-check"></i>Class meetings</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#grades"><i class="fa fa-check"></i>Grades</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#ethics"><i class="fa fa-check"></i>Ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#outline-of-topics"><i class="fa fa-check"></i>Outline of topics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#schedule-subject-to-change-with-notice"><i class="fa fa-check"></i>Schedule (subject to change with notice)</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#today"><i class="fa fa-check"></i>Today</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i>Are you completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#today-1"><i class="fa fa-check"></i>Today</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#review-of-class-expectations"><i class="fa fa-check"></i>Review of class expectations</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#today-2"><i class="fa fa-check"></i>Today</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-the-dplyr-package"><i class="fa fa-check"></i>Working with data frames using functions from the {dplyr} package</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#today-3"><i class="fa fa-check"></i>Today</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#more-resources-and-additional-examples"><i class="fa fa-check"></i>More resources and additional examples</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html"><i class="fa fa-check"></i>Tuesday September 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#today-4"><i class="fa fa-check"></i>Today</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#today-5"><i class="fa fa-check"></i>Today</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thursday-september-8-2022" class="section level1 unnumbered">
+<h1>Thursday September 8, 2022</h1>
+<p><strong>“Hell isn’t other people’s code. Hell is your own code from 3 years ago.”</strong> – Jeff Atwood</p>
+<div id="today-5" class="section level2 unnumbered">
+<h2>Today</h2>
+<ul>
+<li>Spatial data subsets and joins</li>
+<li>Interpolating variables using areal weights</li>
+<li>S4 spatial data frames</li>
+</ul>
+</div>
+<div id="spatial-data-subsets-and-joins" class="section level2 unnumbered">
+<h2>Spatial data subsets and joins</h2>
+<p>Variables (stored as columns) in spatial data structures are referred to as ‘attributes’.</p>
+<p>With simple feature data frames you can create data subsets using <code>[</code>, <code>subset()</code> and <code>$</code> from the {base} R packages and <code>select()</code> and <code>filter()</code> from the {dplyr} package.</p>
+<p>The <code>[</code> operator subsets rows and columns. Indexes specify the elements you wish to extract from an object, e.g. object[i, j], with i and j typically being numbers representing rows and columns. Leaving i or j empty returns all rows or columns, so <code>world[1:5, ]</code> returns the first five rows and all columns of the simple feature data frame <code>world</code> (from the {spData} package). Examples</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="thursday-september-8-2022.html#cb426-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> spData<span class="sc">::</span>world</span>
+<span id="cb426-2"><a href="thursday-september-8-2022.html#cb426-2" aria-hidden="true" tabindex="-1"></a>world[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">9</span>), ] <span class="co"># subset rows by row position</span></span></code></pre></div>
+<pre><code>## Simple feature collection with 3 features and 10 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -18.28799 xmax: 180 ymax: 71.35776
+## Geodetic CRS:  WGS 84
+## # A tibble: 3 × 11
+##   iso_a2 name_long   continent region_un subregion type  area_km2    pop lifeExp
+##   &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1 FJ     Fiji        Oceania   Oceania   Melanesia Sove…   19290. 8.86e5    70.0
+## 2 US     United Sta… North Am… Americas  Northern… Coun… 9510744. 3.19e8    78.8
+## 3 ID     Indonesia   Asia      Asia      South-Ea… Sove… 1819251. 2.55e8    68.9
+## # … with 2 more variables: gdpPercap &lt;dbl&gt;, geom &lt;MULTIPOLYGON [°]&gt;</code></pre>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="thursday-september-8-2022.html#cb428-1" aria-hidden="true" tabindex="-1"></a>world[, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>] <span class="co"># subset columns by column position</span></span></code></pre></div>
+<pre><code>## Simple feature collection with 177 features and 3 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 177 × 4
+##    iso_a2 name_long        continent                                        geom
+##    &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                              &lt;MULTIPOLYGON [°]&gt;
+##  1 FJ     Fiji             Oceania       (((-180 -16.55522, -179.9174 -16.50178…
+##  2 TZ     Tanzania         Africa        (((33.90371 -0.95, 31.86617 -1.02736, …
+##  3 EH     Western Sahara   Africa        (((-8.66559 27.65643, -8.817828 27.656…
+##  4 CA     Canada           North America (((-132.71 54.04001, -133.18 54.16998,…
+##  5 US     United States    North America (((-171.7317 63.78252, -171.7911 63.40…
+##  6 KZ     Kazakhstan       Asia          (((87.35997 49.21498, 86.82936 49.8266…
+##  7 UZ     Uzbekistan       Asia          (((55.96819 41.30864, 57.09639 41.3223…
+##  8 PG     Papua New Guinea Oceania       (((141.0002 -2.600151, 141.0171 -5.859…
+##  9 ID     Indonesia        Asia          (((104.37 -1.084843, 104.0108 -1.05921…
+## 10 AR     Argentina        South America (((-68.63401 -52.63637, -68.63335 -54.…
+## # … with 167 more rows</code></pre>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="thursday-september-8-2022.html#cb430-1" aria-hidden="true" tabindex="-1"></a>world[, <span class="fu">c</span>(<span class="st">&quot;name_long&quot;</span>, <span class="st">&quot;lifeExp&quot;</span>)] <span class="co"># subset columns by name</span></span></code></pre></div>
+<pre><code>## Simple feature collection with 177 features and 2 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 177 × 3
+##    name_long        lifeExp                                                 geom
+##    &lt;chr&gt;              &lt;dbl&gt;                                   &lt;MULTIPOLYGON [°]&gt;
+##  1 Fiji                70.0 (((-180 -16.55522, -179.9174 -16.50178, -179.7933 -…
+##  2 Tanzania            64.2 (((33.90371 -0.95, 31.86617 -1.02736, 30.76986 -1.0…
+##  3 Western Sahara      NA   (((-8.66559 27.65643, -8.817828 27.65643, -8.794884…
+##  4 Canada              82.0 (((-132.71 54.04001, -133.18 54.16998, -133.2397 53…
+##  5 United States       78.8 (((-171.7317 63.78252, -171.7911 63.40585, -171.553…
+##  6 Kazakhstan          71.6 (((87.35997 49.21498, 86.82936 49.82667, 85.54127 4…
+##  7 Uzbekistan          71.0 (((55.96819 41.30864, 57.09639 41.32231, 56.93222 4…
+##  8 Papua New Guinea    65.2 (((141.0002 -2.600151, 141.0171 -5.859022, 141.0339…
+##  9 Indonesia           68.9 (((104.37 -1.084843, 104.0108 -1.059212, 103.4376 -…
+## 10 Argentina           76.3 (((-68.63401 -52.63637, -68.63335 -54.8695, -67.562…
+## # … with 167 more rows</code></pre>
+<p>Here you use logical vectors to create a subset. First create a logical vector <code>sel_area</code>.</p>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="thursday-september-8-2022.html#cb432-1" aria-hidden="true" tabindex="-1"></a>sel_area <span class="ot">&lt;-</span> world<span class="sc">$</span>area_km2 <span class="sc">&lt;</span> <span class="dv">10000</span></span>
+<span id="cb432-2"><a href="thursday-september-8-2022.html#cb432-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sel_area)</span></code></pre></div>
+<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="thursday-september-8-2022.html#cb434-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sel_area)</span></code></pre></div>
+<pre><code>##    Mode   FALSE    TRUE 
+## logical     170       7</code></pre>
+<p>Then select only cases from the <code>world</code> simple feature data frame where the elements of the <code>sel_area</code> vector are <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="thursday-september-8-2022.html#cb436-1" aria-hidden="true" tabindex="-1"></a>small_countries <span class="ot">&lt;-</span> world[sel_area, ]</span></code></pre></div>
+<p>This creates a new simple feature data frame, <code>small_countries</code>, containing nations whose surface area is smaller than 10,000 square kilometers.</p>
+<p>Note: there is no harm in keeping the geometry column because an operation on a {sf} object only changes the geometry when appropriate (e.g. by dissolving borders between adjacent polygons following aggregation). This means that the speed of operations with attribute data in {sf} objects is the same as with columns in a data frames.</p>
+<p>The {base} R function <code>subset()</code> provides another way to get the same result.</p>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="thursday-september-8-2022.html#cb437-1" aria-hidden="true" tabindex="-1"></a>small_countries <span class="ot">&lt;-</span> <span class="fu">subset</span>(world, </span>
+<span id="cb437-2"><a href="thursday-september-8-2022.html#cb437-2" aria-hidden="true" tabindex="-1"></a>                          area_km2 <span class="sc">&lt;</span> <span class="dv">10000</span>)</span></code></pre></div>
+<p>The {dplyr} verbs work on {sf} spatial data frames. The functions include <code>dplyr::select()</code> and <code>dplyr::filter()</code>.</p>
+<p>CAUTION! The {dplyr} and {raster} packages have a <code>select()</code> function. When using both packages in the same session, the function in the most recently attached package will be used, ‘masking’ the other function. This will generate error messages containing text like: unable to find an inherited method for function ‘select’ for signature “sf”. To avoid this error message, and prevent ambiguity, you should always use the long-form function name, prefixed by the package name and two colons <code>dplyr::select()</code>.</p>
+<p>The <code>dplyr::select()</code> function picks the columns by name or position. For example, we can select only two columns, <code>name_long</code> and <code>pop</code>, with the following command.</p>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="thursday-september-8-2022.html#cb438-1" aria-hidden="true" tabindex="-1"></a>world1 <span class="ot">&lt;-</span> world <span class="sc">|&gt;</span></span>
+<span id="cb438-2"><a href="thursday-september-8-2022.html#cb438-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, pop)</span>
+<span id="cb438-3"><a href="thursday-september-8-2022.html#cb438-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(world1)</span></code></pre></div>
+<pre><code>## [1] &quot;name_long&quot; &quot;pop&quot;       &quot;geom&quot;</code></pre>
+<p>The result is a simple feature data frame with the geometry column.</p>
+<p>With the <code>select()</code> function you can subset and rename columns at the same time. Here you select the columns with names <code>name_long</code> and <code>pop</code> and give the <code>pop</code> column a new name (<code>population</code>).</p>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="thursday-september-8-2022.html#cb440-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb440-2"><a href="thursday-september-8-2022.html#cb440-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, </span>
+<span id="cb440-3"><a href="thursday-september-8-2022.html#cb440-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">population =</span> pop)</span></code></pre></div>
+<pre><code>## Simple feature collection with 177 features and 2 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 177 × 3
+##    name_long        population                                              geom
+##    &lt;chr&gt;                 &lt;dbl&gt;                                &lt;MULTIPOLYGON [°]&gt;
+##  1 Fiji                 885806 (((-180 -16.55522, -179.9174 -16.50178, -179.793…
+##  2 Tanzania           52234869 (((33.90371 -0.95, 31.86617 -1.02736, 30.76986 -…
+##  3 Western Sahara           NA (((-8.66559 27.65643, -8.817828 27.65643, -8.794…
+##  4 Canada             35535348 (((-132.71 54.04001, -133.18 54.16998, -133.2397…
+##  5 United States     318622525 (((-171.7317 63.78252, -171.7911 63.40585, -171.…
+##  6 Kazakhstan         17288285 (((87.35997 49.21498, 86.82936 49.82667, 85.5412…
+##  7 Uzbekistan         30757700 (((55.96819 41.30864, 57.09639 41.32231, 56.9322…
+##  8 Papua New Guinea    7755785 (((141.0002 -2.600151, 141.0171 -5.859022, 141.0…
+##  9 Indonesia         255131116 (((104.37 -1.084843, 104.0108 -1.059212, 103.437…
+## 10 Argentina          42981515 (((-68.63401 -52.63637, -68.63335 -54.8695, -67.…
+## # … with 167 more rows</code></pre>
+<p>The <code>dplyr::pull()</code> function returns a single vector without the geometry.</p>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="thursday-september-8-2022.html#cb442-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb442-2"><a href="thursday-september-8-2022.html#cb442-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(pop)</span></code></pre></div>
+<pre><code>##   [1]     885806   52234869         NA   35535348  318622525   17288285
+##   [7]   30757700    7755785  255131116   42981515   17613798   73722860
+##  [13]   13513125   46024250   37737913   13569438   10572466   10405844
+##  [19]  143819666     382169         NA         NA      56295         NA
+##  [25]    1212814   54539571    2145785  124221600    3419546  204213133
+##  [31]   10562159   30973354   47791911    3903986    4757575    6013997
+##  [37]    8809216    6281189   15923559     351694   30738378     763393
+##  [43]     547928         NA   15903112    3534874    2862087   11439767
+##  [49]   15411675    2168573    2370992   14546111   16962846    4063920
+##  [55]   10286712   19148219  176460502   22239904    7228915   26962563
+##  [61]   22531350   11805509    1725744    4390737    7079162   17585977
+##  [67]    4515392    4871101    1875713    1129424   15620974   17068838
+##  [73]   27212382    1295097   26920466    9891790    8215700    5603279
+##  [79]   23589801    4294682    1917852   11143908   39113313    8809306
+##  [85]    9070867    2374419    3782450   35006080    3960925     258850
+##  [91]   15270790   68416772    6576397   51924182   92544915   25116363
+##  [97]   50746659    2923896 1293859294  159405279     776448   28323241
+## [103]  185546257   32758020    8362745    5835500    5466241   78411092
+## [109]   19203090    2906220    9696110    9474511   45271947   38011735
+## [115]    8546356    9866468    3556397   19908979    2932367    1993782
+## [121]    1314545   80982500    7223938   10892413   77030628    2889104
+## [127]    4238389    8188649     556319   11209057   16865008   10401062
+## [133]   46480882    4657740     268050     575504    4509700   23504138
+## [139]   20771000 1364270000         NA   60789140    5643475   64613160
+## [145]     327386    9535079    3727000  100102249   30228017     411704
+## [151]    2061980    5461512    5418649   10525347         NA  127276000
+## [157]    6552584   26246327   30776722         NA         NA    1152309
+## [163]   34318082   91812566    6204108   97366774     912164         NA
+## [169]   38833338   11345357    3566002    2077495    7130576     621810
+## [175]    1821800    1354493   11530971</code></pre>
+<p>The <code>filter()</code> function keeps only rows matching given criteria, e.g., only countries with a very high average life expectancy.</p>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="thursday-september-8-2022.html#cb444-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb444-2"><a href="thursday-september-8-2022.html#cb444-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(lifeExp <span class="sc">&gt;</span> <span class="dv">82</span>)</span></code></pre></div>
+<pre><code>## Simple feature collection with 9 features and 10 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -24.32618 ymin: -43.6346 xmax: 153.5695 ymax: 69.10625
+## Geodetic CRS:  WGS 84
+## # A tibble: 9 × 11
+##   iso_a2 name_long   continent region_un subregion type  area_km2    pop lifeExp
+## * &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1 IL     Israel      Asia      Asia      Western … Coun…   22991. 8.22e6    82.2
+## 2 SE     Sweden      Europe    Europe    Northern… Sove…  450582. 9.70e6    82.3
+## 3 CH     Switzerland Europe    Europe    Western … Sove…   46185. 8.19e6    83.2
+## 4 LU     Luxembourg  Europe    Europe    Western … Sove…    2417. 5.56e5    82.2
+## 5 ES     Spain       Europe    Europe    Southern… Sove…  502306. 4.65e7    83.2
+## 6 AU     Australia   Oceania   Oceania   Australi… Coun… 7687614. 2.35e7    82.3
+## 7 IT     Italy       Europe    Europe    Southern… Sove…  315105. 6.08e7    83.1
+## 8 IS     Iceland     Europe    Europe    Northern… Sove…  107736. 3.27e5    82.9
+## 9 JP     Japan       Asia      Asia      Eastern … Sove…  404620. 1.27e8    83.6
+## # … with 2 more variables: gdpPercap &lt;dbl&gt;, geom &lt;MULTIPOLYGON [°]&gt;</code></pre>
+<p>Aggregation summarizes a data frame by a grouping variable. An example of aggregation is to calculate the number of people per continent based on country-level data (one row per country).</p>
+<p>This is done with the <code>dplyr::group_by()</code> and <code>dplyr::summarize()</code> functions.</p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="thursday-september-8-2022.html#cb446-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb446-2"><a href="thursday-september-8-2022.html#cb446-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span></span>
+<span id="cb446-3"><a href="thursday-september-8-2022.html#cb446-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Population =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb446-4"><a href="thursday-september-8-2022.html#cb446-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nCountries =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## Simple feature collection with 8 features and 3 fields
+## Geometry type: GEOMETRY
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 8 × 4
+##   continent               Population nCountries                             geom
+##   &lt;chr&gt;                        &lt;dbl&gt;      &lt;int&gt;                   &lt;GEOMETRY [°]&gt;
+## 1 Africa                  1154946633         51 MULTIPOLYGON (((43.1453 11.4620…
+## 2 Antarctica                       0          1 MULTIPOLYGON (((-180 -89.9, 180…
+## 3 Asia                    4311408059         47 MULTIPOLYGON (((104.37 -1.08484…
+## 4 Europe                   669036256         39 MULTIPOLYGON (((-180 64.97971, …
+## 5 North America            565028684         18 MULTIPOLYGON (((-132.71 54.0400…
+## 6 Oceania                   37757833          7 MULTIPOLYGON (((-180 -16.55522,…
+## 7 Seven seas (open ocean)          0          1 POLYGON ((68.935 -48.625, 68.86…
+## 8 South America            412060811         13 MULTIPOLYGON (((-66.95992 -54.8…</code></pre>
+<p>The two columns in the resulting table are <code>Population</code> and <code>nCountries</code>. The functions <code>sum()</code> and <code>dplyr::n()</code> were the aggregating functions.</p>
+<p>The result is a simple feature data frame with a single row representing attributes of the world and the geometry as a single multi-polygon through the geometric <em>union</em> operator.</p>
+<p>You can chain together functions to find the world’s three most populous continents and the number of countries they contain.</p>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="thursday-september-8-2022.html#cb448-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span> </span>
+<span id="cb448-2"><a href="thursday-september-8-2022.html#cb448-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(pop, continent) <span class="sc">|&gt;</span> </span>
+<span id="cb448-3"><a href="thursday-september-8-2022.html#cb448-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span> </span>
+<span id="cb448-4"><a href="thursday-september-8-2022.html#cb448-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Population =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb448-5"><a href="thursday-september-8-2022.html#cb448-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nCountries =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb448-6"><a href="thursday-september-8-2022.html#cb448-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">3</span>, <span class="at">wt =</span> Population) </span></code></pre></div>
+<pre><code>## Simple feature collection with 3 features and 3 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -34.81917 xmax: 180 ymax: 81.2504
+## Geodetic CRS:  WGS 84
+## # A tibble: 3 × 4
+##   continent Population nCountries                                           geom
+## * &lt;chr&gt;          &lt;dbl&gt;      &lt;int&gt;                             &lt;MULTIPOLYGON [°]&gt;
+## 1 Africa    1154946633         51 (((43.1453 11.46204, 42.71587 11.73564, 43.28…
+## 2 Asia      4311408059         47 (((104.37 -1.084843, 104.0108 -1.059212, 103.…
+## 3 Europe     669036256         39 (((-180 64.97971, -179.4327 65.40411, -179.88…</code></pre>
+<p>If you want to create a new column based on existing columns use <code>dplyr::mutate()</code>. For example, if you want to calculate population density for each country divide the population column, here <code>pop</code>, by an area column, here <code>area_km2</code> with unit area in square kilometers.</p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="thursday-september-8-2022.html#cb450-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span> </span>
+<span id="cb450-2"><a href="thursday-september-8-2022.html#cb450-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Population_Density =</span> pop <span class="sc">/</span> area_km2)</span></code></pre></div>
+<pre><code>## Simple feature collection with 177 features and 11 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 177 × 12
+##    iso_a2 name_long continent region_un subregion type  area_km2     pop lifeExp
+##  * &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+##  1 FJ     Fiji      Oceania   Oceania   Melanesia Sove…   1.93e4  8.86e5    70.0
+##  2 TZ     Tanzania  Africa    Africa    Eastern … Sove…   9.33e5  5.22e7    64.2
+##  3 EH     Western … Africa    Africa    Northern… Inde…   9.63e4 NA         NA  
+##  4 CA     Canada    North Am… Americas  Northern… Sove…   1.00e7  3.55e7    82.0
+##  5 US     United S… North Am… Americas  Northern… Coun…   9.51e6  3.19e8    78.8
+##  6 KZ     Kazakhst… Asia      Asia      Central … Sove…   2.73e6  1.73e7    71.6
+##  7 UZ     Uzbekist… Asia      Asia      Central … Sove…   4.61e5  3.08e7    71.0
+##  8 PG     Papua Ne… Oceania   Oceania   Melanesia Sove…   4.65e5  7.76e6    65.2
+##  9 ID     Indonesia Asia      Asia      South-Ea… Sove…   1.82e6  2.55e8    68.9
+## 10 AR     Argentina South Am… Americas  South Am… Sove…   2.78e6  4.30e7    76.3
+## # … with 167 more rows, and 3 more variables: gdpPercap &lt;dbl&gt;,
+## #   geom &lt;MULTIPOLYGON [°]&gt;, Population_Density &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="thursday-september-8-2022.html#cb452-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb452-2"><a href="thursday-september-8-2022.html#cb452-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">transmute</span>(<span class="at">Population_Density =</span> pop <span class="sc">/</span> area_km2)</span></code></pre></div>
+<pre><code>## Simple feature collection with 177 features and 1 field
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 177 × 2
+##    Population_Density                                                       geom
+##  *              &lt;dbl&gt;                                         &lt;MULTIPOLYGON [°]&gt;
+##  1              45.9  (((-180 -16.55522, -179.9174 -16.50178, -179.7933 -16.020…
+##  2              56.0  (((33.90371 -0.95, 31.86617 -1.02736, 30.76986 -1.01455, …
+##  3              NA    (((-8.66559 27.65643, -8.817828 27.65643, -8.794884 27.12…
+##  4               3.54 (((-132.71 54.04001, -133.18 54.16998, -133.2397 53.85108…
+##  5              33.5  (((-171.7317 63.78252, -171.7911 63.40585, -171.5531 63.3…
+##  6               6.33 (((87.35997 49.21498, 86.82936 49.82667, 85.54127 49.6928…
+##  7              66.7  (((55.96819 41.30864, 57.09639 41.32231, 56.93222 41.8260…
+##  8              16.7  (((141.0002 -2.600151, 141.0171 -5.859022, 141.0339 -9.11…
+##  9             140.   (((104.37 -1.084843, 104.0108 -1.059212, 103.4376 -0.7119…
+## 10              15.4  (((-68.63401 -52.63637, -68.63335 -54.8695, -67.56244 -54…
+## # … with 167 more rows</code></pre>
+<p>The <code>dplyr::transmute()</code> function performs the same computation but also removes the other columns (except the geometry column).</p>
+<p>Subsetting (filtering) your data based on geographic boundaries</p>
+<p>The {USAboundaries} package has historical and contemporary boundaries for the United States provided by the U.S. Census Bureau.</p>
+<p>Individual states are extracted using the <code>us_states()</code> function. CAUTION: this function has the same name as the object <code>us_states</code> from the {spData} package.</p>
+<p>Here you use the argument <code>states =</code> to get only the state of Kansas. You then make a plot of the boundary and check the native coordinate reference system (CRS).</p>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="thursday-september-8-2022.html#cb454-1" aria-hidden="true" tabindex="-1"></a>KS.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>(<span class="at">states =</span> <span class="st">&quot;Kansas&quot;</span>)</span>
+<span id="cb454-2"><a href="thursday-september-8-2022.html#cb454-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb454-3"><a href="thursday-september-8-2022.html#cb454-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb454-4"><a href="thursday-september-8-2022.html#cb454-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb454-5"><a href="thursday-september-8-2022.html#cb454-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb454-6"><a href="thursday-september-8-2022.html#cb454-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="thursday-september-8-2022.html#cb455-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(KS.sf)</span></code></pre></div>
+<pre><code>## Coordinate Reference System:
+##   User input: EPSG:4326 
+##   wkt:
+## GEOGCRS[&quot;WGS 84&quot;,
+##     DATUM[&quot;World Geodetic System 1984&quot;,
+##         ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
+##             LENGTHUNIT[&quot;metre&quot;,1]]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     CS[ellipsoidal,2],
+##         AXIS[&quot;geodetic latitude (Lat)&quot;,north,
+##             ORDER[1],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         AXIS[&quot;geodetic longitude (Lon)&quot;,east,
+##             ORDER[2],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     USAGE[
+##         SCOPE[&quot;Horizontal component of 3D system.&quot;],
+##         AREA[&quot;World.&quot;],
+##         BBOX[-90,-180,90,180]],
+##     ID[&quot;EPSG&quot;,4326]]</code></pre>
+<p>The polygon geometry includes the border and the area inside the border. The CRS is described by the 4326 EPSG code and implemented using well-known text (WKT).</p>
+<p>You use a geometric operation to subset spatial data geographically (rather than on some attribute). For example here you subset the tornado tracks as line strings, keeping only those line strings that fall within the Kansas border defined by a polygon geometry.</p>
+<p>First import the tornado data.</p>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="thursday-september-8-2022.html#cb457-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;1950-2020-torn-aspath&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))) {</span>
+<span id="cb457-2"><a href="thursday-september-8-2022.html#cb457-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-aspath.zip&quot;</span>,</span>
+<span id="cb457-3"><a href="thursday-september-8-2022.html#cb457-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath.zip&quot;</span>))</span>
+<span id="cb457-4"><a href="thursday-september-8-2022.html#cb457-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath.zip&quot;</span>), </span>
+<span id="cb457-5"><a href="thursday-september-8-2022.html#cb457-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
+<span id="cb457-6"><a href="thursday-september-8-2022.html#cb457-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb457-7"><a href="thursday-september-8-2022.html#cb457-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb457-8"><a href="thursday-september-8-2022.html#cb457-8" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath&quot;</span>), </span>
+<span id="cb457-9"><a href="thursday-september-8-2022.html#cb457-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;1950-2020-torn-aspath&quot;</span>) </span></code></pre></div>
+<pre><code>## Reading layer `1950-2020-torn-aspath&#39; from data source 
+##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2022/data/1950-2020-torn-aspath&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 66244 features and 22 fields
+## Geometry type: LINESTRING
+## Dimension:     XY
+## Bounding box:  xmin: -163.53 ymin: 17.7212 xmax: -64.7151 ymax: 61.02
+## Geodetic CRS:  WGS 84</code></pre>
+<p>The geometries are line strings representing the approximate track of each tornado. The CRS has EPSG code of 4326, same as the Kansas polygon.</p>
+<p>To keep only the tornado tracks that fall within the border of Kansas you use the <code>sf::st_intersection()</code> function. The first argument (<code>x =</code>) is the simple feature data frame that you want to subset and the second argument (<code>y =</code>) defines the geometry over which the subset occurs.</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="thursday-september-8-2022.html#cb459-1" aria-hidden="true" tabindex="-1"></a>KS_Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_intersection</span>(<span class="at">x =</span> Torn.sf, </span>
+<span id="cb459-2"><a href="thursday-september-8-2022.html#cb459-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">y =</span> KS.sf)</span></code></pre></div>
+<pre><code>## Warning: attribute variables are assumed to be spatially constant throughout all
+## geometries</code></pre>
+<p>You can use the pipe operator (<code>|&gt;</code>) to pass the first argument to the function.</p>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="thursday-september-8-2022.html#cb461-1" aria-hidden="true" tabindex="-1"></a>KS_Torn.sf <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb461-2"><a href="thursday-september-8-2022.html#cb461-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersection</span>(<span class="at">y =</span> KS.sf)</span></code></pre></div>
+<pre><code>## Warning: attribute variables are assumed to be spatially constant throughout all
+## geometries</code></pre>
+<p>You make a plot to see if things appear as you expect.</p>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="thursday-september-8-2022.html#cb463-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb463-2"><a href="thursday-september-8-2022.html#cb463-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb463-3"><a href="thursday-september-8-2022.html#cb463-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_Torn.sf)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-193-1.png" width="672" /></p>
+<p>Note that no tornado track lies outside the state border. Line strings that lie outside the border are clipped at the border. However the attribute values represent the entire track.</p>
+<p>If you want the entire tornado track for all tornadoes that passed into (or through) the state, then you first use the geometric binary predict function <code>sf::st_intersects()</code>. With <code>sparse = FALSE</code> a matrix with a single column of <code>TRUE</code>s and <code>FALSE</code>s is returned. Here you use the piping operator to implicitly specify the <code>x =</code> argument as the <code>Torn.sf</code> data frame.</p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="thursday-september-8-2022.html#cb464-1" aria-hidden="true" tabindex="-1"></a>Intersects <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb464-2"><a href="thursday-september-8-2022.html#cb464-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersects</span>(<span class="at">y =</span> KS.sf, <span class="at">sparse =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb464-3"><a href="thursday-september-8-2022.html#cb464-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb464-4"><a href="thursday-september-8-2022.html#cb464-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Intersects)</span></code></pre></div>
+<pre><code>##       [,1]
+## [1,] FALSE
+## [2,] FALSE
+## [3,] FALSE
+## [4,] FALSE
+## [5,] FALSE
+## [6,] FALSE</code></pre>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="thursday-september-8-2022.html#cb466-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(Intersects)</span></code></pre></div>
+<pre><code>## [1] 4377</code></pre>
+<p>Next you create a new data frame from the original data frame keeping only observations (rows) where <code>Interects</code> is TRUE.</p>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="thursday-september-8-2022.html#cb468-1" aria-hidden="true" tabindex="-1"></a>KS_Torn2.sf <span class="ot">&lt;-</span> Torn.sf[Intersects, ]</span>
+<span id="cb468-2"><a href="thursday-september-8-2022.html#cb468-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb468-3"><a href="thursday-september-8-2022.html#cb468-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb468-4"><a href="thursday-september-8-2022.html#cb468-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb468-5"><a href="thursday-september-8-2022.html#cb468-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_Torn2.sf)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-195-1.png" width="672" /></p>
+<p>Are tornadoes more common in some parts of Kansas than others? One way to answer this question is to see how far away the tornado centroid is from the center of the state.</p>
+<p>Start by computing the centers of the state polygon and the combined set of Kansas tornadoes using the <code>sf::st_centroid()</code> function. Note you first use the <code>sf::st_combine()</code> function on the tornadoes.</p>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="thursday-september-8-2022.html#cb469-1" aria-hidden="true" tabindex="-1"></a>geocenterKS <span class="ot">&lt;-</span> KS.sf <span class="sc">|&gt;</span></span>
+<span id="cb469-2"><a href="thursday-september-8-2022.html#cb469-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>()</span></code></pre></div>
+<pre><code>## Warning in st_centroid.sf(KS.sf): st_centroid assumes attributes are constant
+## over geometries of x</code></pre>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="thursday-september-8-2022.html#cb471-1" aria-hidden="true" tabindex="-1"></a>centerKStornadoes <span class="ot">&lt;-</span> KS_Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb471-2"><a href="thursday-september-8-2022.html#cb471-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_combine</span>() <span class="sc">|&gt;</span></span>
+<span id="cb471-3"><a href="thursday-september-8-2022.html#cb471-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>()</span></code></pre></div>
+<p>Then make a map and compute the distance in meters using the <code>sf::st_distance()</code> function.</p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="thursday-september-8-2022.html#cb472-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb472-2"><a href="thursday-september-8-2022.html#cb472-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb472-3"><a href="thursday-september-8-2022.html#cb472-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> geocenterKS, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb472-4"><a href="thursday-september-8-2022.html#cb472-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> centerKStornadoes, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="thursday-september-8-2022.html#cb473-1" aria-hidden="true" tabindex="-1"></a>geocenterKS <span class="sc">|&gt;</span></span>
+<span id="cb473-2"><a href="thursday-september-8-2022.html#cb473-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_distance</span>(centerKStornadoes)</span></code></pre></div>
+<pre><code>## Units: [m]
+##          [,1]
+## [1,] 2875.099</code></pre>
+<p>Less than 3 km!</p>
+<p>More examples: <a href="https://www.jla-data.net/eng/spatial-aggregation/" class="uri">https://www.jla-data.net/eng/spatial-aggregation/</a></p>
+<p>Mutating data frames with joins</p>
+<p>Combining data from different sources based on a shared variable is a common operation. The {dplyr} package has join functions that follow naming conventions used in database languages (like SQL).</p>
+<p>Given two data frames labeled <code>x</code> and <code>y</code>, the join functions add columns <em>from y</em> <em>to x</em>, matching rows based on the function name.</p>
+<ul>
+<li><code>inner_join()</code>: includes all rows in <code>x</code> <em>and</em> <code>y</code></li>
+<li><code>left_join()</code>: includes all rows in <code>x</code></li>
+<li><code>full_join()</code>: includes all rows in <code>x</code> <em>or</em> <code>y</code></li>
+</ul>
+<p>Join functions work the same on data frames and on simple feature data frames. The most common type of attribute join on spatial data takes a simple feature data frame as the first argument and adds columns to it from a data a frame specified as the second argument.</p>
+<p>For example, you combine data on coffee production with the <code>spData::world</code> simple feature data frame. Coffee production by country is in the data frame called <code>spData::coffee_data</code>.</p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="thursday-september-8-2022.html#cb475-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(spData<span class="sc">::</span>coffee_data)</span></code></pre></div>
+<pre><code>## Rows: 47
+## Columns: 3
+## $ name_long              &lt;chr&gt; &quot;Angola&quot;, &quot;Bolivia&quot;, &quot;Brazil&quot;, &quot;Burundi&quot;, &quot;Came…
+## $ coffee_production_2016 &lt;int&gt; NA, 3, 3277, 37, 8, NA, 4, 1330, 28, 114, NA, 1…
+## $ coffee_production_2017 &lt;int&gt; NA, 4, 2786, 38, 6, NA, 12, 1169, 32, 130, NA, …</code></pre>
+<p>It has 3 columns: <code>name_long</code> names major coffee-producing nations and <code>coffee_production_2016</code> and <code>coffee_production_2017</code> contain estimated values for coffee production in units of 60-kg bags per year.</p>
+<p>First select only the name and GDP (per person) from the <code>spData::world</code> simple feature data frame.</p>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="thursday-september-8-2022.html#cb477-1" aria-hidden="true" tabindex="-1"></a>( world.sf <span class="ot">&lt;-</span> spData<span class="sc">::</span>world <span class="sc">|&gt;</span></span>
+<span id="cb477-2"><a href="thursday-september-8-2022.html#cb477-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, gdpPercap) )</span></code></pre></div>
+<pre><code>## Simple feature collection with 177 features and 2 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 177 × 3
+##    name_long        gdpPercap                                               geom
+##    &lt;chr&gt;                &lt;dbl&gt;                                 &lt;MULTIPOLYGON [°]&gt;
+##  1 Fiji                 8222. (((-180 -16.55522, -179.9174 -16.50178, -179.7933…
+##  2 Tanzania             2402. (((33.90371 -0.95, 31.86617 -1.02736, 30.76986 -1…
+##  3 Western Sahara         NA  (((-8.66559 27.65643, -8.817828 27.65643, -8.7948…
+##  4 Canada              43079. (((-132.71 54.04001, -133.18 54.16998, -133.2397 …
+##  5 United States       51922. (((-171.7317 63.78252, -171.7911 63.40585, -171.5…
+##  6 Kazakhstan          23587. (((87.35997 49.21498, 86.82936 49.82667, 85.54127…
+##  7 Uzbekistan           5371. (((55.96819 41.30864, 57.09639 41.32231, 56.93222…
+##  8 Papua New Guinea     3709. (((141.0002 -2.600151, 141.0171 -5.859022, 141.03…
+##  9 Indonesia           10003. (((104.37 -1.084843, 104.0108 -1.059212, 103.4376…
+## 10 Argentina           18798. (((-68.63401 -52.63637, -68.63335 -54.8695, -67.5…
+## # … with 167 more rows</code></pre>
+<p>The <code>dplyr::left_join()</code> function takes the data frame named by the argument <code>x =</code> and joins it to the data frame named by the argument <code>y =</code>.</p>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="thursday-september-8-2022.html#cb479-1" aria-hidden="true" tabindex="-1"></a>( world_coffee.sf <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(<span class="at">x =</span> world.sf, </span>
+<span id="cb479-2"><a href="thursday-september-8-2022.html#cb479-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">y =</span> spData<span class="sc">::</span>coffee_data) )</span></code></pre></div>
+<pre><code>## Joining, by = &quot;name_long&quot;</code></pre>
+<pre><code>## Simple feature collection with 177 features and 4 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84
+## # A tibble: 177 × 5
+##    name_long        gdpPercap                              geom coffee_producti…
+##    &lt;chr&gt;                &lt;dbl&gt;                &lt;MULTIPOLYGON [°]&gt;            &lt;int&gt;
+##  1 Fiji                 8222. (((-180 -16.55522, -179.9174 -16…               NA
+##  2 Tanzania             2402. (((33.90371 -0.95, 31.86617 -1.0…               81
+##  3 Western Sahara         NA  (((-8.66559 27.65643, -8.817828 …               NA
+##  4 Canada              43079. (((-132.71 54.04001, -133.18 54.…               NA
+##  5 United States       51922. (((-171.7317 63.78252, -171.7911…               NA
+##  6 Kazakhstan          23587. (((87.35997 49.21498, 86.82936 4…               NA
+##  7 Uzbekistan           5371. (((55.96819 41.30864, 57.09639 4…               NA
+##  8 Papua New Guinea     3709. (((141.0002 -2.600151, 141.0171 …              114
+##  9 Indonesia           10003. (((104.37 -1.084843, 104.0108 -1…              742
+## 10 Argentina           18798. (((-68.63401 -52.63637, -68.6333…               NA
+## # … with 167 more rows, and 1 more variable: coffee_production_2017 &lt;int&gt;</code></pre>
+<p>Because the two data frames share a common variable name (<code>name_long</code>) the join works without using the <code>by =</code> argument. The result is a simple feature data frame identical to the <code>world.sf</code> object but with two new variables indicating coffee production in 2016 and 2017.</p>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="thursday-september-8-2022.html#cb482-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(world_coffee.sf)</span></code></pre></div>
+<pre><code>## [1] &quot;name_long&quot;              &quot;gdpPercap&quot;              &quot;geom&quot;                  
+## [4] &quot;coffee_production_2016&quot; &quot;coffee_production_2017&quot;</code></pre>
+<p>For a join to work there must be at least one variable name in common.</p>
+<p>Since the object listed in the <code>x =</code> argument is a simple feature data frame, the join function returns a simple feature data frame with the same number of rows (observations).</p>
+<p>Although there are only 47 rows of data in <code>spData::coffee_data</code>, all 177 of the country records in <code>world.sf</code> are kept intact in <code>world_coffee.sf</code>. Rows in the first dataset with no match are assigned <code>NA</code> values for the new coffee production variables.</p>
+<p>If you want to keep only countries that have a match in the key variable then use <code>dplyr::inner_join()</code>. Here you use the piping operator to implicitly specify the <code>x =</code> argument as the <code>world.sf</code> data frame.</p>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="thursday-september-8-2022.html#cb484-1" aria-hidden="true" tabindex="-1"></a>world.sf <span class="sc">|&gt;</span></span>
+<span id="cb484-2"><a href="thursday-september-8-2022.html#cb484-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">inner_join</span>(spData<span class="sc">::</span>coffee_data)</span></code></pre></div>
+<pre><code>## Joining, by = &quot;name_long&quot;</code></pre>
+<pre><code>## Simple feature collection with 45 features and 4 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -117.1278 ymin: -33.76838 xmax: 156.02 ymax: 35.49401
+## Geodetic CRS:  WGS 84
+## # A tibble: 45 × 5
+##    name_long          gdpPercap                            geom coffee_producti…
+##    &lt;chr&gt;                  &lt;dbl&gt;              &lt;MULTIPOLYGON [°]&gt;            &lt;int&gt;
+##  1 Tanzania               2402. (((33.90371 -0.95, 31.86617 -1…               81
+##  2 Papua New Guinea       3709. (((141.0002 -2.600151, 141.017…              114
+##  3 Indonesia             10003. (((104.37 -1.084843, 104.0108 …              742
+##  4 Kenya                  2753. (((39.20222 -4.67677, 39.60489…               60
+##  5 Dominican Republic    12663. (((-71.7083 18.045, -71.65766 …                1
+##  6 Timor-Leste            6263. (((124.9687 -8.89279, 125.07 -…               14
+##  7 Mexico                16623. (((-117.1278 32.53534, -116.72…              151
+##  8 Brazil                15374. (((-53.37366 -33.76838, -52.71…             3277
+##  9 Bolivia                6325. (((-69.52968 -10.95173, -68.66…                3
+## 10 Peru                  11548. (((-69.89364 -4.298187, -70.39…              585
+## # … with 35 more rows, and 1 more variable: coffee_production_2017 &lt;int&gt;</code></pre>
+<p>We can join in the other direction, starting with a regular data frame and adding variables from a simple features object.</p>
+<p>More information on attribute data operations such as these is given here: <a href="https://geocompr.robinlovelace.net/attr.html" class="uri">https://geocompr.robinlovelace.net/attr.html</a></p>
+</div>
+<div id="interpolation-using-areal-weights" class="section level2 unnumbered">
+<h2>Interpolation using areal weights</h2>
+<p>Areal-weighted interpolation estimates the value of some variable from a set of polygons to an overlapping but incongruent set of target polygons. For example, suppose you want demographic information given at the Census tract level to be estimated within the tornado damage path. Damage paths do not align with census tract boundaries so areal weighted interpolation is needed to get demographic estimates at the tornado level.</p>
+<p>The function <code>sf::st_interpolate_aw()</code> performs areal-weighted interpolation of polygon data. As an example, consider the number of births by county in North Carolina in over the period 1970 through 1974 (<code>BIR74</code>).</p>
+<p>The data are available as a shapefile as part of the {sf} package system file. Use the <code>sf::st_read()</code> function together with the <code>system.file()</code> function to import the data. Then create a map filling by the <code>BIR74</code> variable.</p>
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="thursday-september-8-2022.html#cb487-1" aria-hidden="true" tabindex="-1"></a>nc.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="fu">system.file</span>(<span class="st">&quot;shape/nc.shp&quot;</span>, </span>
+<span id="cb487-2"><a href="thursday-september-8-2022.html#cb487-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">package =</span> <span class="st">&quot;sf&quot;</span>))</span></code></pre></div>
+<pre><code>## Reading layer `nc&#39; from data source 
+##   `/Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/sf/shape/nc.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 100 features and 14 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+## Geodetic CRS:  NAD27</code></pre>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="thursday-september-8-2022.html#cb489-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nc.sf) <span class="sc">+</span></span>
+<span id="cb489-2"><a href="thursday-september-8-2022.html#cb489-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74))</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-203-1.png" width="672" /></p>
+<p>Next construct a 20 by 10 grid of polygons that overlap the state using the <code>sf::st_make_grid()</code> function. The function takes the bounding box from the <code>nc.sf</code> simple feature data frame and constructs a two-dimension grid using the dimensions specified with the <code>n =</code> argument.</p>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb490-1"><a href="thursday-september-8-2022.html#cb490-1" aria-hidden="true" tabindex="-1"></a>g.sfc <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_make_grid</span>(nc.sf, </span>
+<span id="cb490-2"><a href="thursday-september-8-2022.html#cb490-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
+<span id="cb490-3"><a href="thursday-september-8-2022.html#cb490-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb490-4"><a href="thursday-september-8-2022.html#cb490-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb490-5"><a href="thursday-september-8-2022.html#cb490-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> g.sfc, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb490-6"><a href="thursday-september-8-2022.html#cb490-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> nc.sf, <span class="at">fill =</span> <span class="st">&quot;transparent&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
+<p>The result is overlapping but incongruent sets of polygons as a <code>sfc</code> (simple feature column).</p>
+<p>Then you use the <code>sf::st_interpolate_aw()</code> function with the first argument a simple feature data frame for which you want to aggregate a particular variable and the argument <code>to =</code> to the set of polygons for which you want the variable to be aggregated. The name of the variable must be put in quotes inside the subset operator <code>[]</code>. The argument <code>extensive =</code> if <code>FALSE</code> (default) assumes the variable is spatially intensive (like population density) and the mean is preserved.</p>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="thursday-september-8-2022.html#cb491-1" aria-hidden="true" tabindex="-1"></a>a1.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(nc.sf[<span class="st">&quot;BIR74&quot;</span>], </span>
+<span id="cb491-2"><a href="thursday-september-8-2022.html#cb491-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">to =</span> g.sfc,</span>
+<span id="cb491-3"><a href="thursday-september-8-2022.html#cb491-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">extensive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## Warning in st_interpolate_aw.sf(nc.sf[&quot;BIR74&quot;], to = g.sfc, extensive = FALSE):
+## st_interpolate_aw assumes attributes are constant or uniform over areas of x</code></pre>
+<p>The result is a simple feature data frame with the same polygons geometry as the <code>sfc</code> grid and a single variable called (<code>BIR74</code>).</p>
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="thursday-september-8-2022.html#cb493-1" aria-hidden="true" tabindex="-1"></a>( p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span>  </span>
+<span id="cb493-2"><a href="thursday-september-8-2022.html#cb493-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> a1.sf, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74)) <span class="sc">+</span></span>
+<span id="cb493-3"><a href="thursday-september-8-2022.html#cb493-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">18000</span>)) <span class="sc">+</span></span>
+<span id="cb493-4"><a href="thursday-september-8-2022.html#cb493-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Intensive&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-206-1.png" width="672" /></p>
+<p>Note that the average number of births across the state at the county level matches (roughly) the average number of births across the grid of polygons, but the sums do not match.</p>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb494-1"><a href="thursday-september-8-2022.html#cb494-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(a1.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">mean</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
+<pre><code>## [1] 1.040669</code></pre>
+<div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb496-1"><a href="thursday-september-8-2022.html#cb496-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(a1.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">sum</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
+<pre><code>## [1] 1.436123</code></pre>
+<p>An <em>intensive</em> variable is independent of the spatial units (e.g., population density, percentages); a variable that has been normalized in some fashion. An <em>extensive</em> variable depends on the spatial unit (e.g., population totals). Assuming a uniform population density, the number of people will depend on the size of the spatial area.</p>
+<p>Since the number of births in each county is an extensive variable, we change the <code>extensive =</code> argument to <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb498-1"><a href="thursday-september-8-2022.html#cb498-1" aria-hidden="true" tabindex="-1"></a>a2.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(nc.sf[<span class="st">&quot;BIR74&quot;</span>], </span>
+<span id="cb498-2"><a href="thursday-september-8-2022.html#cb498-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">to =</span> g.sfc, </span>
+<span id="cb498-3"><a href="thursday-september-8-2022.html#cb498-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">extensive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Warning in st_interpolate_aw.sf(nc.sf[&quot;BIR74&quot;], to = g.sfc, extensive = TRUE):
+## st_interpolate_aw assumes attributes are constant or uniform over areas of x</code></pre>
+<div class="sourceCode" id="cb500"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb500-1"><a href="thursday-september-8-2022.html#cb500-1" aria-hidden="true" tabindex="-1"></a>( p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(a2.sf) <span class="sc">+</span>  </span>
+<span id="cb500-2"><a href="thursday-september-8-2022.html#cb500-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74)) <span class="sc">+</span></span>
+<span id="cb500-3"><a href="thursday-september-8-2022.html#cb500-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">18000</span>)) <span class="sc">+</span></span>
+<span id="cb500-4"><a href="thursday-september-8-2022.html#cb500-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Extensive&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
+<p>In this case you preserve the total number of births across the domain. You verify this ‘mass preservation’ property (pycnophylactic property) with a ratio of one.</p>
+<div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb501-1"><a href="thursday-september-8-2022.html#cb501-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(a2.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">sum</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>Here you create a plot of both interpolations.</p>
+<div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb503-1"><a href="thursday-september-8-2022.html#cb503-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb503-2"><a href="thursday-september-8-2022.html#cb503-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb503-3"><a href="thursday-september-8-2022.html#cb503-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
+<p>Example: tornado paths and housing units</p>
+<p>Here you are interested in the number of houses (housing units) affected by tornadoes occurring in Florida 2014-2020. You begin by creating a polygon geometry for each tornado record.</p>
+<p>Import the data, transform the native CRS to 3857 (pseudo-Mercator), and filter on <code>yr</code> (year) and <code>st</code> (state).</p>
+<div class="sourceCode" id="cb504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb504-1"><a href="thursday-september-8-2022.html#cb504-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb504-2"><a href="thursday-september-8-2022.html#cb504-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3857</span>) <span class="sc">|&gt;</span></span>
+<span id="cb504-3"><a href="thursday-september-8-2022.html#cb504-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(yr <span class="sc">&gt;=</span> <span class="dv">2014</span>, </span>
+<span id="cb504-4"><a href="thursday-september-8-2022.html#cb504-4" aria-hidden="true" tabindex="-1"></a>                st <span class="sc">==</span> <span class="st">&quot;FL&quot;</span>)</span></code></pre></div>
+<p>Next change the geometries from line strings to polygons to represent the tornado path (‘footprint’). The path width is given by the variable labeled <code>wid</code>. First we create new a new variable with the width in units of meters and then use the <code>st_buffer()</code> function with the <code>dist =</code> argument set to 1/2 the width.</p>
+<div class="sourceCode" id="cb505"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb505-1"><a href="thursday-september-8-2022.html#cb505-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb505-2"><a href="thursday-september-8-2022.html#cb505-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Width =</span> wid <span class="sc">*</span> .<span class="dv">9144</span>)</span>
+<span id="cb505-3"><a href="thursday-september-8-2022.html#cb505-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb505-4"><a href="thursday-september-8-2022.html#cb505-4" aria-hidden="true" tabindex="-1"></a>FL_TornPath.sf <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb505-5"><a href="thursday-september-8-2022.html#cb505-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_buffer</span>(<span class="at">dist =</span> FL_Torn.sf<span class="sc">$</span>Width <span class="sc">/</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>To see the change from line string track to polygon path plot both together for one of the tornadoes.</p>
+<div class="sourceCode" id="cb506"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb506-1"><a href="thursday-september-8-2022.html#cb506-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb506-2"><a href="thursday-september-8-2022.html#cb506-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> FL_TornPath.sf[<span class="dv">10</span>, ]) <span class="sc">+</span></span>
+<span id="cb506-3"><a href="thursday-september-8-2022.html#cb506-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> FL_Torn.sf[<span class="dv">10</span>, ], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
+<p>Now you want the number of houses within the path. The housing units are from the census data. You can access these data with the <code>tidycensus::get_acs()</code> function. The {tidycensus} package is an interface to the decennial US Census and American Community Survey APIs and the US Census Bureau’s geographic boundary files. Functions return Census and ACS data as simple feature data frames for all Census geographies.</p>
+<p>Note: You need to get an API key from U.S. Census. Then</p>
+<div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb507-1"><a href="thursday-september-8-2022.html#cb507-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.create</span>(<span class="st">&quot;CensusAPI&quot;</span>) <span class="co"># open then copy/paste your API key</span></span></code></pre></div>
+<p>To ensure the file is only readable by you, not by any other user on the system use the function <code>Sys.chmod()</code> then read the key and install it.</p>
+<div class="sourceCode" id="cb508"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb508-1"><a href="thursday-september-8-2022.html#cb508-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.chmod</span>(<span class="st">&quot;CensusAPI&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;0400&quot;</span>)</span>
+<span id="cb508-2"><a href="thursday-september-8-2022.html#cb508-2" aria-hidden="true" tabindex="-1"></a>key <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_file</span>(<span class="st">&quot;CensusAPI&quot;</span>)</span>
+<span id="cb508-3"><a href="thursday-september-8-2022.html#cb508-3" aria-hidden="true" tabindex="-1"></a>tidycensus<span class="sc">::</span><span class="fu">census_api_key</span>(key, <span class="at">install =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb508-4"><a href="thursday-september-8-2022.html#cb508-4" aria-hidden="true" tabindex="-1"></a><span class="fu">readRenviron</span>(<span class="st">&quot;~/.Renviron&quot;</span>)</span></code></pre></div>
+<p>Make sure the file is listed in the file <code>.gitignore</code> so it doesn’t get included in your git public repository.</p>
+<p>The geometry is the tract level and the variable is the un-weighted sample housing units (B00002_001). Transform the CRS to that of the tornadoes.</p>
+<div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb509-1"><a href="thursday-september-8-2022.html#cb509-1" aria-hidden="true" tabindex="-1"></a>Census.sf <span class="ot">&lt;-</span> tidycensus<span class="sc">::</span><span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">&quot;tract&quot;</span>, </span>
+<span id="cb509-2"><a href="thursday-september-8-2022.html#cb509-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">variables =</span> <span class="st">&quot;B00002_001&quot;</span>,</span>
+<span id="cb509-3"><a href="thursday-september-8-2022.html#cb509-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">state =</span> <span class="st">&quot;FL&quot;</span>,</span>
+<span id="cb509-4"><a href="thursday-september-8-2022.html#cb509-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">year =</span> <span class="dv">2015</span>,</span>
+<span id="cb509-5"><a href="thursday-september-8-2022.html#cb509-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">geometry =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb509-6"><a href="thursday-september-8-2022.html#cb509-6" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(FL_TornPath.sf))</span></code></pre></div>
+<pre><code>## Getting data from the 2011-2015 5-year ACS</code></pre>
+<pre><code>## Downloading feature geometry from the Census website.  To cache shapefiles for use in future sessions, set `options(tigris_use_cache = TRUE)`.</code></pre>
+<pre><code>## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |=====                                                                 |   8%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |======                                                                |   9%
+  |                                                                            
+  |=======                                                               |  11%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |===========                                                           |  15%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |=================                                                     |  25%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |===============================                                       |  45%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |======================================                                |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |===========================================                           |  62%
+  |                                                                            
+  |============================================                          |  63%
+  |                                                                            
+  |============================================                          |  64%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |==============================================                        |  65%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |================================================                      |  69%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  73%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |=====================================================                 |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  87%
+  |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |=================================================================     |  92%
+  |                                                                            
+  |==================================================================    |  95%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+<div class="sourceCode" id="cb513"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb513-1"><a href="thursday-september-8-2022.html#cb513-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Census.sf)</span></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 4 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -9527976 ymin: 3452498 xmax: -9168692 ymax: 3522281
+## Projected CRS: WGS 84 / Pseudo-Mercator
+##         GEOID                                        NAME   variable estimate
+## 1 12001001201 Census Tract 12.01, Alachua County, Florida B00002_001      112
+## 2 12001001519 Census Tract 15.19, Alachua County, Florida B00002_001       99
+## 3 12001001520 Census Tract 15.20, Alachua County, Florida B00002_001       85
+## 4 12001002207 Census Tract 22.07, Alachua County, Florida B00002_001      137
+## 5 12001002218 Census Tract 22.18, Alachua County, Florida B00002_001      111
+## 6 12005000805      Census Tract 8.05, Bay County, Florida B00002_001      159
+##                         geometry
+## 1 MULTIPOLYGON (((-9171497 34...
+## 2 MULTIPOLYGON (((-9171172 34...
+## 3 MULTIPOLYGON (((-9171771 34...
+## 4 MULTIPOLYGON (((-9177078 34...
+## 5 MULTIPOLYGON (((-9175225 34...
+## 6 MULTIPOLYGON (((-9527976 35...</code></pre>
+<p>The column labeled <code>estimate</code> is the estimate of the number of housing units within the census tract.</p>
+<p>Finally you use the <code>sf::st_interpolate_aw()</code> function to spatially interpolate the housing units to the tornado path.</p>
+<div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb515-1"><a href="thursday-september-8-2022.html#cb515-1" aria-hidden="true" tabindex="-1"></a>awi.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(Census.sf[<span class="st">&quot;estimate&quot;</span>],</span>
+<span id="cb515-2"><a href="thursday-september-8-2022.html#cb515-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">to =</span> FL_TornPath.sf, </span>
+<span id="cb515-3"><a href="thursday-september-8-2022.html#cb515-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">extensive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Warning in st_interpolate_aw.sf(Census.sf[&quot;estimate&quot;], to = FL_TornPath.sf, :
+## st_interpolate_aw assumes attributes are constant or uniform over areas of x</code></pre>
+<div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb517-1"><a href="thursday-september-8-2022.html#cb517-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(awi.sf)</span></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 1 field
+## Attribute-geometry relationship: 0 constant, 1 aggregate, 0 identity
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -9502241 ymin: 3489409 xmax: -9452129 ymax: 3606099
+## Projected CRS: WGS 84 / Pseudo-Mercator
+##       estimate                       geometry
+## 1 1.801417e-02 POLYGON ((-9481985 3545304,...
+## 2 3.493061e-05 POLYGON ((-9452129 3489418,...
+## 3 3.493061e-05 POLYGON ((-9452129 3504835,...
+## 4 6.396930e-03 POLYGON ((-9459939 3509978,...
+## 5 2.001489e-05 POLYGON ((-9452129 3521558,...
+## 6 5.666174e-02 POLYGON ((-9499599 3606097,...</code></pre>
+<div class="sourceCode" id="cb519"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb519-1"><a href="thursday-september-8-2022.html#cb519-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(awi.sf<span class="sc">$</span>estimate, </span>
+<span id="cb519-2"><a href="thursday-september-8-2022.html#cb519-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1]   0.0000 175.6654</code></pre>
+<p>The tornado that hit the most houses occurred just east of downtown Orlando.</p>
+<div class="sourceCode" id="cb521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb521-1"><a href="thursday-september-8-2022.html#cb521-1" aria-hidden="true" tabindex="-1"></a>awi.sf2 <span class="ot">&lt;-</span> awi.sf <span class="sc">|&gt;</span></span>
+<span id="cb521-2"><a href="thursday-september-8-2022.html#cb521-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(estimate <span class="sc">&gt;</span> <span class="dv">175</span>)</span>
+<span id="cb521-3"><a href="thursday-september-8-2022.html#cb521-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb521-4"><a href="thursday-september-8-2022.html#cb521-4" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<pre><code>## tmap mode set to interactive viewing</code></pre>
+<div class="sourceCode" id="cb523"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb523-1"><a href="thursday-september-8-2022.html#cb523-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(awi.sf2) <span class="sc">+</span></span>
+<span id="cb523-2"><a href="thursday-september-8-2022.html#cb523-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>()</span></code></pre></div>
+<div id="htmlwidget-b838f236894a8f2388cf" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b838f236894a8f2388cf">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[-81.3656449713447,-81.3656519815475,-81.3656533674116,-81.3656491251383,-81.3656392663554,-81.3656238180852,-81.3656028226703,-81.3655763376577,-81.3655444356409,-81.3655072040612,-81.3654647449677,-81.3654171747379,-81.3653646237585,-81.365307236068,-81.3652451689621,-81.3651785925624,-81.3651076893502,-81.3650326536663,-81.3649536911783,-81.3648710183169,-81.3647848616826,-81.3646954574248,-81.3646030505944,-81.364507894472,-81.3644102498739,-81.3643103844373,-81.3642085718863,-81.364105091282,-81.3640002262577,-81.363894264241,-81.3637874956665,-81.3636802131794,-81.3635727108336,-81.3634652832854,-81.3633582249864,-81.3632518293759,-81.3631463880769,-81.3630421900966,-81.3629395210346,-81.3628386622994,-81.362739890338,-81.3626434758773,-81.3625496831828,-81.3624587693337,-81.3623709835185,-81.3622865663521,-81.362205749216,-81.3621287536244,-81.3620557906168,-81.3619870601798,-81.3619227506988,-81.3618630384414,-81.361808087075,-81.3617580472174,-81.3617130560243,-81.3616732368135,-81.3616386987267,-81.3616095364303,-81.3615858298562,-81.3615676439825,-81.3615550286553,-81.3538550286553,-81.3538480184525,-81.3538466325884,-81.3538508748617,-81.3538607336446,-81.3538761819148,-81.3538971773297,-81.3539236623423,-81.3539555643591,-81.3539927959388,-81.3540352550323,-81.3540828252621,-81.3541353762415,-81.354192763932,-81.3542548310379,-81.3543214074376,-81.3543923106498,-81.3544673463337,-81.3545463088217,-81.3546289816831,-81.3547151383174,-81.3548045425752,-81.3548969494056,-81.354992105528,-81.3550897501261,-81.3551896155627,-81.3552914281137,-81.355394908718,-81.3554997737423,-81.355605735759,-81.3557125043335,-81.3558197868206,-81.3559272891665,-81.3560347167146,-81.3561417750136,-81.3562481706241,-81.3563536119231,-81.3564578099034,-81.3565604789654,-81.3566613377006,-81.3567601096621,-81.3568565241227,-81.3569503168172,-81.3570412306663,-81.3571290164815,-81.3572134336479,-81.357294250784,-81.3573712463756,-81.3574442093832,-81.3575129398202,-81.3575772493012,-81.3576369615586,-81.357691912925,-81.3577419527826,-81.3577869439757,-81.3578267631865,-81.3578613012733,-81.3578904635697,-81.3579141701438,-81.3579323560175,-81.3579449713447,-81.3656449713447],"lat":[28.5437352940675,28.5438295366082,28.5439239721998,28.5440183420006,28.5441123873502,28.544205850478,28.5442984752098,28.5443900076704,28.5444801969788,28.544568795936,28.544655561703,28.5447402564654,28.5448226480862,28.5449025107413,28.5449796255387,28.5450537811184,28.5451247742315,28.5451924102975,28.5452565039372,28.545316879481,28.5453733714503,28.545425825011,28.5454740963975,28.5455180533071,28.5455575752627,28.5455925539422,28.545622893476,28.5456485107097,28.5456693354318,28.5456853105658,28.5456963923274,28.5457025503437,28.5457037677368,28.5457000411703,28.5456913808578,28.5456778105353,28.5456593673964,28.5456361019899,28.5456080780814,28.5455753724787,28.5455380748214,28.5454962873349,28.5454501245504,28.5453997129915,28.5453451908265,28.5452867074908,28.5452244232766,28.5451585088941,28.5450891450032,28.5450165217192,28.5449408380906,28.5448623015549,28.544781127369,28.5446975380198,28.5446117626145,28.5445240362526,28.5444345993812,28.5443436971366,28.544251578672,28.5441584964749,28.544064705675,28.470264820937,28.4701705126552,28.4700760110189,28.4699815750502,28.4698874635921,28.4697939345989,28.4697012444288,28.4696096471417,28.4695193938025,28.4694307317933,28.4693439041346,28.4692591488198,28.4691766981627,28.4690967781604,28.4690196078741,28.4689453988284,28.4688743544316,28.4688066694181,28.4687425293143,28.4686821099305,28.4686255768785,28.4685730851178,28.4685247785308,28.4684807895284,28.4684412386867,28.468406234417,28.4683758726681,28.4683502366635,28.468329396673,28.4683134098207,28.4683023199274,28.4682961573914,28.4682949391046,28.4682986684065,28.4683073350747,28.4683209153533,28.4683393720179,28.4683626544774,28.468390698913,28.4684234284533,28.4684607533844,28.4685025713965,28.4685487678641,28.4685992161603,28.4686537780037,28.4687123038379,28.4687746332412,28.4688405953665,28.4689100094095,28.4689826851047,28.4690584232463,28.4691370162351,28.469218248647,28.4693018978239,28.4693877344836,28.4694755233488,28.4695650237919,28.4696559904941,28.4697481741188,28.469841321994,28.4699351788059,28.5437352940675]}]]],"X1","awi.sf2",{"interactive":false,"className":"","pane":"tmap401","stroke":true,"color":"#666666","weight":1,"opacity":1,"fill":true,"fillOpacity":0,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"awi.sf2",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[28.4682949391046,28.5457037677368],"lng":[-81.3656533674116,-81.3538466325884]},"fitBounds":[28.4682949391046,-81.3656533674116,28.5457037677368,-81.3538466325884,[]]},"evals":[],"jsHooks":[]}</script>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tuesday-september-6-2022.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

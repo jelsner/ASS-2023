@@ -37,7 +37,7 @@ Finally (not required for success in this class), learn git with R
 
 ## Download course materials {.unnumbered}
 
--   Navigate to \<https://github.com/jelsner/ASS-2022\>
+-   Navigate to \<[[https://github.com/jelsner/ASS-2022\\\\](https://github.com/jelsner/ASS-2022\\){.uri}]([https://github.com/jelsner/ASS-2022\\](https://github.com/jelsner/ASS-2022\){.uri}){.uri}\>
 -   Click on the bright green Code button
 -   Download ZIP
 -   Unzip the file on your computer
@@ -107,7 +107,7 @@ counts
 
 You assign the values to an object called `counts`. The assignment operator is an equal sign (`<-` or `=`). Values do not print. They are assigned to an object name. They are printed by typing the object name as we did on the second line. When printed the values are prefaced with a `[1]`. This indicates that the object is a vector and the first entry in the vector has a value of 2 (The number immediately to the right of `[1]`).
 
-You can use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.
+Use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.
 
 Then you apply functions to data stored in an object.
 
@@ -161,7 +161,7 @@ In this case a single number (the mean of the first decade) is subtracted from a
 
 This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times.
 
-## Are you completely new to R?
+## Are you completely new to R? {.unnumbered}
 
 The {swirl} package contains functions to get you started with the basics of R. To install the package use the `install.packages()` function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using `update.packages()` function.
 

@@ -52,6 +52,16 @@
 
 <link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -161,7 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
-<li class="chapter" data-level="0.1" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i><b>0.1</b> Are you completely new to R?</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i>Are you completely new to R?</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
 <ul>
@@ -188,6 +198,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#today-4"><i class="fa fa-check"></i>Today</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#today-5"><i class="fa fa-check"></i>Today</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -244,7 +260,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="download-course-materials" class="section level2 unnumbered">
 <h2>Download course materials</h2>
 <ul>
-<li>Navigate to &lt;<a href="https://github.com/jelsner/ASS-2022\" class="uri">https://github.com/jelsner/ASS-2022\</a>&gt;</li>
+<li>Navigate to &lt;[<a href="https://github.com/jelsner/ASS-2022\" class="uri">https://github.com/jelsner/ASS-2022\\</a>](<a href="https://github.com/jelsner/ASS-2022)%7B.uri%7D" class="uri">https://github.com/jelsner/ASS-2022\</a>&gt;</li>
 <li>Click on the bright green Code button</li>
 <li>Download ZIP</li>
 <li>Unzip the file on your computer</li>
@@ -313,7 +329,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="tuesday-august-23-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a>counts</span></code></pre></div>
 <pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
 <p>You assign the values to an object called <code>counts</code>. The assignment operator is an equal sign (<code>&lt;-</code> or <code>=</code>). Values do not print. They are assigned to an object name. They are printed by typing the object name as we did on the second line. When printed the values are prefaced with a <code>[1]</code>. This indicates that the object is a vector and the first entry in the vector has a value of 2 (The number immediately to the right of <code>[1]</code>).</p>
-<p>You can use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.</p>
+<p>Use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.</p>
 <p>Then you apply functions to data stored in an object.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-august-23-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)</span></code></pre></div>
 <pre><code>## [1] 13</code></pre>
@@ -345,8 +361,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector.</p>
 <p>This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times.</p>
 </div>
-<div id="are-you-completely-new-to-r" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Are you completely new to R?</h2>
+<div id="are-you-completely-new-to-r" class="section level2 unnumbered">
+<h2>Are you completely new to R?</h2>
 <p>The {swirl} package contains functions to get you started with the basics of R. To install the package use the <code>install.packages()</code> function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using <code>update.packages()</code> function.</p>
 <p>To make the functions work in your current session use the <code>library()</code> function with the name of the package (without quotes). This needs to be done for every session, but only once per session.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tuesday-august-23-2022.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;swirl&quot;</span>)</span>
