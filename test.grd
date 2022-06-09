@@ -1,0 +1,19 @@
+[general]
+[georeference]
+nrows=150
+ncols=360
+xmin=-90
+ymin=-20
+xmax=90
+ymax=30
+projection=+proj=longlat +datum=WGS84 +no_defs
+[data]
+datatype=FLT4S
+nodatavalue=nan
+byteorder=little
+nbands=1
+minvalue=-3.34554878120192079e+38
+maxvalue=3.39899982652680819e+38
+categorical=FALSE
+[description]
+layername=lyr.1

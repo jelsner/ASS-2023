@@ -115,229 +115,220 @@ terra::res(r)
 
 This results in raster with cell resolution of 2.7 degrees of longitude and 2.7 degrees of latitude.
 
-The parameters can be changed after the raster is created. Here we change the resolution to exactly 3 degrees. This changes the number of rows and columns.
+The structure of the raster can be changed after it is created. Here you change the resolution to 3 degrees. This induces changes to the number of rows and columns.
 ```{r}
-res(r) <- 3
+terra::res(r) <- 3
 ncol(r)
 nrow(r)
 ```
 
-The raster object `r` is a template with no values in the cells. By default it will have an extent that spans the globe.
+The `SpatRaster` object `r` is a template with no values assigned to the cells and by default it will have an extent that spans the globe.
 ```{r}
-r <- raster(ncol = 10, nrow = 10)
-ncell(r)
-hasValues(r)
+r <- terra::rast(ncol = 10, nrow = 10)
+terra::ncell(r)
+terra::hasValues(r)
 ```
 
 Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells.
 
-We use the `values()` function to place values in the cells. The function is specified on the left-hand side of the assignment operator. First we assign to a vector of length `ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1.
+The `terra::values()` function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. First you assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1.
 ```{r}
-v <- runif(ncell(r))
+v <- runif(terra::ncell(r))
 head(v)
-values(r) <- v
+terra::values(r) <- v
 head(r)
 ```
 
-The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with the values in the vector in this order.
+The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with values from the vector in this order.
 
-The `plot()` method creates a choropleth map of the values in cells.
+The `terra::plot()` function creates a choropleth map of the values in cells.
 ```{r}
-plot(r)
+terra::plot(r)
 ```
 
 The default CRS is geographic.
 ```{r}
-projection(r)
+terra::crs(r)
 ```
 
-To project the raster use the function `projectRaster()`. Projections are performed using the `PROJ4` protocol accessed through the {rgdal} package (same as with {sf} and {sp} objects).
+To re-project the raster use the function `terra::project()`.
 
-We can also use the `setValues()` function to place values in the cells. Here we create a new raster layer with cell numbers as values using the `setValues()` function to place the numbers in the cells.
+Here you create a new raster with cell numbers as values using the `terra::setValues()` function to place the numbers in the cells.
 ```{r}
-r <- raster(xmn = -110, xmx = -90, 
-            ymn = 40, ymx = 60, 
-            ncols = 10, nrows = 10)
-r <- setValues(r, 1:ncell(r))
-plot(r)
+r <- terra::rast(xmin = -110, xmax = -90, 
+                 ymin = 40, ymax = 60, 
+                 ncols = 10, nrows = 10)
+r <- terra::setValues(r, 1:terra::ncell(r))
+terra::plot(r)
 ```
 
-The numbers increase from top right to bottom left.
+The values increase starting from top left to bottom right as dictated by the sequence `1:terra::ncell(r)` and the lexicographic order in which the raster grids are filled.
 
-Next we create a projected raster.
-```{r}
-rp <- projectRaster(r, 
-                    crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m")
-plot(rp)
-```
-
-The projection is performed using bi-linear interpolation (default). In the case where the values are categorical we use `method = "ngb"` for nearest neighbor.
-
-The `raster()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Most formats that can import a raster can also be used to export a raster. 
+The `terra::rast()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Most formats that can import a raster can also be used to export a raster. 
 
 Consider the `Meuse` dataset (from the {sp} package), using a file in the native 'raster- file' format.
 ```{r}
 f <- system.file("external/test.grd", 
                  package = "raster")
-r <- raster(f)
+r <- terra::rast(f)
 ```
 
 Do the cells contain values? Is the raster stored in memory? Create a plot.
 ```{r}
-hasValues(r)
-inMemory(r)
-plot(r, main = "Raster layer from file")
+terra::hasValues(r)
+terra::inMemory(r)
+terra::plot(r, main = "Raster layer from file")
 ```
 
-Note the raster layer is a rectangle of cells with values. Values that are coded as `NA` are not plotted.
+Note the raster is a set of cells arranged in a rectangular array. Values that are coded as `NA` are not plotted.
+
+`SpatRaster` objects can have more than one raster. These are called layers.
 ```{r}
-head(r)
+r
 ```
 
-We can combine raster layers into stacks and bricks. A stack (and a brick) is a collection of raster layers having the same spatial extent and resolution. 
+The dimensions are nrow = 115 by ncol = 80 and nlyr = 1.
 
-A brick is typically imported from a multi-layer (band) external file. They can also exist entirely in memory. A raster brick can only point to a single external file.
-
-For example, here we create three rasters and assign random values to the cells.
+You can add layers to the object. Here you create three rasters and assign random values to the cells.
 ```{r}
-r1 <- raster(nrow = 10, ncol = 10)
-values(r1) <- runif(ncell(r1))
-r2 <- raster(nrow = 10, ncol = 10)
-values(r2) <- runif(ncell(r2))
-r3 <- raster(nrow = 10, ncol = 10)
-values(r3) <- runif(ncell(r3))
+r1 <- terra::rast(nrow = 10, ncol = 10)
+terra::values(r1) <- runif(terra::ncell(r1))
+r2 <- terra::rast(nrow = 10, ncol = 10)
+terra::values(r2) <- runif(terra::ncell(r2))
+r3 <- terra::rast(nrow = 10, ncol = 10)
+terra::values(r3) <- runif(terra::ncell(r3))
 ```
 
-Then combine the rasters into a stack with `stack()` (or into a brick with `brick()`).
+You combine the rasters into a single `SpatRaster` object with the concatenate function `c()`.
 ```{r}
-s <- stack(r1, r2, r3)
+s <- c(r1, r2, r3)
 s
 dim(s)
-nlayers(s)
-plot(s)
+terra::nlyr(s)
+terra::plot(s)
 ```
 
-So each raster in a stack is a layer.
+Each raster is a separate layer.
 
-Here we import a raster brick from a file.
+Here you import a set of raster layers from a file.
 ```{r}
 f <- system.file("external/rlogo.grd", 
                  package = "raster")
-b <- brick(f)
+b <- terra::rast(f)
 b
-plot(b)
-```
-
-We extract a single layer from a brick or stack with the `layer =` or `band =` arguments.
-```{r}
-r <- raster(b, layer = 2)
-plot(r)
+terra::plot(b)
 ```
 
 Most {base} R functions (`+`, `*`, `round()`, `ceiling()`, `log()`, etc) work on raster objects. Operations are done on all cells at once.
 
-Here we place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root.
+Here you place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root.
 ```{r}
-r <- raster(ncol = 10, nrow = 10)
-values(r) <- 1:ncell(r)
+r <- terra::rast(ncol = 10, nrow = 10)
+terra::values(r) <- 1:terra::ncell(r)
 s <- r + 100
 s <- sqrt(s)
-plot(s)
+terra::plot(s)
 ```
 
-Here we replace the cell values with random uniform numbers between 0 and 1. Then round to the nearest integer and add one.
+Here you replace the cell values with random uniform numbers between 0 and 1. Then round to the nearest integer and add one.
 ```{r}
-r <- setValues(r, runif(ncell(r)))
+r <- terra::rast(ncol = 10, nrow = 10)
+terra::values(r) <- runif(terra::ncell(r))
 r <- round(r)
 r <- r + 1
-plot(r)
+terra::plot(r)
 ```
 
 Replace only certain values with the subset function `[]`.
 ```{r}
-r <- raster(xmn = -90, xmx = 90, ymn = -30, ymx = 30)
-values(r) <- rnorm(ncell(r))
-plot(r)
-s <- raster(xmn = -60, xmx = 60, ymn = -10, ymx = 10)
-r[s] <- 0
-plot(r)
+r <- terra::rast(xmin = -90, xmax = 90, ymin = -30, ymax = 30)
+terra::plot(r)
 r[r > 2] <- 0
-plot(r)
+terra::plot(r)
 ```
-
-To get summary statistics across all values _within_ a particular raster we use the `cellStats()` function.
-```{r}
-cellStats(r1, stat = 'mean')
-cellStats(b, stat = 'sum')
-```
-
-In the first case with a single raster we get a single number representing the average value over all cells. In the second case with a brick we get the three numbers representing the sum over all the cells separately in each layer.
 
 Functions for manipulating a raster
 
-The `crop()` function takes a geographic subset of a larger raster object. A raster is cropped by providing an extent object or other spatial object from which an extent can be extracted (objects from classes deriving from raster and from spatial in the {sp} package). 
+The `terra::crop()` function takes a geographic subset of a larger raster object. A raster is cropped by providing an extent object or other spatial object from which an extent can be extracted (objects from classes deriving from raster and from spatial in the {sp} package). 
 
-The function `drawExtent()` is used to visually see the new extent (bounding box) that is given to the `crop()` function.
+The `terra::trim()` function crops a raster layer by removing the outer rows and columns that only contain `NA` values. The `terra::extend()` function adds new rows and/or columns with `NA` values.
 
-The `trim()` function crops a raster layer by removing the outer rows and columns that only contain `NA` values. The `extend()` function adds new rows and/or columns with `NA` values.
+The `terra::merge()` function combines two or more rasters into a single raster. The input objects must have the same resolution and origin (such that their cells fit into a single larger raster). If this is not the case, first adjust one of the objects with the functions `aggregate()` or `resample()`.
 
-The `extract()` function retrieves values from a raster object at the locations of other spatial data.
+The `terra::aggregate()` and `terra::disagg()` functions change the resolution (cell size) of a raster object.
 
-The `merge()` function combines two or more objects into a single object. The input objects must have the same resolution and origin (such that their cells fit into a single larger raster). If this is not the case, first adjust one of the objects with the functions `aggregate()` or `resample()`.
-
-The `aggregate()` and `disaggregate()` functions change the resolution (cell size) of a raster object.
-
-Here we crop the raster into two pieces and then merge them into one with the `merge()` function. The function has an argument that allows us to export to `test.grd`.
+As a simple example showing some of this functionality here you crop the raster into two pieces and then merge the two pieces into one. The `terra::merge()` function has an argument that allows you to export to a file (here `test.grd`).
 ```{r}
-r1 <- crop(r, extent(-180, 0, 0, 30)) 
-r2 <- crop(r, extent(-10, 180, -20, 10))
-m <- merge(r1, r2, 
-           filename = 'test.grd', 
-           overwrite = TRUE)
-plot(m)
+r1 <- terra::crop(r, terra::ext(-180, 0, 0, 30)) 
+r2 <- terra::crop(r, terra::ext(-10, 180, -20, 10))
+m <- terra::merge(r1, r2, 
+                  filename = 'test.grd', 
+                  overwrite = TRUE)
+terra::plot(m)
 ```
 
-The `flip()` function flips the data (reverse order) in the horizontal or vertical direction. The `rotate()` function rotates a raster that have longitudes from 0 to 360 degrees (often used by climatologists) to the standard -180 to 180 degrees system.
+The `terra::flip()` function flips the data (reverse order) in the horizontal or vertical direction. The `terra::rotate()` function rotates a raster that have longitudes from 0 to 360 degrees (often used by climatologists) to the standard -180 to 180 degrees system.
 
-Polygon to raster conversion is typically done to create a `RasterLayer` that can act as a mask, i.e. to set to `NA` a set of cells of a raster object, or to summarize values on a raster by zone. For example a country polygon is transferred to a raster that is then used to set all the cells outside that country to `NA`; whereas polygons representing administrative regions such as states can be transferred to a raster to summarize raster values by region.
+You can extract values from a raster for a set of locations with the `terra::extract()` function. The locations can be a vector object (points, lines, polygons), a matrix with (x, y) or (longitude, latitude -- in that order!) coordinates, or a vector with cell numbers.
 
-To convert the values of a raster layer to points or polygons we use `rasterToPoints()` and `rasterToPolygons()`. These functions return values only for cells that are not missing (`NA`).
-
-Point-to-raster conversion is often done to analyze location data (location of a specific species of tree in a forest). This is done with the `rasterize()` function, which takes a raster object to set the spatial extent and resolution together with a function to determine how to summarize the location information by grid cell.
-
-Example: the number of tornadoes by grid cell
-
-For example, here we create a raster of counts indicating the location of all tornado reports since 2003 in 1/2 degree latitude/longitude grid. First import the data as a simple feature data frame.
 ```{r}
-Torn.sf <- st_read(dsn = "1950-2018-torn-initpoint",
-                   layer = "1950-2018-torn-initpoint") |>
-  filter(yr >= 2003)
+r <- terra::rast(ncols = 5, nrows = 5, 
+                 xmin = 0, xmax = 5, 
+                 ymin = 0, ymax = 5)
+values(r) <- 1:25
+
+xy <- rbind(c(.5, .5), c(2.5, 2.5))
+p <- vect(xy, crs="+proj=longlat +datum=WGS84")
+
+terra::extract(r, xy)
+terra::extract(r, p)
 ```
 
-We note that the bounding box (`bbox`) dimensions.
+To convert the values of a raster layer to points or polygons we use `as.points()` and `as.polygons()`. These functions return a `SpatVector` object for cells that are not missing value.
 
-Next we check the native CRS.
+Vector data is converted to a raster with the `terra::rasterize()` function. Polygon to raster conversion is often done to create a mask (i.e. to set to `NA` a set of cells of a raster object, or to summarize values on a raster by zone. For example a country polygon is converted to a raster that is used to set all the cells outside that country to `NA`. Also polygons representing administrative regions such as states can be converted to a raster to summarize values by region. Point to raster conversion is often done to analyze location data (location of a specific species of tree in a forest).
+
+Example: the number of tornadoes passing through each grid cell
+
+Here we want a latitude/longitude grid (1/2 degree latitude by 1/2 degree longitude) with each cell in the grid containing the number of tornadoes that went through it since 2003.
+
+First import the tornado (initial track point) data as a simple feature data frame.
 ```{r}
-st_crs(Torn.sf)
+if(!"1950-2020-torn-initpoint" %in% list.files(here::here("data"))) {
+download.file(url = "http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-initpoint.zip",
+              destfile = here::here("data", "1950-2020-torn-initpoint.zip"))
+unzip(here::here("data", "1950-2020-torn-initpoint.zip"), 
+      exdir = here::here("data"))
+}
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint"), 
+                       layer = "1950-2020-torn-initpoint") |>
+  dplyr::filter(yr >= 2003)
+```
+
+Note the extent of the bounding box and check the native CRS.
+```{r}
+sf::st_crs(Torn.sf)
 ```
 
 The CRS is geographic.
 
-Next create a raster template (assign it to the object called `frame`) with a domain that covers the area of interest and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the `extent()` function.
+Next create a raster (called `frame`) with a domain that covers the area of interest and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the `terra::ext()` function.
 ```{r}
-frame <- raster(xmn = -106, xmx = -67, 
-                ymn = 24, ymx = 50)
-res(frame) <- .5
-extent(frame)
+frame <- terra::rast(xmin = -106, xmax = -67, 
+                     ymin = 24, ymax = 50)
+terra::res(frame) <- .5
+terra::ext(frame)
 ```
 
-Then use the `rasterize()` function to count the number of times each raster cell contains a tornado genesis location. The first argument is the spatial data frame and the second is the raster without values. The argument `field =` specifies a column name in the spatial data frame (here just an identifier) and the argument `fun =` specifies what to do (here simply count the unique instances of the field in each cell). Raster cells without tornadoes are given a value of 0 based on the `background =` argument.
+Next use the `terra::rasterize()` function to count the number of times each raster cell contains a tornado. The first argument is the spatial data frame and the second is the raster without values. The argument `field =` specifies a column name in the spatial data frame (here just an identifier) and the argument `fun =` specifies what to do (here simply count the unique instances of the field in each cell). Raster cells without tornadoes are given a value of 0 based on the `background =` argument.
 ```{r}
-Torn.r <- rasterize(x = Torn.sf, 
-                    y = frame, 
-                    field = "om", 
-                    fun = "count",
-                    background = 0)
+Torn.v <- terra::vect(Torn.sf)
+
+Torn.r <- terra::rasterize(x = terra::vect(Torn.sf), 
+                           y = frame, 
+                           field = "om", 
+                           fun = "count",
+                           background = 0)
 class(Torn.r)
 dim(Torn.r)
 ```
@@ -346,7 +337,7 @@ The result is a raster layer. The number of tornadoes occurring in each cell are
 
 We print out the first 200 values (lexicographical order).
 ```{r}
-values(Torn.r)[1:200]
+terra::values(Torn.r)[1:200]
 ```
 
 To visualize the raster we use the `plot()` method.
@@ -395,15 +386,6 @@ With `focal()`, the neighborhood can only be a rectangle. With `focalFilter()`, 
 
 The `distance()` function computes the shortest distance to cells that are not NA. The `pointDistance()` function computes the shortest distance to any point in a set of points. 
 
-The `gridDistance()` function computes the distance when following grid cells that can be traversed (e.g. excluding water bodies). The `direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `adjacency()` function determines which cells are adjacent to other cells, and the `pointDistance()` function computes distance between points. 
+The `gridDistance()` function computes the distance when following grid cells that can be traversed (e.g. excluding water bodies). The `direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `adjacency()` function determines which cells are adjacent to other cells, and the `pointDistance()` function computes distance between points.
 
-Summary functions
-
-The function `cellStats()` computes summary statistics on a raster. For example:
-```{r}
-cellStats(Torn.r, mean)
-cellStats(Torn.r, max)
-freq(Torn.r)
-```
-
-Use `zonal()` to summarize a raster object using zones (areas with the same integer number) defined in a `RasterLayer` and `crosstab()` to cross-tabulate two `RasterLayer` objects.
+Finally, you can coerce `SpatRasters` to raster objects, after loading the {raster} package, with `as(object, "Raster")`, or `raster(object)` or `brick(object)` or `stack(object)`
