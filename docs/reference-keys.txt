@@ -1,0 +1,6 @@
+s4-spatial-data-objects
+working-with-raster-data
+mapping-with-functions-from-the-ggplot2-package
+mapping-with-functions-from-the-tmap-package
+creating-an-interactive-map
+adding-an-inset-map
