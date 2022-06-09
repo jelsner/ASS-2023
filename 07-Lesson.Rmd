@@ -290,7 +290,7 @@ As a simple example showing some of this functionality here you crop the raster 
 r1 <- terra::crop(r, terra::ext(-180, 0, 0, 30)) 
 r2 <- terra::crop(r, terra::ext(-10, 180, -20, 10))
 m <- terra::merge(r1, r2, 
-                  filename = 'test.grd', 
+                  filename = here::here('outputs', 'test.grd'), 
                   overwrite = TRUE)
 terra::plot(m)
 ```
