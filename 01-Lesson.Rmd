@@ -37,7 +37,7 @@ Finally (not required for success in this class), learn git with R
 
 ## Download course materials {.unnumbered}
 
--   Navigate to \<[[https://github.com/jelsner/ASS-2022\\\\](https://github.com/jelsner/ASS-2022\\){.uri}]([https://github.com/jelsner/ASS-2022\\](https://github.com/jelsner/ASS-2022\){.uri}){.uri}\>
+-   Navigate to \<[[https://github.com/jelsner/ASS-2022\\\\](https://github.com/jelsner/ASS-2022\){.uri}]([https://github.com/jelsner/ASS-2022\\](https://github.com/jelsner/ASS-2022)%7B.uri%7D){.uri}\>
 -   Click on the bright green Code button
 -   Download ZIP
 -   Unzip the file on your computer
