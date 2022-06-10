@@ -9,18 +9,18 @@ Today {-}
 
 ## Working with space-time data {-}
 
-Space-time data often come in the form of multi-dimensional arrays. Examples include
+Space-time data come in the form of multi-dimensional arrays. Examples include:
 
 * raster images
-* socio-economic or demographic data,
-* environmental variables monitored at fixed stations,
-* time series of satellite images with multiple spectral bands,
-* spatial simulations, and
+* socio-economic or demographic data
+* environmental variables monitored at fixed stations
+* time series of satellite images with multiple spectral bands
+* spatial simulations
 * climate and weather model output
 
 The {stars} package provides functions and methods for working with space-time data as multi-dimensional S3 reference class arrays. 
 
-To see what methods (functions) for class `stars` are available we use the `methods()` function.
+To see what methods (functions) for class `stars` are available use the `methods()` function.
 ``` {r}
 methods(class = "stars")
 ```
@@ -108,7 +108,7 @@ For more see: https://github.com/r-spatial/stars/tree/master/vignettes and https
 
 Also you can check out some rough code that I've been working on to take advantage of the {stars} functionality including plotting daily temperatures across the U.S. and creating a vector data cube of COVID19 data in the `stars.Rmd` file on course GitHub site.
 
-## Mapping with functions from the {ggplot2} package
+## Mapping with functions from the {ggplot2} package {-}
 
 As we have already seen, the {ggplot2} package supports `sf` objects with the function `geom_sf()`. An initial `ggplot()` function followed by one or more layers, that are added with `+`. The layers begin with `geom_`.
 
@@ -158,7 +158,7 @@ ggplot(data = FLcounties.sf) +
 
 Making maps with functions from the {ggplot2} package has a few drawbacks. The `geom_sf()` function does not always produce a nice legend. Raster objects and S4 spatial data frames are not supported so they need to be converted into simple feature data frames before mapping. 
 
-## Mapping with functions from the {tmap} package
+## Mapping with functions from the {tmap} package {-}
 
 There are several other packages for making nice maps listed in the syllabus. 
 
@@ -380,7 +380,7 @@ tm_shape(sf) +
   tm_layout(legend.outside = TRUE)
 ```
 
-## Creating an interactive map
+## Creating an interactive map {-}
 
 A nice feature of the {tmap} package is that we can create an interactive map using the same code as we used to create a static map. 
 
@@ -414,7 +414,7 @@ Change the view mode back to plot.
 tmap_mode("plot")
 ```
 
-## Adding an inset map
+## Adding an inset map {-}
 
 An inset map contextualizes the geographic study area. Here we create a map of the central part of New Zealand's Southern Alps. The inset map shows where the main map is in relation to all of New Zealand. 
 
