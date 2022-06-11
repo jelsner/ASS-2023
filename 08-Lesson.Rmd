@@ -99,6 +99,7 @@ if(!"precip.mon.anom.nc" %in% list.files(here::here("data"))) {
 
 There are two spatial dimensions and the third dimension is time in months. There is one attribute which is the rain rate in millimeters per day (mm/d).
 
+Here you plot the first month of the global precipitation anomalies.
 ```{r}
 plot(w.stars[,,,1])
 ```
@@ -111,110 +112,101 @@ Or points (e.g., denoting sensor locations). [Vector data cube points](https://r
 
 For more see: <https://github.com/r-spatial/stars/tree/master/vignettes> and <https://awesomeopensource.com/project/r-spatial/stars>
 
-Also you can check out some rough code that I've been working on to take advantage of the {stars} functionality including plotting daily temperatures across the U.S. and creating a vector data cube of COVID19 data in the `stars.Rmd` file on course GitHub site.
+Also you can check out some rough code that I've been working on to take advantage of the {stars} functionality including plotting daily temperatures across the U.S. and creating a vector data cube of COVID19 data in the `stars.Rmd` file on course GitHub site in the folder `Other_Rmds`.
 
-## Mapping with functions from the {ggplot2} package {.unnumbered}
+## Mapping using functions from the {ggplot2} package {.unnumbered}
 
-As we have already seen, the {ggplot2} package supports `sf` objects with the function `geom_sf()`. An initial `ggplot()` function followed by one or more layers, that are added with `+`. The layers begin with `geom_`.
+The {ggplot2} package has supports `sf` objects for making maps through the function `geom_sf()`. An initial `ggplot()` function is followed by one or more layers that are added with `+` symbol. The layers begin with `geom_`.
 
 For example, consider the objects `nz` and `nz_height` from the {spData} package, where `nz` is a simple feature data frame from the New Zealand census with information about the area, population, and sex ratio (male/female) in the country's 16 administrative regions.
 
 ```{r}
-library(spData)
-
-str(nz)
+str(spData::nz)
 ```
 
 The simple feature column (`sfc`) is labeled `geom` and the geometry type is multi-polygon.
 
-And `nz_height` is a simple feature data frame containing the elevation of specific high points (peaks) in New Zealand.
+And `spData::nz_height` is a simple feature data frame containing the elevation of specific high points (peaks) in New Zealand.
 
 ```{r}
-str(nz_height)
+str(spData::nz_height)
 ```
 
 The simple feature column is labeled `geometry` and the geometry type is point.
 
-We make a choropleth map of the median income in the regions and add a layer indicating the location of the elevation peaks.
+You make a choropleth map of the median income in the New Zealand regions and add a layer indicating the location of the elevation peaks.
 
 ```{r}
 ggplot() + 
-  geom_sf(data = nz, 
+  geom_sf(data = spData::nz, 
           mapping = aes(fill = Median_income)) +
-  geom_sf(data = nz_height) +
+  geom_sf(data = spData::nz_height) +
   scale_x_continuous(breaks = c(170, 175))
 ```
 
-The function `geom_sf()` uses the `geometry` column of the simple feature data frame for the spatial aesthetic. The `mapping =` argument specifies other aesthetics with the `aes()` function. Here `fill =` points to the column `Medium_income` in the `nz` simple feature data frame.
+The first use of `geom_sf()` takes the geometry column of the simple feature data frame `spData::nz` for mapping the spatial aesthetic. The `mapping =` argument specifies other aesthetics with the `aes()` function. Here `fill =` points to the column `Medium_income` in the simple feature data frame. The second use of `geom_sf()` takes the geometry column of `spData::nz_heights` and adds the location of the highest peaks as points.
 
-The second `geom_sf()` adds the location of the highest peaks as points. There is no need to specify a point geom since the simple feature column geometry is point.
+The `geom_sf()` function automatically plots graticules (lines of latitude and longitude) with labels. The default ranges for the graticules can be overridden using `scale_x_continuous()`, `scale_y_continuous()` or `coord_sf(datum = NA)`.
 
-The function automatically plots graticules (lines of latitude and longitude) labels. The default settings for the graticules can be overridden using `scale_x_continuous()`, `scale_y_continuous()` or `coord_sf(datum = NA)`.
-
-Advantages of {ggplot2} for mapping are the large user-community and the many add-on packages. We've already seen {ggrepel} for nice labeling.
+The advantage of using functions from {ggplot2} for mapping include a large community of users and many add-on packages.
 
 Another example: the county land area by state in the U.S. The data as a simple feature data frames is available in the {USAboundariesData} package at `ropensci.org`. Here we extract the county borders in Florida then make a choropleth of the land area
 
 ```{r}
-if(!require(USAboundariesData)) install.packages("USAboundariesData", repos = "http://packages.ropensci.org", type = "source")
-library(USAboundaries)
+FLcounties.sf <- USAboundaries::us_counties(states = "FL")
 
-FLcounties.sf <- us_counties(states = "FL")
-
-ggplot(data = FLcounties.sf) +
-  geom_sf(mapping = aes(fill = aland))
+ggplot() +
+  geom_sf(data = FLcounties.sf,
+          mapping = aes(fill = aland))
 ```
 
-Making maps with functions from the {ggplot2} package has a few drawbacks. The `geom_sf()` function does not always produce a nice legend. Raster objects and S4 spatial data frames are not supported so they need to be converted into simple feature data frames before mapping.
+## Mapping using functions from the {tmap} package {.unnumbered}
 
-## Mapping with functions from the {tmap} package {.unnumbered}
+There are several other packages for making quick, nice maps listed in the syllabus.
 
-There are several other packages for making nice maps listed in the syllabus.
-
-I particularly like the {tmap} package because it is agnostic to the type of spatial data object. S3 simple feature data frames and S4 spatial vector data and raster objects can be used as layers on a single map.
+I particularly like the {tmap} package because it is agnostic to the type of spatial data object. Simple feature data frames as well as {sp} and {raster} objects can be combined on a single map. This is not the case with the {ggplot2} functions.
 
 ```{r}
 if(!require(tmap)) install.packages(pkgs = "tmap", repos = "http://cran.us.r-project.org")
-library(tmap)
 ```
 
-Functions in the {tmap} use the 'grammar of graphics' philosophy that separates the input data frame from the aesthetics (how data are made visible). Functions translate the data into aesthetics. The aesthetics can include the location on a geographic map (defined by the geometry), color, and other visual components.
+Functions in the {tmap} use the 'grammar of graphics' philosophy that separates the data frame from the aesthetics (how data are made visible). Functions translate the data into aesthetics. The aesthetics can include the location on a geographic map (defined by the geometry), color, and other visual components.
 
 A {tmap} map starts with the `tm_shape()` function that takes as input a spatial data frame. The function is followed by one or more layers such as `tm_fill()`, `tm_dots()`, `tm_raster()`, etc that defines how a property in the data gets translated to a visual component.
 
-Returning to the New Zealand simple feature data frame (`nz`). To make a map of the region borders we first identify the spatial data frame with the `tm_shape()` function and then add a borders layer with the `tm_borders()` layer.
+Returning to the New Zealand simple feature data frame (`nz`). To make a map of the region borders you first identify the spatial data frame with the `tm_shape()` function and then add a borders layer with the `tm_borders()` layer.
 
 ```{r}
-tm_shape(shp = nz) +
-  tm_borders() 
+tmap::tm_shape(shp = spData::nz) +
+  tmap::tm_borders() 
 ```
 
-The function `tm_shape()` and its subsequent drawing layers (here `tm_borders()`) as a 'group'. The data in the `tm_shape()` function must be a spatial object of class simple feature, raster, or an S4 class spatial object.
+The function `tmap::tm_shape()` and its subsequent drawing layers (here `tmap::tm_borders()`) as a 'group'. The data in the `tmap::tm_shape()` function must be a spatial object of class simple feature, raster, or an S4 class spatial object.
 
-Here we use a fill layer (`tm_fill()`) instead of the borders layer.
+Here you use a fill layer (`tmap::tm_fill()`) instead of the borders layer.
 
 ```{r}
-tm_shape(nz) +
-  tm_fill() 
+tmap::tm_shape(nz) +
+  tmap::tm_fill() 
 ```
 
 The multi-polygons are filled using the same gray color as the borders so they disappear.
 
-Here we layer using the fill aesthetic and then add a border aesthetic.
+In this next example you layer using the fill aesthetic and then add a border aesthetic.
 
 ```{r}
-tm_shape(nz) +
-  tm_fill(col = 'green') +
-  tm_borders() 
+tmap::tm_shape(spData::nz) +
+  tmap::tm_fill(col = 'green') +
+  tmap::tm_borders() 
 ```
 
-Layers are added with the `+` operator and are functionally equivalent to an GIS overlay.
+Layers are added with the `+` operator and are functionally equivalent to adding a GIS layer.
 
 We can assign the resulting map to an object. For example here we assign the map of New Zealand to the object `map_nz`.
 
 ```{r}
-map_nz <- tm_shape(nz) + 
-  tm_polygons()
+map_nz <- tmap::tm_shape(spData::nz) + 
+  tmap::tm_polygons()
 
 class(map_nz)
 ```
@@ -239,43 +231,43 @@ Next identify the spatial data for the the new layer by adding `tm_shape(nz_elev
 
 ```{r}
 ( map_nz1 <- map_nz +
-  tm_shape(nz_elev) + 
-    tm_raster(alpha = .7) )
+  tmap::tm_shape(spDataLarge::nz_elev) + 
+    tmap::tm_raster(alpha = .7) )
 ```
 
-The new map object `map_nz1` builds on top of the existing map object `map_nz` by adding the raster layer `nz_elev` representing elevation.
+The new map object `map_nz1` builds on top of the existing map object `map_nz` by adding the raster layer `spDataLarge::nz_elev` representing elevation.
 
-We can create new layers with functions. For instance, a function like `st_union()` operates on the `geometry` column of a simple feature data frame.
+You can create new layers with functions. For instance, a function like `sf::st_union()` operates on the `geometry` column of a simple feature data frame.
 
-As an example, here we create a line string layer as a simple feature object using three geo-computation functions. We start by creating a union over all polygons (regions) with the `st_union()` function applied to the `nz` simple feature object. The result is a multi-polygon defining the coastlines.
+As an example, here you create a line string layer as a simple feature object using three geo-computation functions. You start by creating a union over all polygons (regions) with the `sf::st_union()` function applied to the `spData::nz` simple feature object. The result is a multi-polygon defining the coastlines.
 
-Then we buffer this multi-polgyon out to a distance of 22.2 km using the `st_buffer()` function. The result is a single polygon defining the coastal boundary around the entire country.
+Then you buffer this multi-polgyon out to a distance of 22.2 km using the `sf::st_buffer()` function. The result is a single polygon defining the coastal boundary around the entire country.
 
-Finally we change the polygon geometry to a line string geometry with the `st_cast()` function.
+Finally you change the polygon geometry to a line string geometry with the `sf::st_cast()` function.
 
-The operations are linked together with the pipe operator from the {dplyr} package.
+The operations are linked together with the pipe operator.
 
 ```{r}
-( nz_water.sfc <- nz %>%
-  st_union() %>% 
-  st_buffer(dist = 22200) %>% 
-  st_cast(to = "LINESTRING") )
+( nz_water.sfc <- spData::nz |>
+  sf::st_union() |> 
+  sf::st_buffer(dist = 22200) |> 
+  sf::st_cast(to = "LINESTRING") )
 ```
 
-Now we add the resulting `sfc` as a layer to our map.
+Now add the resulting `sfc` as a layer to our map.
 
 ```{r}
 ( map_nz2 <- map_nz1 +
-  tm_shape(nz_water.sfc) + 
-    tm_lines() )
+  tmap::tm_shape(nz_water.sfc) + 
+    tmap::tm_lines() )
 ```
 
-Finally, lets create a layer representing the country elevation high points (stored in the object `nz_height`) onto the `map_nz2` object with `tm_dots()` function.
+Finally, create a layer representing the country elevation high points (stored in the object `spData::nz_height`) onto the `map_nz2` object with `tmap::tm_dots()` function.
 
 ```{r}
 ( map_nz3 <- map_nz2 +
-  tm_shape(nz_height) + 
-    tm_dots() )
+  tmap::tm_shape(spData::nz_height) + 
+    tmap::tm_dots() )
 ```
 
 Map layout, facets, and inserts
@@ -292,7 +284,7 @@ map_nz +
             bg.color = "lightblue")
 ```
 
-Faceted maps (referred to as 'small multiples') are composed of several maps arranged side-by-side. Facets enable the visualization of how spatial relationships change with respect to another variable.
+Putting two or more maps with the same scale side by side allows for easy comparisons and to see how spatial relationships change with respect to another variable. Creating small multiples of the same map with different variables is called 'faceting'. 
 
 Consider the simple feature data frame `World` from the {tmap} package. Make the data frame accessible to this session with the `data()` function.
 
@@ -310,7 +302,7 @@ The geometries are points indicating the location of the largest urban metro are
 We create a new data frame keeping only the years 1970, 1990, 2010, and 2030 by using the `filter()` function from the {dplyr} package.
 
 ```{r}
-urb_1970_2030 <- urban_agglomerations %>% 
+urb_1970_2030 <- urban_agglomerations |> 
   dplyr::filter(year %in% c(1970, 1990, 2010, 2030))
 ```
 
@@ -393,14 +385,14 @@ library(tidycensus)
 sf <- get_acs(geography = "state",
               variables = "B01003_001",
               geometry = TRUE,
-              shift_geo = TRUE) %>%
+              shift_geo = TRUE) |>
   rename(LongName = NAME)
 ```
 
 Join the COVID data frame with the simple feature data frame from the census. Then make a map showing the doses administered per 100K people as of February 6, 2021.
 
 ```{r}
-sf <- sf %>%
+sf <- sf |>
   left_join(df)
 
 tm_shape(sf) +
@@ -456,7 +448,7 @@ The first step is to define the area of interest. Here it is done here by creati
 ```{r}
 nz_region <- st_bbox(c(xmin = 1340000, xmax = 1450000,
                        ymin = 5130000, ymax = 5210000),
-                     crs = st_crs(nz_height)) %>% 
+                     crs = st_crs(nz_height)) |> 
   st_as_sfc()
 ```
 

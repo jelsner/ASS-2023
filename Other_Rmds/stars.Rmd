@@ -1,0 +1,520 @@
+---
+title: "Learning the {stars} package"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Learning the {stars} package
+
+```{r}
+library(stars)
+library(raster)
+library(tidyverse)
+library(lubridate)
+library(rgdal) # before library(sf)
+library(sf)
+library(rnaturalearth)
+library(here)
+library(prism)
+library(tmap)
+library(ggthemes)
+```
+
+Package {stars} provides infrastructure for _data cubes_, array data with labeled dimensions, with emphasis on arrays where some of the dimensions relate to time and space.
+
+Spatio-temporal arrays are stored in objects of class `stars`; methods for class `stars` currently available are
+``` {r}
+library(stars)
+
+methods(class = "stars")
+```
+
+Note: tidyverse methods are only visible after loading package {tidyverse}.
+## PRISM data
+
+Get daily PRISM data with functions from the {prism} package for a single year. About 20 minutes per year per variable of daily data. Repeat code for other variables.
+```{r}
+t0 <- proc.time()
+for(i in 2019:2019){
+  print(i)
+  options(prism.path = paste0("Data/PRISM/", i))
+
+  get_prism_dailys(
+    type = "tmin", 
+    minDate = paste0(i, "-01-01"), 
+    maxDate = paste0(i, "-12-31"), 
+    keepZip = FALSE 
+  )
+}
+proc.time() - t0
+```
+
+## Create a {stars} object using tmax, tmin, and ppt from 2019
+
+About 40 seconds to complete.
+```{r}
+j <- 2019
+dates <- seq(as_date(paste0(j, "-01-01")), 
+             as_date(paste0(j, "-01-31")), 
+             by = "day")
+
+file_days <- gsub("-", "", dates)
+
+yearC <- paste0(as.character(year(dates)), "/")
+
+folder_names <- paste0("PRISM_tmax_stable_4kmD2_", file_days, "_bil/")
+file_names <- paste0("PRISM_tmax_stable_4kmD2_", file_days, "_bil.bil")
+file_list <- paste0("Data/", "PRISM/", yearC, folder_names, file_names)
+
+folder_names2 <- paste0("PRISM_tmin_stable_4kmD2_", file_days, "_bil/")
+file_names2 <- paste0("PRISM_tmin_stable_4kmD2_", file_days, "_bil.bil")
+file_list2 <- paste0("Data/", "PRISM/", yearC, folder_names2, file_names2)
+
+folder_names3 <- paste0("PRISM_ppt_stable_4kmD2_", file_days, "_bil/")
+file_names3 <- paste0("PRISM_ppt_stable_4kmD2_", file_days, "_bil.bil")
+file_list3 <- paste0("Data/", "PRISM/", yearC, folder_names3, file_names3)
+
+t0 <- proc.time()
+tmax <- read_stars(file_list, along = list(time = dates)) %>%
+  setNames("tmax")
+tmin <- read_stars(file_list2, along = list(time = dates)) %>%
+  setNames("tmin")
+ppt <- read_stars(file_list3, along = list(time = dates)) %>%
+  setNames("ppt")
+TP.st <- c(tmax, tmin, ppt)
+proc.time() - t0
+
+TP.st
+```
+
+Make a quick map.
+```{r}
+qtm(tp.stars["tmax",,,1:12])
+```
+
+```{r}
+library(ggplot2)
+library(viridis)
+## Loading required package: viridisLite
+library(ggthemes)
+
+ggplot() +  
+  geom_stars(data = tp.stars[1], alpha = .8, downsample = c(10, 10, 1)) + 
+  facet_wrap("time") +
+  scale_fill_viridis() +
+  coord_equal() +
+  theme_map() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm"))
+
+tmap_leaflet(
+  tm_shape(tp.stars["tmin",,,1]) + 
+  tm_raster(alpha = .5, palette = "-RdBu") + 
+  tm_facets(as.layers = TRUE)
+)
+```
+
+Filter then plot
+```{r}
+library(cubelyr)
+library(colorspace)
+
+X <- filter(tp.stars, x > -90, y < 32) 
+
+ggplot() +  
+  geom_stars(data = X[2,,,1], alpha = .8, downsample = c(1, 1, 14)) + 
+  facet_wrap("time") +
+#  scale_fill_continuous_sequential(palette = "ag_Sunset") +
+  scale_fill_distiller(palette = "RdBu") +
+  coord_equal() +
+  theme_map() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm"))
+```
+
+Crop to state boundary
+```{r}
+library(USAboundaries)
+
+FL.sf <- us_states(states = "Florida",
+                   resolution = "low") %>%
+  st_transform(crs = st_crs(tp.stars))
+
+X <- st_crop(tp.stars, FL.sf, crop = TRUE)
+X <- filter(X, time >= ymd("2019-05-01"), time <= ymd("2019-05-31"))
+
+ggplot() +  
+  geom_stars(data = X[2], alpha = .8, downsample = c(1, 1, 1)) + 
+  facet_wrap("time") +
+  scale_fill_distiller(palette = "RdBu") +
+  coord_equal() +
+  theme_map() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm"))
+```
+
+Crop to circle around Tallahassee. 30.43333°, -84.28333°
+```{r}
+X <- filter(tp.stars, time >= ymd("2019-02-01"), time <= ymd("2019-02-28"))
+circle <- st_sfc(st_buffer(st_point(c(-84.28333, 30.43333)), 1), crs = st_crs(X))
+
+plot(FL.sf$geometry)
+plot(circle, add = TRUE)
+
+X <- st_crop(X, circle, crop = TRUE)
+```
+
+## Create a {stars} object from the tornado data using a regular grid
+
+Import the data and create a raster layer containg the annual count for each year.
+```{r}
+Tracks.sf <- st_read(dsn = "Data/1950-2018-torn-aspath")
+```
+
+Next set the raster domain and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the `extent()` function.
+```{r}
+frame <- raster(xmn = -125, xmx = -67, ymn = 24, ymx = 50)
+res(frame) <- 2
+frame.st <- st_as_stars(frame)
+```
+
+Convert the paths to the same CRS. NOT USED.
+```{r}
+Paths.sf <- st_transform(Paths.sf,
+                         crs = "+proj=longlat +datum=WGS84 +no_defs")
+```
+
+Use the `rasterize()` function to count the number of times each raster cell contains a tornado genesis location. The first argument is the spatial data frame (dough; here a simple feature data frame) and the second is the raster without values (cooking cutter). The argument `field =` specifies a column name in the spatial data frame (here just an identifier) and the argument `fun =` specifies what to do (here simply count the unique instances of the field in each cell).
+```{r}
+counts.s <- NULL
+for(year in 1981:1990){
+  print(year)
+  tracks <- Tracks.sf %>%
+    filter(yr == year)
+  r <- rasterize(tracks, frame, field = "om", fun = 'count', background = 0)
+  counts.s <- stack(counts.s, r)
+}
+
+counts.st <- st_as_stars(counts.s)
+names(counts.st) <- "count"
+
+years <- seq(as_date("1981-01-01"), 
+             as_date("1990-12-31"), 
+             by = "year")
+
+( counts.st <- st_set_dimensions(counts.st, which = 3, values = year(years), names = "year") )
+
+
+plot(counts.st)
+
+ggplot() +  
+  geom_stars(data = counts.st) + 
+  facet_wrap("year") +
+  scale_fill_viridis_c() +
+  coord_sf() +
+  theme_map() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm"))
+
+library(USAboundaries)
+
+SE.sf <- us_states(states = c("Florida", "Georgia", "Alabama"),
+                   resolution = "low") %>%
+  st_transform(crs = st_crs(counts.st))
+
+X <- st_crop(counts.st, SE.sf, crop = TRUE)
+
+ggplot() +  
+  geom_stars(data = X, alpha = .8, downsample = c(1, 1, 1)) + 
+  facet_wrap("year") +
+  scale_fill_viridis_c() +
+  coord_equal() +
+  theme_map() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm"))
+
+```
+
+## Create a {stars} object from the tornado data using county polygons
+
+```{r}
+Tracks.sf <- st_read(dsn = "Data/1950-2018-torn-aspath") %>%
+  filter(yr >= 2003 & yr <= 2018) 
+
+Counties.sf <- us_counties(resolution = "low") %>%
+  filter(!state_name %in% c("Alaska", "Hawaii", "Puerto Rico"))
+
+States.sf <- us_states(resolution = "low") %>%
+  filter(!state_name %in% c("Alaska", "Hawaii"))
+
+CountyArea <- st_area(Counties.sf)
+
+counts.v <- NULL
+for(year in 2003:2018){
+  print(year)
+  tracks <- Tracks.sf %>%
+    filter(yr == year)
+  mtrx <- st_intersects(Counties.sf, 
+                        tracks, 
+                        sparse = FALSE)
+  counts.v <- c(counts.v, rowSums(mtrx))
+}
+
+years <- year(seq(as_date("2003-01-01"), 
+                  as_date("2018-01-01"), 
+                  by = "year"))
+
+d <- st_dimensions(location = Counties.sf$geometry, 
+                   year = years)
+
+( counts.st <- st_as_stars(list(counts = matrix(counts.v, ncol = length(years))), dimensions = d) )
+
+
+counts.st <- counts.st %>%
+      mutate(countsD = cut(counts, breaks = c(0, 1, 2, 4, 8, Inf), right = FALSE))
+
+
+counts.st <- counts.st %>%
+  st_transform(crs = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+
+States.sf <- States.sf %>%
+  st_transform(crs = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+
+ggplot() +  
+  geom_stars(data = counts.st, aes(fill = countsD)) + 
+  facet_wrap(~ year) +
+#  scale_fill_viridis_d(labels = c("0", "1", "2-3", "4-8", ">8")) +
+  scale_fill_manual(values = c("gray70", "#404788FF",  "#1F968BFF", "#73D055FF", "#FDE725FF"),
+                    labels = c("0", "1", "2-3", "4-8", ">8")) +
+  geom_sf(data = States.sf, col = "white", fill = "transparent", size = .1) +
+  coord_sf() +
+  theme_map() +
+  theme(legend.position = "top") +
+  theme(legend.key.width = unit(.5, "cm")) +
+  labs(fill = "",
+       title = "Annual tornado occurrences by county",
+       caption = "Data Source: NOAA SPC")
+
+```
+
+## Covid data
+
+Data source: https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/
+```{r}
+library(tidyverse)
+library(stars)
+library(USAboundaries)
+
+pop <- read_csv(file = "covid_county_population_usafacts.csv") %>%
+  filter(State == "FL" & countyFIPS != 0)
+deaths <- read_csv(file = "covid_deaths_usafacts.csv") %>%
+  filter(State == "FL" & countyFIPS != 0)
+deathrate <- deaths[, 5:ncol(deaths)]/pop$population * 1000
+
+days <- seq(as.Date(names(deaths)[5], format = "%m/%d/%y"),
+            as.Date(names(deaths)[ncol(deaths)], format = "%m/%d/%y"), 
+            by = "day")
+space <- us_counties(states = "Florida",
+                     resolution = "low") %>%
+  mutate(countyFIPS = as.double(paste0(statefp, countyfp))) %>%
+  arrange(countyFIPS)
+
+d <- st_dimensions(location = space$geometry, time = days)
+
+( covid.st <- st_as_stars(list(dr = as.matrix(deathrate)), dimensions = d) )
+```
+
+Make some maps.
+```{r}
+image(aperm(covid.st))
+
+CountyOrder <- order(covid.st[,,309]$dr)
+X <- covid.st[,CountyOrder,]
+ylabs <- space$name[CountyOrder]
+
+image(aperm(X))
+
+X.df <- as.data.frame(X$dr)
+X.df$Counties <- factor(space$name[CountyOrder], levels = space$name[CountyOrder])
+
+library(reshape2)
+X.df2 <- melt(X.df, id.vars = "Counties") %>%
+  mutate(Date = as.Date(variable, format = "%m/%d/%y")) %>%
+  filter(Date >= as.Date("2020-09-28"))
+
+ggplot(data = X.df2,
+       mapping = aes(x = Date, y = Counties, fill = value)) +
+  geom_raster() +
+  scale_fill_distiller(name = "", direction = 1) +
+  scale_x_date(date_breaks = "1 week", date_labels = "%m/%d") +
+  ylab("") + xlab("Month/Day") +
+  labs(title = "Cumulative COVID-19 deaths (per 1000 people) in Florida counties", 
+       subtitle = "Ordered from highest to lowest on November 25, 2020",
+       caption = "Data source: https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/") +
+  theme_minimal()
+```
+
+Other plots
+```{r}
+ggplot() +  
+  geom_stars(data = covid.st[,,300]) + 
+  facet_wrap("time") +
+  scale_fill_viridis_c() +
+  coord_sf() +
+  theme_map() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm"))
+
+
+a <- covid.st %>% 
+  filter(time >= "2020-11-01", time < "2020-11-21") 
+ggplot() +  
+  geom_stars(data = a) + 
+  facet_wrap("time") +
+  scale_fill_viridis_c() +
+  coord_sf() +
+  theme_map() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm"))
+
+library(xts)
+
+plot(as.xts(a))
+
+nbs <- poly2nb(space)
+wts <- nb2listw(nbs)
+
+mI <- NULL
+for(i in 100:305){
+mI <- c(mI, as.vector(moran.test(covid.st[,,i]$dr, listw = wts)$estimate[1]))
+}
+```
+
+Bar chart racer.
+```{r}
+devtools::install_github("jl5000/barRacer")
+
+install.packages("gapminder")
+library(barRacer)
+
+bar_chart_race(gapminder::gapminder, country, pop, year, title = "Population over time")
+
+days <- seq(as.Date("2020-05-01"), 
+            as.Date("2020-11-25"), 
+            by = "day")
+st.df <- covid.st %>% 
+  filter(time %in% days) %>%
+  as.data.frame() %>% 
+  mutate(name = rep(space$name, times = length(days)))
+  
+bar_chart_race(df = st.df, 
+               cat_col = name, 
+               val_col = dr, 
+               time_col = time, 
+               max_bars = 67,
+               title = "Covid death rates (/1000)")
+```
+
+Modify the code
+```{r}
+bar_chart_race2 <- function (df, cat_col, val_col, time_col, max_bars = 10, duration = 20, fps = 10, width = 800, height = 1000, title = "") {
+    nudge <- max(df %>% dplyr::pull({{val_col}}))/50
+#    shift <- max(df %>% dplyr::pull({{val_col}})) * .8
+#    extend <- max(df %>% dplyr::pull({{val_col}})) * 1.20
+    p <- df %>% 
+      dplyr::group_by({{time_col}}) %>% 
+      dplyr::mutate(rank = dplyr::min_rank(-{{val_col}}) * 1) %>% 
+      dplyr::filter(rank <= max_bars) %>% dplyr::ungroup() %>% 
+      ggplot2::ggplot(ggplot2::aes(x = rank, y = {{val_col}}, fill = {{val_col}})) + 
+        ggplot2::geom_tile(ggplot2::aes(y = {{val_col}}/2, height = {{val_col}}), show.legend = FALSE, width = .9) + 
+        ggplot2::geom_text(ggplot2::aes(label = {{cat_col}}), hjust = "right", nudge_y = -nudge, color = "black", size = 3) + 
+        ggplot2::geom_text(ggplot2::aes(label = round({{val_col}}, 2)), hjust = "left", nudge_y = nudge, colour = "black", size = 4) +
+        ggplot2::scale_x_reverse("") + 
+        ggplot2::scale_fill_viridis_c(alpha = .3) +
+        ggplot2::coord_flip(clip = "off") + 
+        ggplot2::theme_minimal() + 
+        ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(), 
+                       panel.grid.minor.x = ggplot2::element_blank(), 
+                       axis.text.y = ggplot2::element_blank(), 
+                       text = ggplot2::element_text(size = 14), 
+                       plot.title = ggplot2::element_text(size = 18), 
+                       plot.subtitle = ggplot2::element_text(size = 15)) + 
+        ggplot2::labs(title = title, subtitle = "{round(frame_time)}", caption = "Data source: https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/") +
+        ggplot2::theme_void() +
+        gganimate::transition_time({{time_col}}) + 
+        gganimate::ease_aes("cubic-in-out") +
+        gganimate::enter_fly(x_loc = -(max_bars + 2)) + 
+        gganimate::exit_fly(x_loc = -(max_bars + 2))
+    
+  gganimate::animate(p, duration = duration, fps = fps, end_pause = 70, width = width, height = height)
+}
+```
+
+```{r}
+bar_chart_race2(df = st.df, 
+               cat_col = name, 
+               val_col = dr, 
+               time_col = time, 
+               max_bars = 67,
+               fps = 16,
+               title = "Florida county-level covid death rates (/100,000)")
+
+```
+
+## Vector data cubes
+
+```{r}
+library(spacetime)
+data(air)
+```
+
+## Compute the range of the spatial autocorrelation 
+
+Convert stars to raster brick.
+```{r}
+# X.b <- as(X, "Raster")
+X.tmax <- as(X["tmax",,,], "Raster")
+X.tmin <- as(X["tmin",,,], "Raster")
+```
+
+Spatial autocorrelation range.
+```{r}
+library(blockCV)
+
+sac <- spatialAutoRange(rasterLayer = X.tmin[[1]],
+                        sampleNumber = 1500,
+                        doParallel = TRUE,
+                        plotVariograms = TRUE,
+                        showPlots = TRUE)
+
+sac$variograms$var_model
+```
+
+Loop over all days.
+```{r}
+X.tmax <- projectRaster(X.tmax, crs = "+proj=lcc +lat_1=33 +lat_2=45 +lat_0=39 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs")
+X.tmin <- projectRaster(X.tmin, crs = "+proj=lcc +lat_1=33 +lat_2=45 +lat_0=39 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs")
+
+tmaxACR <- NULL
+tminACR <- NULL
+for(i in 1:31){
+tmaxACR[i] <- spatialAutoRange(rasterLayer = X.tmax[[i]],
+                         sampleNumber = 1500,
+                         doParallel = TRUE,
+                         showPlots = FALSE)$variograms$var_model$range[2]
+tminACR[i] <- spatialAutoRange(rasterLayer = X.tmin[[i]],
+                         sampleNumber = 1500,
+                         doParallel = TRUE,
+                         showPlots = FALSE)$variograms$var_model$range[2]
+}
+
+df <- data.frame(Variable = c(rep("Tmax", times = length(tmaxACR)), rep("Tmin", times = length(tminACR))),
+                 ACR = c(tmaxACR, tminACR))
+
+ggplot(data = df,
+       mapping = aes(x = log(ACR), color = Variable)) +
+  geom_density()
+```
+
+If the domain is too large, clear calm nights will result in a trend that will overwhelm the local spatial autocorrelation.
