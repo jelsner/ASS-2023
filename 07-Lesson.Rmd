@@ -2,7 +2,7 @@
 
 **"Measuring programming progress by lines of code is like measuring aircraft building progress by weight."** -- Bill Gates
 
-## Today {.unnumbered}
+Today
 
 -   S4 spatial data objects
 -   Working with raster data

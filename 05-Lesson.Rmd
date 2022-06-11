@@ -2,7 +2,7 @@
 
 **"An awful lot of time I spend "coding" is actually spent copying and pasting (And much of the rest is spent googling)."** – Meghan Duffy
 
-## Today {-}
+Today
 
 - Working with spatial data
 - Geo-computation on simple features

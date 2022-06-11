@@ -2,18 +2,17 @@
 
 **"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."** --- Martin Fowler
 
-## Today {.unnumbered}
+Today
 
-In this lesson I tell you what this course is about. In do so I give you a bit of history on my journey into data science. I give details about lessons, assignments, and grading, and about how to get the most out of this course. I will talk a bit about why I present the course in this way.
+- What this course is about
+- Details about lessons, assignments, and grading
+- How to get the most out of this course 
 
 -   Is Milwaukee snowier than Madison?
-
 -   Is global warming making hurricanes stronger?
-
 -   Are tornadoes more likely to form over smooth terrain?
 
 -   Understand what this course is about, how it is structured, and what I expect from you
-
 -   Getting set to work with R and RStudio
 
 ## Install R and RStudio on your computer {.unnumbered}

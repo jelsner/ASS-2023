@@ -7,13 +7,11 @@ editor_options:
 
 **"Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."** --- Hadley Wickham
 
-## Today {-}
+Today
 
 - Making graphs
 
-Working with data frames is part of the iterative cycle of data science, along with visualizing, and modeling.
-
-The iterative cycle of data science:
+Working with data frames is part of the iterative cycle of data science, along with visualizing, and modeling. The iterative cycle of data science:
 
 1. Generate questions about our data.
 2. Look for answers by visualizing and modeling the data after the data are in suitably arranged data frames.
@@ -517,7 +515,7 @@ ggplot() +
   theme_void()
 ```
 
-## More resources and additional examples {-}
+More resources and additional examples
 
 -   ggplot extensions <https://exts.ggplot2.tidyverse.org/>
 -   Cheat sheets: <https://rstudio.com/resources/cheatsheets/>

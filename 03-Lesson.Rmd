@@ -2,10 +2,9 @@
 
 **"Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!"** --- Vanessa Hurst
 
-## Today {-}
+Today
 
 - Working with data frames
-- Working with data frames using functions from the {dplyr} package
 
 ## Working with data frames {-}
 
@@ -266,7 +265,7 @@ which.max(FLp.df[FLp.df$Year == 1965, 2:12])
 max(FLp.df[FLp.df$Year == 1965, 2:12])
 ```
 
-## Working with data frames using functions from the {dplyr} package {-}
+Using functions from the {dplyr} package
 
 The functions in the {dplyr} package simplify working with data frames. The functions work only on data frames. 
 

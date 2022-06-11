@@ -2,7 +2,7 @@
 
 **"Hell isn't other people's code. Hell is your own code from 3 years ago."** -- Jeff Atwood
 
-## Today {.unnumbered}
+Today
 
 -   Spatial data subsets and joins
 -   Interpolating variables using areal weights

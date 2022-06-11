@@ -2,38 +2,38 @@
 
 **"The trouble with programmers is that you can never tell what a programmer is doing until it’s too late."** --- Seymour Cray
 
-## Today {-}
+Today
 
-- Review of class expectations
+- Expectations
 - Data science workflow with R markdown
 - An introduction to using R
 - Data frames
 
-## Review of class expectations {-}
+## Expectations {-}
 
 Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m., Lab Hours: Fri 9:05 a.m. - 9:55 a.m., Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m. The best way to contact me is through email: <jelsner@fsu.edu>.
 
 This course is a survey of methods to describe, analyze, and model _spatial_ data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.
 
-During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own. The notes are written using the markdown language (I will explain this a bit today). Think of this as a master class in spatial data science using R.
+During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own. The notes are written using the markdown language.
 
 Grades are determined by how well you do on the weekly assignments.
 
-There are many online sites dedicated to all aspects of the R programming language. A list of some of the ones related to spatial analysis and modeling are in Lesson 1.
+There are online sites dedicated to all aspects of the R programming language. A list of some of the ones related to spatial analysis and modeling are in the syllabus.
 
-You should now be set up with R and RStudio. If not, please stay after class today and I will help you. I will spend the first several lessons teaching you how I work with R. For some of you this material might be a review. 
+You should now be set up with R and RStudio. If not I will help you after class. I will spend the first several lessons teaching you how to work with R. For some of you this material might be a review. 
 
-On the other hand, if this is entirely new don't get discouraged. Most of what you will do in this class does not involve writing complex code.
+On the other hand, if this is entirely new don't get discouraged. This class does not involve writing complex code.
 
-Today I review how to work with small bits of data using functions from the {base} packages. The {base} packages are part of the initial installation of R. They form the scaffolding for working with the code, but much of what we will do in this class will involve functions from other packages.
+Today I review how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your installation. They form the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages.
 
-The one exception today is that I introduce functions from the {readr} package (as part of the {tidyverse} set of packages) that simplify importing data into R. These functions are similar to the corresponding functions in the {base} package.
+The one exception is that I introduce functions from the {readr} package today that simplify getting data into R. These functions are similar to the corresponding functions in the {base} package.
 
 ## Data science workflow with R markdown {-}
 
 A scientific paper is _advertisement_ for a claim about the world. The _proof_ is the procedure that was used to obtain the result that under girds the claim. The computer code is the exact procedure. 
 
-Computer code is the recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to our future self.
+Computer code is the recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self.
 
 When you use a spreadsheet, it's hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words you use to describe these types of procedures are not standard.
 
