@@ -350,6 +350,8 @@ tmap::tm_shape(World) +
                       title = c("Happy Planet Index", "GDP per capita")) 
 ```
 
+Note that the variable names must be in quotes (e.g., "HPI").
+
 The maps are identical except for the variable being plotted. All arguments of the layer functions can be vectorized, one for each map. Arguments that normally take a vector, such as `palette =`, are placed in a `list()`.
 
 Multiple map objects can also be arranged in a single plot with the `tmap::tmap_arrange()` function. Here you create two separate maps then arrange them.
