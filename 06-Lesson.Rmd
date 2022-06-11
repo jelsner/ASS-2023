@@ -51,7 +51,7 @@ The {dplyr} verbs work on {sf} spatial data frames. The functions include `dplyr
 
 CAUTION! The {dplyr} and {raster} packages have a `select()` function. When using both packages in the same session, the function in the most recently attached package will be used, 'masking' the other function. This will generate error messages containing text like: unable to find an inherited method for function 'select' for signature "sf". To avoid this error message, and prevent ambiguity, you should always use the long-form function name, prefixed by the package name and two colons `dplyr::select()`.
 
-The `dplyr::select()` function picks the columns by name or position. For example, we can select only two columns, `name_long` and `pop`, with the following command.
+The `dplyr::select()` function picks the columns by name or position. For example, you can select only two columns, `name_long` and `pop`, with the following command.
 
 ```{r}
 world1 <- world |>
@@ -144,7 +144,7 @@ The polygon geometry includes the border and the area inside the border. The CRS
 
 You use a geometric operation to subset spatial data geographically (rather than on some attribute). For example here you subset the tornado tracks as line strings, keeping only those line strings that fall within the Kansas border defined by a polygon geometry.
 
-First import the tornado data. Note here you first ask if the tornado data file is in our list of files with the `if()` conditional and the `list.files()` function. We only download the data file if it is not in the list.
+First import the tornado data. Note here you first ask if the tornado data file is in our list of files with the `if()` conditional and the `list.files()` function. You only download the data file if the file is not (`!`) in the list.
 ```{r}
 if(!"1950-2020-torn-aspath" %in% list.files(here::here("data"))) {
 download.file(url = "http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-aspath.zip",
@@ -285,7 +285,7 @@ world.sf |>
   dplyr::inner_join(spData::coffee_data)
 ```
 
-We can join in the other direction, starting with a regular data frame and adding variables from a simple features object.
+You can join in the other direction as well, starting with a regular data frame and adding variables from a simple features object.
 
 More information on attribute data operations such as these is given here: <https://geocompr.robinlovelace.net/attr.html>
 
@@ -345,7 +345,7 @@ sum(a1.sf$BIR74) / sum(nc.sf$BIR74)
 
 An *intensive* variable is independent of the spatial units (e.g., population density, percentages); a variable that has been normalized in some fashion. An *extensive* variable depends on the spatial unit (e.g., population totals). Assuming a uniform population density, the number of people will depend on the size of the spatial area.
 
-Since the number of births in each county is an extensive variable, we change the `extensive =` argument to `TRUE`.
+Since the number of births in each county is an extensive variable, you change the `extensive =` argument to `TRUE`.
 
 ```{r}
 a2.sf <- sf::st_interpolate_aw(nc.sf["BIR74"], 
@@ -384,7 +384,7 @@ FL_Torn.sf <- Torn.sf |>
                 st == "FL")
 ```
 
-Next change the geometries from line strings to polygons to represent the tornado path ('footprint'). The path width is given by the variable labeled `wid`. First we create new a new variable with the width in units of meters and then use the `st_buffer()` function with the `dist =` argument set to 1/2 the width.
+Next change the geometries from line strings to polygons to represent the tornado path ('footprint'). The path width is given by the variable labeled `wid`. First you create new a new variable with the width in units of meters and then use the `st_buffer()` function with the `dist =` argument set to 1/2 the width.
 
 ```{r}
 FL_Torn.sf <- FL_Torn.sf |>
