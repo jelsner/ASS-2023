@@ -46,8 +46,8 @@ unzip(here::here("data", "columbus.zip"),
       exdir = here::here("data"))
 }
 
-( CC.sf <- read_sf(dsn = here::here("data", "columbus"),
-                   layer = "columbus") )
+( CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
+                       layer = "columbus") )
 ```
 
 The simple feature data frame contains housing values (`HOVAL`), income values (`INC`) and (`CRIME`) in census tracts across the city. Crime (`CRIME`) is residential burglaries and vehicle thefts per 1000 households. Income (`INC`) and housing values (`HOVAL`) are annual values with units of 1000 dollars.
@@ -356,36 +356,36 @@ SIDS.sf <- sf::st_read(dsn = here::here("data", "sids2")) |>
 head(SIDS.sf)
 ```
 
-The column `SIDR79` contains the death rate per 1000 live births (1979-84) from sudden infant death syndrome. Create a choropleth map of the SIDS rates.
+The column `SIDR79` contains the death rate (per 1000 live births) (1979-84) from sudden infant death syndrome. Create a choropleth map of the SIDS rates.
 
 ```{r}
-tm_shape(SIDS.sf) +
-  tm_fill("SIDR79", title = "") +
-  tm_borders(col = "gray70") +
-  tm_layout(title = "SIDS Rates 1979-84 [per 1000]",
-            legend.outside = TRUE)
+tmap::tm_shape(SIDS.sf) +
+  tmap::tm_fill("SIDR79", title = "") +
+  tmap::tm_borders(col = "gray70") +
+  tmap::tm_layout(title = "SIDS Rates 1979-84 [per 1000]",
+                  legend.outside = TRUE)
 ```
 
 Create a neighborhood list (`nb`) and a `listw` object (`wts`) then graph the neighborhood network.
 
 ```{r}
-nbs <- poly2nb(SIDS.sf)
-wts <- nb2listw(nbs)
+nbs <- spdep::poly2nb(SIDS.sf)
+wts <- spdep::nb2listw(nbs)
 
 plot(nbs, 
-     st_centroid(st_geometry(SIDS.sf)))
+     sf::st_centroid(st_geometry(SIDS.sf)))
 ```
 
 Next compute Moran's I on the SIDS rates over the period 1974--1979.
 
 ```{r}
 m <- length(SIDS.sf$SIDR79)
-s <- Szero(wts)
+s <- spdep::Szero(wts)
 
-moran(SIDS.sf$SIDR79, 
-      listw = wts, 
-      n = m, 
-      S0 = s)
+spdep::moran(SIDS.sf$SIDR79, 
+             listw = wts, 
+             n = m, 
+             S0 = s)
 ```
 
 I is .14 and K is 4.4. A normal distribution has a kurtosis of 3. Values less than about 2 or greater than about 4 indicate that inferences about autocorrelation based on the assumption of normality are suspect.
@@ -396,19 +396,19 @@ Each style gives a somewhat different value for I.
 
 ```{r}
 x <- SIDS.sf$SIDR79
-moran.test(x, nb2listw(nbs, style = "W"))$estimate[1]
-moran.test(x, nb2listw(nbs, style = "B"))$estimate[1]  # binary
-moran.test(x, nb2listw(nbs, style = "S"))$estimate[1]  # variance-stabilizing
+spdep::moran.test(x, spdep::nb2listw(nbs, style = "W"))$estimate[1]
+spdep::moran.test(x, spdep::nb2listw(nbs, style = "B"))$estimate[1]  # binary
+spdep::moran.test(x, spdep::nb2listw(nbs, style = "S"))$estimate[1]  # variance-stabilizing
 ```
 
-When we report a Moran's I we need to state what type of weighting was used.
+When reporting a Moran's I you need to state what type of weighting was used.
 
-Let `sids` be a vector with elements containing the SIDS rate in each county. We create a spatial lag variable using the `lag.listw()` function. The first argument is the `listw` object and the second is the vector of rates.
+Let `sids` be a vector with elements containing the SIDS rate in each county. You create a spatial lag variable using the `spdep::lag.listw()` function. The first argument is the `listw` object and the second is the vector of rates.
 
 ```{r}
 sids <- SIDS.sf$SIDR79
-Wsids <- lag.listw(wts, 
-                   sids)
+Wsids <- spdep::lag.listw(wts, 
+                          sids)
 ```
 
 For each value in the vector `sids` there is a corresponding value in the object `Wsids` representing the neighborhood average SIDS rate.
