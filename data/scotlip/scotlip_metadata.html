@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Scotland Lip Cancer Data</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1348.17">
+  <style type="text/css">
+    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p3 {margin: 0.0px 0.0px 6.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+    td.td1 {width: 125.0px; margin: 0.5px 0.5px 0.5px 0.5px; padding: 1.0px 1.0px 1.0px 1.0px}
+    td.td2 {width: 449.0px; margin: 0.5px 0.5px 0.5px 0.5px; padding: 1.0px 1.0px 1.0px 1.0px}
+    td.td3 {width: 68.0px; margin: 0.5px 0.5px 0.5px 0.5px; padding: 1.0px 1.0px 1.0px 1.0px}
+    td.td4 {width: 206.0px; margin: 0.5px 0.5px 0.5px 0.5px; padding: 1.0px 1.0px 1.0px 1.0px}
+  </style>
+</head>
+<body>
+<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; font: 24.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Scotland Lip Cancer Data</b></span></h1>
+<p class="p2"><span class="s1"><i>Data provided "as is," no warranties.</i></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><b>File Description</b><br>
+Male lip cancer cases in Scottish districts 1975-80 and male population years at risk.</span></p>
+<table cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p4"><span class="s1">scotdistricts.txt:</span></p>
+      </td>
+      <td valign="middle" class="td2">
+        <p class="p4"><span class="s1">ASCII boundary files in GeoDa format (scotdistricts*.txt working versions, only final counts)</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p4"><span class="s1">scotlipdata.dbf:</span></p>
+      </td>
+      <td valign="middle" class="td2">
+        <p class="p4"><span class="s1">Dbf file with actual data (needed to join with base map)<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p4"><span class="s1">scotdistricts.dbf, shp, shx:</span></p>
+      </td>
+      <td valign="middle" class="td2">
+        <p class="p4"><span class="s1">Shape file created from scotdistricts.txt<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p4"><span class="s1">scotlip.dbf, shp, shx:</span></p>
+      </td>
+      <td valign="middle" class="td2">
+        <p class="p4"><span class="s1">Shape file created by joining scotdistricts with scotlipdata<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p2"><span class="s1">Type = Polygon shape files<br>
+Observations = 56<br>
+Variables = 8</span></p>
+<p class="p2"><span class="s1"><b>Source</b><br>
+Original from Clayton, D., and Kaldor, J. (1987). Empirical Bayes estimates of age standardised relative risks for use in disease mapping. <i>Biometrics,</i> 43,671-681, reproduced from Cressie, N. A. C. (1993). <i>Statistics for Spatial Data.</i> New York: John Wiley &amp; Sons, p. 537 Table 7.2.</span></p>
+<p class="p2"><span class="s1">Expected cases and percent of population in outdoor industry AFF (agriculture, fishing, forestry) from Lawson et al. (1999). <i>Disease Mapping and Risk Assessment for Public Health.</i> New York: Wiley, pp. 68-69, Table 5.1.</span></p>
+<p class="p2"><span class="s1">Base map from Scotland.map included with WinBugs, exported to S-Plus format and edited (conversion to GeoDa input format, elimination of duplicate coordinates and editing of sliver polygons); islands with multiple polygons represented by a single polygon.</span></p>
+<table cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5"><span class="s1"><b>Variable</b></span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5"><span class="s1"><b>Description</b></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">CODENO<span class="Apple-converted-space"> </span></span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">Code converted to numeric (drop w prefix)<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">RECORD_ID</span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">Unique ID<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">DISTRICT<span class="Apple-converted-space"> </span></span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">District number 1-56<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">NAME<span class="Apple-converted-space"> </span></span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">Name of districts from Cressie<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">CODE<span class="Apple-converted-space"> </span></span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">District code from WinBugs<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">CANCER<span class="Apple-converted-space"> </span></span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">Lip cancer cases from Cressie<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">POP<span class="Apple-converted-space"> </span></span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">Population years at risk from Cressie<span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">CEXP</span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">Expected cases from Lawson et al.</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p4"><span class="s1">AFF</span></p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p4"><span class="s1">Outdoor industry from Lawson et al.</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p6"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">Prepared by Luc Anselin.</span></p>
+<p class="p2"><span class="s1">Last updated June 3, 2004</span></p>
+</body>
+</html>

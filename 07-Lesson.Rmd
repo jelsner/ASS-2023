@@ -391,9 +391,9 @@ You can recognize the broad shape of the eastern 2/3rds of the United States. So
 
 Clustering
 
-Indeed tornado activity appears in distinct clusters (or groups). A statistic that estimates the amount of cluster is called Moran I. It is a global measure of clustering with high values indicated by high values nearby to other high values and low values nearby to other low values.
+Indeed tornado activity appears in distinct clusters (or groups). A statistic that estimates the amount of cluster is called Moran's I. It is a global measure of clustering with high values indicated by high values nearby to other high values and low values nearby to other low values.
 
-Values of Moran I range from -1 to +1 where positive values indicate clustering and negative values indicate regularity (e.g., chessboard). It is implemented on a raster with the `raster::Moran()` function.
+Values of Moran's I range from -1 to +1 where positive values indicate clustering and negative values indicate regularity (e.g., chessboard). It is implemented on a raster with the `raster::Moran()` function.
 
 The function works only with S4 raster objects. So you need to first convert `Torn.r` from a `SpatRaster` to a `RasterLayer`. You do this with `raster()` function after loading the {raster} package.
 
@@ -415,9 +415,9 @@ raster::Moran(Torn.r2)
 
 The value of .75 indicates high level of tornado clustering at this scale.
 
-Under the null hypothesis of no spatial autocorrelation the expected value for Moran I is close to zero [-1/(n-1), where n is the number of cells].
+Under the null hypothesis of no spatial autocorrelation the expected value for Moran's I is close to zero [-1/(n-1), where n is the number of cells].
 
-Clusters at a local level can be found using a local indicator of spatial autocorrelation. One such indicator is local Moran I, which is computed at each cell (using the `MoranLocal()` function) so the result is a raster.
+Clusters at a local level can be found using a local indicator of spatial autocorrelation. One such indicator is local Moran's I, which is computed at each cell (using the `MoranLocal()` function) so the result is a raster.
 
 ```{r}
 Torn_lmi.r <- raster::MoranLocal(Torn.r2)
