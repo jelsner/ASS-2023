@@ -1,0 +1,511 @@
+# Thurday September 22, 2022 {.unnumbered}
+
+**"Be curious. Read widely. Try new things. I think a lot of what people call intelligence boils down to curiosity."** - Aaron Swartz
+
+Today
+
+- Defining neighborhoods differently
+- Assessing the statistical significance of autocorrelation
+- Bivariate spatial autocorrelation
+- Local indicators of spatial autocorrelation
+
+## Defining neighborhoods differently {-}
+
+Last time we saw how to compute autocorrelation using areal aggregated data. The procedure involves a weights matrix, which you created using the default neighborhood definition and the weighting scheme with functions from the {spdep} package. 
+
+We noted that the magnitude of autocorrelation depends on the weighting scheme used. Other neighborhood definitions are possible and they will also influence the magnitude of the autocorrelation.
+
+Let's consider the historical demographic data in Mississippi counties. Import the data as a simple feature data frame and assign the geometry a geographic CRS.
+```{r}
+if(!"police" %in% list.files(here::here("data"))) {
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/police.zip",
+              destfile = here::here("data", "police.zip"))
+unzip(here::here("data", "police.zip"),
+      exdir = here::here("data"))
+}
+
+( PE.sf <- sf::st_read(dsn = here::here("data", "police"), 
+                 layer = "police") |>
+  sf::st_set_crs(4326) )
+```
+
+Variables in the simple feature data frame include police expenditures (`POLICE`), crime (`CRIME`), income (`INC`), unemployment (`UNEMP`) and other socio-economic characteristics across Mississippi at the county level. Police expenditures are per person 1982 (dollars per person). Personal income is per person in 1982 (dollars per person). Crime is the number of serious crimes per 100,000 person in 1981. Unemployment is percent of people looking for work in 1980.
+
+The geometries are polygons that define the county borders.
+```{r}
+library(ggplot2)
+
+ggplot(data = PE.sf) +
+  geom_sf()
+```
+
+To estimate autocorrelation for any variable in the data frame, we need to first assign the neighborhoods and the associated weights between each region and each neighbor of that region. 
+
+The default options in the `poly2nb()` and `nb2listw()` functions from the {spdep} package result in a neighborhood definition that assumes 'queen' contiguity (polygon intersections can include a single point) and the weights based on row standardization (the sum of the weights equals the number of regions).
+```{r}
+library(spdep)
+
+nbs <- poly2nb(PE.sf)
+wts <- nb2listw(nbs)
+```
+
+Alternatively we can specify the number of neighbors and then assign the neighbors of each region based on proximity. We first extract the coordinates of the polygon centroids as a matrix.
+```{r}
+coords <- PE.sf %>%
+  st_centroid() %>%
+  st_coordinates()
+head(coords)
+```
+
+We then use the `knearneigh()` function on the coordinate matrix and specify how many nearest neighbors with the `k =` argument. Here as an example we set it to six. Since the CRS is geographic we include the `longlat = TRUE` argument so distances are calculated using great circles.
+```{r}
+knn <- knearneigh(coords, 
+                  k = 6, 
+                  longlat = TRUE)
+names(knn)
+
+head(knn$nn)
+```
+
+The output is a list of five elements with the first element a matrix with the row dimension the number of counties and the column dimension the number of neighbors. 
+
+Note that neighborhoods are not symmetric. For example, county 3 is a neighbor of county 2, but county 2 is not a neighbor of county 3. This can be important because certain spatial models require  symmetric neighborhoods.
+
+We turn this matrix into a neighborhood object (class `nb`) with the `knn2nb()` function. 
+```{r}
+nbs2 <- knn2nb(knn)
+summary(nbs2)
+```
+
+If we include the argument `sym = TRUE` in the `knn2nb()` function then it forces the neighborhoods to be symmetric.
+```{r}
+nbs3 <- knn2nb(knn,
+               sym = TRUE)
+summary(nbs3)
+```
+
+The result shows that six is the minimum number of nearest neighbors with some counties having has many as 10 neighbors to guarantee symmetry (if region X is a neighbor of region Y then region Y is a neighbor of region X).
+
+Compare the default adjacency neighborhoods with the nearest-neighbor neighborhoods.
+```{r, eval=FALSE}
+par(mfrow = c(1, 2))
+
+plot(st_geometry(PE.sf), border = "grey")
+plot(nbs, coords, add = TRUE)
+
+plot(st_geometry(PE.sf), border = "grey")
+plot(nbs2, coords, add = TRUE)
+```
+
+A difference between the two neighborhoods is the number of links on counties along the borders. The nearest-neighbor defined neighborhoods have more links. Also, when the neighbors are defined by proximity counties can be contiguous but not neighbors.
+
+Create weight matrices for these alternative neighborhoods using the same `nb2listw()` function.
+```{r}
+wts2 <- nb2listw(nbs2)
+wts3 <- nb2listw(nbs3)
+```
+
+We compute Moran I for the percentage of white people variable (`WHITE`) with the `moran()` function separately for the three different weight matrices.
+```{r}
+moran(PE.sf$WHITE,
+       listw = wts,
+       n = length(nbs),
+       S0 = Szero(wts))
+
+moran(PE.sf$WHITE,
+       listw = wts2,
+       n = length(nbs2),
+       S0 = Szero(wts2))
+
+moran(PE.sf$WHITE,
+       listw = wts3,
+       n = length(nbs3),
+       S0 = Szero(wts3))
+```
+
+Values of Moran I are constrained between -1 and +1. In this case the neighborhood definition has little or no impact on inferences made about spatial autocorrelation. The kurtosis is between 2 and 4 consistent with a set of values from a normal distribution.
+
+In a similar way we compute the Geary C statistic.
+```{r}
+geary(PE.sf$WHITE, 
+      listw = wts,
+      n = length(nbs), 
+      S0 = Szero(wts), 
+      n1 = length(nbs) - 1)
+```
+
+Values of Geary C range between 0 and 2 with values less than one indicating positive autocorrelation.
+
+If the values of Moran I and Geary C result in different interpretations about the amount of clustering then it is a good idea to examine _local_ variations in autocorrelation.
+
+## Assessing the statistical significance of autocorrelation {-}
+
+Attribute values randomly placed across a spatial domain will result in some autocorrelation. Statistical tests provide a way to guard against being fooled by this randomness. For example, claiming a 'hot spot' when none exists. In statistical parlance, is the value of Moran I significant with respect to the null hypothesis of no autocorrelation? 
+
+One way to answer this question is to draw an uncertainty band on the regression line in a Moran scatter plot. If a horizontal line can be placed entirely within the band then the slope (Moran I) is not significant against the null hypothesis of no autocorrelation.
+
+More formally the question is answered by comparing the standard deviate ($z$ value) of the I statistic to the appropriate value from a standard normal distribution. This is done using the `moran.test()` function, where the $z$ value is the difference between I and the expected value of I divided by the square root of the variance of I.
+
+The function takes a variable name or numeric vector and a spatial weights list object in that order. The argument `randomisation = FALSE` means the variance of I is computed under the assumption of normally distributed unemployment (`UNEMP`) rates.
+```{r}
+( mt <- moran.test(PE.sf$UNEMP, 
+                   listw = wts,
+                   randomisation = FALSE) )
+```
+
+Moran I is .218 with a variance of .0045. The $z$ value for I is 3.41 giving a $p$-value of .0003 under the null hypothesis of no autocorrelation. Thus we reject the null hypothesis and conclude there is weak but significant autocorrelation in unemployment rates across Mississippi at the county level.
+
+Outputs from the `moran.test()` function are in the form of a list.
+```{r}
+str(mt)
+```
+
+The list element called `estimate` is a vector of length three containing Moran I, the expected value of Moran I under the assumption of no autocorrelation, and the variance of Moran I. 
+
+The $z$ value is the difference between I and it's expected value divided by the square root of the variance.
+```{r}
+( mt$estimate[1] - mt$estimate[2] ) / sqrt(mt$estimate[3])
+```
+
+The $p$-value is the area under a standard normal distribution curve to the right (`lower.tail = FALSE`) of 3.4102 (`mt$statistic`).
+```{r}
+pnorm(mt$statistic, 
+      lower.tail = FALSE)
+
+curve(dnorm(x), from = -4, to = 4, lwd = 2)
+abline(v = mt$statistic, col = 'red')
+```
+
+So about .03% of the area lies to the right of the red line.
+
+Recall the $p$-value summarizes the evidence in support of the null hypothesis. The smaller the $p$-value, the less evidence there is in support of the null hypothesis. 
+
+In this case it is the probability that the county unemployment rates could have been arranged at random across the state if the null hypothesis is true. The small $p$-value tells us that the spatial arrangement of the data is unusual with respect to the null hypothesis.
+
+The interpretation of the $p$-value is stated as evidence AGAINST the null hypothesis. This is because interest lies in the null hypothesis being untenable. A $p$-value less than .01 is said to provide convincing evidence against the null, a $p$-value between .01 and .05 is said to provide moderate evidence against the null, and a $p$-value between .05 and .15 is said to be suggestive, but inconclusive in providing evidence against the null. A $p$-value greater than .15 is said to provide no evidence against the null. 
+
+Note that we do not interpret "no evidence" as "no effect (no autocorrelation)".
+
+Under the assumption of normal distributed and uncorrelated data, the expected value for Moran I is -1/(n-1) where n is the number of regions. 
+
+A check on the distribution of unemployment rates indicates that normality is somewhat suspect. A good way to check the normality assumption is to use the `sm.density()` function from the {sm} package.
+```{r}
+if(!require(sm)) install.packages("sm", repos = "http://cran.us.r-project.org")
+
+sm::sm.density(PE.sf$UNEMP, 
+               model = "Normal",
+               xlab = "Unemployment Rates")
+```
+
+The unemployment rates are less "peaked" (lower kurtosis) than a normal distribution. In this case it is better to use the default `randomisation = TRUE` argument.
+
+Further, the assumptions underlying Moran test are sensitive to the form of the graph of neighbor relationships and other factors so results should be checked against a test that involves permutations.
+
+A random sampling approach to inference is made with the `moran.mc()` function. MC stands for Monte Carlo which refers to the city of Monte Carlo in Monaco famous for its gambling casinos.
+
+The name of the data vector and the weights list object (`listw`) are required as is the number of permutations (`nsim`). Each permutation is a random rearrangement of the unemployment rates across the counties. This removes the spatial autocorrelation but keeps the non-spatial distribution of the unemployment rates. The neighbor topology and weights remain the same.
+
+For each permutation (random shuffle of the data values), I is computed and saved. The $p$-value is obtained as the ratio of the number of permuted I values greater or exceeding the observed I over the number of permutation plus one. In the case where there are 5 permuted I values greater or equal to the observed value based on 99 simulations, the $p$-value is 5/(99 + 1) = .05.
+
+For example, if we want inference on I using 9999 permutations type
+```{r}
+set.seed(40453)
+
+( mP <- moran.mc(PE.sf$UNEMP, 
+                 listw = wts,
+                 nsim = 9999) )
+```
+
+Nine of the permutations yield a Moran I greater than .218, hence the $p$-value as evidence in support of the null hypothesis (the true value for Moran I is zero) is .0009.
+
+Note: Here we initiate the random number generator with a seed value (any will do) so that the set of random permutations of the values across the domain will be the same each time we knit this Rmd. This is important for reproducibility. The default random number generator seed value is determined from the current time (internal clock) and so no random permutations will be identical. To control the seed use the `set.seed()` function.
+
+The values of I computed for each permutation are saved in the vector `mP$res`.
+```{r}
+head(mP$res)
+tail(mP$res)
+```
+
+The last value in the vector is I computed using the data in the correct counties. The $p$-value as evidence in support of the null hypothesis that I is zero is given as
+```{r}
+sum(mP$res > mP$res[10000])/9999
+```
+
+A density graph displays the distribution of permuted I's.
+```{r}
+df <- data.frame(mp = mP$res[-10000])
+ggplot(df, aes(mp)) + 
+  geom_density() + 
+  geom_rug() + 
+  geom_vline(xintercept = mP$res[10000], 
+             color = "red", size = 2) +
+  theme_minimal()
+```
+
+The density curve is centered just to the left of zero consistent with the theoretical expectation (mean).
+
+What to do with the knowledge that the unemployment rates have significant autocorrelation? By itself, not much, but it can provide notice that something might be going on in certain regions (hot spot analysis).
+
+More typically, the knowledge is useful after other known factors are considered. In the language of statistics, knowledge of significant autocorrelation in the model residuals can help us build a better model.
+
+## Bivariate spatial autocorrelation {-}
+
+The idea of spatial autocorrelation can be extended to two variables. It is motivated by the fact that aspatial bi-variate association measures, like Pearson's correlation coefficient, do not recognize the spatial arrangement of the regions.
+
+Consider the correlation between police expenditure (`POLICE`) and the amount of crime (`CRIME`) in the police expenditure data set.
+```{r}
+police <- PE.sf$POLICE
+crime <- PE.sf$CRIME
+
+cor.test(police, crime)
+```
+
+We find a significant (direct) correlation ($p$-value < .01) between these two variables under the null hypothesis that they are uncorrelated. But we also note some spatial autocorrelation in these variables.
+```{r}
+moran.test(police, 
+           listw = wts)
+moran.test(crime, 
+           listw = wts)
+```
+
+The Lee statistic integrates the Pearson correlation as an aspatial bi-variate association metric and Moran I as a uni-variate spatial autocorrelation metric. The formula is
+$$
+L(x,y) = \frac{n}{\sum_{i=1}^{n}(\sum_{j=1}^{n}w_{ij})^2}
+\frac{\sum_{i=1}^{n}(\sum_{j=1}^{n}w_{ij}(x_i-\bar{x})) ((\sum_{j=1}^{n}w_{ij}(y_j-\bar{y}))}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n}(y_i - \bar{y})^2}}
+$$
+
+The formula is implemented in the `lee()` function where the first two arguments are the variables of interest and we need to include the weights matrix and the number of regions. The output from this function is a list of two with the first being the value of Lee's statistic (`L`).
+```{r}
+lee(crime, police, 
+    listw = wts, 
+    n = length(nbs))$L
+```
+
+Values of L can range between -1 and +1 with the value here of .13 indicating relatively weak bi-variate spatial autocorrelation between crime and police expenditures. Statistically we infer that crime in neighboring counties has some influence on police expenditure in each county, but not much.
+
+Neither values in `crime` nor values in `police` are adequately described by a normal distribution.
+```{r, eval=FALSE}
+sm::sm.density(crime, model = "normal")
+sm::sm.density(police, model = "normal")
+```
+
+Thus we perform a non-parametric test on the bi-variate spatial autocorrelation with the `lee.mc()` function. The crime and police expenditure values are randomly permuted and values of `L` are computed for each permutation.
+```{r}
+lee.mc(crime, police, 
+       listw = wts, 
+       nsim = 999)
+```
+
+We conclude that there is no significant bi-variate spatial autocorrelation between crime and police expenditure.
+
+## Local indicators of spatial autocorrelation {-}
+
+The Moran I statistic was first used in the 1950s. Localization of this statistic was presented by Luc Anselin in 1995 (Anselin, L. 1995. Local indicators of spatial association, Geographical Analysis, 27, 93–115).
+
+We saw the `MoranLocal()` function from the {raster} package returns a raster of local Moran I values.
+
+Local I is a deconstruction of global I where geographic proximity is used in two ways. (1) to define and weight neighbors and (2) to determine the spatial scale over which I is computed.
+
+Using queen's contiguity we determined the neighborhood topology and the weights for the police expenditure data from Mississippi. Here we print them in the full matrix form with the `list2mat()` function.
+```{r}
+round(listw2mat(wts)[1:5, 1:10], 2)
+```
+
+The matrix shows that the first county has three neighbors 2, 3, and 9 and each get a weight of 1/3. The third county has four neighbors 1, 4, 9 and 10 and each gets a weight of 1/4.
+
+Compute local Moran I on the percentage of white people using the `localmoran()` function. Two arguments are needed (1) the attribute variable for which we want to compute local correlation and (2) the weights matrix as a list object.
+```{r}
+Ii_stats <- localmoran(PE.sf$WHITE, 
+                       listw = wts)
+str(Ii_stats)
+```
+
+The local I is given in the first column of a matrix where the rows are the counties. The other columns are the expected value for I, the variance of I, the $z$ value and the $p$-value. For example, the local I statistics from the first county are given by typing
+```{r}
+head(Ii_stats)
+```
+
+Because these local values must average to the global value (when using row standardized weights), they can take on values outside the range between -1 and 1. A `summary()` method on the first column of the `Li`  object gives statistics from the non-spatial distribution of I's.
+```{r}
+summary(Ii_stats[, 1])
+```
+
+We map the values by first attaching the matrix columns of interest to the simple feature data frame. Here we attach `Ii`, `Var`, and `Pi`.
+```{r}
+PE.sf$Ii <- Ii_stats[, 1]
+PE.sf$Vi <- Ii_stats[, 3]
+PE.sf$Pi <- Ii_stats[, 5]
+```
+
+Then using the {ggplot2} syntax.
+```{r}
+( g1 <- ggplot(data = PE.sf) +
+  geom_sf(aes(fill = Ii)) +
+  scale_fill_gradient2(low = "green",
+                       high = "blue") )
+```
+
+We also map out the variances.
+```{r}
+ggplot(data = PE.sf) +
+  geom_sf(aes(fill = Vi)) +
+  scale_fill_gradient()
+```
+
+Variances are larger for counties near the boundaries as the sample sizes are smaller.
+
+Compare the map of local autocorrelation with a map of percent white. 
+```{r}
+( g2 <- ggplot(data = PE.sf) +
+  geom_sf(aes(fill = WHITE)) +
+  scale_fill_gradient(low = "black",
+                      high = "white") )
+```
+
+Plot them together.
+```{r}
+library(patchwork)
+
+g1 + g2
+```
+
+Areas where percent white is high over the northeast are areas with the largest spatial correlation. Other areas of high spatial correlation include the Mississippi Valley and in the south. Note the county with the most negative spatial correlation is the county in the northwest with a fairly high percentage of whites neighbored by counties with much lower percentages of whites.
+
+Local values of Lee's bi-variate spatial autocorrelation are available from the `lee()` function.
+```{r}
+lee_stat <- lee(crime, police, 
+                listw = wts, 
+                n = length(nbs))
+
+PE.sf$localL <- lee_stat$localL
+
+library(tmap)
+
+tm_shape(PE.sf) +
+  tm_fill("localL",
+          title = "") +
+  tm_borders(col = "gray70") +
+  tm_layout(title = "Local bi-variate spatial autocorrelation",
+            legend.outside = TRUE)
+```
+
+Areas in dark green indicate where the correlation between crime and policing is most influenced by neighboring crime and policing.
+
+Population and tornadoes
+
+Tornado reports, not tornadoes.
+
+Is the frequency of tornado reports correlated with the number of people in a region? Might this correlation extend to the number of people in neighboring region?
+
+To answer these questions we quantify the non-spatial correlation and the bi-variate spatial autocorrelation between tornado occurrences and population. To keep this manageable we focus only on the state of Iowa.
+
+We start by getting the U.S. Census data with functions from the {tidycensus} package. The `get_decennial()` function grants access to the 1990, 2000, and 2010 decennial US Census data and the `get_acs()` function grants access to the 5-year American Community Survey data. For example, here is how we get county-level population for Iowa.
+```{r}
+library(tidycensus)
+
+Counties.sf <- get_acs(geography = "county", 
+                       variables = "B02001_001E", 
+                       state = "IA", 
+                       geometry = TRUE)
+```
+
+This returns a simple feature data frame with county borders as multi-polygons. The variable `B02001_001E` is the 2015 (mid year of the 5-year period 2013-2017) population in each county.
+
+Now get the tornado locations and compute the annual tornado occurrence rate for each county. Start by determining the intersections of the county polygons and the tornado points. The join the counts to the simple feature data frame.
+```{r}
+library(tidyverse)
+
+if(!"1950-2018-torn-initpoint" %in% list.files()) {
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/1950-2018-torn-initpoint.zip",
+              destfile = "1950-2018-torn-initpoint.zip")
+unzip("1950-2018-torn-initpoint.zip")
+}
+
+Torn.sf <- st_read(dsn = "1950-2018-torn-initpoint", 
+                   layer = "1950-2018-torn-initpoint") %>%
+  st_transform(crs = st_crs(Counties.sf)) %>%
+  filter(yr >= 2013)
+
+TorCounts.df <- Torn.sf %>%
+  st_intersection(Counties.sf) %>%
+  st_drop_geometry() %>%
+  group_by(GEOID) %>%
+  summarize(nT = n()) 
+
+Counties.sf <- Counties.sf %>%
+  left_join(TorCounts.df,
+            by = "GEOID") %>%
+  mutate(nT = replace_na(nT, 0)) %>%
+  mutate(Area = st_area(Counties.sf),
+         rate = nT/Area/(2018 - 2013 + 1) * 10^10,
+         lpop = log10(estimate))
+```
+
+Note that some counties have no tornadoes and the `left_join()` returns a value of `NA` for those. We use `mutate()` with `replace_na()` to turn those counts to a value of 0.
+
+Make a two-panel map displaying the log of the population and the tornado rates.
+```{r}
+map1 <- tm_shape(Counties.sf) +
+  tm_borders(col = "gray70") +
+  tm_fill(col = "lpop",
+          title = "Log Population",
+          palette = "Blues") +
+  tm_layout(legend.outside = "TRUE")
+
+map2 <- tm_shape(Counties.sf) +
+  tm_borders(col = "gray70") +
+  tm_fill(col = "rate",
+          title = "Annual Rate\n[/10,000 sq. km]",
+          palette = "Greens") +
+  tm_layout(legend.outside = "TRUE")
+
+tmap_arrange(map1, map2)
+```
+
+There appears some relationship. The non-spatial correlation between the two variables is obtained with the `cor.test()` function.
+```{r}
+lpop <- Counties.sf$lpop
+rate <- as.numeric(Counties.sf$rate)
+
+cor.test(lpop, rate)
+```
+
+The bi-variate spatial autocorrelation is assessed using the Lee statistic. A formal non-parametric test under the null hypothesis of no bi-variate spatial autocorrelation is done using a Monte Carlo simulation.
+```{r}
+nbs <- poly2nb(Counties.sf)
+wts <- nb2listw(nbs)
+
+lee_stat <- lee(lpop, rate, 
+                listw = wts, 
+                n = length(nbs))
+lee_stat$L
+
+lee.mc(lpop, rate, listw = wts, nsim = 9999)
+```
+
+Finally we map out the local variation in the bi-variate spatial autocorrelation.
+```{r}
+Counties.sf$localL <- lee_stat$localL
+
+tm_shape(Counties.sf) +
+  tm_fill("localL",
+          title = "Local Bivariate\nSpatial Autocorrelation") +
+  tm_borders(col = "gray70") +
+  tm_layout(legend.outside = TRUE)
+```
+
+What might cause this? Compare with Kansas.
+
+Also, compare local Lee with local Moran.
+```{r}
+Ii_stats <- localmoran(rate, 
+                       listw = wts)
+Counties.sf$localI = Ii_stats[, 1]
+
+tm_shape(Counties.sf) +
+  tm_borders(col = "gray70") +
+  tm_fill(col = "localI",
+          title = "Local Autocorrelation",
+          palette = "Purples") +
+  tm_layout(legend.outside = "TRUE")
+```
