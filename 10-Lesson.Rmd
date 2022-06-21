@@ -4,16 +4,16 @@
 
 Today
 
-- Defining neighborhoods differently
+- Other neighbor definitions
 - Assessing the statistical significance of autocorrelation
 - Bivariate spatial autocorrelation
 - Local indicators of spatial autocorrelation
 
-## Defining neighborhoods differently {-}
+## Other neighbor definitions {-}
 
-Last time we saw how to compute autocorrelation using areal aggregated data. The procedure involves a weights matrix, which you created using the default neighborhood definition and the weighting scheme with functions from the {spdep} package. 
+Last time you saw how to compute autocorrelation using areal aggregated data. The procedure involves a weights matrix, which you created using the default neighborhood definition and the weighting scheme with functions from the {spdep} package. 
 
-We noted that the magnitude of autocorrelation depends on the weighting scheme used. Other neighborhood definitions are possible and they will also influence the magnitude of the autocorrelation.
+It was noted that the magnitude of autocorrelation depends on the weighting scheme used. Other neighborhood definitions are possible and they will also influence the magnitude of the autocorrelation.
 
 Let's consider the historical demographic data in Mississippi counties. Import the data as a simple feature data frame and assign the geometry a geographic CRS.
 ```{r}
@@ -128,7 +128,7 @@ spdep::moran(PE.sf$WHITE,
 
 Values of Moran's I are constrained between -1 and +1. In this case the neighborhood definition has little or no impact on inferences made about spatial autocorrelation. The kurtosis is between 2 and 4 consistent with a set of values from a normal distribution.
 
-In a similar way we compute the Geary's C statistic.
+In a similar way you compute the Geary's C statistic.
 ```{r}
 spdep::geary(PE.sf$WHITE, 
              listw = wts,
@@ -156,7 +156,7 @@ The function takes a variable name or numeric vector and a spatial weights list 
                           randomisation = FALSE) )
 ```
 
-Moran's I is .218 with a variance of .0045. The $z$ value for I is 3.41 giving a $p$-value of .0003 under the null hypothesis of no autocorrelation. Thus we reject the null hypothesis and conclude there is weak but significant autocorrelation in unemployment rates across Mississippi at the county level.
+Moran's I is .218 with a variance of .0045. The $z$ value for I is 3.41 giving a $p$-value of .0003 under the null hypothesis of no autocorrelation. Thus you reject the null hypothesis and conclude there is weak but significant autocorrelation in unemployment rates across Mississippi at the county level.
 
 Outputs from the `spdep::moran.test()` function are in the form of a list.
 ```{r}
@@ -320,7 +320,7 @@ round(spdep::listw2mat(wts)[1:5, 1:10], 2)
 
 The matrix shows that the first county has three neighbors 2, 3, and 9 and each get a weight of 1/3. The third county has four neighbors 1, 4, 9 and 10 and each gets a weight of 1/4.
 
-Compute local Moran's I on the percentage of white people using the `spdep::localmoran()` function. Two arguments are needed (1) the attribute variable for which we want to compute local correlation and (2) the weights matrix as a list object.
+Compute local Moran's I on the percentage of white people using the `spdep::localmoran()` function. Two arguments are needed (1) the attribute variable for which you want to compute local correlation and (2) the weights matrix as a list object.
 ```{r}
 Ii_stats <- spdep::localmoran(PE.sf$WHITE, 
                               listw = wts)
@@ -337,7 +337,7 @@ Because these local values must average to the global value (when using row stan
 summary(Ii_stats[, 1])
 ```
 
-You map the values by first attaching the matrix columns of interest to the simple feature data frame. Here we attach `Ii`, `Var`, and `Pi`.
+You map the values by first attaching the matrix columns of interest to the simple feature data frame. Here you attach `Ii`, `Var`, and `Pi`.
 ```{r}
 PE.sf$Ii <- Ii_stats[, 1]
 PE.sf$Vi <- Ii_stats[, 3]
@@ -400,9 +400,9 @@ Population and tornado reports
 
 Is the frequency of tornado reports correlated with the number of people in a region? Might this correlation extend to the number of people in neighboring region?
 
-To answer these questions we quantify the non-spatial correlation and the bi-variate spatial autocorrelation between tornado occurrences and population. To keep this manageable you focus on one state (Iowa).
+To answer these questions you quantify the non-spatial correlation and the bi-variate spatial autocorrelation between tornado occurrences and population. To keep this manageable you focus on one state (Iowa).
 
-Start by getting the U.S. Census data with functions from the {tidycensus} package. The `get_decennial()` function grants access to the 1990, 2000, and 2010 decennial US Census data and the `get_acs()` function grants access to the 5-year American Community Survey data. For example, here is how we get county-level population for Iowa.
+Start by getting the U.S. Census data with functions from the {tidycensus} package. The `get_decennial()` function grants access to the 1990, 2000, and 2010 decennial US Census data and the `get_acs()` function grants access to the 5-year American Community Survey data. For example, here is how you get county-level population for Iowa.
 ```{r}
 Counties.sf <- tidycensus::get_acs(geography = "county", 
                                    variables = "B02001_001E", 
@@ -426,36 +426,36 @@ Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-aspath"),
   dplyr::summarize(nT = dplyr::n()) )
 ```
 
-Then join the counts to the simple feature data frame.
+Next join the counts to the simple feature data frame.
 ```{r}
 Counties.sf <- Counties.sf |>
   dplyr::left_join(TorCounts.df,
                    by = "GEOID") |>
-  dplyr::mutate(nT = dplyr::replace_na(nT, 0)) |>
+  dplyr::mutate(nT = tidyr::replace_na(nT, 0)) |>
   dplyr::mutate(Area = sf::st_area(Counties.sf),
                 rate = nT/Area/(2020 - 2015 + 1) * 10^10,
                 lpop = log10(estimate))
 ```
 
-Note that some counties have no tornadoes and the `left_join()` returns a value of `NA` for those. We use `mutate()` with `replace_na()` to turn those counts to a value of 0.
+Note that some counties have no tornadoes and the `dplyr::left_join()` returns a value of `NA` for those. You use `dplyr::mutate()` with `tidyr::replace_na()` to turn those counts to a value of 0.
 
 Make a two-panel map displaying the log of the population and the tornado rates.
 ```{r}
-map1 <- tm_shape(Counties.sf) +
-  tm_borders(col = "gray70") +
-  tm_fill(col = "lpop",
-          title = "Log Population",
-          palette = "Blues") +
-  tm_layout(legend.outside = "TRUE")
+map1 <- tmap::tm_shape(Counties.sf) +
+  tmap::tm_borders(col = "gray70") +
+  tmap::tm_fill(col = "lpop",
+                title = "Log Population",
+                palette = "Blues") +
+  tmap::tm_layout(legend.outside = "TRUE")
 
-map2 <- tm_shape(Counties.sf) +
-  tm_borders(col = "gray70") +
-  tm_fill(col = "rate",
-          title = "Annual Rate\n[/10,000 sq. km]",
-          palette = "Greens") +
-  tm_layout(legend.outside = "TRUE")
+map2 <- tmap::tm_shape(Counties.sf) +
+  tmap::tm_borders(col = "gray70") +
+  tmap::tm_fill(col = "rate",
+                title = "Annual Rate\n[/10,000 sq. km]",
+                palette = "Greens") +
+  tmap::tm_layout(legend.outside = "TRUE")
 
-tmap_arrange(map1, map2)
+tmap::tmap_arrange(map1, map2)
 ```
 
 There appears some relationship. The non-spatial correlation between the two variables is obtained with the `cor.test()` function.
@@ -468,40 +468,40 @@ cor.test(lpop, rate)
 
 The bi-variate spatial autocorrelation is assessed using the Lee statistic. A formal non-parametric test under the null hypothesis of no bi-variate spatial autocorrelation is done using a Monte Carlo simulation.
 ```{r}
-nbs <- poly2nb(Counties.sf)
-wts <- nb2listw(nbs)
+nbs <- spdep::poly2nb(Counties.sf)
+wts <- spdep::nb2listw(nbs)
 
-lee_stat <- lee(lpop, rate, 
-                listw = wts, 
-                n = length(nbs))
+lee_stat <- spdep::lee(lpop, rate, 
+                       listw = wts, 
+                       n = length(nbs))
 lee_stat$L
 
-lee.mc(lpop, rate, listw = wts, nsim = 9999)
+spdep::lee.mc(lpop, rate, listw = wts, nsim = 9999)
 ```
 
-Finally we map out the local variation in the bi-variate spatial autocorrelation.
+Finally you map out the local variation in the bi-variate spatial autocorrelation.
 ```{r}
 Counties.sf$localL <- lee_stat$localL
 
-tm_shape(Counties.sf) +
-  tm_fill("localL",
-          title = "Local Bivariate\nSpatial Autocorrelation") +
-  tm_borders(col = "gray70") +
-  tm_layout(legend.outside = TRUE)
+tmap::tm_shape(Counties.sf) +
+  tmap::tm_fill("localL",
+                title = "Local Bivariate\nSpatial Autocorrelation") +
+  tmap::tm_borders(col = "gray70") +
+  tmap::tm_layout(legend.outside = TRUE)
 ```
 
 What might cause this? Compare with Kansas.
 
 Also, compare local Lee with local Moran.
 ```{r}
-Ii_stats <- localmoran(rate, 
-                       listw = wts)
+Ii_stats <- spdep::localmoran(rate, 
+                              listw = wts)
 Counties.sf$localI = Ii_stats[, 1]
 
-tm_shape(Counties.sf) +
-  tm_borders(col = "gray70") +
-  tm_fill(col = "localI",
-          title = "Local Autocorrelation",
-          palette = "Purples") +
-  tm_layout(legend.outside = "TRUE")
+tmap::tm_shape(Counties.sf) +
+  tmap::tm_borders(col = "gray70") +
+  tmap::tm_fill(col = "localI",
+                title = "Local Autocorrelation",
+                palette = "Purples") +
+  tmap::tm_layout(legend.outside = "TRUE")
 ```
