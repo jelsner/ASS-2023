@@ -85,6 +85,8 @@ if(!require(spdep)) install.packages("spdep", repos = "http://cran.us.r-project.
 ( nbs <- spdep::poly2nb(CC.sf) )
 ```
 
+Note that this only works for spatial data frames.
+
 The output tells you there are 49 tracts (polygons). Each tract is bordered by at least one other tract. The average number of neighbors is 4.8. The total number of neighbors over all tracts is 236. This represents 9.8% of all possible connections (if every tract is a neighbor of itself and every other tract 49 \* 49).
 
 A graph of the neighbor links is obtained with the `plot()` method. The arguments include the neighbor list object (`nbs`) and the location of the polygon centers, which are extracted from the simple feature data frame using the sf::`st_centroid()`.
