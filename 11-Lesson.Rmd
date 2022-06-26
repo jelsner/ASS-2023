@@ -10,94 +10,89 @@ Today
 
 ## Constraining group membership based on spatial autocorrelation {.unnumbered}
 
-We often face the situation where we have a large number of variables and we want to group them in a way that minimizes inter-group variation but maximizes between-group variation. This grouping or 'clustering' is important in data analysis and data mining. Traditional clustering methods include K-means and hierarchical.
+As a spatial data analyst you likely will face the situation in which there are many variables and you need to group them in a way that minimizes inter-group variation but maximizes between-group variation. If you know the number of groups a priori then a common grouping (or clustering) method is called K-means.
 
-With spatial data we want the additional constraint that groups be geographically linked. In fact there are many situations that require separating geographies into discrete but contiguous regions (regionalization) such as designing communities, planning areas, amenity zones, logistical units, or even for the purpose of setting up experiments with real world geographic constraints.
+If your data is spatial you will want the additional constraint that the resulting groups be geographically linked. In fact there are many situations that require separating geographies into discrete but contiguous regions (regionalization) such as designing communities, planning areas, amenity zones, logistical units, or even for the purpose of setting up experiments with real world geographic constraints.
 
 There are many situations where the optimal grouping using traditional cluster metrics is sub-optimal in practice because of these geographic constraints.
 
-Unconstrained grouping on data with spatial characteristics will result in contiguous regions because of autocorrelation, but if we want to ensure that all groups are spatially-contiguous we need a method specifically designed for the task. The 'skater' algorithm available in the {spdep} package is well-implemented and well-documented.
+Unconstrained grouping on data with spatial characteristics may result in contiguous regions because of autocorrelation, but if you want to ensure that all groups are spatially-contiguous you need a method specifically designed for the task. The 'skater' algorithm available in the {spdep} package is well-implemented and well-documented.
 
 The 'skater' algorithm (spatial 'k'luster analysis by tree edge removal) builds a connectivity graph to represent spatial relationships between neighboring areas, where each area is represented by a node and edges represent connections between areas. Edge costs are calculated by evaluating the dissimilarity in attribute space between neighboring areas. The connectivity graph is reduced by pruning edges with higher dissimilarity.
 
-More information: https://www.tandfonline.com/doi/abs/10.1080/13658810600665111
-
 Consider again the crime data at the tract level in the city of Columbus, Ohio. The tract polygons are projected with arbitrary spatial coordinates.
 ```{r}
-if(!"columbus" %in% list.files()) {
-download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/columbus.zip",
-              destfile = "columbus.zip")
-unzip("columbus.zip")
-}
-
-( CC.sf <- read_sf(dsn = "columbus") )
+( CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
+                       layer = "columbus") )
 ```
 
-We create choropleth maps of housing value, income, and crime.
+First, create choropleth maps of housing value, income, and crime.
 ```{r}
-tm_shape(CC.sf) +
-  tm_fill(col = c("HOVAL", "INC", "CRIME"))
+tmap::tm_shape(CC.sf) +
+  tmap::tm_fill(col = c("HOVAL", "INC", "CRIME"))
 ```
 
-The maps indicate distinct regional patterns.
+The maps show distinct regional patterns. Housing values and income are clustered toward the southeast and crime is clustered in the center. But although housing values are also high in the north you don't necessarily want to group that tract with those in the southeast because they are geographically distinct.
 
-Next we scale the attribute values and center them using the `scale()` function. This should always be done even with aspatial clustering approaches.
+To group these patterns under the constraint of spatial contiguity you first scale the attribute values and center them using the `scale()` function. Scaling and centering variables should be done with any clustering approaches.
 ```{r}
 ( CCs.df <- CC.sf |> 
-    mutate(HOVAL = scale(HOVAL),
-           INC = scale(INC),
-           CRIME = scale(CRIME)) |>
-    select(HOVAL, INC, CRIME) |>
-    st_drop_geometry() )
+    dplyr::mutate(HOVAL = scale(HOVAL),
+                  INC = scale(INC),
+                  CRIME = scale(CRIME)) |>
+    dplyr::select(HOVAL, INC, CRIME) |>
+    sf::st_drop_geometry() )
 ```
 
-Next create adjacency neighborhoods using queen contiguity.
+Next create adjacency neighbors using queen contiguity.
 ```{r}
-nbs <- poly2nb(CC.sf, 
-               queen = TRUE)
+nbs <- spdep::poly2nb(CC.sf, 
+                      queen = TRUE)
 
 plot(CC.sf$geometry)
 plot(nbs, 
-     st_centroid(st_geometry(CC.sf)),
+     sf::st_centroid(sf::st_geometry(CC.sf)),
      add = TRUE)
 ```
 
-Next we combine the contiguity graph with our scaled attribute data to calculate edge costs based on the distance between each node. The function `nbcosts()` from the {spdep} package provides distance methods for Euclidian, Manhattan, Canberra, binary, Minkowski, and Mahalanobis, and defaults to Euclidean if not specified.
+Next combine the contiguity graph with your scaled attribute data to calculate edge costs based on the distance between each node. The function `spdep::nbcosts()` provides distance methods for Euclidean, Manhattan, Canberra, binary, Minkowski, and Mahalanobis, and defaults to Euclidean if not specified.
 ```{r}
-costs <- nbcosts(nbs, 
-                 data = CCs.df)
+costs <- spdep::nbcosts(nbs, 
+                        data = CCs.df)
 ```
 
-Next we transform the edge costs into spatial weights using the `nb2listw()` function before constructing the minimum spanning tree with the weights list.
+Next transform the edge costs into spatial weights using the `spdep::nb2listw()` function before constructing the minimum spanning tree with the weights list.
 ```{r}
-wts <- nb2listw(nbs,
-                glist = costs,
-                style = "B")
-mst <- mstree(wts)
+wts <- spdep::nb2listw(nbs,
+                       glist = costs,
+                       style = "B")
+mst <- spdep::mstree(wts)
 
 head(mst)
 ```
 
 Edges with higher dissimilarity are removed leaving a set of nodes and edges that take the minimum sum of dissimilarities across all edges of the tree (a minimum spanning tree).
 
-The edge connecting node 37 with node 43 has a dissimilarity of 1.19 units. The edge connection node 43 with node 35 has a dissimilarity of .19 units.
+The edge connecting node (tract) 33 with node (tract) 35 has a dissimilarity of .56 units. The edge connecting tract 35 with tract 43 has a dissimilarity of .19 units.
 
-Finally, the `skater()` function partitions the graph by identifying which edges to remove based on dissimilarity while maximizing the between-group variation. The `ncuts =` argument specifies the number of partitions to make, resulting in `ncuts` + 1 groups.
+Finally, the `spdep::skater()` function partitions the graph by identifying which edges to remove based on dissimilarity while maximizing the between-group variation. The `ncuts =` argument specifies the number of partitions to make, resulting in `ncuts` + 1 groups.
 ```{r}
-clus5 <- skater(edges = mst[,1:2], 
-                data = CCs.df, 
-                ncuts = 4)
+clus5 <- spdep::skater(edges = mst[,1:2], 
+                       data = CCs.df, 
+                       ncuts = 4)
 ```
 
 Where are these groups located?
 ```{r}
 CC.sf <- CC.sf |>
-  mutate(Group = clus5$groups)
+  dplyr::mutate(Group = clus5$groups)
 
 ggplot() +
   geom_sf(data = CC.sf,
           mapping = aes(fill = factor(Group)))
 ```
+
+The map shows five distinct regions based on the three variables of income, housing value, and crime. Importantly the regions are contiguous.
 
 As a comparison, here is the result of grouping the same three variables using hierarchical clustering using the method of minimum variance (Ward) and without regard to spatial contiguity.
 ```{r}
@@ -106,46 +101,48 @@ hc <- hclust(dd,
              method = "ward.D")
 hcGroup <- cutree(hc, k = 5)
 CC.sf <- CC.sf |>
-  mutate(hcGroup = hcGroup)
+  dplyr::mutate(hcGroup = hcGroup)
 
 ggplot() +
   geom_sf(data = CC.sf,
           mapping = aes(fill = factor(hcGroup)))
 ```
 
+Here the map shows five regions but the regions are not contiguous.
+
+More information: https://www.tandfonline.com/doi/abs/10.1080/13658810600665111
+
 ## Estimating spatial autocorrelation in model residuals {.unnumbered}
 
-Knowledge of autocorrelation by itself is not typically useful. But autocorrelation in the residuals can help us build a more precise model.
+A spatial regression model should be considered for your data whenever the residuals resulting from a aspatial regression exhibit spatial autocorrelation. A common way to proceed is to first regress the response variable onto the explanatory variables and check for autocorrelation in the residuals.
 
-A spatial regression model should be considered whenever the residuals resulting from a aspatial regression model exhibit spatial autocorrelation. A common way to proceed is to first regress the response variable onto the explanatory variables and check for autocorrelation in the residuals.
+If there is significant spatial autocorrelation in the residuals then a spatial regression model should be considered.
 
-If the explanatory variables remove the autocorrelation then a spatial regression model is not needed.
-
-Let's continue with the Columbus crime data and fit a linear regression model with `CRIME` as the response variable and `INC` and `HOVAL` as the explanatory variables.
+Let's stay with the Columbus crime data and fit a linear regression model with `CRIME` as the response variable and `INC` and `HOVAL` as the explanatory variables. At the level of tracts, how well does income and housing value statistically explain the amount of crime?
 ```{r}
 model <- lm(CRIME ~ INC + HOVAL, 
             data = CC.sf)
 summary(model)
 ```
 
-The model statistically explains 55% of the variation in crime as can be seen by the multiple R-squared value. Looking at the coefficients (values under the `Estimate` column), we see that _higher_ incomes are associated with lower values of crime (negative coefficient) and _higher_ housing values are associated with lower crime. For every one unit increase in income, crime values decrease by 1.6 units.
+The model statistically explains 55% of the variation in crime as can be seen by the multiple R-squared value. Looking at the coefficients (values under the `Estimate` column), you see that _higher_ incomes are associated with lower values of crime (negative coefficient) and _higher_ housing values are associated with lower crime. For every one unit increase in income, crime values decrease by 1.6 units.
 
-We use the `residuals()` method to extract the vector of residuals from the model.
+Use the `residuals()` method to extract the vector of residuals from the model.
 ```{r}
 ( res <- residuals(model) )
 ```
 
-There are 49 residuals one for each tract. The residuals are the difference between the observed crime rates and the predicted crime rates (observed - predicted). A residual that is greater than 0 indicates that the model _under_ predicts the observed crime rate in that tract and a residual less than 0 indicates that the model _over_ predicts the observed crime rate.
+There are 49 residuals one for each tract. The residuals are the difference between the observed crime rates and the predicted crime rates (observed - predicted). A residual that has a value greater than 0 indicates that the model _under_ predicts the observed crime rate in that tract and a residual that has a value less than 0 indicates that the model _over_ predicts the observed crime rate.
 
-The aspatial variability of the residuals should follow a normal distribution. We check this with the `sm.density()` function from the {sm} package with the first argument the vector of residuals (`res`) and the argument `model =` set to "Normal".
+If you plot the residuals, they should be approximated by a normal distribution. You check this with the `sm::sm.density()` function with the first argument the vector of residuals (`res`) and the argument `model =` set to "Normal".
 ```{r}
 sm::sm.density(res, 
                model = "Normal")
 ```
 
-We see that density curve of the residuals (black line) fits completely within the blue ribbon that defines a normal distribution.
+The density curve of the residuals (black line) fits completely within the blue ribbon that defines a normal distribution.
 
-Next we create a choropleth map of the model residuals. Do the residuals show any spatial pattern of clustering? Since the values in the vector of residuals are arranged in the same order as the rows in the simple feature data frame we simply create a new column in the data frame using the `$` syntax.
+Next create a choropleth map of the model residuals. Do the residuals show any pattern of clustering? Since the values in the vector of residualsn`res` are arranged in the same order as the rows in the simple feature data frame you simply create a new column in the data frame using the `$` syntax and calling the new column `res`.
 ```{r}
 CC.sf$res <- res
 
