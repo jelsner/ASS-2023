@@ -6,8 +6,8 @@
 
 -   Instructor Name: Professor James B. Elsner
 -   Instructor Location: Bellamy Building, Room 323a
--   Lesson Hours: TR 3:05-4:20 p.m.
--   Student Hours: TR 9-10 a.m., 2-3 p.m.
+-   Lesson Hours: TR 8:00-9:15 p.m.
+-   Student Hours: TR 9:15-10:30 a.m., 2-3 p.m.
 
 Email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}
 
