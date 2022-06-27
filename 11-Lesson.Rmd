@@ -176,7 +176,7 @@ Given significant spatial autocorrelation in the model residuals, the next step 
 
 ## Choosing a spatial regression model {.unnumbered}
 
-Ordinary regression models fit to spatial data can lead to improper inference because observations are not independent. Thus it's necessary to check the residuals from an aspatial model for autocorrelation. If the residuals are strongly correlated the model is not specified properly. 
+Ordinary least-squares regression models fit to spatial data can lead to improper inference because observations are not independent. This might lead to poor policy decisions. Thus it's necessary to check the residuals from an ordinary least-squares model for autocorrelation. If the residuals are strongly correlated the model is not specified properly.
 
 You can try to improve the model by adding variables. If that's not possible (no additional data, or no clue as to what variable to include), you can try a spatial regression model. Spatial regression models are widely used in econometrics and epidemiology.
 
@@ -276,4 +276,3 @@ A decision tree (from Luc Anselin) shows the sequence of tests for making a choi
 If both tests show significance models, then you should fit both models and check which one results in the lowest information criteria (AIC).
 
 Another options is to include both a spatial lag term and a spatial error term into a single model.
-

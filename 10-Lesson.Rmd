@@ -402,7 +402,14 @@ Is the frequency of tornado reports correlated with the number of people in a re
 
 To answer these questions you quantify the non-spatial correlation and the bi-variate spatial autocorrelation between tornado occurrences and population. To keep this manageable you focus on one state (Iowa).
 
-Start by getting the U.S. Census data with functions from the {tidycensus} package. The `get_decennial()` function grants access to the 1990, 2000, and 2010 decennial US Census data and the `get_acs()` function grants access to the 5-year American Community Survey data. For example, here is how you get county-level population for Iowa.
+Start by getting the U.S. Census data with functions from the {tidycensus} package. Downloading U.S. census data using functions from the {tidycensus} package requires you register with the Census Bureau. 
+
+You can get an API key from http://api.census.gov/data/key_signup.html. Then use the `tidycensus::census_api_key()` function and put your key in quotes.
+```{r}
+tidycensus::census_api_key("YOUR API KEY GOES HERE")
+```
+
+The `get_decennial()` function grants access to the 1990, 2000, and 2010 decennial US Census data and the `get_acs()` function grants access to the 5-year American Community Survey data. For example, here is how you get county-level population for Iowa.
 ```{r}
 Counties.sf <- tidycensus::get_acs(geography = "county", 
                                    variables = "B02001_001E", 
