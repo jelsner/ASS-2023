@@ -87,6 +87,7 @@ Where are these groups located?
 CC.sf <- CC.sf |>
   dplyr::mutate(Group = clus5$groups)
 
+library(ggplot2)
 ggplot() +
   geom_sf(data = CC.sf,
           mapping = aes(fill = factor(Group)))
@@ -142,42 +143,42 @@ sm::sm.density(res,
 
 The density curve of the residuals (black line) fits completely within the blue ribbon that defines a normal distribution.
 
-Next create a choropleth map of the model residuals. Do the residuals show any pattern of clustering? Since the values in the vector of residualsn`res` are arranged in the same order as the rows in the simple feature data frame you simply create a new column in the data frame using the `$` syntax and calling the new column `res`.
+Next create a map of the model residuals. Do the residuals show any pattern of clustering? Since the values in the vector of residuals `res` are arranged in the same order as the rows in the simple feature data frame you create a new column in the data frame using the `$` syntax and calling the new column `res`.
 ```{r}
 CC.sf$res <- res
 
-tm_shape(CC.sf) +
-  tm_fill(col = "res") +
-  tm_borders(col = "gray70") +
-  tm_layout(title = "Linear model residuals")
+tmap::tm_shape(CC.sf) +
+  tmap::tm_fill(col = "res") +
+  tmap::tm_borders(col = "gray70") +
+  tmap::tm_layout(title = "Linear model residuals")
 ```
 
-The map shows contiguous tracts of negative residuals across the southwestern and southern part of the city and a group of contiguous tracts of positive residuals toward the center. 
+The map shows contiguous tracts with negative residuals across the southwestern and southern part of the city and a group of contiguous tracts with positive residuals toward the center. 
 
-These groups indicate some clustering but it appears to be less than the clustering we saw with the crime values themselves. That is, after accounting for regional factors related to crime the autocorrelation appears to be reduced.
+The map indicates some clustering but the clustering appears to be less than with the crime values themselves. That is, after accounting for regional factors related to crime, the autocorrelation is reduced.
 
-To determine I on the residuals we use the `lm.morantest()` function, passing the regression model object and the weights object to it. Note that we use the default neighborhoods and weighting scheme.
+To determine the amount of autocorrelation in the residuals use the `spdep::lm.morantest()` function, passing the regression model object and the weights object to it. Note that you once again use the default neighborhood and weighting schemes.
 ```{r}
-nbs <- poly2nb(CC.sf)
-wts <- nb2listw(nbs)
+nbs <- spdep::poly2nb(CC.sf)
+wts <- spdep::nb2listw(nbs)
 
-lm.morantest(model, 
-             listw = wts)
+spdep::lm.morantest(model, 
+                    listw = wts)
 ```
 
-Moran I on the model residuals is .222. This compares with the value of .5 on the value of crime alone. Part of the autocorrelation in the crime rates is statistically 'absorbed' by the explanatory factors.
+Moran's I on the model residuals is .22. This compares with the value of .5 on the value of crime alone. Part of the autocorrelation in the crime rates is statistically 'absorbed' by the explanatory factors.
 
-But do we need a spatial regression model? The output gives a $p$-value on I of .002, thus we reject the null hypothesis of no spatial autocorrelation in the residuals and conclude that a spatial regression model would improve the fit.  
+But does this output let you know if you need a spatial regression model?
 
-The $z$-value takes into account the fact that these are residuals so the variance is adjusted accordingly.
+The $p$-value on I of .002, thus you reject the null hypothesis of no spatial autocorrelation in the model residuals and conclude that a spatial regression model would improve the fit. The $z$-value (as the basis for the $p$-value) takes into account the fact that these are residuals from a model so the variance is adjusted accordingly.
 
-The next step is to choose a spatial regression model.
+Given significant spatial autocorrelation in the model residuals, the next step is to choose the type of spatial regression model.
 
 ## Choosing a spatial regression model {.unnumbered}
 
 Ordinary regression models fit to spatial data can lead to improper inference because observations are not independent. Thus it's necessary to check the residuals from an aspatial model for autocorrelation. If the residuals are strongly correlated the model is not specified properly. 
 
-In this case we can try to improve the model by adding variables. If that's not possible (no additional data, or no clue as to what variable to include), we can try a spatial regression model. Spatial regression models are widely used in econometrics and epidemiology.
+You can try to improve the model by adding variables. If that's not possible (no additional data, or no clue as to what variable to include), you can try a spatial regression model. Spatial regression models are widely used in econometrics and epidemiology.
 
 The equation for a regression model in vector notation is
 $$
@@ -191,9 +192,9 @@ y = \rho W y + X \beta + \varepsilon
 $$
 where $Wy$ is the weighted average of the neighborhood response values (spatial lag variable) with $W$ the spatial weights matrix, and $\rho$ is the autoregression coefficient. This is called a spatial autoregressive (SAR) model.
 
-Note: $Wy$ is the spatial lag variable we compute with the `lag.listw()` function and $\rho$ is Moran I. Thus the model is also called a spatial lag model (SLM).
+Note: $Wy$ is the spatial lag variable you compute with the `spdep::lag.listw()` function and $\rho$ is Moran's I. Thus the model is also called a spatial lag model (SLM).
 
-Justification for the spatial lag model is domain specific but motivated by a diffusion process. The response variable $y_i$ is influenced by the explanatory variables at location $i$ and by explanatory variables at locations $j$.
+Justification for the spatial lag model is domain specific but motivated by a 'diffusion' process. The response variable $y_i$ is influenced by the explanatory variables at location $i$ and by explanatory variables at locations $j$.
 
 $\rho Wy$ is called the _spatial signal_ term and $\beta X$ is called the _trend_ term.
 
@@ -215,7 +216,7 @@ $$
 y = \beta x + \epsilon
 $$
 
-Examples of an unobserved latent variable $z$ include local culture, social capital, neighborhood readiness. Importantly we would expect the latent variable to be spatially correlated (e.g., culture will be similar across neighborhoods), so let
+Examples of an unobserved latent variable $z$ include local culture, social capital, neighborhood readiness. Importantly you would expect the latent variable to be spatially correlated (e.g., culture will be similar across neighborhoods), so let
 $$
 z = \lambda W z + r\\
 z = (I - \lambda W)^{-1} r
@@ -228,15 +229,15 @@ y = \beta x + (I - \lambda W)^{-1} \varepsilon
 $$
 where $\varepsilon = \theta r$.
 
-Another motivation for considering a spatial error model is heterogeneity. Suppose we have multiple observations for each unit. If we want our model to incorporate individual effects we can include a $n \times 1$ vector $a$ of individual intercepts for each unit.
+Another motivation for considering a spatial error model is heterogeneity. Suppose you have multiple observations for each unit. If you want a model that incorporates individual effects you can include a $n \times 1$ vector $a$ of individual intercepts for each unit.
 $$
 y = a + X\beta
 $$
 where now $X$ is a $n$ $\times$ $p$ matrix.
 
-In a cross-sectional setting with one observation per unit (typically the case in observational studies), this approach is not possible since we will have more parameters than observations.
+In a cross-sectional setting with one observation per unit (typically the case in observational studies), this approach is not possible since you will have more parameters than observations.
 
-Instead we can treat $a$ as a vector of spatial random effects. We assume that the intercepts follows a spatially smoothed process
+Instead you can treat $a$ as a vector of spatial random effects. You assume that the intercepts follows a spatially smoothed process
 $$
 a = \lambda W a + \epsilon \\
 a = (I - \lambda W)^{-1} \epsilon
@@ -246,30 +247,33 @@ $$
 y = X\beta + (I - \lambda W)^{-1} \epsilon
 $$
 
-In the absence of domain-specific knowledge of the process that might be responsible for the autocorrelated residuals, we can run some statistical tests on the linear model.
+In the absence of domain-specific knowledge of the process that might be responsible for the autocorrelated residuals, you can run some statistical tests on the linear model.
 
-The tests are performed with the `lm.LMtests()` function. The `LM` stands for 'Lagrange multiplier' indicating that the technique simultaneously determines the coefficients on the explanatory variables AND the coefficient on the spatial lag variable.
+The tests are performed with the `spdep::lm.LMtests()` function. The `LM` stands for 'Lagrange multiplier' indicating that the technique simultaneously determines the coefficients on the explanatory variables AND the coefficient on the spatial lag variable.
 
 The test type is specified as a character string. The tests should be considered in a sequence starting with the standard versions and moving to the 'robust' versions if the choice remains ambiguous.
 
-To perform LM tests we specify the model object, the weights matrix, and the two model types using the `test =` argument. The model types are specified as character strings `"LMerr"` and `"LMlag"` for the spatial error and lag models, respectively.
+To perform LM tests you specify the model object, the weights matrix, and the two model types using the `test =` argument. The model types are specified as character strings `"LMerr"` and `"LMlag"` for the spatial error and lag models, respectively.
 ```{r}
-lm.LMtests(model, 
-           listw = wts, 
-           test = c("LMerr", "LMlag"))
+spdep::lm.LMtests(model, 
+                  listw = wts, 
+                  test = c("LMerr", "LMlag"))
 ```
 
-The output shows that both the spatial error and spatial lag models are significant ($p$-value < .15). Ideally one model is significant and the other is not, and we choose the model that is significant.
+The output shows that both the spatial error and spatial lag models are significant ($p$-value < .15). Ideally one model is significant and the other is not, and you choose the model that is significant.
 
-Since both are significant, we should test again. This time we use the robust forms of the statistics. We do this by using the character strings `"RLMerr"` and `"RLMlag"` in the `test =` argument.
+Since both are significant, you test again. This time you use the robust forms of the statistics with character strings `"RLMerr"` and `"RLMlag"` in the `test =` argument.
 ```{r}
-lm.LMtests(model, 
-           listw = wts, 
-           test = c("RLMerr", "RLMlag"))
+spdep::lm.LMtests(model, 
+                  listw = wts, 
+                  test = c("RLMerr", "RLMlag"))
 ```
 
-Here the error model has a large $p$-value and the lag model has a $p$-value that is less than .15 so we choose the lag model for our spatial regression.
+Here the error model has a large $p$-value and the lag model has a $p$-value that is less than .15 so you choose the lag model for your spatial regression.
 
 A decision tree (from Luc Anselin) shows the sequence of tests for making a choice about which type of spatial model to use [Decision Tree](http://myweb.fsu.edu/jelsner/temp/SpatialRegressionDecisionTree.png)
 
-If both tests show significance for both models, then we can fit both models and check which one results in the lowest information criteria (AIC). Another options is to include both a spatial lag term and a spatial error term. 
+If both tests show significance models, then you should fit both models and check which one results in the lowest information criteria (AIC).
+
+Another options is to include both a spatial lag term and a spatial error term into a single model.
+
