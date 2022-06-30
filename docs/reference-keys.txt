@@ -9,3 +9,5 @@ fitting-and-interpreting-a-spatially-lagged-x-model
 fitting-spatial-durbin-models
 more-information
 fitting-and-interpreting-spatial-durbin-models
+fitting-and-interpreting-geographic-regressions
+mapping-diseases-with-spatial-regression-models

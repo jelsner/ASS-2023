@@ -29,6 +29,28 @@ f <- CRIME ~ INC + HOVAL
 
 The marginal effect of income on crime is -1.6 and the marginal effect of housing value on crime is -.27.
 
+A nice way to visualize the relative significance of the explanatory variables is to make a plot. Here you use the `broom::tidy()` method and then `ggplot()` as follows.
+```{r}
+if(!require(broom)) install.packages(pkgs = "broom", repos = "http://cran.us.r-project.org")
+library(broom)
+
+( d <- broom::tidy(model.ols, 
+                   conf.int = TRUE) )
+
+library(ggplot2)
+
+ggplot(d[-1,], aes(x = estimate,  # we do not plot the intercept term
+                   y = term, 
+                   xmin = conf.low, 
+                   xmax = conf.high, 
+                   height = 0)) +
+  geom_point(size = 2) +
+  geom_vline(xintercept = 0, lty = 4) +
+  geom_errorbarh()
+```
+
+The maximum likelihood estimate is shown as a point and the confidence interval around the estimate is shown as a horizontal error bar. The default confidence level is 95% (`conf.level = .95`). The effects are statistically significant as the confidence intervals do not intersect the zero line (dashed-dotted).
+
 You then check for spatial autocorrelation in the residuals. This is done by first defining the weights matrix and then applying Moran's I test as follows.
 
 ```{r}
@@ -42,9 +64,12 @@ spdep::lm.morantest(model.ols,
 
 The results show that the model residuals have significant spatial autocorrelation so reporting the marginal effects with an OLS regression model would not be correct.
 
-You then fit a spatially-lagged Y model using the `lagsarlm()` function from the {spatialreg} package. The model is $$
+You then fit a spatially-lagged Y model using the `lagsarlm()` function from the {spatialreg} package. The model is 
+
+$$
 y = \rho W y + X \beta + \varepsilon
-$$ where $Wy$ is the weighted average of the neighborhood response values (spatial lag variable) with $W$ the spatial weights matrix, and $\rho$ is the autoregression coefficient.
+$$ 
+where $Wy$ is the weighted average of the neighborhood response values (spatial lag variable) with $W$ the spatial weights matrix, and $\rho$ is the autoregression coefficient.
 
 The `spatialreg::lagsarlm()` function first determines a value for $\rho$ ( with the internal `optimize()` function) and then the $\beta$'s are obtained using generalized least squares (GLS). The model formula `f` is the same as what you used to fit the OLS regression above. You save the model object as `model.slym`.
 
@@ -74,9 +99,12 @@ For example, the direct effect gives the impact a change in income has on crime 
 
 The indirect effect gives the impact of a change in income has on crime averaged over all *other* tracts. The indirect effect represent spillovers. The influences on the dependent variable $y$ in a region rendered by change in $x$ in some *other* region. For example, if all tracts $i \ne j$ (i not equal to j) increase their income, what will be the impact on crime in region $i$?
 
-The total effect (TE) is the sum of the direct and indirect effects. It measures the total cumulative impact on crime arising from one tract $j$ increasing its income over all other tracts (on average). It is given by $$
+The total effect (TE) is the sum of the direct and indirect effects. It measures the total cumulative impact on crime arising from one tract $j$ increasing its income over all other tracts (on average). It is given by 
+
+$$
 \hbox{TE} = \left(\frac{\beta_k}{1-\rho^2}\right)\left(1 + \rho\right)
-$$ where $\beta_k$ is the marginal effect of variable $k$ and $\rho$ is the spatial autocorrelation coefficient. With $\rho = 0$ TE is $\beta_k$.
+$$ 
+where $\beta_k$ is the marginal effect of variable $k$ and $\rho$ is the spatial autocorrelation coefficient. With $\rho = 0$ TE is $\beta_k$.
 
 Here $\beta_{INC}$ is -1.0487 and $\rho$ is .4233, so the total effect is
 
@@ -255,6 +283,21 @@ summary(spatialreg::impacts(model.slxm, listw = wts))
 
 Results show that income has a significant direct *and* indirect effect on crime rates, but housing values only show a significant direct effect and not a significant indirect effect.
 
+Again you visualize the relative significance of the effects.
+```{r}
+model.slxm |>
+  broom::tidy(conf.int = TRUE) |>
+  dplyr::slice(-1) |>
+ggplot(aes(x = estimate,
+                   y = term, 
+                   xmin = conf.low, 
+                   xmax = conf.high, 
+                   height = 0)) +
+  geom_point(size = 2) +
+  geom_vline(xintercept = 0, lty = 4) +
+  geom_errorbarh()
+```
+
 Compare R squared values between the OLS model and the spatially-lagged X model.
 
 ```{r}
@@ -286,7 +329,7 @@ The spatial Durban model (SDM) is a spatially-lagged Y model with a spatially-la
                                     type = "mixed") )
 ```
 
-How to do you choose between these two? Is the relationship between crime and income and housing values a global or local effect? Is there any reason to think that if something happens in one tract it will spillover across the entire city? If crime happens in one tract does it influence crime across the entire city? If so, then it is a global relationship. Or should it be a more local effect? If there is more crime in one tract then maybe that influences crime in the neighboring tract but not tracts farther away. If so, then it is a local relationship.
+How to do you choose between these two models? Is the relationship between crime and income and housing values a global or local effect? Is there any reason to think that if something happens in one tract it will spillover across the entire city? If crime happens in one tract does it influence crime across the entire city? If so, then it is a global relationship. Or should it be a more local effect? If there is more crime in one tract then maybe that influences crime in the neighboring tract but not tracts farther away. If so, then it is a local relationship.
 
 If you think it is a local relationship, start with the spatial Durbin error model and look at the $p$-values on the direct and indirect effects.
 
@@ -300,7 +343,7 @@ You see that income has a statistically significant direct and indirect effect o
 
 On the other hand, housing values have only a statistically significant direct effect on crime. Tracts with more expensive houses have lower crime but tracts whose neighboring tracts have more expensive houses do not imply lower crime. And the total effect of housing values on crime across the city is not significant. So if housing values go up in tracts citywide, there is no statistical evidence that crime will go down (or up).
 
-Likelihood ratio tests. Null hypothesis is that we should restrict the model.
+Try a likelihood ratio test with the null hypothesis being that you should restrict the model.
 
 ```{r}
 spatialreg::LR.Sarlm(model.sdem, 
