@@ -4,3 +4,8 @@ mapping-with-functions-from-the-ggplot2-package
 mapping-with-functions-from-the-tmap-package
 creating-an-interactive-map
 adding-an-inset-map
+fitting-and-interpreting-a-spatially-lagged-y-model
+fitting-and-interpreting-a-spatially-lagged-x-model
+fitting-spatial-durbin-models
+more-information
+fitting-and-interpreting-spatial-durbin-models
