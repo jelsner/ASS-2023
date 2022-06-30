@@ -30,6 +30,7 @@ f <- CRIME ~ INC + HOVAL
 The marginal effect of income on crime is -1.6 and the marginal effect of housing value on crime is -.27.
 
 A nice way to visualize the relative significance of the explanatory variables is to make a plot. Here you use the `broom::tidy()` method and then `ggplot()` as follows.
+
 ```{r}
 if(!require(broom)) install.packages(pkgs = "broom", repos = "http://cran.us.r-project.org")
 library(broom)
@@ -51,7 +52,7 @@ ggplot(d[-1,], aes(x = estimate,  # we do not plot the intercept term
 
 The maximum likelihood estimate is shown as a point and the confidence interval around the estimate is shown as a horizontal error bar. The default confidence level is 95% (`conf.level = .95`). The effects are statistically significant as the confidence intervals do not intersect the zero line (dashed-dotted).
 
-You then check for spatial autocorrelation in the residuals. This is done by first defining the weights matrix and then applying Moran's I test as follows.
+Then check for spatial autocorrelation in the residuals. This is done by first defining the weights matrix and then applying Moran's I test as follows.
 
 ```{r}
 nbs <- spdep::poly2nb(CC.sf, 

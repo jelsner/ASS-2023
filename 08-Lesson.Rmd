@@ -494,4 +494,6 @@ print(nz_map,
       vp = viewport(.8, .27, width = .5, height = .5))
 ```
 
-Additional details and examples on making maps in R are available in the book "Geocomputation with R" by Lovelace, Nowosad, and Muenchow <https://geocompr.robinlovelace.net/adv-map.html>
+- Additional details and examples on making maps in R are available in the book "Geocomputation with R" by Lovelace, Nowosad, and Muenchow <https://geocompr.robinlovelace.net/adv-map.html>
+
+- Mapping walking (etc) distances. <https://walker-data.com/mapboxapi/>

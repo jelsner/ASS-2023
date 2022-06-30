@@ -9,17 +9,27 @@ Today
 
 ## Fitting and interpreting geographic regressions(geographically-weighted regression {-}
 
-Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case we fit a separate regression model at each geographic location. This idea is similar to local measures of spatial autocorrelation where we estimate the statistic at each location. It is a useful concept for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). It is called geographically weighted regression (GWR) or more simply geographic regression.
+Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit a separate regression model at each geographic location. 
 
-Since GWR fits a separate regression model using data focused at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different than the spatial regression models.
+This idea is similar to local measures of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). It is called geographically weighted regression (GWR) or simply geographic regression.
 
-Observations across the entire domain contribute to the model fit at a particular location, but the observations are weighted inversely by their distance to the particular location. At the shortest distances observations are given the largest weights based on a Gaussian function and a bandwidth. The bandwidth can be specified or it can be determined through a cross-validation procedure.
+Since GWR fits a separate regression model using data focused at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different from the spatial regression such as the spatially-lagged Y model.
+
+Observations across the entire domain contribute to the model fit at a particular location, but the observations are weighted inversely by their distance to the particular location. At short distances, observations are given the largest weights based on a Gaussian function and a bandwidth. The bandwidth is specified as a single parameter or it is determined through a cross-validation procedure. The bandwidth can also be a function of location.
 
 GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs.
 
-Linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variable(s). Geographic regressions show how this dependency varies by location. It is an exploratory technique intended to indicate where local regression coefficients are different from the global values.
+From another perspective linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variables. Geographic regressions show how this dependency varies by location. GWR is an exploratory technique for determining where local regression coefficients are different from their corresponding global values.
 
-Continuing with the Columbus crime data, we start by fitting a 'global' regression to the crime rates using income and housing values, which we did above.
+Continuing with the Columbus crime data.
+
+```{r}
+( CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
+                       layer = "columbus") )
+```
+
+Start by fitting a 'global' linear regression to the crime rates using income and housing values, exactly as you did earlier.
+
 ```{r}
 f <- CRIME ~ INC + HOVAL
 ( model.ols <- lm(formula = f,
@@ -27,15 +37,14 @@ f <- CRIME ~ INC + HOVAL
 ```
 
 Then we use functions from the {spgwr} package to fit geographic regressions.
+
 ```{r}
 if(!require(spgwr)) install.packages(pkgs = "spgwr", repos = "http://cran.us.r-project.org")
-
-library(spgwr)
 ```
 
 The `sp` part of the package name indicates that the functions were developed to work with S4 spatial objects. We can use S3 simple features by specifying the locations as a matrix.
 ```{r}
-Locations <- st_coordinates(st_centroid(CC.sf))
+Locations <- sf::st_coordinates(sf::st_centroid(CC.sf))
 
 head(Locations)
 ```
