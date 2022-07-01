@@ -7,7 +7,7 @@ Today
 - Fitting and interpreting geographic regressions (geographically-weighted regression
 -  Mapping diseases with spatial regression models
 
-## Fitting and interpreting geographic regressions(geographically-weighted regression {-}
+## Fitting and interpreting geographic regressions (geographically-weighted regression {-}
 
 Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit a separate regression model at each geographic location. 
 
@@ -282,7 +282,7 @@ In words, the logarithm of the disease incidence rate in area $i$ conditional on
 The syntax for the BYM model using functions from the {INLA} package is given as
 
 ```{r eval=FALSE}
-install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)
+install.packages("INLA", repos=c(getOption("repos"), INLA = "https://inla.r-inla-download.org/R/stable"), dep = TRUE)
 
 library(INLA)
 
@@ -309,7 +309,7 @@ LC.sf
 
 Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function.
 
-```{r}
+```{r, eval=FALSE}
 nb <- spdep::poly2nb(LC.sf)
 spdep::nb2INLA(file = here::here("data", "map.adj"), nb)
 g <- inla.read.graph(filename = here::here("data", "map.adj"))
@@ -318,7 +318,7 @@ class(g)
 
 You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions.
 
-```{r}
+```{r, eval=FALSE}
 model.inla <- inla(formula = f, 
                    family = "poisson",
                    data = LC.sf,
@@ -326,6 +326,24 @@ model.inla <- inla(formula = f,
                    control.predictor = list(compute = TRUE))
 ```
 
+The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object `model.inla$summary.fitted.values`. Column `mean` is the mean posterior and `0.025quant` and `0.975quant` are the 2.5 and 97.5 percentiles, respectively.
 
+You add these to the spatial data frame and then make a map of the posterior mean relative risk.
 
-More on this topic is available here: https://www.paulamoraga.com/book-geospatial/sec-geostatisticaldataexamplespatial.html
+```{r, eval=FALSE}
+LC.sf$RR <- model.inla$summary.fitted.values[, "mean"]
+LC.sf$LL <- model.inla$summary.fitted.values[, "0.025quant"]
+LC.sf$UL <- model.inla$summary.fitted.values[, "0.975quant"]
+
+ggplot(LC.sf) + 
+  geom_sf(aes(fill = RR)) +
+  scale_fill_gradient2(midpoint = 1, 
+                       low = "blue", 
+                       mid = "white", 
+                       high = "red") +
+  theme_minimal()
+```
+
+More on this topic is available here:
+
+https://www.paulamoraga.com/book-geospatial/index.html
