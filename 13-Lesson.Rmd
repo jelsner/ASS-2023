@@ -184,12 +184,14 @@ ggplot(LC.sf) +
   geom_sf()
 ```
 
-For each region (county) $i$, $i = 1, \ldots, n$ the SIR is defined as the ratio of observed counts to the expected counts
+For each region (county) $i$, $i = 1, \ldots, n$ the SIR is defined as the ratio of observed counts ($Y_i$) to the expected counts ($E_i$).
+
 $$
 \hbox{SIR}_i = Y_i/E_i.
 $$
 
-The expected count $E_i$ is the total number of cases that one would expect if the population of area $i$ behaves the way the standard population behaves. If we ignore differences in rates for different stratum (e.g., age groups) then we compute the expected counts as
+The expected count $E_i$ is the total number of cases expected if the population of area $i$ behaves the way the standard population behaves. If you ignore differences in rates for different stratum (e.g., age groups, race, etc) then you compute the expected counts as
+
 $$
 E_i = r^{(s)} n^{(i)},
 $$
@@ -199,41 +201,39 @@ Then $\hbox{SIR}_i$ indicates whether region $i$ has higher ($\hbox{SIR}_i > 1$)
 
 When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR).
 
-The data frame `pennLC$data` from the {SpatialEpi} package contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+). 
+The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+). 
 
-We obtain the number of cases for all the strata together in each county by aggregating the rows of `pennLC$data` by county and adding up the number of cases.
+You compute the number of cases for all the strata together in each county by aggregating the rows of the data frame by county and adding up the number of cases.
 ```{r}
-( County.df <- pennLC$data %>%
-  group_by(county) %>%
-  summarize(Y = sum(cases)) )
+( County.df <- SpatialEpi::pennLC$data |>
+  dplyr::group_by(county) |>
+  dplyr::summarize(Y = sum(cases)) )
 ```
 
-We calculate the expected number of cases in each county using indirect standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves. We can do this by using the `expected()` function from the {SpatialEpi} package. This function has three arguments, namely,
+You then calculate the expected number of cases in each county using indirect standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves. You do this by using the `SpatialEpi::expected()` function. The function has three arguments including `population` (vector of population counts for each strata in each area), `cases` (vector with the number of cases for each strata in each area), and `n.strata` (number of strata).
 
-* `population`: vector of population counts for each strata in each area,
-* `cases`: vector with the number of cases for each strata in each area,
-* `n.strata`: number of strata.
+The vectors `population` and `cases` need to be sorted by area first and then, within each area, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the `dplyr::arrange()` function.
 
-The vectors `population` and `cases` need to be sorted by area first and then, within each area, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here we use the `arrange()` function from the {dplyr} package.
 ```{r}
-Strata.df <- pennLC$data %>%
-  arrange(county, race, gender, age)
+Strata.df <- SpatialEpi::pennLC$data |>
+  dplyr::arrange(county, race, gender, age)
 head(Strata.df)
 ```
 
-Then, we obtain the expected counts (E) in each county by calling the `expected()` function from the {SpatialEpi} package where we set population equal to `Strata.df$population` and cases equal to `Strata.df$cases`. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16.
+Then you get the expected counts (E) in each county by calling the `SpatialEpi::expected()` function, where you set population equal to `Strata.df$population` and cases equal to `Strata.df$cases`. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16.
+
 ```{r}
-( E <- expected(population = Strata.df$population,
-                cases = Strata.df$cases, 
-                n.strata = 16) )
+( E <- SpatialEpi::expected(population = Strata.df$population,
+                            cases = Strata.df$cases, 
+                            n.strata = 16) )
 ```
 
-Now we add the observed count `Y`, the expected count `E` the computed SIR to `LC.sf` and make a map of the SIR.
+Now you add the observed count `Y`, the expected count `E` the computed SIR to the simple feature data frame `LC.sf` and make a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.
 ```{r}
-LC.sf <- LC.sf %>%
-  mutate(Y = County.df$Y,
-         E = E,
-         SIR = Y/E)
+LC.sf <- LC.sf |>
+  dplyr::mutate(Y = County.df$Y,
+                E = E,
+                SIR = Y/E)
 
 ggplot(LC.sf) + 
   geom_sf(aes(fill = SIR)) +
@@ -253,6 +253,7 @@ Let the observed counts $Y$ be modeled with a Poisson distribution having a mean
 The relative risk quantifies whether an area has a higher ($\theta > 1$) or lower ($\theta < 1$) risk than the average risk in the population. For example if $\theta_i = 2$, then the risk in area $i$ is twice the average risk in the population.
 
 The model is expressed as
+
 $$
 Y \sim \hbox{Poisson}(E\theta) \\
 \log(\theta) = \alpha + u + v
@@ -261,35 +262,70 @@ $$
 The parameter $\alpha$ is the overall risk in the region of study, $u$ is the spatially structured random effect representing the dependency in risk across neighboring areas, and $v$ is the uncorrelated random noise modeled as $v \sim N(0, \sigma_v^2)$.
 
 It is common to include explanatory variables to quantify risk factors (e.g., distance to nearest coal plant). Thus the log($\theta$) is expressed as
+
 $$
 \log(\theta) = \alpha + X\beta + u + v
 $$
+
 where $X$ are the explanatory variables and $\beta$ are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor $\exp(\beta)$, holding the other variables constant.
 
-A popular form for the combined spatially structured random effect and the uncorrelated random effect is the Besag-York-Mollié (BYM) model which assigns a conditional autoregressive distribution to $u$ as
+A popular form for the combined spatially structured random effect and the uncorrelated random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregressive distribution to $u$ as
+
 $$
 u | u_{j \ne i} \sim N(\bar u_{\delta}, \frac{\sigma_u^2}{n_{\delta}})
 $$
+
 where $\bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}$ and where $\delta_i$ is the set of neighbors of area $i$ and $n_{\delta_i}$ is the number of neighbors of area $i$.
 
 In words, the logarithm of the disease incidence rate in area $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution.
 
-The syntax for the BYM model using the {INLA} package is given as
+The syntax for the BYM model using functions from the {INLA} package is given as
+
 ```{r eval=FALSE}
 install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)
-library('INLA')
 
-formula <- Y ~
-  f(ID_u, model = "besag", graph = g, scale.model = TRUE) +
-  f(ID_v, model = "iid")
+library(INLA)
+
+f <- Y ~ 
+  f(IDu, model = "besag", graph = g, scale.model = TRUE) +
+  f(IDv, model = "iid")
 ```
 
 The formula includes the response in the left-hand side, and the fixed and random effects on the right-hand side. By default, the formula includes an intercept. 
 
-The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `ID_u` and equal to c(1, 2, ..., I), and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
+The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `ID_u` and equal to c(1, 2, ..., I), where I is the number of regions (here the number of counties) and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
 
-The formula also includes an uncorrelated random effect with index variable with name `ID_v` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but need to be specified as two different objects since R-INLA does not allow to include two effects with `f()` that use the same index variable. 
+The formula also includes an uncorrelated random effect with index variable with name `ID_v` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but need to be specified as two different objects since R-INLA does not allow to include two effects with `f()` that use the same index variable.
 
 The BYM model can also be specified with the model "bym" which defines both the spatially structured random effect and the uncorrelated random effect ($u$ and $v$).
+
+You include these two vectors (call them `idu` and `idv`) in the data frame. 
+```{r}
+LC.sf <- LC.sf |>
+  dplyr::mutate(IDu = 1:nrow(LC.sf),
+                IDv = 1:nrow(LC.sf))
+LC.sf
+```
+
+Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function.
+
+```{r}
+nb <- spdep::poly2nb(LC.sf)
+spdep::nb2INLA(file = here::here("data", "map.adj"), nb)
+g <- inla.read.graph(filename = here::here("data", "map.adj"))
+class(g)
+```
+
+You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions.
+
+```{r}
+model.inla <- inla(formula = f, 
+                   family = "poisson",
+                   data = LC.sf,
+                   E = E,
+                   control.predictor = list(compute = TRUE))
+```
+
+
 
 More on this topic is available here: https://www.paulamoraga.com/book-geospatial/sec-geostatisticaldataexamplespatial.html
