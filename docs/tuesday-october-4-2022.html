@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Tuesday October 4, 2022 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Tuesday October 4, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Tuesday October 4, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Tuesday October 4, 2022 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="thursday-september-29-2022.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i>Syllabus</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#gis5122-applied-spatial-statistics"><i class="fa fa-check"></i>GIS5122: Applied Spatial Statistics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i>Course description</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#expected-learning-outcomes"><i class="fa fa-check"></i>Expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#materials"><i class="fa fa-check"></i>Materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#class-meetings"><i class="fa fa-check"></i>Class meetings</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#grades"><i class="fa fa-check"></i>Grades</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#ethics"><i class="fa fa-check"></i>Ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#outline-of-topics"><i class="fa fa-check"></i>Outline of topics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#schedule-subject-to-change-with-notice"><i class="fa fa-check"></i>Schedule (subject to change with notice)</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i>Are you completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#expectations"><i class="fa fa-check"></i>Expectations</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html"><i class="fa fa-check"></i>Tuesday September 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html"><i class="fa fa-check"></i>Thursday September 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html"><i class="fa fa-check"></i>Thursday September 22, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html"><i class="fa fa-check"></i>Tuesday September 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html"><i class="fa fa-check"></i>Thursday September 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#mapping-diseases-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping diseases with spatial regression models</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tuesday-october-4-2022" class="section level1 unnumbered hasAnchor">
+<h1>Tuesday October 4, 2022<a href="tuesday-october-4-2022.html#tuesday-october-4-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“We build our computer systems the way we build or cities; over time, without plan, on top of ruins.”</strong> – Ellen Ullman</p>
+<p>Today</p>
+<ul>
+<li>Fitting and interpreting geographic regressions</li>
+<li>Mapping diseases with spatial regression models</li>
+</ul>
+<div id="fitting-and-interpreting-geographic-regressions" class="section level2 unnumbered hasAnchor">
+<h2>Fitting and interpreting geographic regressions<a href="tuesday-october-4-2022.html#fitting-and-interpreting-geographic-regressions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Another approach to modeling spatial data is to assume that the <em>relationships</em> between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit a separate regression model at each geographic location.</p>
+<p>The analogy is a local measure of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). It is called geographically weighted regression (GWR) or simply geographic regression. GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs.</p>
+<p>Since GWR fits a separate regression model using data focused at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different from the spatial regression such as the spatially-lagged Y model, which are single models with spatial terms.</p>
+<p>Observations across the entire domain contribute to the model fit at a particular location, but the observations are weighted inversely by their distance to the particular location. At short distances, observations are given the largest weights based on a Gaussian function and a bandwidth. The bandwidth is specified as a single parameter or it is determined through a cross-validation procedure. The bandwidth can also be a function of location.</p>
+<p>Said another way, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variables. Geographic regressions show how this dependency varies by location. GWR is used as an exploratory technique for determining where local regression coefficients are different from corresponding global values.</p>
+<p>Continuing with the Columbus crime data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-october-4-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a>( CC.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;columbus&quot;</span>),</span>
+<span id="cb1-2"><a href="tuesday-october-4-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;columbus&quot;</span>) )</span></code></pre></div>
+<pre><code>## Reading layer `columbus&#39; from data source 
+##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2022/data/columbus&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 49 features and 20 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 5.874907 ymin: 10.78863 xmax: 11.28742 ymax: 14.74245
+## CRS:           NA</code></pre>
+<pre><code>## Simple feature collection with 49 features and 20 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 5.874907 ymin: 10.78863 xmax: 11.28742 ymax: 14.74245
+## CRS:           NA
+## First 10 features:
+##        AREA PERIMETER COLUMBUS_ COLUMBUS_I POLYID NEIG  HOVAL    INC     CRIME
+## 1  0.309441  2.440629         2          5      1    5 80.467 19.531 15.725980
+## 2  0.259329  2.236939         3          1      2    1 44.567 21.232 18.801754
+## 3  0.192468  2.187547         4          6      3    6 26.350 15.956 30.626781
+## 4  0.083841  1.427635         5          2      4    2 33.200  4.477 32.387760
+## 5  0.488888  2.997133         6          7      5    7 23.225 11.252 50.731510
+## 6  0.283079  2.335634         7          8      6    8 28.750 16.029 26.066658
+## 7  0.257084  2.554577         8          4      7    4 75.000  8.438  0.178269
+## 8  0.204954  2.139524         9          3      8    3 37.125 11.337 38.425858
+## 9  0.500755  3.169707        10         18      9   18 52.600 17.586 30.515917
+## 10 0.246689  2.087235        11         10     10   10 96.400 13.598 34.000835
+##        OPEN    PLUMB DISCBD     X     Y NSA NSB EW CP THOUS NEIGNO
+## 1  2.850747 0.217155   5.03 38.80 44.07   1   1  1  0  1000   1005
+## 2  5.296720 0.320581   4.27 35.62 42.38   1   1  0  0  1000   1001
+## 3  4.534649 0.374404   3.89 39.82 41.18   1   1  1  0  1000   1006
+## 4  0.394427 1.186944   3.70 36.50 40.52   1   1  0  0  1000   1002
+## 5  0.405664 0.624596   2.83 40.01 38.00   1   1  1  0  1000   1007
+## 6  0.563075 0.254130   3.78 43.75 39.28   1   1  1  0  1000   1008
+## 7  0.000000 2.402402   2.74 33.36 38.41   1   1  0  0  1000   1004
+## 8  3.483478 2.739726   2.89 36.71 38.71   1   1  0  0  1000   1003
+## 9  0.527488 0.890736   3.17 43.44 35.92   1   1  1  0  1000   1018
+## 10 1.548348 0.557724   4.33 47.61 36.42   1   1  1  0  1000   1010
+##                          geometry
+## 1  POLYGON ((8.624129 14.23698...
+## 2  POLYGON ((8.25279 14.23694,...
+## 3  POLYGON ((8.653305 14.00809...
+## 4  POLYGON ((8.459499 13.82035...
+## 5  POLYGON ((8.685274 13.63952...
+## 6  POLYGON ((9.401384 13.5504,...
+## 7  POLYGON ((8.037741 13.60752...
+## 8  POLYGON ((8.247527 13.58651...
+## 9  POLYGON ((9.333297 13.27242...
+## 10 POLYGON ((10.08251 13.03377...</code></pre>
+<p>Start by fitting a ‘global’ ordinarly least squares (OLS) linear regression to the crime rates using income and housing values, exactly as you did earlier.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="tuesday-october-4-2022.html#cb4-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> CRIME <span class="sc">~</span> INC <span class="sc">+</span> HOVAL</span>
+<span id="cb4-2"><a href="tuesday-october-4-2022.html#cb4-2" aria-hidden="true" tabindex="-1"></a>( model.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> f,</span>
+<span id="cb4-3"><a href="tuesday-october-4-2022.html#cb4-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> CC.sf) )</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = f, data = CC.sf)
+## 
+## Coefficients:
+## (Intercept)          INC        HOVAL  
+##     68.6190      -1.5973      -0.2739</code></pre>
+<p>The coefficients on the two explanatory variables indicate that crime decreases in areas of higher income and higher housing values.</p>
+<p>You compare this result to results from geographic regressions. The functions are in the {spgwr} package.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="tuesday-october-4-2022.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(spgwr)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;spgwr&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: spgwr</code></pre>
+<pre><code>## Loading required package: sp</code></pre>
+<pre><code>## Loading required package: spData</code></pre>
+<pre><code>## To access larger datasets in this package, install the spDataLarge
+## package with: `install.packages(&#39;spDataLarge&#39;,
+## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;)`</code></pre>
+<pre><code>## NOTE: This package does not constitute approval of GWR
+## as a method of spatial analysis; see example(gwr)</code></pre>
+<p>The <code>sp</code> part of the package name indicates that the functions were developed to work with S4 spatial objects.</p>
+<p>The functions allow you to use S3 simple features by specifying the locations as a matrix. Here you extract the centroid from each census tract as a matrix.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="tuesday-october-4-2022.html#cb12-1" aria-hidden="true" tabindex="-1"></a>Locations <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(sf<span class="sc">::</span><span class="fu">st_centroid</span>(CC.sf))</span></code></pre></div>
+<pre><code>## Warning in st_centroid.sf(CC.sf): st_centroid assumes attributes are constant
+## over geometries of x</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tuesday-october-4-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Locations)</span></code></pre></div>
+<pre><code>##          X        Y
+## 1 8.827218 14.36908
+## 2 8.332658 14.03162
+## 3 9.012265 13.81972
+## 4 8.460801 13.71696
+## 5 9.007982 13.29637
+## 6 9.739926 13.47463</code></pre>
+<p>These are the X and Y coordinate values specifying the centroid for the first six tracts (out of 49).</p>
+<p>To determine the optimal bandwidth for the Gaussian kernel (weighting function) you use the <code>spgwr::gwr.sel()</code> function. You need to specify the arguments, model formula (<code>formula =</code>), the data frame (<code>data =</code>), and the coordinates (<code>coords =</code>) as part of the function call. The argument <code>coords =</code> is the matrix of coordinates of points representing the spatial locations of the observations. It can be omitted if the data is an S4 spatial data frame from the {sp} package.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tuesday-october-4-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a>( bw <span class="ot">&lt;-</span> spgwr<span class="sc">::</span><span class="fu">gwr.sel</span>(<span class="at">formula =</span> f, </span>
+<span id="cb16-2"><a href="tuesday-october-4-2022.html#cb16-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> CC.sf,</span>
+<span id="cb16-3"><a href="tuesday-october-4-2022.html#cb16-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> Locations) )</span></code></pre></div>
+<pre><code>## Bandwidth: 2.220031 CV score: 7473.853 
+## Bandwidth: 3.588499 CV score: 7479.637 
+## Bandwidth: 1.374271 CV score: 7404.175 
+## Bandwidth: 0.8515626 CV score: 7389.293 
+## Bandwidth: 0.7515898 CV score: 7280.867 
+## Bandwidth: 0.4667245 CV score: 6319.861 
+## Bandwidth: 0.290668 CV score: 7474.967 
+## Bandwidth: 0.5755334 CV score: 6754.626 
+## Bandwidth: 0.3994769 CV score: 6197.735 
+## Bandwidth: 0.3597549 CV score: 6320.012 
+## Bandwidth: 0.4132551 CV score: 6200.674 
+## Bandwidth: 0.4028088 CV score: 6196.867 
+## Bandwidth: 0.4040147 CV score: 6196.817 
+## Bandwidth: 0.4038422 CV score: 6196.816 
+## Bandwidth: 0.4038829 CV score: 6196.816 
+## Bandwidth: 0.4038015 CV score: 6196.816 
+## Bandwidth: 0.4038422 CV score: 6196.816</code></pre>
+<pre><code>## [1] 0.4038422</code></pre>
+<p>The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (guassian by default) and that bandwidth (distance).</p>
+<p>The output shows that the first bandwidth chosen was 2.22 in arbitrary distance units. The resulting prediction skill from fitting 49 regression models with that bandwidth is 7474 units. The resulting CV score is based on cross validation whereby skill is computed at each location when data from that location is not used to fit the regression models.</p>
+<p>The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score from refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs.</p>
+<p>The output shows that no additional improvement in skill occurs at a bandwidth distance of .404 units, and this single value is assigned to the object you called <code>bw</code>.</p>
+<p>Once the bandwidth distance is determined you use the <code>spgwr::gwr()</code> function to fit the regressions using that bandwidth. The arguments are the same as before but includes the <code>bandwidth =</code> argument where you specify the object <code>bw</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tuesday-october-4-2022.html#cb19-1" aria-hidden="true" tabindex="-1"></a>model.gwr <span class="ot">&lt;-</span> <span class="fu">gwr</span>(<span class="at">formula =</span> f, </span>
+<span id="cb19-2"><a href="tuesday-october-4-2022.html#cb19-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> CC.sf, </span>
+<span id="cb19-3"><a href="tuesday-october-4-2022.html#cb19-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">coords =</span> Locations,</span>
+<span id="cb19-4"><a href="tuesday-october-4-2022.html#cb19-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bandwidth =</span> bw)</span></code></pre></div>
+<p>The model and observed data are assigned to a list object with element names listed using the <code>names()</code> function.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tuesday-october-4-2022.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(model.gwr)</span></code></pre></div>
+<pre><code>##  [1] &quot;SDF&quot;       &quot;lhat&quot;      &quot;lm&quot;        &quot;results&quot;   &quot;bandwidth&quot; &quot;adapt&quot;    
+##  [7] &quot;hatmatrix&quot; &quot;gweight&quot;   &quot;gTSS&quot;      &quot;this.call&quot; &quot;fp.given&quot;  &quot;timings&quot;</code></pre>
+<p>The first element is <code>SDF</code> containing the model output as a S4 spatial data frame.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="tuesday-october-4-2022.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(model.gwr<span class="sc">$</span>SDF)</span></code></pre></div>
+<pre><code>## [1] &quot;SpatialPointsDataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;sp&quot;</code></pre>
+<p>See Lesson 7 where S4 spatial data objects were covered.</p>
+<p>The structure of the spatial data frame is obtained with the <code>str()</code> function and by setting the <code>max.level</code> argument to 2.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="tuesday-october-4-2022.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(model.gwr<span class="sc">$</span>SDF, <span class="at">max.level =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## Formal class &#39;SpatialPointsDataFrame&#39; [package &quot;sp&quot;] with 5 slots
+##   ..@ data       :&#39;data.frame&#39;:  49 obs. of  7 variables:
+##   ..@ coords.nrs : num(0) 
+##   ..@ coords     : num [1:49, 1:2] 8.83 8.33 9.01 8.46 9.01 ...
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   ..@ bbox       : num [1:2, 1:2] 6.22 11.01 10.95 14.37
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot</code></pre>
+<p>Here there are five slots with the first slot labeled <code>@data</code> indicating that it is a data frame. The number of rows and columns in the data frame are listed with the <code>dim()</code> function.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="tuesday-october-4-2022.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(model.gwr<span class="sc">$</span>SDF)</span></code></pre></div>
+<pre><code>## [1] 49  7</code></pre>
+<p>There are 49 rows and 7 columns. Each row corresponds to a tract and information about the regressions localized to the tract is given in the columns. Column names are listed with the <code>names()</code> function.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="tuesday-october-4-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(model.gwr<span class="sc">$</span>SDF)</span></code></pre></div>
+<pre><code>## [1] &quot;sum.w&quot;       &quot;(Intercept)&quot; &quot;INC&quot;         &quot;HOVAL&quot;       &quot;gwr.e&quot;      
+## [6] &quot;pred&quot;        &quot;localR2&quot;</code></pre>
+<p>They include the sum of the weights <code>sum.w</code> (the larger the sum the more often the tract is included in the local regressions–favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the explanatory variables (<code>INC</code> and <code>HOVAL</code>) and an intercept term, the residual (<code>gwr.e</code>), the predicted value (<code>pred</code>) and the local goodness-of-fit (<code>localR2</code>).</p>
+<p>You create a map displaying where income has the most and least influence on crime by first adding the income coefficient from the data frame (column labeled <code>INC</code>) to the simple feature data frame since the order of the rows in the <code>SDF</code> matches the order in the simple feature data frame and then using functions from the {ggplot2} package.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="tuesday-october-4-2022.html#cb30-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>INCcoef <span class="ot">&lt;-</span> model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>INC</span>
+<span id="cb30-2"><a href="tuesday-october-4-2022.html#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="tuesday-october-4-2022.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb30-4"><a href="tuesday-october-4-2022.html#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="tuesday-october-4-2022.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="tuesday-october-4-2022.html#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> INCcoef)) <span class="sc">+</span></span>
+<span id="cb30-7"><a href="tuesday-october-4-2022.html#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Most tracts have coefficients with values less than zero. Recall the global coefficient is less than zero. But areas in yellow show where the coefficient values are greater than zero indicating a direct relationship between crime and income.</p>
+<p>How about the coefficients on housing values?</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="tuesday-october-4-2022.html#cb31-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>HOVALcoef <span class="ot">&lt;-</span> model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>HOVAL</span>
+<span id="cb31-2"><a href="tuesday-october-4-2022.html#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="tuesday-october-4-2022.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="tuesday-october-4-2022.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> HOVALcoef)) <span class="sc">+</span></span>
+<span id="cb31-5"><a href="tuesday-october-4-2022.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>While the global coefficient is negative indicating crime rates tend to be lower in areas with higher housing values, the opposite is the case over much of city especially on the south side.</p>
+<p>You put the vector of GWR predictions into the <code>CC.sf</code> simple feature data frame giving it the column name <code>predGWR</code> and then map the predictions using functions from the {tmap} package.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tuesday-october-4-2022.html#cb32-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>predGWR <span class="ot">&lt;-</span> model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>pred</span>
+<span id="cb32-2"><a href="tuesday-october-4-2022.html#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="tuesday-october-4-2022.html#cb32-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="tuesday-october-4-2022.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="st">&quot;predGWR&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Predicted crimes</span><span class="sc">\n</span><span class="st">per 1000&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="tuesday-october-4-2022.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Warning: Currect projection of shape CC.sf unknown. Long-lat (WGS84) is assumed.</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also a smoother than with a global OLS regression.</p>
+<p>Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="tuesday-october-4-2022.html#cb34-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>localR2 <span class="ot">&lt;-</span> model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>localR2</span>
+<span id="cb34-2"><a href="tuesday-october-4-2022.html#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="tuesday-october-4-2022.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb34-4"><a href="tuesday-october-4-2022.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> localR2)) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="tuesday-october-4-2022.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Although crime rates are highest in the center, the relationship between crime and income and housing values is largest in tracts across the eastern part of the city.</p>
+<p>This type of nuanced exploratory analysis is made possible with GWR.</p>
+<p>Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables ‘provoke’ the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals. One way to check the assumption of a stationary process is to use geographic regression.</p>
+</div>
+<div id="mapping-diseases-with-spatial-regression-models" class="section level2 unnumbered hasAnchor">
+<h2>Mapping diseases with spatial regression models<a href="tuesday-october-4-2022.html#mapping-diseases-with-spatial-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Spatial regression models are used in disease mapping where it is common to use a standardized incidence ratio (SIR) defined as the ratio of the observed to the <em>expected</em> number of disease cases. Small areas can give extreme SIRs due to low population sizes or small samples. Extreme values of SIRs can be misleading and unreliable for reporting.</p>
+<p>Because of this so-called ‘small area problem’ it is better to estimate disease risk using a spatial regression model. Spatial regression models incorporate information from neighboring areas and explanatory information. The result is a smoothing (shrinking) of extreme values.</p>
+<p>Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object <code>pennLC</code> with element name <code>spatial.polygon</code>. Change the native spatial polygons S4 object to an S3 simple feature data frame using the <code>sf::st_as_sf()</code> function and display a map of the county borders.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tuesday-october-4-2022.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(SpatialEpi)) <span class="fu">install.packages</span>(<span class="st">&quot;SpatialEpi&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: SpatialEpi</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="tuesday-october-4-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a>LC.sp <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span>pennLC<span class="sc">$</span>spatial.polygon</span>
+<span id="cb37-2"><a href="tuesday-october-4-2022.html#cb37-2" aria-hidden="true" tabindex="-1"></a>LC.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(LC.sp)</span>
+<span id="cb37-3"><a href="tuesday-october-4-2022.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="tuesday-october-4-2022.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(LC.sf) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="tuesday-october-4-2022.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>For each region (county) <span class="math inline">\(i\)</span>, <span class="math inline">\(i = 1, \ldots, n\)</span> the SIR is defined as the ratio of observed counts (<span class="math inline">\(Y_i\)</span>) to the expected counts (<span class="math inline">\(E_i\)</span>).</p>
+<p><span class="math display">\[
+\hbox{SIR}_i = Y_i/E_i.
+\]</span></p>
+<p>The expected count <span class="math inline">\(E_i\)</span> is the total number of cases expected if the population of area <span class="math inline">\(i\)</span> behaves the way the standard population behaves. If you ignore differences in rates for different stratum (e.g., age groups, race, etc) then you compute the expected counts as</p>
+<p><span class="math display">\[
+E_i = r^{(s)} n^{(i)},
+\]</span>
+where <span class="math inline">\(r^{(s)}\)</span> is the rate in the standard population (total number of cases divided by the total population across all regions), and <span class="math inline">\(n^{(i)}\)</span> is the population of region <span class="math inline">\(i\)</span>.</p>
+<p>Then <span class="math inline">\(\hbox{SIR}_i\)</span> indicates whether region <span class="math inline">\(i\)</span> has higher (<span class="math inline">\(\hbox{SIR}_i &gt; 1\)</span>), equal (<span class="math inline">\(\hbox{SIR}_i = 1\)</span>) or lower (<span class="math inline">\(\hbox{SIR}_i &lt; 1\)</span>) risk than expected relative to the standard population.</p>
+<p>When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR).</p>
+<p>The data frame <code>SpatialEpi::pennLC$data</code> contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+).</p>
+<p>You compute the number of cases for all the strata together in each county by aggregating the rows of the data frame by county and adding up the number of cases.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="tuesday-october-4-2022.html#cb38-1" aria-hidden="true" tabindex="-1"></a>( County.df <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span>pennLC<span class="sc">$</span>data <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="tuesday-october-4-2022.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(county) <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="tuesday-october-4-2022.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Y =</span> <span class="fu">sum</span>(cases)) )</span></code></pre></div>
+<pre><code>## # A tibble: 67 × 2
+##    county        Y
+##    &lt;fct&gt;     &lt;int&gt;
+##  1 adams        55
+##  2 allegheny  1275
+##  3 armstrong    49
+##  4 beaver      172
+##  5 bedford      37
+##  6 berks       308
+##  7 blair       127
+##  8 bradford     59
+##  9 bucks       454
+## 10 butler      158
+## # … with 57 more rows</code></pre>
+<p>You then calculate the expected number of cases in each county using indirect standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves. You do this by using the <code>SpatialEpi::expected()</code> function. The function has three arguments including <code>population</code> (vector of population counts for each strata in each area), <code>cases</code> (vector with the number of cases for each strata in each area), and <code>n.strata</code> (number of strata).</p>
+<p>The vectors <code>population</code> and <code>cases</code> need to be sorted by area first and then, within each area, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the <code>dplyr::arrange()</code> function.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tuesday-october-4-2022.html#cb40-1" aria-hidden="true" tabindex="-1"></a>Strata.df <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span>pennLC<span class="sc">$</span>data <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="tuesday-october-4-2022.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(county, race, gender, age)</span>
+<span id="cb40-3"><a href="tuesday-october-4-2022.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Strata.df)</span></code></pre></div>
+<pre><code>##   county cases population race gender      age
+## 1  adams     0        365    o      f    40.59
+## 2  adams     1         68    o      f    60.69
+## 3  adams     0         73    o      f      70+
+## 4  adams     0       1492    o      f Under.40
+## 5  adams     0        387    o      m    40.59
+## 6  adams     0         69    o      m    60.69</code></pre>
+<p>Then you get the expected counts (E) in each county by calling the <code>SpatialEpi::expected()</code> function, where you set population equal to <code>Strata.df$population</code> and cases equal to <code>Strata.df$cases</code>. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="tuesday-october-4-2022.html#cb42-1" aria-hidden="true" tabindex="-1"></a>( E <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span><span class="fu">expected</span>(<span class="at">population =</span> Strata.df<span class="sc">$</span>population,</span>
+<span id="cb42-2"><a href="tuesday-october-4-2022.html#cb42-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cases =</span> Strata.df<span class="sc">$</span>cases, </span>
+<span id="cb42-3"><a href="tuesday-october-4-2022.html#cb42-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">n.strata =</span> <span class="dv">16</span>) )</span></code></pre></div>
+<pre><code>##  [1]   69.627305 1182.428036   67.610123  172.558055   44.190132  300.705979
+##  [7]  115.069655   53.237644  428.797481  134.797705  149.846027    5.945905
+## [13]   55.475211   79.404013  300.124058   33.906647   73.853240   33.012029
+## [19]   53.312111   75.025024  170.866603  199.809038  454.545971   31.543736
+## [25]  216.203436  137.810484    5.403583  109.888662   11.594802   33.093112
+## [31]   36.659515   71.090130   42.555800   18.735146  204.172754  357.237966
+## [37]   91.303056  103.076598  259.874790  309.688036  101.231639   40.105227
+## [43]  111.790653   40.774630  100.094714  608.691819   16.081330  222.731099
+## [49]   90.872134   31.037254 1219.102696   39.865269   16.003210  147.937712
+## [55]   28.878902   74.523497    7.419682   36.174266   35.756382   30.833836
+## [61]   51.141014   39.230710  189.097720   44.490161  351.175955   21.009224
+## [67]  288.869666</code></pre>
+<p>Now you add the observed count <code>Y</code>, the expected count <code>E</code> the computed SIR to the simple feature data frame <code>LC.sf</code> and make a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="tuesday-october-4-2022.html#cb44-1" aria-hidden="true" tabindex="-1"></a>LC.sf <span class="ot">&lt;-</span> LC.sf <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="tuesday-october-4-2022.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Y =</span> County.df<span class="sc">$</span>Y,</span>
+<span id="cb44-3"><a href="tuesday-october-4-2022.html#cb44-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">E =</span> E,</span>
+<span id="cb44-4"><a href="tuesday-october-4-2022.html#cb44-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">SIR =</span> Y<span class="sc">/</span>E)</span>
+<span id="cb44-5"><a href="tuesday-october-4-2022.html#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="tuesday-october-4-2022.html#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(LC.sf) <span class="sc">+</span> </span>
+<span id="cb44-7"><a href="tuesday-october-4-2022.html#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> SIR)) <span class="sc">+</span></span>
+<span id="cb44-8"><a href="tuesday-october-4-2022.html#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">midpoint =</span> <span class="dv">1</span>, </span>
+<span id="cb44-9"><a href="tuesday-october-4-2022.html#cb44-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">low =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb44-10"><a href="tuesday-october-4-2022.html#cb44-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mid =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb44-11"><a href="tuesday-october-4-2022.html#cb44-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">high =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb44-12"><a href="tuesday-october-4-2022.html#cb44-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. In counties with SIR &gt; 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR &lt; 1 (blue) have fewer cancer cases observed than expected.</p>
+<p>In regions with few people the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring areas, and incorporate explanatory information. This results in smoothing (shrinkage) of extreme values.</p>
+<p>Let the observed counts <span class="math inline">\(Y\)</span> be modeled with a Poisson distribution having a mean <span class="math inline">\(E \theta\)</span>, where <span class="math inline">\(E\)</span> are the expected counts and <span class="math inline">\(\theta\)</span> are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept that models the overall disease risk level, and random effects to account for local variability.</p>
+<p>The relative risk quantifies whether an area has a higher (<span class="math inline">\(\theta &gt; 1\)</span>) or lower (<span class="math inline">\(\theta &lt; 1\)</span>) risk than the average risk in the population. For example if <span class="math inline">\(\theta_i = 2\)</span>, then the risk in area <span class="math inline">\(i\)</span> is twice the average risk in the population.</p>
+<p>The model is expressed as</p>
+<p><span class="math display">\[
+Y \sim \hbox{Poisson}(E\theta) \\
+\log(\theta) = \alpha + u + v
+\]</span></p>
+<p>The parameter <span class="math inline">\(\alpha\)</span> is the overall risk in the region of study, <span class="math inline">\(u\)</span> is the spatially structured random effect representing the dependency in risk across neighboring areas, and <span class="math inline">\(v\)</span> is the uncorrelated random noise modeled as <span class="math inline">\(v \sim N(0, \sigma_v^2)\)</span>.</p>
+<p>It is common to include explanatory variables to quantify risk factors (e.g., distance to nearest coal plant). Thus the log(<span class="math inline">\(\theta\)</span>) is expressed as</p>
+<p><span class="math display">\[
+\log(\theta) = \alpha + X\beta + u + v
+\]</span></p>
+<p>where <span class="math inline">\(X\)</span> are the explanatory variables and <span class="math inline">\(\beta\)</span> are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor <span class="math inline">\(\exp(\beta)\)</span>, holding the other variables constant.</p>
+<p>A popular form for the combined spatially structured random effect and the uncorrelated random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregressive distribution to <span class="math inline">\(u\)</span> as</p>
+<p><span class="math display">\[
+u | u_{j \ne i} \sim N(\bar u_{\delta}, \frac{\sigma_u^2}{n_{\delta}})
+\]</span></p>
+<p>where <span class="math inline">\(\bar u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}\)</span> and where <span class="math inline">\(\delta_i\)</span> is the set of neighbors of area <span class="math inline">\(i\)</span> and <span class="math inline">\(n_{\delta_i}\)</span> is the number of neighbors of area <span class="math inline">\(i\)</span>.</p>
+<p>In words, the logarithm of the disease incidence rate in area <span class="math inline">\(i\)</span> conditional on the incidence rates in the neighborhood of <span class="math inline">\(i\)</span> is modeled with a normal distribution centered on the neighborhood average (<span class="math inline">\(\bar u_{\delta_i}\)</span>) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution.</p>
+<p>The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk. This is done with functions in the {INLA} package. You get the package (it is not on CRAN) as follows.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tuesday-october-4-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout =</span> <span class="dv">120</span>)</span>
+<span id="cb45-2"><a href="tuesday-october-4-2022.html#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="tuesday-october-4-2022.html#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;INLA&quot;</span>, <span class="at">repos=</span><span class="fu">c</span>(<span class="fu">getOption</span>(<span class="st">&quot;repos&quot;</span>), <span class="at">INLA =</span> <span class="st">&quot;https://inla.r-inla-download.org/R/stable&quot;</span>), <span class="at">dep =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>The syntax for the BYM model using functions from the {INLA} package is given as</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tuesday-october-4-2022.html#cb46-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> Y <span class="sc">~</span> </span>
+<span id="cb46-2"><a href="tuesday-october-4-2022.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">f</span>(IDu, <span class="at">model =</span> <span class="st">&quot;besag&quot;</span>, <span class="at">graph =</span> g, <span class="at">scale.model =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="tuesday-october-4-2022.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">f</span>(IDv, <span class="at">model =</span> <span class="st">&quot;iid&quot;</span>)</span></code></pre></div>
+<p>The formula includes the response in the left-hand side, and the fixed and random effects on the right-hand side. By default, the formula includes an intercept.</p>
+<p>The random effects are set using <code>f()</code> with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name <code>IDu</code> and equal to c(1, 2, …, I), where I is the number of regions (here the number of counties) and model <code>"besag"</code> with a CAR distribution and with neighborhood structure given by the graph <code>g</code>. The option <code>scale.model = TRUE</code> is used to make the precision parameter of models with different CAR priors comparable.</p>
+<p>The formula also includes an uncorrelated random effect with index variable with name <code>IDv</code> again equal to c(1, 2, …, I), and model “iid”. This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the <code>ID</code> variables are identical but need to be specified as two different objects since INLA does not allow to include two effects with <code>f()</code> that use the same index variable.</p>
+<p>The BYM model can also be specified with the model “bym” which defines both the spatially structured random effect and the uncorrelated random effect (<span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>).</p>
+<p>You include these two vectors (call them <code>idu</code> and <code>idv</code>) in the data frame.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tuesday-october-4-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a>LC.sf <span class="ot">&lt;-</span> LC.sf <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="tuesday-october-4-2022.html#cb47-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">IDu =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(LC.sf),</span>
+<span id="cb47-3"><a href="tuesday-october-4-2022.html#cb47-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">IDv =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(LC.sf))</span>
+<span id="cb47-4"><a href="tuesday-october-4-2022.html#cb47-4" aria-hidden="true" tabindex="-1"></a>LC.sf</span></code></pre></div>
+<pre><code>## Simple feature collection with 67 features and 5 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -80.53494 ymin: 39.72316 xmax: -74.72516 ymax: 42.26137
+## CRS:           +proj=longlat
+## First 10 features:
+##                          geometry    Y          E       SIR IDu IDv
+## 1  POLYGON ((-77.4467 39.96954...   55   69.62730 0.7899200   1   1
+## 2  POLYGON ((-80.14534 40.6742... 1275 1182.42804 1.0782897   2   2
+## 3  POLYGON ((-79.21142 40.9091...   49   67.61012 0.7247435   3   3
+## 4  POLYGON ((-80.1568 40.85189...  172  172.55806 0.9967660   4   4
+## 5  POLYGON ((-78.38063 39.7288...   37   44.19013 0.8372910   5   5
+## 6  POLYGON ((-75.53303 40.4508...  308  300.70598 1.0242563   6   6
+## 7  POLYGON ((-78.11707 40.7373...  127  115.06965 1.1036793   7   7
+## 8  POLYGON ((-76.14609 42.0035...   59   53.23764 1.1082384   8   8
+## 9  POLYGON ((-74.97153 40.0554...  454  428.79748 1.0587749   9   9
+## 10 POLYGON ((-80.14534 40.6742...  158  134.79770 1.1721268  10  10</code></pre>
+<p>Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the <code>inla.read.graph()</code> function.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="tuesday-october-4-2022.html#cb49-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> spdep<span class="sc">::</span><span class="fu">poly2nb</span>(LC.sf)</span>
+<span id="cb49-2"><a href="tuesday-october-4-2022.html#cb49-2" aria-hidden="true" tabindex="-1"></a>spdep<span class="sc">::</span><span class="fu">nb2INLA</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;map.adj&quot;</span>), nb)</span>
+<span id="cb49-3"><a href="tuesday-october-4-2022.html#cb49-3" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> INLA<span class="sc">::</span><span class="fu">inla.read.graph</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;map.adj&quot;</span>))</span>
+<span id="cb49-4"><a href="tuesday-october-4-2022.html#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(g)</span></code></pre></div>
+<pre><code>## [1] &quot;inla.graph&quot;</code></pre>
+<p>You fit the model by calling the <code>inla()</code> function specifying the formula, the family (“poisson”), the data, and the expected counts (E). You also set <code>control.predictor = list(compute = TRUE)</code> to compute the posteriors predictions.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tuesday-october-4-2022.html#cb51-1" aria-hidden="true" tabindex="-1"></a>model.inla <span class="ot">&lt;-</span> INLA<span class="sc">::</span><span class="fu">inla</span>(<span class="at">formula =</span> f, </span>
+<span id="cb51-2"><a href="tuesday-october-4-2022.html#cb51-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,</span>
+<span id="cb51-3"><a href="tuesday-october-4-2022.html#cb51-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> LC.sf,</span>
+<span id="cb51-4"><a href="tuesday-october-4-2022.html#cb51-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">E =</span> E,</span>
+<span id="cb51-5"><a href="tuesday-october-4-2022.html#cb51-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">control.predictor =</span> <span class="fu">list</span>(<span class="at">compute =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p>The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object <code>model.inla$summary.fitted.values</code>. Column <code>mean</code> is the mean posterior and <code>0.025quant</code> and <code>0.975quant</code> are the 2.5 and 97.5 percentiles, respectively.</p>
+<p>You add these to the spatial data frame and then make a map of the posterior mean relative risk.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="tuesday-october-4-2022.html#cb52-1" aria-hidden="true" tabindex="-1"></a>LC.sf<span class="sc">$</span>RR <span class="ot">&lt;-</span> model.inla<span class="sc">$</span>summary.fitted.values[, <span class="st">&quot;mean&quot;</span>]</span>
+<span id="cb52-2"><a href="tuesday-october-4-2022.html#cb52-2" aria-hidden="true" tabindex="-1"></a>LC.sf<span class="sc">$</span>LL <span class="ot">&lt;-</span> model.inla<span class="sc">$</span>summary.fitted.values[, <span class="st">&quot;0.025quant&quot;</span>]</span>
+<span id="cb52-3"><a href="tuesday-october-4-2022.html#cb52-3" aria-hidden="true" tabindex="-1"></a>LC.sf<span class="sc">$</span>UL <span class="ot">&lt;-</span> model.inla<span class="sc">$</span>summary.fitted.values[, <span class="st">&quot;0.975quant&quot;</span>]</span>
+<span id="cb52-4"><a href="tuesday-october-4-2022.html#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="tuesday-october-4-2022.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(LC.sf) <span class="sc">+</span> </span>
+<span id="cb52-6"><a href="tuesday-october-4-2022.html#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> RR)) <span class="sc">+</span></span>
+<span id="cb52-7"><a href="tuesday-october-4-2022.html#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">midpoint =</span> <span class="dv">1</span>, </span>
+<span id="cb52-8"><a href="tuesday-october-4-2022.html#cb52-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">low =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb52-9"><a href="tuesday-october-4-2022.html#cb52-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mid =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb52-10"><a href="tuesday-october-4-2022.html#cb52-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">high =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb52-11"><a href="tuesday-october-4-2022.html#cb52-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>These relative risk values are smoother and muted in absolute magnitude compared with the empirical SIR estimates.</p>
+<p>More on this topic is available from</p>
+<ul>
+<li><a href="https://www.paulamoraga.com/book-geospatial/index.html" class="uri">https://www.paulamoraga.com/book-geospatial/index.html</a></li>
+<li><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895" class="uri">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895</a></li>
+</ul>
+<p>The second source is a paper we published addressing long and short term views of tornado risk across the eastern half of the United States.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="thursday-september-29-2022.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

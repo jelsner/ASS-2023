@@ -4,10 +4,10 @@
 
 Today
 
-- Fitting and interpreting geographic regressions (geographically-weighted regression
+- Fitting and interpreting geographic regressions
 -  Mapping diseases with spatial regression models
 
-## Fitting and interpreting geographic regressions (geographically-weighted regression {-}
+## Fitting and interpreting geographic regressions {-}
 
 Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit a separate regression model at each geographic location. 
 
@@ -279,13 +279,16 @@ where $\bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}$ and where 
 
 In words, the logarithm of the disease incidence rate in area $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution.
 
-The syntax for the BYM model using functions from the {INLA} package is given as
+The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk. This is done with functions in the {INLA} package. You get the package (it is not on CRAN) as follows.
 
 ```{r eval=FALSE}
+options(timeout = 120)
+
 install.packages("INLA", repos=c(getOption("repos"), INLA = "https://inla.r-inla-download.org/R/stable"), dep = TRUE)
+```
 
-library(INLA)
-
+The syntax for the BYM model using functions from the {INLA} package is given as
+```{r}
 f <- Y ~ 
   f(IDu, model = "besag", graph = g, scale.model = TRUE) +
   f(IDv, model = "iid")
@@ -293,9 +296,9 @@ f <- Y ~
 
 The formula includes the response in the left-hand side, and the fixed and random effects on the right-hand side. By default, the formula includes an intercept. 
 
-The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `ID_u` and equal to c(1, 2, ..., I), where I is the number of regions (here the number of counties) and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
+The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `IDu` and equal to c(1, 2, ..., I), where I is the number of regions (here the number of counties) and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
 
-The formula also includes an uncorrelated random effect with index variable with name `ID_v` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but need to be specified as two different objects since R-INLA does not allow to include two effects with `f()` that use the same index variable.
+The formula also includes an uncorrelated random effect with index variable with name `IDv` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but need to be specified as two different objects since INLA does not allow to include two effects with `f()` that use the same index variable.
 
 The BYM model can also be specified with the model "bym" which defines both the spatially structured random effect and the uncorrelated random effect ($u$ and $v$).
 
@@ -309,28 +312,28 @@ LC.sf
 
 Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function.
 
-```{r, eval=FALSE}
+```{r}
 nb <- spdep::poly2nb(LC.sf)
 spdep::nb2INLA(file = here::here("data", "map.adj"), nb)
-g <- inla.read.graph(filename = here::here("data", "map.adj"))
+g <- INLA::inla.read.graph(filename = here::here("data", "map.adj"))
 class(g)
 ```
 
 You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions.
 
-```{r, eval=FALSE}
-model.inla <- inla(formula = f, 
-                   family = "poisson",
-                   data = LC.sf,
-                   E = E,
-                   control.predictor = list(compute = TRUE))
+```{r}
+model.inla <- INLA::inla(formula = f, 
+                         family = "poisson",
+                         data = LC.sf,
+                         E = E,
+                         control.predictor = list(compute = TRUE))
 ```
 
 The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object `model.inla$summary.fitted.values`. Column `mean` is the mean posterior and `0.025quant` and `0.975quant` are the 2.5 and 97.5 percentiles, respectively.
 
 You add these to the spatial data frame and then make a map of the posterior mean relative risk.
 
-```{r, eval=FALSE}
+```{r}
 LC.sf$RR <- model.inla$summary.fitted.values[, "mean"]
 LC.sf$LL <- model.inla$summary.fitted.values[, "0.025quant"]
 LC.sf$UL <- model.inla$summary.fitted.values[, "0.975quant"]
@@ -344,6 +347,11 @@ ggplot(LC.sf) +
   theme_minimal()
 ```
 
-More on this topic is available here:
+These relative risk values are smoother and muted in absolute magnitude compared with the empirical SIR estimates. 
 
-https://www.paulamoraga.com/book-geospatial/index.html
+More on this topic is available from
+
+- https://www.paulamoraga.com/book-geospatial/index.html
+- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895
+
+The second source is a paper we published addressing long and short term views of tornado risk across the eastern half of the United States.
