@@ -5,7 +5,7 @@
 Today
 
 - Fitting and interpreting geographic regressions
--  Mapping diseases with spatial regression models
+- Mapping incidence and risk with spatial regression models
 
 ## Fitting and interpreting geographic regressions {-}
 
@@ -166,7 +166,7 @@ This type of nuanced exploratory analysis is made possible with GWR.
 
 Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables 'provoke' the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals. One way to check the assumption of a stationary process is to use geographic regression.
 
-## Mapping diseases with spatial regression models {-}
+## Mapping incidence and risk with spatial regression models {-}
 
 Spatial regression models are used in disease mapping where it is common to use a standardized incidence ratio (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Small areas can give extreme SIRs due to low population sizes or small samples. Extreme values of SIRs can be misleading and unreliable for reporting.
 

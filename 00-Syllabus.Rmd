@@ -29,6 +29,10 @@ In this course you will get a survey of the methods used to describe, analyze, a
 2.  learn various packages in R for analyzing and modeling spatial data, and
 3.  learn how to interpret the results of a spatial data model.
 
+The course offers a programming approach to exposing you to spatial statistics. I want to demystify the process and give you confidence that you can analyze and fit spatial models. I believe some investment in honing programming skills will pay dividends for you later on. 
+
+But in taking this approach I don't want to give you the false impression that statisticians have the answers. A _working_ knowledge of the model fitting process needs to be combined with a good understanding of the context in which you are working.
+
 ## Materials {.unnumbered}
 
 -   Access to the internet and a computer
