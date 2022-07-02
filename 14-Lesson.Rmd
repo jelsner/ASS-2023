@@ -408,13 +408,17 @@ plot(beiV)
 
 You compute the spatial intensity function over the domain with the `density()` method using the default Gaussian kernel and fixed bandwidth determined by the window size.
 ```{r}
-den <- density(beiV)
-plot(den)
+beiV |>
+  density() |>
+  plot()
 ```
 
-The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid ($v$) and are returned as a pixel image. 
-```{r}
-sum(is.na(den$v))
-```
+The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid ($v$) and are returned as a pixel image.
 
 There are over 16K of the cells that have a value of `NA` as a result of the masking by elevation and slope.
+```{r}
+den <- beiV |>
+  density()
+
+sum(is.na(den$v))
+```
