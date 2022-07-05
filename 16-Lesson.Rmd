@@ -113,58 +113,67 @@ The chance that a tornado is more damaging peaks in the northeast part of the st
 
 Since the relative risk is computed for any point it is of interest to extract the probabilities for cities and towns.
 
-You get the location of the cities with `us_cities()` function from the {USAboundaries} package that extracts a simple feature data frame of cities and towns for particular states. The CRS is 4326 and you filter to keep only cities with at least 100000 in 2010.
+You get city locations with the `us_cities()` function from the {USAboundaries} package that extracts a simple feature data frame of cities. The CRS is 4326 and you filter to keep only cities with at least 100000 in 2010.
+
 ```{r}
-Cities.sf <- us_cities(state = "TX") |>
+Cities.sf <- USAboundaries::us_cities(state = "TX") |>
+  sf::st_transform(crs = raster::crs(tr.r)) |>
   dplyr::filter(population > 100000)
 ```
 
-We use the `extract()` function from the {raster} package to get a single value for each city. We put these values into the simple feature data frame. 
+Use the `extract()` function from the {raster} package to get a single value for each city. Put these values into the simple feature data frame.
+
 ```{r}
-Cities.sf$rr <- raster::extract(rr.r2, 
+Cities.sf$tr <- raster::extract(tr.r, 
                                 Cities.sf)
 
 Cities.sf |>
-  dplyr::arrange(desc(rr)) 
+  dplyr::arrange(desc(tr)) 
 ```
 
-To illustrate the results we create a graph using the `geom_lollipop()` function from the {ggalt} package. We also use the package {scales} that allows for labels in percent.
+To illustrate the results create a graph using the `geom_lollipop()` function from the {ggalt} package. Use the package {scales} to allow for labels in percent.
 ```{r}
 library(ggalt)
 library(scales)
 
-ggplot(Cities.sf, aes(x = reorder(city, rr), y = rr)) +
+ggplot(Cities.sf, aes(x = reorder(city, tr), y = tr)) +
     geom_lollipop(point.colour = "steelblue", point.size = 3) +
     scale_y_continuous(labels = percent, limits = c(0, .0625)) +
     coord_flip() +
     labs(x = "", y = NULL, 
-         title = "Chance that a tornado will cause at least EF3 damage",
+         title = "Historical chance that a tornado caused at least EF3 damage",
          subtitle = "Cities in Texas with a 2010 population > 100,000",
-         caption = "Data from SPC") +
+         caption = "Data from SPC (1950-2020)") +
   theme_minimal()
 ```
 
 Another example: Florida wildfires
 
-Given a wildfire in Florida what is the probability that it was started by lightning? We import wildfire data (available here: https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.4) as a simple feature data frame and transform the native CRS to a Florida GDL Albers (EPSG 3086). Each row is a unique fire and the data spans the period 1992-2015.
+Given a wildfire in Florida what is the probability that it was started by lightning? 
+
+Import wildfire data (available here: https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.4) as a simple feature data frame and transform the native CRS to a Florida GDL Albers (EPSG 3086).
 ```{r}
-if(!"FL_Fires" %in% list.files()){
+if(!"FL_Fires" %in% list.files(here::here("data"))){
   download.file("http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip",
-                "FL_Fires.zip")
-unzip("FL_Fires.zip")
+                destfile = here::here("data", "FL_Fires.zip"))
+unzip(zipfile = here::here("data", "FL_Fires.zip"),
+      exdir = here::here("data"))
 }
 
-FL_Fires.sf <- st_read(dsn = "FL_Fires") |>
-  st_transform(crs = 3086)
+FL_Fires.sf <- sf::st_read(dsn = here::here("data", "FL_Fires")) |>
+  sf::st_transform(crs = 3086)
 dim(FL_Fires.sf)
 ```
 
-There are over 90K rows and 38 variables. To make things run faster in this lesson, we analyze a sample of the rows. We do this with the `sample_n()` function from the {tidyverse} set of package where the argument `size =` specifies the number of rows to choose at random. We save the sample of events to the object `FL_FiresS.sf`. Here we set the random number seed so that the set of rows chosen will be the same for everyone running the code.
+Each row is a unique fire and the data spans the period 1992-2015. There are over 90K rows and 38 variables. 
+
+To make things run faster, here you analyze only a random sample of all the data. You do this with the `dplyr::sample_n()` function where the argument `size =` specifies the number of rows to choose at random. Save the sample of events to the object `FL_FiresS.sf`. First set the seed for the random number generator so that the set of rows chosen will be the same every time you run the code.
+
 ```{r}
 set.seed(78732)
 
 FL_FiresS.sf <- FL_Fires.sf |>
-  sample_n(size = 2000)
+  dplyr::sample_n(size = 2000)
 
 dim(FL_FiresS.sf)
 ```
@@ -172,6 +181,7 @@ dim(FL_FiresS.sf)
 The result is a simple feature data frame with exactly 2000 rows.
 
 The character variable `STAT_CAU_1` indicates the cause.
+
 ```{r}
 FL_FiresS.sf$STAT_CAU_1 |>
   table()
