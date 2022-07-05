@@ -11,3 +11,5 @@ more-information
 fitting-and-interpreting-spatial-durbin-models
 fitting-and-interpreting-geographic-regressions
 mapping-diseases-with-spatial-regression-models
+estimating-spatial-intensity-as-a-function-of-distance
+intensity-trend-as-a-possible-confounding-factor
