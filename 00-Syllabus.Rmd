@@ -29,9 +29,9 @@ In this course you will get a survey of the methods used to describe, analyze, a
 2.  learn various packages in R for analyzing and modeling spatial data, and
 3.  learn how to interpret the results of a spatial data model.
 
-The course offers a programming approach to exposing you to spatial statistics. I want to demystify the process and give you confidence that you can analyze and fit spatial models. I believe some investment in honing programming skills will pay dividends for you later on. 
+The course offers a programming approach to exposing you to spatial statistics. I want to demystify the process and give you confidence that you can analyze and fit spatial models. I believe some investment in honing programming skills will pay dividends for you later on.
 
-But in taking this approach I don't want to give you the false impression that statisticians have the answers. A _working_ knowledge of the model fitting process needs to be combined with a good understanding of the context in which you are working.
+But in taking this approach I don't want to give you the false impression that statisticians have the answers. A *working* knowledge of the model fitting process needs to be combined with a good understanding of the context in which you are working.
 
 ## Materials {.unnumbered}
 
@@ -39,7 +39,7 @@ But in taking this approach I don't want to give you the false impression that s
 
 -   Lesson and assignment files on GitHub
 
--   No required textbook
+-   No textbook is required
 
 -   Many excellent online resources are available. Here are some of my favorites
 
@@ -50,7 +50,9 @@ But in taking this approach I don't want to give you the false impression that s
 
 ## Class meetings {.unnumbered}
 
-During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file in the classroom. The notes in the lesson files are comprehensive, so you can work through them on your own if you can't make it to class. The notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
+During each lesson I will work through and explain the R code and notes contained within an `xx-Lesson.Rmd` file. The notes in the lesson files are comprehensive, so you can work through them on your own if you are unable to make it to class.
+
+Notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
 
 ## Grades {.unnumbered}
 
@@ -59,7 +61,7 @@ You are responsible for:
 1.  Reading and running the code in the lesson R markdown files (`.Rmd`) files. You can do this during the remote lessons as I talk and run my code or outside of class on your own
 2.  Completing and returning the lab assignments on time
 
-Grades are determined only by how well you do on the assignments. based on the following standard:
+Grades are determined by how well you do on the assignments using the following standard:
 
 -   A: Outstanding: few, in any, errors/omissions
 -   B: Good: only minor errors/omissions

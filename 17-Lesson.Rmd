@@ -22,10 +22,10 @@ data(bramblecanes)
 summary(bramblecanes)
 ```
 
-The marks represent the different cane ages as an ordered factor. The unit of length is 9 meters.
+The marks represent three different ages (as an ordered factor) for the bramble canes. The unit of length is 9 meters.
 
 ```{r}
-plot(bramblecanes)
+plot(bramblecanes) 
 ```
 
 Consider the point pattern for all the bramble canes regardless of age and estimate the $K$ function and a corresponding plot. Plot the empirical estimate of $K$ with an 'isotropic' correction at the domain borders (`iso`).
