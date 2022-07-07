@@ -315,7 +315,7 @@ abline(h = c(.2, .5),
        lty = 2)
 ```
 
-Values of G are on the vertical axis and values of distance (relative) are on the horizontal axis starting at 0. The black curve is the uncorrected estimate of $G_{raw}(r)$ from the event locations and the red curve is $G_{pois}(r)$ estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.
+Values of G are on the vertical axis and values of distance (lag) are on the horizontal axis starting at 0. The black curve is the uncorrected estimate of $G_{raw}(r)$ from the event locations and the red curve is $G_{pois}(r)$ estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.
 
 The horizontal dashed line at G = .2 intersects the black line at a relative distance (r) of 5 units. This means that 20% of the events have another event _within_ 5 units. This means that 20% of the saplings have another sapling withing .5 meter. 
 
@@ -351,7 +351,7 @@ ggplot(data = G.df,
   geom_line() +
   geom_line(aes(y = theo), color = "red") +
   geom_hline(yintercept = c(.2, .5), lty = 'dashed') +
-  xlab("Distance (m)") +  ylab("G(r): Cumulative % of events having another event within a distance r") +
+  xlab("Lag distance (m)") +  ylab("G(r): Cumulative % of events having another event within a distance r") +
   theme_minimal()
 ```
 
@@ -373,7 +373,7 @@ ggplot(data = F.df,
   geom_line(aes(y = theo), color = "red") +
   geom_hline(yintercept = c(.7, .58), lty = 'dashed') +
   geom_vline(xintercept = .61, lty = 2) +
-  xlab("Distance (m)") +  ylab("Percent of domain within a distance r of an event") +
+  xlab("Lag distance (m)") +  ylab("Percent of domain within a distance r of an event") +
   theme_minimal()
 ```
 
@@ -392,7 +392,7 @@ ggplot(data = J.df,
        mapping = aes(x = r, y = km)) +
   geom_line() +
   geom_line(aes(y = theo), color = "red") +
-  xlab("Distance (m)") + ylab("") +
+  xlab("Lag distance (m)") + ylab("") +
   theme_minimal()
 ```
 
