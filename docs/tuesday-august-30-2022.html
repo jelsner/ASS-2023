@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Tuesday August 30, 2022 | GIS5122: Applied Spatial Statistics</title>
   <meta name="description" content="Tuesday August 30, 2022 | GIS5122: Applied Spatial Statistics" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Tuesday August 30, 2022 | GIS5122: Applied Spatial Statistics" />
   <meta property="og:type" content="book" />
-  
   
   
   <meta name="github-repo" content="jelsner/ASS-2022" />
@@ -32,7 +31,6 @@
   
 <link rel="prev" href="thursday-august-25-2022.html"/>
 <link rel="next" href="thursday-september-1-2022.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -50,18 +48,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -164,7 +153,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#today"><i class="fa fa-check"></i>Today</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
@@ -175,35 +163,95 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#today-1"><i class="fa fa-check"></i>Today</a></li>
-<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#review-of-class-expectations"><i class="fa fa-check"></i>Review of class expectations</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#expectations"><i class="fa fa-check"></i>Expectations</a></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#today-2"><i class="fa fa-check"></i>Today</a></li>
 <li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
-<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-the-dplyr-package"><i class="fa fa-check"></i>Working with data frames using functions from the {dplyr} package</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#today-3"><i class="fa fa-check"></i>Today</a></li>
 <li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#more-resources-and-additional-examples"><i class="fa fa-check"></i>More resources and additional examples</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html"><i class="fa fa-check"></i>Tuesday September 6, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#today-4"><i class="fa fa-check"></i>Today</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#today-5"><i class="fa fa-check"></i>Today</a></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html"><i class="fa fa-check"></i>Thursday September 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html"><i class="fa fa-check"></i>Thursday September 22, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html"><i class="fa fa-check"></i>Tuesday September 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html"><i class="fa fa-check"></i>Thursday September 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#mapping-incidence-and-risk-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping incidence and risk with spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html"><i class="fa fa-check"></i>Thursday October 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html"><i class="fa fa-check"></i>Tuesday October 11, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#intensity-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Intensity trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html"><i class="fa fa-check"></i>Thursday October 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html"><i class="fa fa-check"></i>Tuesday October 18, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -225,27 +273,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="tuesday-august-30-2022" class="section level1 unnumbered">
-<h1>Tuesday August 30, 2022</h1>
-<p><strong>“Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!”</strong> — Vanessa Hurst</p>
-<div id="today-2" class="section level2 unnumbered">
-<h2>Today</h2>
+<div id="tuesday-august-30-2022" class="section level1 unnumbered hasAnchor">
+<h1>Tuesday August 30, 2022<a href="tuesday-august-30-2022.html#tuesday-august-30-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“When I’m explaining some of the tidy verse principles and philosophy in R statistics, I often break down a home baked chunk of code and illustrate that ‘it says what it does and it does what it says.’</strong> — Diane Beldame</p>
+<p>Today</p>
 <ul>
 <li>Working with data frames</li>
-<li>Working with data frames using functions from the {dplyr} package</li>
 </ul>
-</div>
-<div id="working-with-data-frames" class="section level2 unnumbered">
-<h2>Working with data frames</h2>
+<div id="working-with-data-frames" class="section level2 unnumbered hasAnchor">
+<h2>Working with data frames<a href="tuesday-august-30-2022.html#working-with-data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Consider the data frame <code>studentdata</code> from the {LearnBayes} package. To access this data frame, you first install the package with the <code>install.packages()</code> function. You put the name of the package {LearnBayes} in quotes (single or double). Then to make the functions from the package available to your current session use the <code>library()</code> function with the name of the package (unquoted) inside the parentheses.</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="tuesday-august-30-2022.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(LearnBayes)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;LearnBayes&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-august-30-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(LearnBayes)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;LearnBayes&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
 <pre><code>## Loading required package: LearnBayes</code></pre>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="tuesday-august-30-2022.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LearnBayes)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-august-30-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LearnBayes)</span></code></pre></div>
 <p>Note: The argument <code>repos =</code> in the <code>install.packages()</code> function directs where the package can be obtained on CRAN (comprehensive R archive network). The CRAN repository is set automatically when using RStudio and you can install packages by clicking on <em>Packages</em> &gt; <em>Install</em> in the lower-right panel.</p>
 <p>For interactive use you need to specify the repository and when you use the <code>Knit</code> button you don’t want to install packages that already exist on your computer so you add the conditional <code>if()</code> function that says “only install the package IF it is not (<code>!</code>) available”.</p>
 <p>Make a copy of the data frame by assigning it to an object with the name <code>df</code> and print the first six rows using the <code>head()</code> function.</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="tuesday-august-30-2022.html#cb131-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> studentdata</span>
-<span id="cb131-2"><a href="tuesday-august-30-2022.html#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="tuesday-august-30-2022.html#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> studentdata</span>
+<span id="cb4-2"><a href="tuesday-august-30-2022.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
 <pre><code>##   Student Height Gender Shoes Number Dvds ToSleep WakeUp Haircut  Job Drink
 ## 1       1     67 female    10      5   10    -2.5    5.5      60 30.0 water
 ## 2       2     64 female    20      7    5     1.5    8.0       0 20.0   pop
@@ -255,20 +300,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6       6     63 female    NA      3    5     1.0    8.5      25  0.0 water</code></pre>
 <p>Data frames are like spreadsheets with rows and columns. The rows are the observations (here each row is a student in an intro stats class at Bowling Green State University) and the columns are the variables. Here the variables are answers to questions like what is your height, choose a number between 1 and 10, what time did you go to bed last night, etc.</p>
 <p>The names of the columns are printed using the <code>names()</code> function.</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="tuesday-august-30-2022.html#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="tuesday-august-30-2022.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span></code></pre></div>
 <pre><code>##  [1] &quot;Student&quot; &quot;Height&quot;  &quot;Gender&quot;  &quot;Shoes&quot;   &quot;Number&quot;  &quot;Dvds&quot;    &quot;ToSleep&quot;
 ##  [8] &quot;WakeUp&quot;  &quot;Haircut&quot; &quot;Job&quot;     &quot;Drink&quot;</code></pre>
 <p>All columns are of the same length, but not all students answered all questions so some of the data frame cells contain the missing-value indicator <code>NA</code>.</p>
 <p>Data values in a data frame are stored in rows and columns and are accessed with bracket notation [row, column] where row is the row number and column is the column number like a matrix.</p>
 <p>For example here you specify the data value in the 10th row and 2nd column (<code>Height</code> column) of the <code>df</code> data frame.</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="tuesday-august-30-2022.html#cb135-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">10</span>, <span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="tuesday-august-30-2022.html#cb8-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">10</span>, <span class="dv">2</span>]</span></code></pre></div>
 <pre><code>## [1] 65</code></pre>
 <p>By specifying only the row index and leaving the column index blank you get all values in that row which corresponds to all the responses given by the 10th student.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="tuesday-august-30-2022.html#cb137-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">10</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="tuesday-august-30-2022.html#cb10-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">10</span>, ]</span></code></pre></div>
 <pre><code>##    Student Height Gender Shoes Number Dvds ToSleep WakeUp Haircut Job Drink
 ## 10      10     65   male    10      7   22     2.5    8.5      12   0  milk</code></pre>
 <p>Drink preference was one of the questions. Responses across all students are available in the column labeled <code>Drink</code> as a vector of character values. You list all the different drink preferences by typing</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="tuesday-august-30-2022.html#cb139-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Drink</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="tuesday-august-30-2022.html#cb12-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Drink</span></code></pre></div>
 <pre><code>##   [1] water pop   milk  water pop   water water pop   water milk  milk  water
 ##  [13] pop   milk  pop   water water pop   water water water water water milk 
 ##  [25] pop   water water pop   water water water water pop   water water water
@@ -328,25 +373,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Some students left that response blank and therefore the response is coded with the missing-value indicator.</p>
 <p>The variable type depends on the question asked. For example, answers given to the question of student height result in a numeric variable, answers given to the question about drink preference result in a character (or factor) variable.</p>
 <p>For integer, character, and factor variables we summarize the set of responses with the <code>table()</code> function.</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="tuesday-august-30-2022.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(df<span class="sc">$</span>Drink)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tuesday-august-30-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(df<span class="sc">$</span>Drink)</span></code></pre></div>
 <pre><code>## 
 ##  milk   pop water 
 ##   113   178   355</code></pre>
 <p>There are 113 students who prefer milk, 178 prefer soda, and 355 prefer water.</p>
 <p>We use the <code>plot()</code> method to make a draft plot of this table.</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="tuesday-august-30-2022.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>Drink)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tuesday-august-30-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>Drink)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Notice that the sum of the responses is 646, which is less than the total number of students (657).</p>
 <p>Students who left that question blank are ignored in the <code>table()</code> function. To include the missing values you add the argument <code>useNA = "ifany"</code> to the <code>table()</code> function.</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="tuesday-august-30-2022.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(df<span class="sc">$</span>Drink,</span>
-<span id="cb144-2"><a href="tuesday-august-30-2022.html#cb144-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tuesday-august-30-2022.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(df<span class="sc">$</span>Drink,</span>
+<span id="cb17-2"><a href="tuesday-august-30-2022.html#cb17-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ##  milk   pop water  &lt;NA&gt; 
 ##   113   178   355    11</code></pre>
 <p>Note: When you want code executed directly within the text you separate the code using single back ticks. This is useful when you write reports that need periodic updates when new data becomes available. Instead if you hard code the values in the text then you need to search the document for these values during each update.</p>
 <p>Suppose you are interested in examining how long students reported sleeping. This was not asked directly. You compute it from the <code>ToSleep</code> and <code>WakeUp</code> times columns. You assign the result of the difference to a column we call <code>SleepHrs</code>.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="tuesday-august-30-2022.html#cb146-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>SleepHrs <span class="ot">&lt;-</span> df<span class="sc">$</span>WakeUp <span class="sc">-</span> df<span class="sc">$</span>ToSleep</span>
-<span id="cb146-2"><a href="tuesday-august-30-2022.html#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tuesday-august-30-2022.html#cb19-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>SleepHrs <span class="ot">&lt;-</span> df<span class="sc">$</span>WakeUp <span class="sc">-</span> df<span class="sc">$</span>ToSleep</span>
+<span id="cb19-2"><a href="tuesday-august-30-2022.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
 <pre><code>##   Student Height Gender Shoes Number Dvds ToSleep WakeUp Haircut  Job Drink
 ## 1       1     67 female    10      5   10    -2.5    5.5      60 30.0 water
 ## 2       2     64 female    20      7    5     1.5    8.0       0 20.0   pop
@@ -363,46 +408,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6      7.5</code></pre>
 <p>Now you have a new numeric variable in the data frame called <code>SleepHrs</code>.</p>
 <p>You can’t table numeric variables, but the <code>summary()</code> method prints a set of summary statistics for the set of values.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="tuesday-august-30-2022.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tuesday-august-30-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
 ##   2.500   6.500   7.500   7.385   8.500  12.500       4</code></pre>
 <p>The average number of hours slept is 7.4 with a maximum of 12.5 and a minimum of 2.5. There are four students that did not answer either when they went to sleep or when they woke up questions.</p>
 <p>You use the <code>hist()</code> function to construct a histogram of sleep hours.</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="tuesday-august-30-2022.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="at">x =</span> df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tuesday-august-30-2022.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="at">x =</span> df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>The histogram function divides the number of sleep hours into one-hour bins and counts the number of students whose reported sleep hours falls into each bin. For example based on when they said they went to sleep and when the said they woke up, about 100 students slept between five and six hours the night before the survey.</p>
 <p>Since the gender of each student is reported, you can make comparisons between those who identify as male and those who identify as female. For instance, do men sleep more than women? You can answer this question graphically with box plots using the <code>plot()</code> method. You specify the character variable on the horizontal axis (x) to be gender with the <code>x =</code> argument and the numeric variable on the vertical axis (y) with the <code>y =</code> argument.</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="tuesday-august-30-2022.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>Gender, </span>
-<span id="cb151-2"><a href="tuesday-august-30-2022.html#cb151-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="tuesday-august-30-2022.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>Gender, </span>
+<span id="cb24-2"><a href="tuesday-august-30-2022.html#cb24-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>The plot reveals little difference in the amount of sleep.</p>
 <p>Repeat for hair cut prices.</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="tuesday-august-30-2022.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>Gender, </span>
-<span id="cb152-2"><a href="tuesday-august-30-2022.html#cb152-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>Haircut)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="tuesday-august-30-2022.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>Gender, </span>
+<span id="cb25-2"><a href="tuesday-august-30-2022.html#cb25-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>Haircut)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Big difference.</p>
 <p>Finally, is the amount of sleep for a student related to when they go to bed? If you place numeric variables on the x and y axes then you get a scatter plot.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="tuesday-august-30-2022.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>ToSleep,</span>
-<span id="cb153-2"><a href="tuesday-august-30-2022.html#cb153-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="tuesday-august-30-2022.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>ToSleep,</span>
+<span id="cb26-2"><a href="tuesday-august-30-2022.html#cb26-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>SleepHrs)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>The <code>ToSleep</code> variable is centered on midnight so that -2 means a student went to sleep at 10p.</p>
 <p>You describe the decreasing relationship with a line through the points. The least-squares line is fit using the <code>lm()</code> function and the line is drawn on the existing plot with the <code>abline()</code> function applied to the linear regression object <code>model</code>.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="tuesday-august-30-2022.html#cb154-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(SleepHrs <span class="sc">~</span> ToSleep, </span>
-<span id="cb154-2"><a href="tuesday-august-30-2022.html#cb154-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> df)</span>
-<span id="cb154-3"><a href="tuesday-august-30-2022.html#cb154-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb154-4"><a href="tuesday-august-30-2022.html#cb154-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>ToSleep,</span>
-<span id="cb154-5"><a href="tuesday-august-30-2022.html#cb154-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>SleepHrs)</span>
-<span id="cb154-6"><a href="tuesday-august-30-2022.html#cb154-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="tuesday-august-30-2022.html#cb27-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(SleepHrs <span class="sc">~</span> ToSleep, </span>
+<span id="cb27-2"><a href="tuesday-august-30-2022.html#cb27-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> df)</span>
+<span id="cb27-3"><a href="tuesday-august-30-2022.html#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="tuesday-august-30-2022.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> df<span class="sc">$</span>ToSleep,</span>
+<span id="cb27-5"><a href="tuesday-august-30-2022.html#cb27-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> df<span class="sc">$</span>SleepHrs)</span>
+<span id="cb27-6"><a href="tuesday-august-30-2022.html#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>Tornadoes</p>
 <p>Most of the time you will start by getting your data stored in a file into R. Secondary source data should be imported directly from repositories on the Web. When there is no API (application programming interface) to the repository, you need to first download the data.</p>
 <p>For example, consider the regularly updated reports of tornadoes in the United States. The data repository is the Storm Prediction Center (SPC) <a href="https://www.spc.noaa.gov/wcm/index.html#data" class="uri">https://www.spc.noaa.gov/wcm/index.html#data</a>.</p>
 <p>Here you are interested in the file called <code>1950-2020_actual_tornadoes.csv</code>. First you download the file from the site with the <code>download.file()</code> function specifying the location (<code>url =</code>) and a name you want the file to be called on your computer (<code>destfile =</code>).</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="tuesday-august-30-2022.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;http://www.spc.noaa.gov/wcm/data/1950-2019_actual_tornadoes.csv&quot;</span>,</span>
-<span id="cb155-2"><a href="tuesday-august-30-2022.html#cb155-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Tornadoes.csv&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="tuesday-august-30-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;http://www.spc.noaa.gov/wcm/data/1950-2019_actual_tornadoes.csv&quot;</span>,</span>
+<span id="cb28-2"><a href="tuesday-august-30-2022.html#cb28-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Tornadoes.csv&quot;</span>))</span></code></pre></div>
 <p>A file called <code>Tornadoes.csv</code> should now be located in the directory <code>data</code>. Click on the <em>Files</em> tab in the lower-right panel, then select the <code>data</code> folder.</p>
 <p>Next you read (import) the file as a data frame using the <code>readr::read_csv()</code> function from the {tidyverse} group of packages.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="tuesday-august-30-2022.html#cb156-1" aria-hidden="true" tabindex="-1"></a>Torn.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Tornadoes.csv&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="tuesday-august-30-2022.html#cb29-1" aria-hidden="true" tabindex="-1"></a>Torn.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Tornadoes.csv&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 65162 Columns: 29
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -414,7 +459,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <p>You preview the data frame using the <code>head()</code> function.</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="tuesday-august-30-2022.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Torn.df)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="tuesday-august-30-2022.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Torn.df)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 29
 ##      om    yr mo    dy    date       time      tz st    stf     stn   mag   inj
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;date&gt;     &lt;time&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -429,28 +474,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   sn &lt;dbl&gt;, sg &lt;dbl&gt;, f1 &lt;dbl&gt;, f2 &lt;dbl&gt;, f3 &lt;dbl&gt;, f4 &lt;dbl&gt;, fc &lt;dbl&gt;</code></pre>
 <p>Each row is a unique tornado report. Observations for each report include the day and time, the state (<code>st</code>), the maximum EF rating (<code>mag</code>), the number of injuries (<code>inj</code>), the number of fatalities (<code>fat</code>), estimated property losses (<code>loss</code>), estimated crop losses (<code>closs</code>), start and end locations in decimal degrees longitude and latitude, length of the damage path in miles (<code>len</code>), width of the damage in yards (<code>wid</code>).</p>
 <p>The total number of tornado reports in the data set is returned using the <code>nrow()</code> function.</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="tuesday-august-30-2022.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(Torn.df)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="tuesday-august-30-2022.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(Torn.df)</span></code></pre></div>
 <pre><code>## [1] 65162</code></pre>
 <p>To create a subset of the data frame that contains only tornadoes in years (<code>yr</code>) since 2001, you include the logical operator <code>yr &gt;= 2001</code> inside the subset operator. The logical operator is placed in front of the comma since you want all <em>rows</em> where the result of the operator returns a value <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="tuesday-august-30-2022.html#cb162-1" aria-hidden="true" tabindex="-1"></a>Torn2.df <span class="ot">&lt;-</span> Torn.df[Torn.df<span class="sc">$</span>yr <span class="sc">&gt;=</span> <span class="dv">2001</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tuesday-august-30-2022.html#cb35-1" aria-hidden="true" tabindex="-1"></a>Torn2.df <span class="ot">&lt;-</span> Torn.df[Torn.df<span class="sc">$</span>yr <span class="sc">&gt;=</span> <span class="dv">2001</span>, ]</span></code></pre></div>
 <p>You see that there are fewer rows (tornado reports) in this new data frame assigned the object name <code>Torn2.df</code>.</p>
 <p>You subset again, keeping only tornadoes with EF ratings (<code>mag</code> variable) greater than zero. Here you <em>recycle</em> the name <code>Torn2.df</code>.</p>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="tuesday-august-30-2022.html#cb163-1" aria-hidden="true" tabindex="-1"></a>Torn2.df <span class="ot">&lt;-</span> Torn2.df[Torn2.df<span class="sc">$</span>mag <span class="sc">&gt;</span> <span class="dv">0</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="tuesday-august-30-2022.html#cb36-1" aria-hidden="true" tabindex="-1"></a>Torn2.df <span class="ot">&lt;-</span> Torn2.df[Torn2.df<span class="sc">$</span>mag <span class="sc">&gt;</span> <span class="dv">0</span>, ]</span></code></pre></div>
 <p>Now you compute the correlation between EF rating (<code>mag</code>) and path length (<code>len</code>) with the <code>cor()</code> function. The first argument is the vector of EF ratings and the second argument is the vector of path lengths.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="tuesday-august-30-2022.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Torn2.df<span class="sc">$</span>mag, Torn2.df<span class="sc">$</span>len)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="tuesday-august-30-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Torn2.df<span class="sc">$</span>mag, Torn2.df<span class="sc">$</span>len)</span></code></pre></div>
 <pre><code>## [1] 0.4857969</code></pre>
 <p>Path length is recorded in miles and path width in yards and the EF damage rating variable <code>mag</code> is numeric. To convert path length to kilometers, path width to meters, and the EF rating to a factor and then adding these changes as new columns, type</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="tuesday-august-30-2022.html#cb166-1" aria-hidden="true" tabindex="-1"></a>Torn2.df<span class="sc">$</span>Length <span class="ot">&lt;-</span> Torn2.df<span class="sc">$</span>len <span class="sc">*</span> <span class="fl">1609.34</span></span>
-<span id="cb166-2"><a href="tuesday-august-30-2022.html#cb166-2" aria-hidden="true" tabindex="-1"></a>Torn2.df<span class="sc">$</span>Width <span class="ot">&lt;-</span> Torn2.df<span class="sc">$</span>wid <span class="sc">*</span> .<span class="dv">9144</span></span>
-<span id="cb166-3"><a href="tuesday-august-30-2022.html#cb166-3" aria-hidden="true" tabindex="-1"></a>Torn2.df<span class="sc">$</span>EF <span class="ot">&lt;-</span> <span class="fu">factor</span>(Torn2.df<span class="sc">$</span>mag)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="tuesday-august-30-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a>Torn2.df<span class="sc">$</span>Length <span class="ot">&lt;-</span> Torn2.df<span class="sc">$</span>len <span class="sc">*</span> <span class="fl">1609.34</span></span>
+<span id="cb39-2"><a href="tuesday-august-30-2022.html#cb39-2" aria-hidden="true" tabindex="-1"></a>Torn2.df<span class="sc">$</span>Width <span class="ot">&lt;-</span> Torn2.df<span class="sc">$</span>wid <span class="sc">*</span> .<span class="dv">9144</span></span>
+<span id="cb39-3"><a href="tuesday-august-30-2022.html#cb39-3" aria-hidden="true" tabindex="-1"></a>Torn2.df<span class="sc">$</span>EF <span class="ot">&lt;-</span> <span class="fu">factor</span>(Torn2.df<span class="sc">$</span>mag)</span></code></pre></div>
 <p>Create side-by-side box plots of path length (in kilometers) by EF rating.</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="tuesday-august-30-2022.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> Torn2.df<span class="sc">$</span>EF, </span>
-<span id="cb167-2"><a href="tuesday-august-30-2022.html#cb167-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> Torn2.df<span class="sc">$</span>Length<span class="sc">/</span><span class="dv">1000</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tuesday-august-30-2022.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> Torn2.df<span class="sc">$</span>EF, </span>
+<span id="cb40-2"><a href="tuesday-august-30-2022.html#cb40-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> Torn2.df<span class="sc">$</span>Length<span class="sc">/</span><span class="dv">1000</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Hurricane data</p>
 <p>Here you import the data directly from the Web by specifying the URL as a character string using the <code>file =</code> argument.</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="tuesday-august-30-2022.html#cb168-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/US.txt&quot;</span></span>
-<span id="cb168-2"><a href="tuesday-august-30-2022.html#cb168-2" aria-hidden="true" tabindex="-1"></a>USHur.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_table</span>(<span class="at">file =</span> loc)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="tuesday-august-30-2022.html#cb41-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/US.txt&quot;</span></span>
+<span id="cb41-2"><a href="tuesday-august-30-2022.html#cb41-2" aria-hidden="true" tabindex="-1"></a>USHur.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_table</span>(<span class="at">file =</span> loc)</span></code></pre></div>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
@@ -462,11 +507,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   E = col_double()
 ## )</code></pre>
 <p>The <code>dim()</code> function returns the size of the data frame defined as the number of rows and the number of columns.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="tuesday-august-30-2022.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(USHur.df)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="tuesday-august-30-2022.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(USHur.df)</span></code></pre></div>
 <pre><code>## [1] 166   6</code></pre>
 <p>There are 166 rows and 6 columns in the data frame. Each row is a year and the columns include <code>Year</code>, number of hurricanes (<code>All</code>), number of major hurricanes (<code>MUS</code>), number of Gulf coast hurricanes (<code>G</code>), number of Florida hurricanes (<code>FL</code>), and number of East coast hurricanes (<code>E</code>) in that order.</p>
 <p>To get a glimpse of the data values you list the first six lines of the data frame using the <code>head()</code> function.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="tuesday-august-30-2022.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(USHur.df)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tuesday-august-30-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(USHur.df)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 6
 ##    Year   All   MUS     G    FL     E
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -477,7 +522,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5  1855     1     1     1     0     0
 ## 6  1856     2     1     1     1     0</code></pre>
 <p>The distribution of Florida hurricane counts by year is obtained using the <code>table()</code> function and specifying the <code>FL</code> column with <code>df$FL</code>.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="tuesday-august-30-2022.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(USHur.df<span class="sc">$</span>FL)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tuesday-august-30-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(USHur.df<span class="sc">$</span>FL)</span></code></pre></div>
 <pre><code>## 
 ##  0  1  2  3  4 
 ## 93 43 24  5  1</code></pre>
@@ -485,8 +530,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Rainfall data</p>
 <p>The data are monthly statewide average rainfall (in inches) for Florida starting in 1895 from <a href="http://www.esrl.noaa.gov/psd/data/timeseries/" class="uri">http://www.esrl.noaa.gov/psd/data/timeseries/</a>. Note: I put values into a text editor and then uploaded the file to the Web at location <a href="http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt" class="uri">http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt</a>.</p>
 <p>To import the data you use the <code>readr::read_table()</code> function and assign the object the name <code>FLp.df</code>. You type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns.</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="tuesday-august-30-2022.html#cb176-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt&quot;</span></span>
-<span id="cb176-2"><a href="tuesday-august-30-2022.html#cb176-2" aria-hidden="true" tabindex="-1"></a>FLp.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_table</span>(<span class="at">file =</span> loc)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="tuesday-august-30-2022.html#cb49-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt&quot;</span></span>
+<span id="cb49-2"><a href="tuesday-august-30-2022.html#cb49-2" aria-hidden="true" tabindex="-1"></a>FLp.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_table</span>(<span class="at">file =</span> loc)</span></code></pre></div>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
@@ -504,7 +549,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   Nov = col_double(),
 ##   Dec = col_double()
 ## )</code></pre>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="tuesday-august-30-2022.html#cb178-1" aria-hidden="true" tabindex="-1"></a>FLp.df</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tuesday-august-30-2022.html#cb51-1" aria-hidden="true" tabindex="-1"></a>FLp.df</span></code></pre></div>
 <pre><code>## # A tibble: 117 × 13
 ##     Year   Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -521,7 +566,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 107 more rows</code></pre>
 <p>The first column is the year and the next 12 columns are the months.</p>
 <p>What was the statewide rainfall during June of 1900?</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="tuesday-august-30-2022.html#cb180-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1900</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tuesday-august-30-2022.html#cb53-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1900</span></span></code></pre></div>
 <pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
 ##  [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ##  [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
@@ -532,10 +577,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ##  [97] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ## [109] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="tuesday-august-30-2022.html#cb182-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Jun[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1900</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="tuesday-august-30-2022.html#cb55-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Jun[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1900</span>]</span></code></pre></div>
 <pre><code>## [1] 9.993</code></pre>
 <p>What year had the wettest March?</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="tuesday-august-30-2022.html#cb184-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Mar</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="tuesday-august-30-2022.html#cb57-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Mar</span></code></pre></div>
 <pre><code>##   [1] 2.499 2.570 2.125 1.259 1.898 6.800 5.370 4.291 5.451 1.591 3.849 3.191
 ##  [13] 0.562 0.779 2.792 1.899 2.180 3.932 5.553 1.528 2.598 0.889 2.027 2.497
 ##  [25] 5.409 1.388 1.981 2.422 2.181 5.969 1.858 4.329 2.400 4.392 3.374 7.449
@@ -546,14 +591,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  [85] 2.143 5.043 3.176 5.379 7.213 4.710 2.537 4.297 8.443 5.101 3.349 2.672
 ##  [97] 7.097 3.299 5.097 3.839 3.395 7.575 2.754 6.042 1.790 3.207 6.824 2.700
 ## [109] 6.642 0.994 6.027 0.496 1.213 3.568 2.662 5.995 4.063</code></pre>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="tuesday-august-30-2022.html#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(FLp.df<span class="sc">$</span>Mar)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="tuesday-august-30-2022.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(FLp.df<span class="sc">$</span>Mar)</span></code></pre></div>
 <pre><code>## [1] 8.701</code></pre>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="tuesday-august-30-2022.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(FLp.df<span class="sc">$</span>Mar)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="tuesday-august-30-2022.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(FLp.df<span class="sc">$</span>Mar)</span></code></pre></div>
 <pre><code>## [1] 65</code></pre>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="tuesday-august-30-2022.html#cb190-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Year[<span class="fu">which.max</span>(FLp.df<span class="sc">$</span>Mar)]</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="tuesday-august-30-2022.html#cb63-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Year[<span class="fu">which.max</span>(FLp.df<span class="sc">$</span>Mar)]</span></code></pre></div>
 <pre><code>## [1] 1959</code></pre>
 <p>What month during 1965 was the wettest? How wet was it?</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="tuesday-august-30-2022.html#cb192-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span></span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="tuesday-august-30-2022.html#cb65-1" aria-hidden="true" tabindex="-1"></a>FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span></span></code></pre></div>
 <pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ##  [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ##  [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
@@ -564,28 +609,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ##  [97] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ## [109] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="tuesday-august-30-2022.html#cb194-1" aria-hidden="true" tabindex="-1"></a>FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="tuesday-august-30-2022.html#cb67-1" aria-hidden="true" tabindex="-1"></a>FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, ]</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 13
 ##    Year   Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1  1965  1.80  4.58  4.04  2.54  1.08  10.0  8.54  7.14  6.69  4.66  1.58  2.76</code></pre>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="tuesday-august-30-2022.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="tuesday-august-30-2022.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
 <pre><code>## Jun 
 ##   6</code></pre>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="tuesday-august-30-2022.html#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="tuesday-august-30-2022.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
 <pre><code>## Jun 
 ##   6</code></pre>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="tuesday-august-30-2022.html#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="tuesday-august-30-2022.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
 <pre><code>## [1] 10.032</code></pre>
-</div>
-<div id="working-with-data-frames-using-functions-from-the-dplyr-package" class="section level2 unnumbered">
-<h2>Working with data frames using functions from the {dplyr} package</h2>
+<p>Using functions from the {dplyr} package</p>
 <p>The functions in the {dplyr} package simplify working with data frames. The functions work only on data frames.</p>
 <p>The function names are English language <em>verbs</em> so they are easy to remember. The verbs help you to translate your thoughts into code.</p>
 <p>We consider the verbs one at a time using the <code>airquality</code> data frame. The data frame contains air quality measurements taken in New York City between May and September 1973. (<code>?airquality</code>).</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="tuesday-august-30-2022.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(airquality)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="tuesday-august-30-2022.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(airquality)</span></code></pre></div>
 <pre><code>## [1] 153   6</code></pre>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="tuesday-august-30-2022.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airquality)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="tuesday-august-30-2022.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airquality)</span></code></pre></div>
 <pre><code>##   Ozone Solar.R Wind Temp Month Day
 ## 1    41     190  7.4   67     5   1
 ## 2    36     118  8.0   72     5   2
@@ -595,7 +638,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6    28      NA 14.9   66     5   6</code></pre>
 <p>The columns include <code>Ozone</code> (ozone concentration in ppb), <code>Solar.R</code> (solar radiation in langleys), <code>Wind</code> (wind speed in mph), <code>Temp</code> (air temperature in degrees F), <code>Month</code>, and <code>Day</code>.</p>
 <p>We get summary statistics on the values in each column with the <code>summary()</code> method.</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="tuesday-august-30-2022.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(airquality)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="tuesday-august-30-2022.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(airquality)</span></code></pre></div>
 <pre><code>##      Ozone           Solar.R           Wind             Temp      
 ##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
 ##  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
@@ -614,7 +657,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## </code></pre>
 <p>Note that columns that have missing values are tabulated. For example, there are 37 missing ozone measurements and 7 missing radiation measurements.</p>
 <p>Importantly for making your code more human readable you can apply the <code>summary()</code> function on the <code>airquality</code> data frame using the pipe operator (<code>|&gt;</code>).</p>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="tuesday-august-30-2022.html#cb208-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="tuesday-august-30-2022.html#cb81-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code></pre></div>
 <pre><code>##      Ozone           Solar.R           Wind             Temp      
 ##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
 ##  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
@@ -634,40 +677,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You read the pipe as THEN. “take the airquality data frame THEN summarize the columns”.</p>
 <p>The pipe operator allows you to string together functions that when read by a human makes it easy to understand what is being done.</p>
 <p>Hypothetically, suppose the object of interest is called <code>me</code> and there was a function called <code>wake_up()</code>. I could apply this function called <code>wake_up()</code> in two ways.</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="tuesday-august-30-2022.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wake_up</span>(me)  <span class="co"># way number one</span></span>
-<span id="cb210-2"><a href="tuesday-august-30-2022.html#cb210-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb210-3"><a href="tuesday-august-30-2022.html#cb210-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span> <span class="fu">wake_up</span>()  <span class="co"># way number two</span></span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="tuesday-august-30-2022.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wake_up</span>(me)  <span class="co"># way number one</span></span>
+<span id="cb83-2"><a href="tuesday-august-30-2022.html#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="tuesday-august-30-2022.html#cb83-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span> <span class="fu">wake_up</span>()  <span class="co"># way number two</span></span></code></pre></div>
 <p>The second way involves a bit more typing but it is easier to read (the subject comes before the predicate) and thus easier to understand. This becomes clear when stringing together functions.</p>
 <p>Continuing with the hypothetical example, what happens to the result of <code>me</code> after the function <code>wake_up()</code> has been applied? I <code>get_out_of_bed()</code> and then <code>get_dressed()</code>.</p>
 <p>Again, you can apply these functions in two ways.</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="tuesday-august-30-2022.html#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_dressed</span>(<span class="fu">get_out_of_bed</span>(<span class="fu">wake_up</span>(me)))</span>
-<span id="cb211-2"><a href="tuesday-august-30-2022.html#cb211-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb211-3"><a href="tuesday-august-30-2022.html#cb211-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span></span>
-<span id="cb211-4"><a href="tuesday-august-30-2022.html#cb211-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">|&gt;</span></span>
-<span id="cb211-5"><a href="tuesday-august-30-2022.html#cb211-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_out_of_bed</span>() <span class="sc">|&gt;</span></span>
-<span id="cb211-6"><a href="tuesday-august-30-2022.html#cb211-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_dressed</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="tuesday-august-30-2022.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_dressed</span>(<span class="fu">get_out_of_bed</span>(<span class="fu">wake_up</span>(me)))</span>
+<span id="cb84-2"><a href="tuesday-august-30-2022.html#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-3"><a href="tuesday-august-30-2022.html#cb84-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span></span>
+<span id="cb84-4"><a href="tuesday-august-30-2022.html#cb84-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">|&gt;</span></span>
+<span id="cb84-5"><a href="tuesday-august-30-2022.html#cb84-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_out_of_bed</span>() <span class="sc">|&gt;</span></span>
+<span id="cb84-6"><a href="tuesday-august-30-2022.html#cb84-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_dressed</span>()</span></code></pre></div>
 <p>The order of the functions usually matters to the outcome.</p>
 <p>Note that I format the code to make it easy to read. Each line is gets only one verb and each line ends with the pipe (except the last one).</p>
 <p>Continuing…</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="tuesday-august-30-2022.html#cb212-1" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span></span>
-<span id="cb212-2"><a href="tuesday-august-30-2022.html#cb212-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">|&gt;</span></span>
-<span id="cb212-3"><a href="tuesday-august-30-2022.html#cb212-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_out_of_bed</span>() <span class="sc">|&gt;</span></span>
-<span id="cb212-4"><a href="tuesday-august-30-2022.html#cb212-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_dressed</span>() <span class="sc">|&gt;</span></span>
-<span id="cb212-5"><a href="tuesday-august-30-2022.html#cb212-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_coffee</span>() <span class="sc">|&gt;</span></span>
-<span id="cb212-6"><a href="tuesday-august-30-2022.html#cb212-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drink_coffee</span>() <span class="sc">|&gt;</span></span>
-<span id="cb212-7"><a href="tuesday-august-30-2022.html#cb212-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">leave_house</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="tuesday-august-30-2022.html#cb85-1" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span></span>
+<span id="cb85-2"><a href="tuesday-august-30-2022.html#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">|&gt;</span></span>
+<span id="cb85-3"><a href="tuesday-august-30-2022.html#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_out_of_bed</span>() <span class="sc">|&gt;</span></span>
+<span id="cb85-4"><a href="tuesday-august-30-2022.html#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_dressed</span>() <span class="sc">|&gt;</span></span>
+<span id="cb85-5"><a href="tuesday-august-30-2022.html#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_coffee</span>() <span class="sc">|&gt;</span></span>
+<span id="cb85-6"><a href="tuesday-august-30-2022.html#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drink_coffee</span>() <span class="sc">|&gt;</span></span>
+<span id="cb85-7"><a href="tuesday-august-30-2022.html#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">leave_house</span>()</span></code></pre></div>
 <p>Which is much better in terms of ‘readability’ then <code>leave_house(drink_coffee(make_coffee(get_dressed(get_out_of_bed(wake_up(me))))))</code>.</p>
 <p>Tibbles are data frames that make life a little easier. R is an old language, and some things that were useful 10 or 20 years ago now get in your way. To make a data frame a tibble (tabular data frame) use the <code>as_tibble()</code> function.</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="tuesday-august-30-2022.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(airquality)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="tuesday-august-30-2022.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(airquality)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="tuesday-august-30-2022.html#cb215-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">as_tibble</span>(airquality)</span>
-<span id="cb215-2"><a href="tuesday-august-30-2022.html#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(airquality)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="tuesday-august-30-2022.html#cb88-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">as_tibble</span>(airquality)</span>
+<span id="cb88-2"><a href="tuesday-august-30-2022.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(airquality)</span></code></pre></div>
 <pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
 <p>Click on <code>airquality</code> in the environment. It is a data frame. We will use the terms ‘tibble’ and ‘data frame’ interchangeably in this class.</p>
 <p>Now you are ready to look at some of the commonly used verbs and to see how to apply them to a data frame.</p>
 <p>The function <code>select()</code> chooses variables by name. For example, choose the month (<code>Month</code>), day (<code>Day</code>), and temperature (<code>Temp</code>) columns.</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="tuesday-august-30-2022.html#cb217-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb217-2"><a href="tuesday-august-30-2022.html#cb217-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Month, Day, Temp)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="tuesday-august-30-2022.html#cb90-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb90-2"><a href="tuesday-august-30-2022.html#cb90-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Month, Day, Temp)</span></code></pre></div>
 <pre><code>## # A tibble: 153 × 3
 ##    Month   Day  Temp
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -684,9 +727,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 143 more rows</code></pre>
 <p>The result is a data frame containing only the three columns with column names listed in the <code>select()</code> function.</p>
 <p>Suppose you want a new data frame with only the temperature and ozone concentrations. You include an assignment operator (<code>&lt;-</code>) and an object name (here <code>df</code>).</p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="tuesday-august-30-2022.html#cb219-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span></span>
-<span id="cb219-2"><a href="tuesday-august-30-2022.html#cb219-2" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Temp, Ozone)</span>
-<span id="cb219-3"><a href="tuesday-august-30-2022.html#cb219-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="tuesday-august-30-2022.html#cb92-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span></span>
+<span id="cb92-2"><a href="tuesday-august-30-2022.html#cb92-2" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Temp, Ozone)</span>
+<span id="cb92-3"><a href="tuesday-august-30-2022.html#cb92-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
 <pre><code>## # A tibble: 153 × 2
 ##     Temp Ozone
 ##    &lt;int&gt; &lt;int&gt;
@@ -703,8 +746,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 143 more rows</code></pre>
 <p>The verbs take only data frames as input and return only data frames.</p>
 <p>The function <code>filter()</code> chooses observations based on specific values. Suppose we want only the observations where the temperature is at or above 80 F.</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="tuesday-august-30-2022.html#cb221-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb221-2"><a href="tuesday-august-30-2022.html#cb221-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="tuesday-august-30-2022.html#cb94-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb94-2"><a href="tuesday-august-30-2022.html#cb94-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 73 × 6
 ##    Ozone Solar.R  Wind  Temp Month   Day
 ##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -721,9 +764,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 63 more rows</code></pre>
 <p>The result is a data frame with the same 6 columns but now only 73 observations. Each of the observations has a temperature of at least 80 F.</p>
 <p>Suppose you want a new data frame keeping only observations when temperature is at least 80 F and when winds are less than 5 mph.</p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="tuesday-august-30-2022.html#cb223-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span> </span>
-<span id="cb223-2"><a href="tuesday-august-30-2022.html#cb223-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span> <span class="sc">&amp;</span> Wind <span class="sc">&lt;</span> <span class="dv">5</span>)</span>
-<span id="cb223-3"><a href="tuesday-august-30-2022.html#cb223-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="tuesday-august-30-2022.html#cb96-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span> </span>
+<span id="cb96-2"><a href="tuesday-august-30-2022.html#cb96-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span> <span class="sc">&amp;</span> Wind <span class="sc">&lt;</span> <span class="dv">5</span>)</span>
+<span id="cb96-3"><a href="tuesday-august-30-2022.html#cb96-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
 <pre><code>## # A tibble: 8 × 6
 ##   Ozone Solar.R  Wind  Temp Month   Day
 ##   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -736,8 +779,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 7    73     183   2.8    93     9     3
 ## 8    91     189   4.6    93     9     4</code></pre>
 <p>The function <code>arrange()</code> orders the rows by values given in a particular column.</p>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="tuesday-august-30-2022.html#cb225-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb225-2"><a href="tuesday-august-30-2022.html#cb225-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Solar.R)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="tuesday-august-30-2022.html#cb98-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb98-2"><a href="tuesday-august-30-2022.html#cb98-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Solar.R)</span></code></pre></div>
 <pre><code>## # A tibble: 153 × 6
 ##    Ozone Solar.R  Wind  Temp Month   Day
 ##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -754,8 +797,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 143 more rows</code></pre>
 <p>The ordering is done from the lowest value of radiation to highest value. Here you see the first 10 rows. Note <code>Month</code> and <code>Day</code> are no longer chronological.</p>
 <p>Repeat but order by the value of air temperature.</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="tuesday-august-30-2022.html#cb227-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb227-2"><a href="tuesday-august-30-2022.html#cb227-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="tuesday-august-30-2022.html#cb100-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb100-2"><a href="tuesday-august-30-2022.html#cb100-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
 <pre><code>## # A tibble: 153 × 6
 ##    Ozone Solar.R  Wind  Temp Month   Day
 ##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -771,10 +814,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 10     4      25   9.7    61     5    23
 ## # … with 143 more rows</code></pre>
 <p>Importantly you can string the functions together. For example select the variables radiation, wind, and temperature then filter by temperatures above 90 F and arrange by temperature.</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="tuesday-august-30-2022.html#cb229-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb229-2"><a href="tuesday-august-30-2022.html#cb229-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Solar.R, Wind, Temp) <span class="sc">|&gt;</span></span>
-<span id="cb229-3"><a href="tuesday-august-30-2022.html#cb229-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;</span> <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
-<span id="cb229-4"><a href="tuesday-august-30-2022.html#cb229-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="tuesday-august-30-2022.html#cb102-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb102-2"><a href="tuesday-august-30-2022.html#cb102-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Solar.R, Wind, Temp) <span class="sc">|&gt;</span></span>
+<span id="cb102-3"><a href="tuesday-august-30-2022.html#cb102-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;</span> <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
+<span id="cb102-4"><a href="tuesday-august-30-2022.html#cb102-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
 <pre><code>## # A tibble: 14 × 3
 ##    Solar.R  Wind  Temp
 ##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt;
@@ -794,9 +837,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 14     203   9.7    97</code></pre>
 <p>The result is a data frame with three columns and 14 rows arranged by increasing temperatures above 90 F.</p>
 <p>The <code>mutate()</code> function adds new columns to the data frame. For example, create a new column called <code>TempC</code> as the temperature in degrees Celsius. Also create a column called <code>WindMS</code> as the wind speed in meters per second.</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="tuesday-august-30-2022.html#cb231-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb231-2"><a href="tuesday-august-30-2022.html#cb231-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempC =</span> (Temp <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">9</span>,</span>
-<span id="cb231-3"><a href="tuesday-august-30-2022.html#cb231-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">WindMS =</span> Wind <span class="sc">*</span> .<span class="dv">44704</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="tuesday-august-30-2022.html#cb104-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb104-2"><a href="tuesday-august-30-2022.html#cb104-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempC =</span> (Temp <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">9</span>,</span>
+<span id="cb104-3"><a href="tuesday-august-30-2022.html#cb104-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">WindMS =</span> Wind <span class="sc">*</span> .<span class="dv">44704</span>) </span></code></pre></div>
 <pre><code>## # A tibble: 153 × 8
 ##    Ozone Solar.R  Wind  Temp Month   Day TempC WindMS
 ##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
@@ -813,10 +856,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 143 more rows</code></pre>
 <p>The resulting data frame has 8 columns (two new ones) labeled <code>TempC</code> and <code>WindMS</code>.</p>
 <p>On days when the temperature is below 60 F add a column giving the apparent temperature based on the cooling effect of the wind (wind chill) and then arrange from coldest to warmest apparent temperature.</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="tuesday-august-30-2022.html#cb233-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb233-2"><a href="tuesday-august-30-2022.html#cb233-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
-<span id="cb233-3"><a href="tuesday-august-30-2022.html#cb233-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempAp =</span> <span class="fl">35.74</span> <span class="sc">+</span> .<span class="dv">6215</span> <span class="sc">*</span> Temp <span class="sc">-</span> <span class="fl">35.75</span> <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span> <span class="sc">+</span> .<span class="dv">4275</span> <span class="sc">*</span> Temp <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span>) <span class="sc">|&gt;</span></span>
-<span id="cb233-4"><a href="tuesday-august-30-2022.html#cb233-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(TempAp)</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="tuesday-august-30-2022.html#cb106-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb106-2"><a href="tuesday-august-30-2022.html#cb106-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
+<span id="cb106-3"><a href="tuesday-august-30-2022.html#cb106-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempAp =</span> <span class="fl">35.74</span> <span class="sc">+</span> .<span class="dv">6215</span> <span class="sc">*</span> Temp <span class="sc">-</span> <span class="fl">35.75</span> <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span> <span class="sc">+</span> .<span class="dv">4275</span> <span class="sc">*</span> Temp <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span>) <span class="sc">|&gt;</span></span>
+<span id="cb106-4"><a href="tuesday-august-30-2022.html#cb106-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(TempAp)</span></code></pre></div>
 <pre><code>## # A tibble: 8 × 7
 ##   Ozone Solar.R  Wind  Temp Month   Day TempAp
 ##   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
@@ -829,16 +872,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 7    19      99  13.8    59     5     8   56.4
 ## 8     1       8   9.7    59     5    21   57.3</code></pre>
 <p>The <code>summarize()</code> function reduces the data frame based on a function that computes a statistic. For examples, to compute the average wind speed during July or the average temperature during June type</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="tuesday-august-30-2022.html#cb235-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb235-2"><a href="tuesday-august-30-2022.html#cb235-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">7</span>) <span class="sc">|&gt;</span></span>
-<span id="cb235-3"><a href="tuesday-august-30-2022.html#cb235-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wavg =</span> <span class="fu">mean</span>(Wind))</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="tuesday-august-30-2022.html#cb108-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb108-2"><a href="tuesday-august-30-2022.html#cb108-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb108-3"><a href="tuesday-august-30-2022.html#cb108-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wavg =</span> <span class="fu">mean</span>(Wind))</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##    Wavg
 ##   &lt;dbl&gt;
 ## 1  8.94</code></pre>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="tuesday-august-30-2022.html#cb237-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb237-2"><a href="tuesday-august-30-2022.html#cb237-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">6</span>) <span class="sc">|&gt;</span></span>
-<span id="cb237-3"><a href="tuesday-august-30-2022.html#cb237-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Tavg =</span> <span class="fu">mean</span>(Temp))</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="tuesday-august-30-2022.html#cb110-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb110-2"><a href="tuesday-august-30-2022.html#cb110-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb110-3"><a href="tuesday-august-30-2022.html#cb110-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Tavg =</span> <span class="fu">mean</span>(Temp))</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##    Tavg
 ##   &lt;dbl&gt;
@@ -871,33 +914,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>Find the maximum and median wind speed and maximum ozone concentration values during the month of May. Also determine the number of observations during May.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="tuesday-august-30-2022.html#cb239-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb239-2"><a href="tuesday-august-30-2022.html#cb239-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
-<span id="cb239-3"><a href="tuesday-august-30-2022.html#cb239-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
-<span id="cb239-4"><a href="tuesday-august-30-2022.html#cb239-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
-<span id="cb239-5"><a href="tuesday-august-30-2022.html#cb239-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone),</span>
-<span id="cb239-6"><a href="tuesday-august-30-2022.html#cb239-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="tuesday-august-30-2022.html#cb112-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb112-2"><a href="tuesday-august-30-2022.html#cb112-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb112-3"><a href="tuesday-august-30-2022.html#cb112-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
+<span id="cb112-4"><a href="tuesday-august-30-2022.html#cb112-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
+<span id="cb112-5"><a href="tuesday-august-30-2022.html#cb112-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone),</span>
+<span id="cb112-6"><a href="tuesday-august-30-2022.html#cb112-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 4
 ##    Wmax  Wmed OzoneMax NumDays
 ##   &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;   &lt;int&gt;
 ## 1  20.1  11.5       NA      31</code></pre>
 <p>The result gives an <code>NA</code> for the maximum value of ozone (<code>OzoneMax</code>) because there is at least one missing value in the <code>Ozone</code> column. You fix this with the <code>na.rm = TRUE</code> argument in the function <code>max()</code>.</p>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="tuesday-august-30-2022.html#cb241-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb241-2"><a href="tuesday-august-30-2022.html#cb241-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
-<span id="cb241-3"><a href="tuesday-august-30-2022.html#cb241-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
-<span id="cb241-4"><a href="tuesday-august-30-2022.html#cb241-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
-<span id="cb241-5"><a href="tuesday-august-30-2022.html#cb241-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb241-6"><a href="tuesday-august-30-2022.html#cb241-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="tuesday-august-30-2022.html#cb114-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb114-2"><a href="tuesday-august-30-2022.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb114-3"><a href="tuesday-august-30-2022.html#cb114-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
+<span id="cb114-4"><a href="tuesday-august-30-2022.html#cb114-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
+<span id="cb114-5"><a href="tuesday-august-30-2022.html#cb114-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb114-6"><a href="tuesday-august-30-2022.html#cb114-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 4
 ##    Wmax  Wmed OzoneMax NumDays
 ##   &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;   &lt;int&gt;
 ## 1  20.1  11.5      115      31</code></pre>
 <p>If you want to summarize separately for each month you use the <code>group_by()</code> function. You split the data frame by some variable (e.g., <code>Month</code>), apply a function to the individual data frames, and then combine the output.</p>
 <p>Find the highest ozone concentration by month. Include the number of observations (days) in the month.</p>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="tuesday-august-30-2022.html#cb243-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb243-2"><a href="tuesday-august-30-2022.html#cb243-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Month) <span class="sc">|&gt;</span></span>
-<span id="cb243-3"><a href="tuesday-august-30-2022.html#cb243-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneMax =</span>  <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb243-4"><a href="tuesday-august-30-2022.html#cb243-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="tuesday-august-30-2022.html#cb116-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb116-2"><a href="tuesday-august-30-2022.html#cb116-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Month) <span class="sc">|&gt;</span></span>
+<span id="cb116-3"><a href="tuesday-august-30-2022.html#cb116-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneMax =</span>  <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb116-4"><a href="tuesday-august-30-2022.html#cb116-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 5 × 3
 ##   Month OzoneMax NumDays
 ##   &lt;int&gt;    &lt;int&gt;   &lt;int&gt;
@@ -907,10 +950,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4     8      168      31
 ## 5     9       96      30</code></pre>
 <p>Find the average ozone concentration when temperatures are above and below 70 F. Include the number of observations (days) in the two groups.</p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="tuesday-august-30-2022.html#cb245-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb245-2"><a href="tuesday-august-30-2022.html#cb245-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Temp <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span></span>
-<span id="cb245-3"><a href="tuesday-august-30-2022.html#cb245-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneAvg =</span>  <span class="fu">mean</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb245-4"><a href="tuesday-august-30-2022.html#cb245-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="tuesday-august-30-2022.html#cb118-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb118-2"><a href="tuesday-august-30-2022.html#cb118-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Temp <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span></span>
+<span id="cb118-3"><a href="tuesday-august-30-2022.html#cb118-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneAvg =</span>  <span class="fu">mean</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb118-4"><a href="tuesday-august-30-2022.html#cb118-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 3
 ##   `Temp &gt;= 70` OzoneAvg NumDays
 ##   &lt;lgl&gt;           &lt;dbl&gt;   &lt;int&gt;
@@ -1028,20 +1071,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

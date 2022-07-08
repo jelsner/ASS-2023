@@ -2,9 +2,9 @@
   <PAMRasterBand band="1">
     <Description>lyr.1</Description>
     <Metadata>
-      <MDI key="STATISTICS_MAXIMUM">1.9996911027267</MDI>
+      <MDI key="STATISTICS_MAXIMUM">1.9989806772653</MDI>
       <MDI key="STATISTICS_MEAN">-9999</MDI>
-      <MDI key="STATISTICS_MINIMUM">-3.8432776095581</MDI>
+      <MDI key="STATISTICS_MINIMUM">-4.1633823467546</MDI>
       <MDI key="STATISTICS_STDDEV">-9999</MDI>
     </Metadata>
   </PAMRasterBand>

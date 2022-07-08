@@ -405,7 +405,7 @@ To answer these questions you quantify the non-spatial correlation and the bi-va
 Start by getting the U.S. Census data with functions from the {tidycensus} package. Downloading U.S. census data using functions from the {tidycensus} package requires you register with the Census Bureau. 
 
 You can get an API key from http://api.census.gov/data/key_signup.html. Then use the `tidycensus::census_api_key()` function and put your key in quotes.
-```{r}
+```{r, eval=FALSE}
 tidycensus::census_api_key("YOUR API KEY GOES HERE")
 ```
 

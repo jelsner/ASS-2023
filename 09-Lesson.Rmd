@@ -211,7 +211,7 @@ Consider the following grid of cells containing attribute values.
 
 ```{r}
 if(!require(spatstat)) install.packages(pkgs = "spatstat", repos = "http://cran.us.r-project.org")
-library(spatstat)
+suppressMessages(library(spatstat))
 
 set.seed(6750)
 Y <- ppp(runif(200, 0, 1), 

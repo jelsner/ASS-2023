@@ -80,6 +80,7 @@ The `filter()` function keeps only rows matching given criteria, e.g., only coun
 
 ```{r}
 world |>
+  sf::st_drop_geometry() |>
   dplyr::filter(lifeExp > 82)
 ```
 

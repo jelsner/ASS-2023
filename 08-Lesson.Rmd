@@ -88,7 +88,7 @@ Monthly precipitation across the globe
 
 Here you import a NetCDF (Network Common Data Form) file as a space-time raster. NetCDF is a set of formats that support scientific data as arrays. Here the data are monthly global precipitation anomalies on 2.5 by 2.5 degree lat/lon grid. You read the NetCDF file using three array dimensions, two planar space, and the third is time (monthly starting in 1948).
 
-```{r}
+```{r, eval=FALSE}
 if(!"precip.mon.anom.nc" %in% list.files(here::here("data"))) {
   download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/precip.mon.anom.nc",
                 destfile = here::here("data", "precip.mon.anom.nc"))
@@ -100,7 +100,7 @@ if(!"precip.mon.anom.nc" %in% list.files(here::here("data"))) {
 There are two spatial dimensions and the third dimension is time in months. There is one attribute which is the rain rate in millimeters per day (mm/d).
 
 Here you plot the first month of the global precipitation anomalies.
-```{r}
+```{r, eval=FALSE}
 plot(w.stars[,,,1])
 ```
 
