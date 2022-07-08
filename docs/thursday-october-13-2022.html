@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="tuesday-october-11-2022.html"/>
-
+<link rel="next" href="tuesday-october-18-2022.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -245,6 +245,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
 <li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html"><i class="fa fa-check"></i>Tuesday October 18, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -688,7 +695,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb63-3"><a href="thursday-october-13-2022.html#cb63-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
 <span id="cb63-4"><a href="thursday-october-13-2022.html#cb63-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>Values of G are on the vertical axis and values of distance (relative) are on the horizontal axis starting at 0. The black curve is the uncorrected estimate of <span class="math inline">\(G_{raw}(r)\)</span> from the event locations and the red curve is <span class="math inline">\(G_{pois}(r)\)</span> estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.</p>
+<p>Values of G are on the vertical axis and values of distance (lag) are on the horizontal axis starting at 0. The black curve is the uncorrected estimate of <span class="math inline">\(G_{raw}(r)\)</span> from the event locations and the red curve is <span class="math inline">\(G_{pois}(r)\)</span> estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.</p>
 <p>The horizontal dashed line at G = .2 intersects the black line at a relative distance (r) of 5 units. This means that 20% of the events have another event <em>within</em> 5 units. This means that 20% of the saplings have another sapling withing .5 meter.</p>
 <p>Imagine placing a disc of radius 5 units around all 71 events then counting the number of events that have another event under the disc. That number divided by 71 is G(r).</p>
 <p>To check this compute all pairwise distances with the <code>pairdist()</code> function.</p>
@@ -718,7 +725,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb68-7"><a href="thursday-october-13-2022.html#cb68-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb68-8"><a href="thursday-october-13-2022.html#cb68-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> theo), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
 <span id="cb68-9"><a href="thursday-october-13-2022.html#cb68-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">5</span>), <span class="at">lty =</span> <span class="st">&#39;dashed&#39;</span>) <span class="sc">+</span></span>
-<span id="cb68-10"><a href="thursday-october-13-2022.html#cb68-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Distance (m)&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;G(r): Cumulative % of events having another event within a distance r&quot;</span>) <span class="sc">+</span></span>
+<span id="cb68-10"><a href="thursday-october-13-2022.html#cb68-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (m)&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;G(r): Cumulative % of events having another event within a distance r&quot;</span>) <span class="sc">+</span></span>
 <span id="cb68-11"><a href="thursday-october-13-2022.html#cb68-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Values for the empty space function are obtained from the <code>Fest()</code> function. Here you apply the Kaplan-Meier correction for edge effects with <code>correction = "km"</code>. The function returns the percent of the domain within a distance from any event.</p>
@@ -736,7 +743,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb69-10"><a href="thursday-october-13-2022.html#cb69-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> theo), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
 <span id="cb69-11"><a href="thursday-october-13-2022.html#cb69-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">c</span>(.<span class="dv">7</span>, .<span class="dv">58</span>), <span class="at">lty =</span> <span class="st">&#39;dashed&#39;</span>) <span class="sc">+</span></span>
 <span id="cb69-12"><a href="thursday-october-13-2022.html#cb69-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> .<span class="dv">61</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb69-13"><a href="thursday-october-13-2022.html#cb69-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Distance (m)&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;Percent of domain within a distance r of an event&quot;</span>) <span class="sc">+</span></span>
+<span id="cb69-13"><a href="thursday-october-13-2022.html#cb69-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (m)&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;Percent of domain within a distance r of an event&quot;</span>) <span class="sc">+</span></span>
 <span id="cb69-14"><a href="thursday-october-13-2022.html#cb69-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>The horizontal dashed line at F = .7 intersects the black line at a distance of .61 meter. This means that 70% of the spatial domain is less than .61 meters from a sapling. The red line is the theoretical homogeneous Poisson process model. If the process was CSR slightly less than 58% (F = .58) of the domain would be less than .6 meter from a sapling. In words, the arrangement of saplings is less “gappy” (more regular) than expected by chance.</p>
@@ -751,7 +758,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb70-8"><a href="thursday-october-13-2022.html#cb70-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> km)) <span class="sc">+</span></span>
 <span id="cb70-9"><a href="thursday-october-13-2022.html#cb70-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb70-10"><a href="thursday-october-13-2022.html#cb70-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> theo), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb70-11"><a href="thursday-october-13-2022.html#cb70-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Distance (m)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb70-11"><a href="thursday-october-13-2022.html#cb70-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (m)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
 <span id="cb70-12"><a href="thursday-october-13-2022.html#cb70-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>A commonly used distance function for assessing clustering in point pattern data is called Ripley’s K function. It is estimated with the <code>Kest()</code> function.</p>
@@ -768,8 +775,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="tuesday-october-11-2022.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="tuesday-october-11-2022.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="tuesday-october-18-2022.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

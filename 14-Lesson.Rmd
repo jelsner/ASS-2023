@@ -92,8 +92,6 @@ Groups of nearby events illustrate that a certain degree of _clustering_ occurs 
 
 Complete spatial randomness sits on a spectrum between regularity and clustered. To illustrate this idea here you generate point pattern data that have more regularity than CSR and point pattern data that are more clustered than CSR. You do this using the `rMaternI()` and `rMaternClust()` functions from the {spatstat} package.
 ```{r}
-if(!require(spatstat)) install.packages(pkgs = "spatstat", repos = "http://cran.us.r-project.org")
-
 m1 <- spatstat.random::rMaternI(kappa = 100, r = .02)
 df1 <- data.frame(x = m1$x, y = m1$y, name = "Regular Pattern 1")
 m2 <- spatstat.random::rMaternI(kappa = 100, r = .02)
@@ -166,7 +164,7 @@ Spatial statistics computed on a `ppp` object will be somewhat sensitive to the 
 
 As an example, the data `swedishpines` is available in the package as a `ppp` object.
 ```{r}
-library(spatstat)
+suppressMessages(library(spatstat))
 
 class(swedishpines)
 swedishpines
