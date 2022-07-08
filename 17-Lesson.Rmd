@@ -9,14 +9,14 @@ Today
 - Estimating event clustering in multi-type event locations
 - More about the Ripley K function
 
-## Examples of spatially clustered events
+## Examples of spatially clustered events {-}
 
 Bramble canes
 
 The locations of bramble canes are available as a marked `ppp` object in the {spatstat} package. A bramble is a rough (usually wild) tangled prickly shrub with thorny stems.
 
 ```{r}
-library(spatstat)
+suppressMessages(library(spatstat))
 
 data(bramblecanes)
 summary(bramblecanes)
@@ -428,7 +428,7 @@ K.df <- K.df |>
   dplyr::mutate(nT = summary(T.ppp)$intensity * iso)
 ```
 
-Suppose you are interested in the average number of tornadoes at a distance of exactly 50 km. You use the `approx()` function to interpolate the value of `nT` at a distance of 50 km.
+Suppose you are interested in the average number of tornadoes at a distance of exactly 50 km. Use the `approx()` function to interpolate the value of `nT` at a distance of 50 km.
 ```{r}
 approx(x = K.df$r, 
        y = K.df$nT,

@@ -55,7 +55,7 @@ KS.sf <- USAboundaries::us_states(states = "Kansas") |>
 You then create an `owin` object from the simple feature data frame using the `as.owin()` function.
 
 ```{r}
-library(spatstat)
+suppressMessages(library(spatstat))
 
 KS.win <- KS.sf |>
   as.owin()
