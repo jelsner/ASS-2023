@@ -11,9 +11,10 @@ Today
 
 Let's compare the inhibition model used to describe the pine saplings with a cluster model for describing the maple trees in the Lansing woods data (`lansing`). 
 
-Start by extracting the events marked as `maple` and put them in a separate `ppp` object called `MT`.
+Start by extracting the events marked as `maple` and putting them in a separate `ppp` object called `MT`.
 
 ```{r}
+suppressMessages(library(spatstat))
 data(lansing)
 
 MT <- lansing |>
