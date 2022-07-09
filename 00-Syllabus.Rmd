@@ -1,6 +1,6 @@
 # Syllabus {.unnumbered}
 
-## GIS5122: Applied Spatial Statistics {.unnumbered}
+Course Title: GIS5122: Applied Spatial Statistics
 
 ## Contact information {.unnumbered}
 
@@ -17,13 +17,13 @@ Links to my professional stuff (if you are curious)
 -   [GitHub](https://github.com/jelsner/)
 -   [Twitter](https://twitter.com/JBElsner)
 
-## Course description {.unnumbered}
+## Course description and expected learning outcomes {.unnumbered}
 
 This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes that students know basic statistics through multiple linear regression. And that students have some prior experience with using R. Students without any knowledge of R should look various online tutorials (see below).
 
 In this course you will get a survey of the methods used to describe, analyze, and model *spatial* data. Focus will be on applications. Emphasis is given to how spatial **statistical** methods are related through the concept of spatial autocorrelation.
 
-## Expected learning outcomes {.unnumbered}
+Expected learning outcomes
 
 1.  Learn how and when to apply statistical methods and models to spatial data,
 2.  learn various packages in R for analyzing and modeling spatial data, and
@@ -33,7 +33,7 @@ The course offers a programming approach to exposing you to spatial statistics. 
 
 But in taking this approach I don't want to give you the false impression that statisticians have the answers. A *working* knowledge of the model fitting process needs to be combined with a good understanding of the context in which you are working.
 
-## Materials {.unnumbered}
+## Materials and class meetings {.unnumbered}
 
 -   Access to the internet and a computer
 
@@ -48,13 +48,13 @@ But in taking this approach I don't want to give you the false impression that s
     -   Statistics <https://tinystats.github.io/teacups-giraffes-and-statistics/index.html>
     -   Census data <https://walker-data.com/census-r/wrangling-census-data-with-tidyverse-tools.html>
 
-## Class meetings {.unnumbered}
+Class meetings
 
 During each lesson I will work through and explain the R code and notes contained within an `xx-Lesson.Rmd` file. The notes in the lesson files are comprehensive, so you can work through them on your own if you are unable to make it to class.
 
 Notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
 
-## Grades {.unnumbered}
+## Grades and ethics {.unnumbered}
 
 You are responsible for:
 
@@ -73,8 +73,6 @@ I'll use the +/- grading system.
 
 Grades will be posted as they are recorded on [FSU Canvas](https://canvas.fsu.edu)
 
-## Ethics {.unnumbered}
-
 Academic honor code
 
 <https://fda.fsu.edu/academic-resources/academic-integrity-and-grievances/academic-honor-policy>
@@ -87,7 +85,7 @@ Diversity and inclusiveness
 
 It is my intent to present notes and data that are respectful of diversity: gender identity, sexuality, disability, age, socioeconomic status, ethnicity, race, nationality, religion, and culture.
 
-## Outline of topics {.unnumbered}
+## Outline of topics and schedule {.unnumbered}
 
 1.  Working with data and making graphs (\~ 4 lessons)
 2.  Working with spatial data and making maps (\~ 5 lessons)
@@ -95,8 +93,6 @@ It is my intent to present notes and data that are respectful of diversity: gend
 4.  Analyzing and modeling point pattern data (\~ 6 lessons)
 5.  Estimating variograms and interpolating spatially (\~ 6 lessons)
 6.  Other topics (\~ 2 lessons)
-
-## Schedule (subject to change with notice) {.unnumbered}
 
 | Week | Dates                   | Topic              |
 |------|-------------------------|--------------------|
