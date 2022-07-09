@@ -14,3 +14,8 @@ mapping-diseases-with-spatial-regression-models
 estimating-spatial-intensity-as-a-function-of-distance
 intensity-trend-as-a-possible-confounding-factor
 examples-of-spatially-clustered-events
+example-1-tropical-trees
+example-2-violent-tornado-occurrence
+modeling-the-occurrence-of-violent-tornadoes
+terrain-roughness-and-tornado-occurrence-rates
+spatial-logistic-regression
