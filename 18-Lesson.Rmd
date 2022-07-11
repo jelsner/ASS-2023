@@ -3,6 +3,7 @@
 **"Weeks of coding can save you hours of planning."** - Unknown
 
 Today
+
 - Inferring event interaction from distance functions
 - Removing duplicate event locations and defining the domain 
 - Modeling point pattern data 

@@ -3,6 +3,8 @@ title: "Quotes"
 output: html_document
 ---
 
+"The problem of nonparametric estimation consists in estimation, from the observations, of an unknown function belonging to a sufficiently large class of functions." - A.B. Tsybakov
+
 “Practice any art, music, singing, dancing, acting, drawing, painting, sculpting, poetry, fiction, essays, reportage, no matter how well or badly, not to get money & fame, but to experience becoming, to find out what's inside you, to make your soul grow.”
 - Kurt Vonnegut
 

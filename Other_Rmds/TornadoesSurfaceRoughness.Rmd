@@ -1,0 +1,188 @@
+# Terrain roughness and tornado occurrence
+
+Most thunderstorms fail to produce tornadoes. Tornado initiation is sensitive to an interplay of processes across a range of spatial scales, including the scale of a few hundred meters where the air flow near the ground is converging inward toward the tornado. It stands to reason that the underlying surface can affect this convergent inflow.
+
+Here you again consider Kansas tornadoes with an EF2 or higher rating.
+
+```{r}
+T.ppp25 <- T.ppp %>%
+  subset(marks >= 2) %>%
+  unmark()
+
+summary(T.ppp25)
+```
+
+There are 626 tornadoes with an average intensity of 29 per 100 sq. km.
+
+Plot the spatial varying intensity.
+
+```{r}
+T.ppp25 %>%
+  density() %>%
+  plot()
+```
+
+To quantify the relationship between distance to city and tornado report density we use a model.
+
+```{r}
+model0 <- ppm(T.ppp25, 
+              trend = ~ Zc, 
+              covariates = list(Zc = Zc))
+model0
+```
+
+As expected the model shows a decreasing trend with increasing distance from cities (negative value on the `Zc` coefficient). The value is on the log scale so we do some arithmetic.
+
+```{r}
+100 * (1 - exp(coef(model0)[2] * 1000))
+```
+
+The coefficient is interpreted as a 1.7% decrease in the number of tornado reports per kilometer of distance from a city (on average).
+
+Can we do better? Statistically: is the model adequate? Here we check model adequacy by examining model residuals against the assumption of homogeneous Poisson.
+
+```{r}
+E <- envelope(model0, 
+              fun = Kest, 
+              nsim = 39,
+              global = TRUE)
+plot(E, main = "", legend = FALSE)
+```
+
+We find that, after accounting for distance from nearest town, there is a tendency for tornado reports to cluster at all distances.
+
+Elevation might be a factor in tornado occurrence rates. In particular the roughness of the underlying surface might make some areas more or less prone to tornadoes. Here we investigate this possibility using elevation data.
+
+Digital elevation data are available from <http://www.viewfinderpanoramas.org>. The data has been uploaded to my website. Download and unzip the data.
+
+```{r}
+if(!"15-H.tif" %in% list.files()){
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/15-H_tif.zip",
+              destfile = "15-H_tif.zip")
+unzip("15-H_tif.zip")
+}
+```
+
+Import the elevation raster and crop it to the extent of Kansas.
+
+```{r}
+library(raster)
+
+Elev <- raster("15-H.tif")
+
+W.sfc2 <- W.sfc %>%
+  st_transform(crs = crs(Elev))
+
+Elev2 <- crop(Elev, st_bbox(W.sfc2))
+```
+
+Map the elevation.
+
+```{r}
+library(tmap)
+
+tm_shape(Elev2) +
+  tm_raster() +
+tm_shape(W.sfc2) +
+  tm_borders() +
+tm_layout(title = "Elevation (m)", 
+          legend.outside = TRUE)
+```
+
+Get elevation roughness using the `terrain()` function from the {raster} package. Use the `projectRaster()` function to change the native projection to the projection of the tornado data. This takes a few seconds since the projection is not conformal and the grid spacing needs to be preserved.
+
+```{r}
+TR <- terrain(Elev2, opt = 'roughness')
+ElevP <- projectRaster(Elev2, crs = st_crs(Torn.sf)$proj4string)
+TRP <- projectRaster(TR, crs = st_crs(Torn.sf)$proj4string)
+
+#writeRaster(ElevP, filename = "ElevP")
+#writeRaster(TRP, filename = "TRP")
+```
+
+Create image objects from the elevation and roughness rasters. First convert the rasters to a S4 class spatial grid data frame.
+
+```{r}
+El <- ElevP %>%
+  as("SpatialGridDataFrame") %>%
+  as("im")
+Tr <- TRP %>%
+  as("SpatialGridDataFrame") %>%
+  as("im")
+```
+
+Model the tornado events.
+
+```{r}
+model1 <- ppm(T.ppp25, 
+             trend = ~ Zc + El + Tr, 
+             covariates = list(Zc = Zc, El = El, Tr = Tr))
+summary(model1)
+```
+
+We see that both elevation and terrain roughness are statistically significant in explaining the spatial pattern of tornadoes after accounting for distance to nearest city. Tornadoes are more common over lower elevations and smoother terrain.
+
+Physically we can understand the elevation effect as a proxy for the effect of low-level atmospheric moisture. We can understand the terrain roughness effect more directly in terms of the fact that smooth terrain allows a more direct transport of the moisture into the super-cell updrafts.
+
+The model that includes the elevation variables has a lower AIC value and the difference in log likelihoods is interpreted as a good improvement.
+
+```{r}
+AIC(model0); AIC(model1)
+2 * (as.numeric(logLik(model1)) - as.numeric(logLik(model0)))/T.ppp25$n
+```
+
+| diff | interpretation |
+|------|----------------|
+| 1    | huge           |
+| .1   | large          |
+| .01  | good           |
+| .001 | okay           |
+
+So we conclude that `model1` is a good improvement over `model0` which is an improvement over a CSR.
+
+Diagnostics.
+
+```{r}
+plot(envelope(model1, 
+              fun = Kest, 
+              nsim = 39, 
+              global = TRUE), 
+     legend = FALSE)
+```
+
+The model is shown in red with the 95% uncertainty bands.
+
+Finally we see if adding a cluster term to the model will improve things further.
+
+```{r}
+model2 <- kppm(T.ppp25, 
+               trend = ~ Zc + El + Tr, 
+               covariates = list(Zc = Zc, El = El, Tr = Tr),
+               clusters = "Thomas")
+summary(model2)
+```
+
+We see that the covariates remain statistically significant although the effect sizes are smaller.
+
+We see with the K function that the model fits the data even better.
+
+```{r}
+plot(envelope(model2, 
+              fun = Kest, 
+              nsim = 39, 
+              global = TRUE), 
+     legend = FALSE)
+```
+
+Simulate point patterns from the model.
+
+```{r}
+X <- simulate.kppm(model2, 
+                   nsim = 3)
+
+par(mfrow = c(2, 2))
+plot(T.ppp25)
+plot(X[[1]])
+plot(X[[2]])
+plot(X[[3]])
+```
