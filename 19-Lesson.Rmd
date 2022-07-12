@@ -10,7 +10,7 @@ Today
 
 ## Fitting and interpreting a cluster model {-}
 
-Let's compare the inhibition model used to describe the Swedish pine saplings data with a cluster model for describing the Lansing Woods maple trees (in the `ppp` object called `lansing` from the {spatstat} package).
+Let's compare the inhibition model fit previously to describe the Swedish pine saplings data with a cluster model for describing the Lansing Woods maple trees (in the `ppp` object called `lansing` from the {spatstat} package).
 
 Start by extracting the events marked as `maple` and putting them in a separate `ppp` object called `MT`.
 
@@ -527,5 +527,5 @@ plot(C, add = TRUE)
 Integrating the predictions over the area equals the observed number of ore deposits.
 
 ```{r}
-sum(fitted(model))
+sum(fitted(model.slr))
 ```

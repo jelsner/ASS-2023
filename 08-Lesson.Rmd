@@ -150,7 +150,7 @@ The `geom_sf()` function automatically plots graticules (lines of latitude and l
 
 The advantage of using functions from {ggplot2} for mapping include a large community of users and many add-on packages.
 
-Another example: the county land area by state in the U.S. The data as a simple feature data frames is available in the {USAboundariesData} package at `ropensci.org`. 
+Another example: the county land area by state in the U.S. The data is a simple feature data frame available in the {USAboundariesData} package at `ropensci.org` (not on CRAN).
 
 ```{r, eval=FALSE}
 install.packages("USAboundariesData", 
