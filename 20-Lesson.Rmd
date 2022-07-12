@@ -5,6 +5,7 @@
 Today
 
 - Spatial data interpolation
+- Computing the sample (empirical) variogram
 
 ## Spatial data interpolation {-}
 
@@ -288,12 +289,12 @@ A kriged estimate is a weighted average of the observations where the weights ar
 
 To review, the steps for spatial interpolation (statistical) are:
 
-1. Examine the observations for trends and isotropy.
-2. Compute an empirical variogram(s).
-3. Fit a variogram model(s) to the empirical variogram(s).
-4. Create an interpolated surface using kriging.
+1. Examine the observations for trends and isotropy
+2. Compute a sample (empirical) variogram
+3. Fit a variogram model to the empirical variogram
+4. Create an interpolated surface using the variogram model together with the data (kriging)
 
-## Spatial interpolation using functions from the {gstat} package {-}
+## Computing the sample variogram {-}
 
 The {gstat} package contains functions for spatial interpolation that take advantage of simple feature (and S4 class) spatial data data frames.
 
@@ -332,81 +333,112 @@ The functions in the {gstat} package work with simple feature objects.
 
 As another example, consider the dataset called `topo` from the {MASS} package. The data are topographic heights (feet) within a 310 sq ft domain.
 
+Examine the data with a series of plots.
+
 ```{r}
 topo.df <- MASS::topo
 
-ggplot(data = topo.df,
-       mapping = aes(x = x, y = y, color = z)) +
-  geom_point()
+p1 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = y, color = z)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  theme_minimal()
 
-topo.sf <- topo.df |>
-  sf::st_as_sf(coords = c("x", "y"))
+p2 <- ggplot(data = topo.df,
+             mapping = aes(x = z, y = y)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
 
-topo.gdf <- as.geodata(topo)
-plot(topo.gdf)
+p3 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = z)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
+
+p4 <- ggplot(data = topo.df,
+             mapping = aes(x = z)) +
+  geom_histogram(bins = 13) +
+  theme_minimal()
+
+library(patchwork)
+( p1 + p2 ) / ( p3 + p4 )
 ```
 
 Note the trend in the north-south direction and the skewness in the observed values. 
 
 Examine the residuals after removing a first-order trend from the observations.
+
 ```{r}
-plot(topo.gdf, trend = "1st")
+topo.df$z1 <- residuals(lm(z ~ x + y, data = topo.df))
+
+p1 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = y, color = z1)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  theme_minimal()
+
+p2 <- ggplot(data = topo.df,
+             mapping = aes(x = z1, y = y)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
+
+p3 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = z1)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
+
+p4 <- ggplot(data = topo.df,
+             mapping = aes(x = z1)) +
+  geom_histogram(bins = 13) +
+  theme_minimal()
+
+( p1 + p2 ) / ( p3 + p4 )
 ```
 
-The north-south trend is removed and the observations have a more symmetric distribution. There appears to be some non-linear trend in the east-west direction. 
+The north-south trend is removed and the observations have a more symmetric distribution. There appears to be some non-linear trend (U-shape) in the east-west direction. 
 
-Examine the residuals after removing a second-order trend.
+However, the residuals appear to show spatial autocorrelations (areas with above and below residuals). 
+
+Compare the empirical variograms using first the raw values and then the residuals after removing the first-order trend.
+
 ```{r}
-plot(topo.gdf, trend = "2nd")
+topo.sf <- topo.df |>
+  sf::st_as_sf(coords = c("x", "y"))
+
+topo.v1 <- variogram(z ~ 1,
+                     data = topo.sf,
+                     cutoff = 2.5)
+topo.v2 <- variogram(z1 ~ 1,
+                     data = topo.sf,
+                     cutoff = 2.5)
+
+ggplot(data = topo.v1,
+       mapping = aes(x = dist, y = gamma)) +
+  geom_point(color = "red") +
+  geom_point(data = topo.v2,
+             mapping = aes(x = dist, y = gamma),
+             color = "black") +
+  scale_x_continuous(breaks = seq(0, 2.5, by = .25)) +
+  xlab("Lag distance (h)") + 
+  ylab(expression(paste(gamma,"(h)"))) +
+  theme_minimal()
 ```
 
-The residuals from a second-order polynomial fit are symmetric and the trends are gone. However, the residuals appear to show spatial autocorrelations (areas with above and below residuals). 
 
-## Estimating the empirical variogram {-}
-
-Consider the dataset `s100` available from the {geoR} package. The `points.geodata()` function produces a bubble plot showing the locations of the observations and the relative magnitude of the `z` variable.
-```{r}
-data(s100)
-points.geodata(s100) 
-```
-
-The `variog()` function computes the empirical variogram. Here we save it in the object `s100.v`.
-```{r}
-s100.v <- variog(s100)
-str(s100.v)
-```
-
-Information in the variogram object includes the lag distances (`u`), the values of the variogram at those distances (`v`), the number of distance pairs used to compute the variogram values at each lag (`n`), the standard deviation of the variogram values, and the coefficients of the trend surface (with no trend, the value is the overall mean of the data) (`beta.ols`) among other information.
-
-Note: Mathematically lag distance is denoted with $h$ but in the {geoR} package it is `u`.
-
-Verify the mean value.
-```{r}
-mean(s100$data)
-```
-
-Plot the variogram.
-```{r}
-plot(s100.v)
-```
-
-The semivariance ($\gamma(u)$) is plotted against lag distance ($u$). Values increase with increasing lag until a lag distance of about 1. 
+The semivariance ($\gamma(u)$) is plotted against lag distance. Values increase with increasing lag until a lag distance of about 2. 
 
 At large lags there are fewer estimates so the values have greater variance. A model for the semivariance is fit only for the the increasing portion of the graph.
-
-Another example: variogram of the `topo` dataset.
-```{r}
-topo.v <- variog(topo.gdf)
-plot(topo.v, xlab = "Lag Distance", 
-     ylab = expression(paste(gamma, "(u) [ft", {}^2, "]")),
-     las = 1, pch = 16)
-```
 
 The variogram values have units of square feet and are calculated using point pairs at lag distances within a lag tolerance. The number of point pairs depends on the lag so the variogram values are less precise at large distance.
 
 Plot the number of point pairs used as a function of lag distance.
+
 ```{r}
-ggplot(data.frame(u = topo.v$u, n = topo.v$n), aes(x = u, y = n)) +
+ggplot(data = topo.v2,
+       mapping = aes(y = np, x = dist)) +
   geom_point() +
   xlab("Lag Distance") + ylab("Number of Observation Pairs") +
   theme_minimal()
