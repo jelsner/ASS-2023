@@ -173,9 +173,17 @@ install.packages(here::here("packages", "geoR_1.8-1.tar.gz"),
                  repos = NULL, type="source")
 ```
 
+```{r}
+grd_100_df <- readr::read_csv(
+  "https://raw.githubusercontent.com/Ignimbrit/exchange/master/data/2020/grid_100.csv",
+  ) |>
+  dplyr::select(-licence)
+```
+
 
 ```{r}
-library(geoR)
+library(gstat)
+data(meuse.all)
 
 s100.v <- s100 |>
   variog() 
