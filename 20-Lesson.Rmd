@@ -5,8 +5,6 @@
 Today
 
 - Spatial data interpolation
-- Working with {geoR} package spatial data
-- Estimating the empirical variogram
 
 ## Spatial data interpolation {-}
 
@@ -164,69 +162,80 @@ The variogram assumes intrinsic stationarity so the raw observed values should n
 
 The sample variogram is characterized by a set of points the values of which generally increase as $h$ increases before leveling off (reaching a plateau).
 
-As an example, you compute and plot the sample variogram from the `s100` data set from the {geoR} package and label the key features. The `variog()` function computes the sample variogram values and we create a data frame from the resulting variogram object.
-
-```{r}
-install.packages(here::here("packages", "RandomFields_3.3.1.tar.gz"), 
-                 repos = NULL, type="source")
-install.packages(here::here("packages", "geoR_1.8-1.tar.gz"), 
-                 repos = NULL, type="source")
-```
-
-```{r}
-grd_100_df <- readr::read_csv(
-  "https://raw.githubusercontent.com/Ignimbrit/exchange/master/data/2020/grid_100.csv",
-  ) |>
-  dplyr::select(-licence)
-```
-
+As an example, you compute and plot the sample variogram from the `meuse.all` data frame from the {gstat} package. First attach the data frame and look at the first six rows.
 
 ```{r}
 library(gstat)
 data(meuse.all)
+head(meuse.all)
+```
 
-s100.v <- s100 |>
-  variog() 
-df <- data.frame(h = s100.v$u[1:10], 
-                 v = s100.v$v[1:10])
+The data are locations and top soil heavy metal concentrations (ppm), along with a number of soil and landscape variables, collected in a flood plain of the river Meuse, near the village Stein, NL. Heavy metal concentrations are bulk sampled from an area of approximately 15 m x 15 m.
 
+Next locate where the data are from. First convert the data frame to a spatial data frame and then use functions from the {tmap} package in view mode.
+
+```{r}
+meuse.sf <- meuse.all |>
+  sf::st_as_sf(coords = c("x", "y"), 
+               crs = 28992)
+
+tmap::tmap_mode("view")
+
+tmap::tm_shape(meuse.sf) +
+  tmap::tm_bubbles(size = "zinc")
+```
+
+Then compute the sample variogram and save it as `meuse.v`.
+
+```{r}
+meuse.v <- variogram(zinc ~ 1,
+                     data = meuse.all,
+                     locations = ~ x + y)
+
+class(meuse.v)
+```
+
+The output is an object of class `gstatVariogram` and `data.frame`. Plot the sample variogram and label the key features.
+
+```{r}
 library(ggplot2)
-ggplot(data = df,
-       mapping = aes(x = h, y = v)) +
+
+ggplot(data = meuse.v,
+       mapping = aes(x = dist, y = gamma)) +
   geom_point(size = 2) +
-  scale_y_continuous(limits = c(0, 1.15), breaks = seq(0, 1.2, .2)) +
-  scale_x_continuous(limits = c(0, 1)) +
-  geom_hline(yintercept = c(.9, .15), color = "red") +
-  geom_vline(xintercept = .6, color = "red") +
+  scale_y_continuous(limits = c(0, 210000)) +
+  geom_hline(yintercept = c(30000, 175000), color = "red") +
+  geom_vline(xintercept = 800, color = "red") +
   xlab("Lag distance (h)") + ylab(expression(paste(gamma,"(h)"))) +
-  geom_segment(aes(x = 0, y = 0, xend = 0, yend = .15,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = .06, y = .12, label = "nugget")) +
-  geom_segment(aes(x = 0, y = .15, xend = 0, yend = .9,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = .1, y = .87, label = "sill (partial sill)")) +
-  geom_segment(aes(x = 0, y = .93, xend = .6, yend = .93,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = .55, y = .97, label = "range")) +
+  geom_segment(aes(x = 0, y = 0, xend = 0, yend = 30000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 100, y = 10000, label = "nugget")) +
+  geom_segment(aes(x = 0, y = 10000, xend = 0, yend = 175000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 180, y = 150000, label = "sill (partial sill)")) +
+  geom_segment(aes(x = 0, y = 190000, xend = 800, yend = 190000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 250, y = 190000, label = "range")) +
   theme_minimal()
 ```
 
-* Lag (lag distance): Relative distance between observation locations.
-* Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag. The nugget is the variation in the values at the observation locations independent of spatial variation. It is related to the observation (or measurement) precision.
-* Sill: The height of the variogram at which the values are uncorrelated.
-* Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage.
-* Range: The distance beyond which the values are uncorrelated. The range is indicated on the empirical variogram as the position along the horizontal axis where values of the variogram reach a constant height.
+- Lag (lag distance): Relative distance between observation locations (here units: meters)
+- Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag (here units ppm squared). The nugget is the variation in the values at the observation locations independent of spatial variation. It is related to the observation (or measurement) precision 
+- Sill: The height of the variogram at which the values are uncorrelated
+- Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage
+- Range: The distance beyond which the values are uncorrelated. The range is indicated on the empirical variogram as the position along the horizontal axis where values of the variogram reach a constant height
 
 Additional terms.
-* Isotropy: The condition in which spatial correlation is the same in all directions.
-* Anisotropy: (an-I-so-trop-y) spatial correlation is stronger or more persistent in some directions.
-* Directional variogram: Distance and direction are important in characterizing the spatial correlations. Otherwise the variogram is called omni-directional.
-* Azimuth ($\theta$): Defines the direction of the variogram in degrees. The azimuth is measured clockwise from north.
-* Lag spacing: The distance between successive lags is called the lag spacing or lag increment.
-* Lag tolerance: The distance allowable for observational pairs at a specified lag. With arbitrary observation locations there will be no observations exactly a lag distance from any observation. Lag tolerance provides a range of distances to be used for computing values of the variogram at a specified lag.
+- Isotropy: The condition in which spatial correlation is the same in all directions
+- Anisotropy: (an-I-so-trop-y) spatial correlation is stronger or more persistent in some directions
+- Directional variogram: Distance and direction are important in characterizing the spatial correlations. Otherwise the variogram is called omni-directional
+- Azimuth ($\theta$): Defines the direction of the variogram in degrees. The azimuth is measured clockwise from north
+- Lag spacing: The distance between successive lags is called the lag spacing or lag increment
+- Lag tolerance: The distance allowable for observational pairs at a specified lag. With arbitrary observation locations there will be no observations exactly a lag distance from any observation. Lag tolerance provides a range of distances to be used for computing values of the variogram at a specified lag.
 
-Computing the sample variogram is the first step in modeling geostatistical data. The next step is fitting a model to the variogram. The model is important since the sample variogram estimates are made only at discrete lag distances (with specified lag tolerance and azimuth). We need a continuous function that varies smoothly across all lags. In short, the statistical model replaces the discrete set of points.
+Computing the sample variogram is the first step in modeling geostatistical data. The next step is fitting a model to the variogram. The model is important since the sample variogram estimates are made only at discrete lag distances (with specified lag tolerance and azimuth). You need a continuous function that varies smoothly across all lags. In short, the statistical model replaces the discrete set of points.
 
-Variogram models come from different families. The fitting process first requires a decision about what family to choose and then given the family, a decision about what parameters (nugget, sill, range) to choose.
+Variogram models come from different families. The fitting process first requires a decision about what family to choose and then given the family, a decision about what parameters (nugget, sill, range) to choose. 
 
 An exponential variogram model reaches the sill asymptotically. The range (a) is defined as the lag distance at which gamma reaches 95% of the sill.
+
 ```{r}
 c0 <- .1
 c1 <- 2.1
@@ -238,7 +247,8 @@ curve(c0 + c1*(1 - exp(-3*x/a)),
       las = 1)
 ```
 
-A spherical variogram model reaches the sill at x = 1 (here).
+A spherical variogram model reaches the sill at x = 1.
+
 ```{r}
 curve(c0 + c1*(3*x/2 - x^3/2),
       from = .01, to = 1,
@@ -248,6 +258,7 @@ curve(c0 + c1*(3*x/2 - x^3/2),
 ```
 
 A Gaussian variogram model is "S"-shaped (sigmodial). It is used when the data exhibit strong correlations at the shortest lag distances.  The inflection point of the model occurs at $\sqrt{a/6}$.
+
 ```{r}
 curve(c0 + c1*(1 - exp(-3*x^2/a^2)),
       from = .01, to = 3, 
@@ -265,15 +276,15 @@ These models have no sill.
 
 Choosing a variogram family is largely done by looking at the shape of the sample variogram. Then, given a sample variogram computed from a set of spatial observations and a choice of family, the parameters of the variogram model are determined by weighted least-squares (WLS). Weighting is needed because the because the sample variogram estimates are computed using a varying number of point pairs.
 
-There are other ways to determine the parameters including by eye, and by the method of maximum likelihoods, but WLS is less erratic than other methods and it requires fewer assumptions about the distribution of the data.
+There are other ways to determine the parameters including by eye, and by the method of maximum likelihoods, but WLS is less erratic than other methods and it requires fewer assumptions about the distribution of the data. And the process can be automated and it often is in high-level packages, but it is important to understand what is in the black box.
 
 The final step in spatial statistical interpolation is called kriging. Kriging interpolates the observed data using the variogram model. It was developed by a South African miner (D.G. Krige) as a way to improve estimates of where ore reserves might be located. Extraction costs are reduced substantially if good predictions can be made of where the ore resides given samples taken across the mine.
 
 A kriged estimate is a weighted average of the observations where the weights are based on the variogram model. The kriged estimates are optimal in the sense that they minimize the error variance. The type of kriging depends on the characteristics of the observations and the purpose of interpolation.
 
-* Simple kriging assumes a known constant mean for the domain.  
-* Ordinary kriging assumes an unknown constant mean.  
-* Universal kriging assumes an unknown linear or nonlinear trend in the mean.  
+- Simple kriging assumes a known constant mean for the domain 
+- Ordinary kriging assumes an unknown constant mean
+- Universal kriging assumes an unknown linear or nonlinear trend in the mean
 
 To review, the steps for spatial interpolation (statistical) are:
 
@@ -282,11 +293,12 @@ To review, the steps for spatial interpolation (statistical) are:
 3. Fit a variogram model(s) to the empirical variogram(s).
 4. Create an interpolated surface using kriging.
 
-## Working with {geoR} package spatial data {-}
+## Spatial interpolation using functions from the {gstat} package {-}
 
-The {geoR} package contains functions for spatial interpolation. There are other packages that have functions for spatial interpolation, but {geoR} was one of the first comprehensive packages devoted to it. The functions are helpful in learning the required steps. The functions require the data to be of class `geodata`.
+The {gstat} package contains functions for spatial interpolation that take advantage of simple feature (and S4 class) spatial data data frames.
 
 Suppose we have the following set of observations (`zobs`) at locations (`sx`, `sy`).
+
 ```{r}
 sx <- c(1.1, 3.2, 2.1, 4.9, 5.5, 7, 7.8, 9, 2.3, 6.9)
 sy <- c(3, 3.5, 6, 1.5, 5.5, 3.2, 1, 4.5, 1, 7)
@@ -300,33 +312,36 @@ sf <- data.frame(sx, sy, zobs) |>
   sf::st_as_sf(coords = c("sx", "sy"),
                crs = 4326)
 
-library(ggplot2)
 ggplot(data = sf, 
        mapping = aes(x = sx, y = sy, label = zobs)) +
   geom_text() +
   theme_minimal()
 ```
 
-Lag distance (distance between locations) is the independent variable in the variogram function. We get all pairwise distances by applying the `dist()` function to a matrix of spatial coordinates.
+Lag distance (distance between locations) is the independent variable in the variogram function. You get all pairwise distances by applying the `dist()` function to a matrix of spatial coordinates.
+
 ```{r}
 dist(cbind(sx, sy))
 max(dist(cbind(sx, sy)))
 min(dist(cbind(sx, sy)))
 ```
 
-The function computes a pairwise distance matrix. The distance between the first and second observation is 2.16 units and so on. The largest lag distance is 8.04 units and the smallest lag distance is 2.05 units.
+The `dist()` function computes a pairwise distance matrix. The distance between the first and second observation is 2.16 units and so on. The largest lag distance is 8.04 units and the smallest lag distance is 2.05 units.
 
 The functions in the {gstat} package work with simple feature objects.
 
-
-
-Now the plots show the residuals from the first-order trend model.
-
 As another example, consider the dataset called `topo` from the {MASS} package. The data are topographic heights (feet) within a 310 sq ft domain.
-```{r}
-library(MASS)
 
-data(topo)
+```{r}
+topo.df <- MASS::topo
+
+ggplot(data = topo.df,
+       mapping = aes(x = x, y = y, color = z)) +
+  geom_point()
+
+topo.sf <- topo.df |>
+  sf::st_as_sf(coords = c("x", "y"))
+
 topo.gdf <- as.geodata(topo)
 plot(topo.gdf)
 ```
