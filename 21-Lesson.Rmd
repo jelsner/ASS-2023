@@ -1,5 +1,7 @@
 # Tuesday November 1, 2022 {.unnumbered}
 
+**"Statistics is such a powerful language for describing data in ways that reveal nothing about their causes. Of course statistics is powerful for revealing causes as well. But it takes some care. Like the difference between talking and making sense."** - Richard McElreath
+
 Today
 
 - Fitting a variogram model to the sample variogram
@@ -95,9 +97,11 @@ ggplot() +
 
 There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue). 
 
-Compute and plot the empirical variogram.
+Compute and plot the empirical variogram using the `variogram()` function from the {gstat} package.
 
 ```{r}
+library(gstat)
+
 variogram(head ~ 1,
           data = wca.sf) |>
   plot()

@@ -7,6 +7,43 @@ Today
 
 ## Evaluating the accuracy of the interpolated surface {-}
 
+Interpolating surface air temperatures across the Midwest. The data in `MidwestTemps.txt` are average temperatures in and around the state of Iowa for the month of April.
+
+You start by examining the data for spatial trends.
+
+```{r}
+L <- "http://myweb.fsu.edu/jelsner/temp/data/MidwestTemps.txt"
+t.sf <- readr::read_table(L, show_col_types = FALSE) |>
+  sf::st_as_sf(coords = c("lon", "lat"),
+               crs = 4326)
+
+XY <- t.sf |>
+  sf::st_coordinates() 
+t.sf$X <- XY[, 1]
+t.sf$Y <- XY[, 2]
+
+t.sf$geometry |>
+  duplicated() |>
+  any()
+```
+
+Plot the values on a map.
+
+```{r}
+sts <- USAboundaries::us_states()
+
+tmap::tm_shape(t.sf) +
+  tmap::tm_text(text = "temp", 
+                size = .6) +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() 
+```
+
+
+
+
+
+
 Interpolating a surface representing the height of the Wolfcamp Aquifer in Texas/New Mexico.
 
 Read the data, create a simple feature data frame, add the coordinates as attributes and remove the duplicate location.
