@@ -2,117 +2,135 @@
 
 Today
 
-- 
+- Fitting a variogram model to the sample variogram
 
-## Fitting a variogram model {-}
 
-Let's look at another example. Some years ago there were three nuclear waste repository sites being proposed in Nevada, Texas, and Washington. The site needs to be larger enough for more than 68,000 high-level waste containers placed underground, about 9 m (~30 feet) apart, in trenches surrounded by salt. In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste.
+## Fitting a variogram model to the sample variogram {-}
+
+Some years ago there were three nuclear waste repository sites being proposed in Nevada, Texas, and Washington. The proposed site needed to be large enough for more than 68,000 high-level waste containers placed underground, about 9 m (~30 feet) apart, in trenches surrounded by salt. 
+
+In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste.
 
 The site must isolate the waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters. The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seeks its own level in the pipe (piezometer).
 
-The head measurements, given in units of feet above sea level, are from drill stem tests and indicate the total energy of the water in units of height. The higher the head height, the greater the potential energy.  Water flows away from areas of high potential energy so aquifer discharge is proportional to the gradient of the piezometric head.
+The head measurements, given in units of feet above sea level, are from drill stem tests and indicate the total energy of the water in units of height. The higher the head height, the greater the potential energy.  Water flows away from areas of high potential energy with aquifer discharge proportional to the gradient of the piezometric head. The data are in `wolfcamp.csv` on my website.
 
-The data are in `wolfcamp.csv` on my website.
+Examine the observed data for trends and check to see if the observations are adequately described by a normal distribution.
 
-Step 1: Examine the observed data for trends, check for normality
+Import the data as a data frame from the csv file.
 
-Import the data.
 ```{r}
 L <- "http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv"
-wca.df <- read_csv(L)
+wca.df <- readr::read_csv(L, show_col_types = FALSE)
 ```
 
-Create a simple feature data frame and then map the locations and head heights.
+Create a simple feature data frame and make a map showing the locations and the values for the head heights.
+
 ```{r}
-library(sf)
-wca.sf <- st_as_sf(x = wca.df, 
-                   coords = c("lon", "lat"),
-                   crs = "+proj=longlat +datum=WGS84")
+wca.sf <- sf::st_as_sf(x = wca.df, 
+                       coords = c("lon", "lat"),
+                       crs = 4326)
 
-library(tmap)
-tmap_mode("view")
+tmap::tmap_mode("view")
 
-tm_shape(wca.sf) +
-  tm_dots("head")
+tmap::tm_shape(wca.sf) +
+  tmap::tm_dots("head")
 ```
 
-Convert the data frame to a `geodata` object. Note there is no method to do this from a simple feature.
+You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trends. So you include them as attributes in your spatial data frame.
+
 ```{r}
-wca.gdf <- as.geodata(wca.df, 
-                      coords.col = c("lon", "lat"), 
-                      data.col = "head")
+XY <- wca.sf |>
+  sf::st_coordinates() 
+wca.sf$X <- XY[, 1]
+wca.sf$Y <- XY[, 2]
 ```
 
-Find the duplicate location(s).
+Are all observations at different locations? Duplicate coordinates might be due to an error or they might represent multiple measurements at a location.
+
+You check for duplicates with the {base} `duplicated()` function applied to the geometry field.
+
 ```{r}
-dup.coords(wca.gdf)
+wca.sf$geometry |>
+  duplicated()
 ```
 
-The locations are the same, but the data values are different. This may represent an error or it may represent multiple measurements at this location.  
+Observation 31 is a location that already has an observed head height. 
 
-We can average the values or we can exclude a row. Here we remove the row 30 observation.
+You remove this observation from the data frame.
+
 ```{r}
-wca.gdf <- as.geodata(wca.df[-30, ], 
-                      coords.col = c("lon", "lat"), 
-                      data.col = "head")
-summary(wca.gdf)
+wca.sf <- wca.sf |>
+  dplyr::filter(!duplicated(geometry))
+
+wca.sf$geometry |>
+  duplicated() |>
+  any()
 ```
 
-There are 84 well sites. The spatial bounding box is given under coordinates summary. The minimum distance between sites is .01 degrees and the maximum distance is 4.6 degrees.
+Summarize the information in the spatial data frame.
+
+```{r}
+wca.sf |>
+  summary()
+wca.sf |>
+  sf::st_bbox(wca.sf)
+
+```
+
+There are 84 well sites bounded between longitude lines 104.55W and 100.02W and latitude lines 33.51N and 36.09N.
 
 The data values are summarized. The values are piezometric head heights in units of feet.
 
-The `plot()` method for `geodata` objects provides a panel of plots with information about the data useful for modeling them.
 ```{r}
-plot(wca.gdf)
+library(ggplot2)
+
+ggplot() +
+  geom_sf(data = wca.sf,
+          mapping = aes(color = head)) +
+  scale_color_viridis_c() +
+  theme_minimal()
 ```
 
-The upper left panel is a graph of the observed locations with symbols reflecting quartiles of the observed piezometric head heights. There is a clear trend in the data with the highest potential energy over the southwest (red crosses) and lowest over the northeast (blue circles). 
+There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue). 
 
-The nature of this trend can be seen in the upper right and lower left panels. The upper right panel plots the data against the y coordinate and the lower left panel plots the data against the x coordinate. Both graphs indicate a linear trend.
+Compute and plot the empirical variogram.
 
-A histogram of the head heights is shown in the lower right panel. The rug locates the values along the data axis. The data are bi-modal and skewed to the right.
-
-Repeat the plot after removing the 1st order trend. What happens?
 ```{r}
-plot(wca.gdf, 
-     trend = "1st")
+variogram(head ~ 1,
+          data = wca.sf) |>
+  plot()
 ```
 
-With the trend removed the variation of values appears to be roughly symmetric and the high and low values are mixed. However, there is some spatial grouping to the residuals.
+The continuously increasing set of variances with little fluctuation results from the data trend you saw in the map. There are at least two sources of variation in any set of geostatistical data: trend and spatial autocorrelation. Trend is modeled with a smooth curve and autocorrelation is modeled with the variogram.
 
-Step 2: Compute empirical variograms
+Note: since the spatial coordinates are unprojected (decimal latitude/longitude) great circle distances are used and the units are kilometers. 
 
-We noted the maximum distance between any two locations is 4.6 degrees. It is a good idea to plot the variogram values for distances only between 0 and about 1/2 the maximum distance.
+You compute and plot the variogram this time with the trend removed. You replace the `1` with `X + Y` on the right hand side of the formula. The variogram is then computed on the residuals from the linear trend model.
 
-Since there is a linear trend in the data over the spatial domain it is removed (trend argument) before computing the variogram values.
 ```{r}
-plot(variog(wca.gdf, 
-            trend = "1st", 
-            max.dist = 2.3))
+variogram(head ~ X + Y,
+          data = wca.sf) |>
+  plot()
 ```
 
-Here we see an increase in the variance with lag distance until about one degree, then the values fluctuate about a variance of about 41000 (ft$^2$).
+Here you see an increase in the variance with lag distance out to about 100 km, but then the values fluctuate about a variance of about 41000 (ft$^2$).
 
-What does the variogram look like if we do not first remove the trend?
+Let's save the variogram object computed on the residuals.
+
 ```{r}
-plot(variog(wca.gdf, 
-            max.dist = 2.3))
+wca.v <- variogram(head ~ X + Y, 
+                   data = wca.sf)
 ```
 
-The continuously increasing set of variances with little fluctuation indicates a trend in the data that should be removed before the variogram is modeled. Said another way. There are at least two sources of variation in any set of geostatistical data: trend and spatial correlation. Trends are modeled with smooth curves and correlations are modeled with the variogram.
+You use this information contained in the variogram object to anticipate the type of variogram model.
 
-Let's save the variogram object computed on the residuals after removing the first-order trend.
 ```{r}
-wca.v <- variog(wca.gdf, 
-                trend = "1st", 
-                max.dist = 2.3)
-```
+df <- wca.v |>
+  as.data.frame()
 
-We can use this information to anticipate the type of variogram model, especially when combined with a local smoothed curve from a `geom_smooth()` layer.
-```{r}
-( p <- ggplot(data = data.frame(h = wca.v$u, v = wca.v$v), 
-       mapping = aes(x = h, y = v)) + 
+( p <- ggplot(data = df, 
+              mapping = aes(x = dist, y = gamma)) + 
   geom_point() + 
   geom_smooth() +
   scale_y_continuous(limits = c(0, NA)) +
@@ -121,97 +139,99 @@ We can use this information to anticipate the type of variogram model, especiall
   theme_minimal() )
 ```
 
-The blue line is a least-squares regression smoother through the variogram estimates. The fact that it is not a flat horizontal line indicates spatial autocorrelation in the residuals that is distinct from the first-order trend. The shape of the blue line gives us an idea of the type of variogram family of models we should consider.
-
-Now we can guess at a family for the variogram model and eyeball the parameters. Recall that the spherical model had a nearly linear increase in variances with lag distance before an abrupt flattening. 
-
-The parameters for the spherical model can be estimated from the graph as follows.
-```{r}
-p +
-  geom_hline(yintercept = c(12000, 45000), color = "red") +
-  geom_vline(xintercept = .85, color = "red") +
-  geom_segment(aes(x = 0, y = 0, xend = 0, yend = 12000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = .1, y = 11000, label = "nugget")) +
-  geom_segment(aes(x = 0, y = 12000, xend = 0, yend = 45000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = .1, y = 44000, label = "sill")) +
-  geom_segment(aes(x = 0, y = 47000, xend = .85, yend = 47000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = .55, y = 48000, label = "range"))
-```
-
-* Lag (lag distance): Relative distance between observation locations.
-* Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag. The nugget is the variation in the values at the observation locations without regard to spatial variation. Related to the observation (or measurement) precision.
-* Sill: The height of the variogram at which the values are uncorrelated.
-* Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage.
-* Range: The distance beyond which the values are uncorrelated. The range is indicated on the empirical variogram as the position along the horizontal axis where values of the variogram reach a constant height.
+The blue line is a least-squares regression smoother through the variogram estimates. The fact that it is not a flat horizontal line indicates spatial autocorrelation in the residuals (distinct from the first-order trend). 
 
 Directional variograms
 
 The assumption of isotropy implies the same spatial autocorrelation function in all directions.
 
-We compute variograms using observational pairs located along the same orientation to examine this assumption. Instead of considering all observational pairs within a lag distance $h$ and lag tolerance $\delta h$, we consider only pairs within a wedge-shaped segment of this annulus (a ring bounded by two concentric circles).
+You compute variograms using observational pairs located along the same orientation to examine this assumption. Instead of considering all observational pairs within a lag distance $h$ and lag tolerance $\delta h$, you consider only pairs within a directional segment.
 
-This is done with the `variog()` function and specifying a `direction =` argument in units of radians (fractions of $\pi$). We also need to specify the angle tolerance.
+This is done with the `alpha =` argument specifying the direction in plane (x,y), in positive degrees clockwise from positive y (North): alpha = 0 for direction North (increasing y), alpha = 90 for direction East (increasing x).
 
-For example to compute and plot the variogram for the direction of 45 degrees (NE to SW) with a default tolerance of 22.5 degrees (default), type
+Here you specify four directions (north-south-0, northeast-southwest-45, east-west-90, and southeast-northeast-135) and compute the corresponding directional variograms.
+
 ```{r}
-wca.v45 <- variog(wca.gdf, 
-              trend = "1st", 
-              max.dist = 2.3, 
-              direction = pi/4)
-plot(wca.v45)
+wca.vd <- variogram(head ~ X + Y, 
+                    data = wca.sf,
+                    alpha = c(0, 45, 90, 135))
+df <- wca.vd |>
+  as.data.frame() |>
+  dplyr::mutate(direction = factor(dir.hor))
+
+ggplot(data = df, 
+              mapping = aes(x = dist, y = gamma, color = direction)) + 
+  geom_point() + 
+  geom_smooth(alpha = .2) +
+  scale_y_continuous(limits = c(0, NA)) +
+  ylab(expression(paste("Variogram [", gamma,"(h)]"))) +
+  xlab("Lag distance (h)") +
+  theme_minimal()
 ```
 
-Repeat for the other three quadrants (increments of $\pi$/4).
+The four variograms all have a similar shape and there is large overlap in the uncertainty bands surrounding the smooth curves so you conclude that the assumption of isotropy is reasonable.
+
+Fit a variogram model to the empirical variogram
+
+You are now ready to fit a variogram model to the empirical variogram. This amounts to fitting a parametric curve through the set of points that make up the empirical variogram.
+
+Start by plotting the (omni-directional) empirical variogram saved in object `p`.
+
 ```{r}
-par(mfrow = c(2, 2))
-plot(variog(wca.gdf, trend = "1st", 
-            max.dist = 2.3, direction = 0),
-     main = expression(0 * degree))
-plot(variog(wca.gdf, trend = "1st", 
-            max.dist = 2.3, direction = pi/4),
-     main = expression(45 * degree))
-plot(variog(wca.gdf, trend = "1st", 
-            max.dist = 2.3, direction = pi/2),
-     main = expression(90 * degree))
-plot(variog(wca.gdf, trend = "1st", 
-            max.dist = 2.3, direction = 3 * pi/4),
-     main = expression(135 * degree))
+p
 ```
 
-The variograms appear similar but it's difficult to tell since the vertical scales are not all the same. The `variog4()` function makes the comparison easier by plotting them on the same graph. It works like `variog()` but takes a vector of directions. The default directions are 0, 45, 90, and 135 degrees.
+The shape of the blue line gives you an idea of the type of variogram family of models you should consider.
+
+Now you can guess at a family for the variogram model and eyeball the parameters. A _spherical_ variogram model has a nearly linear increase in variances with lag distance before an abrupt flattening so that is a good choice.
+
+The parameters for the model can be estimated from the graph as follows.
 ```{r}
-par(mfrow = c(1, 1))
-v4 <- variog4(wca.gdf, 
-              trend = "1st",
-              max.dist = 2.3)
-plot(v4)
+p +
+  geom_hline(yintercept = c(12000, 45000), color = "red") +
+  geom_vline(xintercept = 100, color = "red") +
+  geom_segment(aes(x = 0, y = 0, xend = 0, yend = 12000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 15, y = 11000, label = "nugget")) +
+  geom_segment(aes(x = 0, y = 12000, xend = 0, yend = 45000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 10, y = 44000, label = "sill")) +
+  geom_segment(aes(x = 0, y = 47000, xend = 100, yend = 47000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 50, y = 48000, label = "range"))
 ```
 
-This plot makes it clear that the assumption of isotropy is reasonable.
+The three parameters used in fitting a variogram model are nugget, sill, and range.
 
-Step 3: Fit a variogram model to the empirical variogram
+- Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag. The nugget is the variation in the values at the observation locations without regard to spatial variation. Related to the observation (or measurement) precision.
 
-Next we need to fit a curve through the set of points that make up the empirical variogram. The curve is called the variogram model. 
+- Sill: The height of the variogram at which the values are uncorrelated. The sill is indicated by the height of the plateau in the variogram. 
 
-Since the `s100` data were generated using a variogram model, we already know the answer. The model is exponential with a sill (partial) of 1, a range of .3, and a nugget of 0.
+- Range: The distance beyond which the values are uncorrelated. The range is indicated by distance along the horizontal axis from zero lag until the plateau in the variogram.
 
-Plot the empirical variogram values and overlay the curve corresponding to the exponential model with the `lines.variomodel()` function. The sill and range parameters are given in order using the `cov.pars` argument.
+Other terms: (1) Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage. (2) Lag distance: Relative distance between observation locations.
+
+From the figure you estimate the sill at 44000 ft^2, the nugget at 12000 ft^2 and the range at 100 km. 
+
+To fit a model to the empirical variogram you start with the `vgm()` function that sets the curve family (here spherical) and the initial parameter values. You save result in an object called `wca.vmi`. The function needs the partial sill (`psill =` argument) as the difference between the sill and the nugget.
+
 ```{r}
-plot(variog(s100, uvec = seq(0, 1, l = 21)))
-lines.variomodel(cov.model = "exp", 
-                 cov.pars = c(1, .3), nugget = 0, 
-                 max.dist = 1.2, lwd = 2, col = "red")
+wca.vmi <- vgm(model = "Sph", 
+               psill = 32000, 
+               range = 100, 
+               nugget = 12000)
+wca.vmi
 ```
 
-Note that the practical range for the exponential model is the distance along the horizontal axis at which the curve reaches 95% of the sill, which is 3 times the range specified in the `cov.pars` argument.
+Next you apply the function `fit.variogram()`, which uses the method of weighted least squares to improve the parameter estimates from the set of initial estimates. The function takes the empirical variogram and the set of initial estimates as `object =` and `model =`, respectively.
 
-The `uvec =` argument allows control over the range of distance values and the number of variogram estimates. We specify the maximum distance in the `lines.variomodel()` function.
+```{r}
+wca.vm <- fit.variogram(object = wca.v, 
+                        model = wca.vmi)
+wca.vm
+```
 
-With observed data we don't know the model so we estimate the parameters using information from the empirical variogram.
+Note: Ordinary least squares is not an appropriate method for fitting a variogram model to the empirical variogram because the semivariances are correlated across the lag distances and the precision on the estimates depends on the number of site pairs for a given lag.
 
-* By eye: Trial and error over several models and parameter values. The `lines.variomodel()` function can help.  
-* By least squares fit:  Using ordinary least squares (OLS) or weighted least squares (WLS) methods available through the `variofit()` function.  
-* By maximum likelihood methods: Options for maximum likelihood (ML) and restricted maximum likelihood (REML) are available through the `likfit()` function.  
+
+
 
 Try various curves and choosing the one that looks the best. Here we plot three models on top of the `s100` empirical variogram.
 ```{r}
