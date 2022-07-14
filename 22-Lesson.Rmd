@@ -1,0 +1,159 @@
+# Thursday November 3, 2022 {.unnumbered}
+
+Today
+
+- Evaluating the accuracy of the interpolated surface 
+
+
+## Evaluating the accuracy of the interpolated surface {-}
+
+Interpolating a surface representing the height of the Wolfcamp Aquifer in Texas/New Mexico.
+
+Read the data, create a simple feature data frame, add the coordinates as attributes and remove the duplicate location.
+
+```{r}
+L <- "http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv"
+wca.sf <- readr::read_csv(L, show_col_types = FALSE) |>
+  sf::st_as_sf(coords = c("lon", "lat"),
+               crs = 4326)
+
+XY <- wca.sf |>
+  sf::st_coordinates() 
+wca.sf$X <- XY[, 1]
+wca.sf$Y <- XY[, 2]
+
+wca.sf <- wca.sf |>
+  dplyr::filter(!duplicated(geometry))
+```
+
+Plot the data values.
+
+```{r}
+library(ggplot2)
+
+ggplot() +
+  geom_sf(data = wca.sf,
+          mapping = aes(color = head)) +
+  scale_color_viridis_c() +
+  labs(col = "Height (ft)") +
+  theme_minimal()
+```
+
+There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue). Besides the trend there is local spatial autocorrelation.
+
+You compute and save the empirical variogram, specify intial values for the parameters of a variogram model, and fit the variogram model.
+
+```{r}
+wca.v <- variogram(head ~ X + Y, 
+                   data = wca.sf)
+
+wca.vmi <- vgm(model = "Sph", 
+               psill = 32000, 
+               range = 100, 
+               nugget = 12000)
+wca.vm <- fit.variogram(object = wca.v, 
+                        model = wca.vmi)
+wca.vm
+```
+
+Make a grid for the interpolated values and add the coordinates as attributes.
+
+```{r}
+grid.sfc <- sf::st_make_grid(wca.sf,
+                             n = c(50, 50),
+                             what = "centers")
+XY <- grid.sfc |>
+  sf::st_coordinates() 
+grid.sf <- grid.sfc |>
+  sf::st_as_sf() |>
+  dplyr::mutate(X = XY[, 1],
+                Y = XY[, 2])
+```
+
+Interpolate with universal kriging.
+
+```{r}
+wca.int <- krige(head ~ X + Y,
+                 locations = wca.sf,
+                 newdata = grid.sf,
+                 model = wca.vm)
+```
+
+Map the output.
+
+```{r}
+ggplot() +
+  geom_sf(data = wca.int,
+          mapping = aes(col = var1.pred)) +
+  scale_color_viridis_c() +
+  labs(col = "Height (ft)") +
+  theme_minimal()
+```
+
+The trend captures the large scale feature while the variogram captures the local spatial autocorrelation
+
+How do we evaluate how good the interpolated surface is? If we use the variogram model to predict at the observation locations, we will get the observed values back (when the nugget is fixed at zero). So this is not helpful. Instead we use cross validation.
+
+Cross validation is a procedure for assessing how well a model will do at predicting values when observations specific to the prediction are removed. The procedure first partitions the data into disjoint subsets. The model is then fit to one subset of the data (training set) and the model is validated on a different subset (testing set). 
+
+Leave-one-out cross validation uses all but one observation for fitting and the left-out observation for testing. The procedure is repeated with every observation taking turns being left out. 
+
+K-fold cross validation uses K observations for fitting and N-K for testing. With large K there are many ways to slice the sample so the procedure is not exhaustive like hold-one-out. 
+
+With kriging, the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. Thus cross validation has two cases: weak and strong. Weak cross validation uses the entire dataset to estimate the variogram model. Then kriging is performed N times using a leave-one-out strategy with the predicted value saved only for the observation left out.
+
+The `xvalid()` function from the {geoR} package computes the cross-validated prediction error of the Wolfcamp aquifer interpolation in this weak sense.
+```{r}
+xv.wk <- xvalid(wca.gdf, 
+                model = wca.vm)
+df <- data.frame(observed = xv.wk$data, 
+                 predicted = xv.wk$predicted)
+
+ggplot(df, aes(x = observed, y = predicted)) + 
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_smooth(method = lm, color = "red") +
+  ylab("Predicted head heights (ft)") +
+  xlab("Observed head heights (ft)") +
+  ggtitle("Weak Cross Validation") +
+  theme_minimal()
+```
+
+The black line represents a perfect prediction and the red line is the best fit line when we regress the predicted head heights onto the observed head heights. The fact that the two lines nearly coincide indicates the interpolation is good.
+
+We quantify how good using the mean squared error and mean absolute error as follows.
+```{r}
+mean(xv.wk$error^2)
+mean(abs(xv.wk$error))
+```
+
+The mean squared cross-validated prediction error is 30636 ft^2 and the mean absolute cross-validated prediction error is 137 ft.
+
+In contrast to weak cross validation, strong cross validation requires that the variogram be re-estimated each time an observation is removed. The model must be fit using the `variofit()` function and the call must include the empirical variogram object. This is done with the argument `reestimate = TRUE`.
+```{r}
+wca.vm2 <- variofit(wca.v, 
+                    ini = c(33000, .8),
+                    nug = 10000, 
+                    cov.model = "spherical")
+
+xv.st <- xvalid(wca.gdf, 
+                model = wca.vm2,
+                variog.obj = wca.v,
+                reestimate = TRUE)
+df <- data.frame(observed = xv.st$data, 
+                 predicted = xv.st$predicted)
+
+ggplot(df, aes(x = observed, y = predicted)) + 
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_smooth(method = lm, color = "red") +
+  ylab("Predicted head heights (ft)") +
+  xlab("Observed head heights (ft)") +
+  ggtitle("Strong Cross Validation") +
+  theme_minimal()
+
+mean(xv.st$error^2)
+mean(abs(xv.st$error))
+```
+
+The prediction error estimated using the procedure of strong cross validation will be larger than the prediction error estimated using the procedure of weak cross validation.

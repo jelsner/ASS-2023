@@ -3,7 +3,7 @@
 Today
 
 - Fitting a variogram model to the sample variogram
-
+- Creating an interpolated surface with the method of kriging
 
 ## Fitting a variogram model to the sample variogram {-}
 
@@ -89,6 +89,7 @@ ggplot() +
   geom_sf(data = wca.sf,
           mapping = aes(color = head)) +
   scale_color_viridis_c() +
+  labs(col = "Height (ft)") +
   theme_minimal()
 ```
 
@@ -116,14 +117,14 @@ variogram(head ~ X + Y,
 
 Here you see an increase in the variance with lag distance out to about 100 km, but then the values fluctuate about a variance of about 41000 (ft$^2$).
 
-Let's save the variogram object computed on the residuals.
+You save the variogram object computed on the residuals.
 
 ```{r}
 wca.v <- variogram(head ~ X + Y, 
                    data = wca.sf)
 ```
 
-You use this information contained in the variogram object to anticipate the type of variogram model.
+You then use this information contained in the variogram object to anticipate the type of variogram model.
 
 ```{r}
 df <- wca.v |>
@@ -230,23 +231,140 @@ wca.vm
 
 Note: Ordinary least squares is not an appropriate method for fitting a variogram model to the empirical variogram because the semivariances are correlated across the lag distances and the precision on the estimates depends on the number of site pairs for a given lag.
 
+The output table shows the nugget and spherical model. The nugget is 9812 ft^2 and the partial sill for the spherical model is 34851 ft^2 with a range of 107 km. These values are close to your initial estimates.
 
+To check the model and fit plot them together with the `plot()` method.
 
-
-Try various curves and choosing the one that looks the best. Here we plot three models on top of the `s100` empirical variogram.
 ```{r}
-plot(variog(s100, max.dist = 1))
-lines.variomodel(cov.model = "exp", 
-                 cov.pars = c(1, .3), 
-                 nug = 0, max.dist = 1)
-lines.variomodel(cov.model = "exp", 
-                 cov.pars = c(1, .5),
-                 nug = .1, max.dist = 1, 
-                 col = "red")
-lines.variomodel(cov.model = "sph", 
-                 cov.pars = c(.8, .8),
-                 nug = .1, max.dist = 1, 
-                 col = "blue")
+plot(wca.v, wca.vm)
 ```
 
-The black line is the model used to generate the `s100` dataset. The red line is based on the same exponential (exp) function but has a range of .5 and a nugget of .1. The blue line is based on a spherical function with a sill and range of .8 and a nugget of .1. All three models fit the points reasonably well. In practice, the choice often makes little difference in the quality of the spatial interpolation.
+The blue line is the variogram model and the points are the empirical variogram values.
+
+Note that the `fit.variogram()` function will find the optimal fit even if the initial values are not very good. Here you lower the partial sill to 10000 ft^2, reduce the range to 50 km and set the nugget to 8000 ft^2.
+
+```{r}
+wca.vmi2 <- vgm(model = "Sph", 
+                psill = 10000, 
+                range = 50, 
+                nugget = 8000)
+wca.vm2 <- fit.variogram(object = wca.v, 
+                        model = wca.vmi2)
+wca.vm2
+```
+
+The initial values are poor but good enough for the `fit.variogram()` function to find the optimal model.
+
+Compare the spherical model to a Gaussian and an exponential model.
+```{r}
+wca.vmi3 <- vgm(model = "Gau", 
+                psill = 30000, 
+                range = 30, 
+                nugget = 10000)
+wca.vm3 <- fit.variogram(object = wca.v, 
+                         model = wca.vmi3)
+wca.vmi4 <- vgm(model = "Exp", 
+                psill = 30000, 
+                range = 10, 
+                nugget = 10000)
+wca.vm4 <- fit.variogram(object = wca.v, 
+                         model = wca.vmi4)
+plot(wca.v, wca.vm3)
+plot(wca.v, wca.vm4)
+```
+
+The Gaussian model has a S-shaped curve (sigmodial) indicating more spatial autocorrelation at close distances. The exponential model has no plateau. Both models fit the empirical variogram values reasonably well. 
+
+In practice, the choice often makes very little difference in the quality of the spatial interpolation.
+
+On the other hand, it is possible to optimize over all sets of variogram models and parameters using the `autofitVariogram()` function from the {automap} package. The package requires the data to be of S4 class but uses the functions from the {gstat} package.
+
+Here you use the function on the Wolfcamp aquifer data.
+
+```{r}
+wca.sp <- as(wca.sf, "Spatial")
+wca.vm5 <- automap::autofitVariogram(formula = head ~ X + Y, 
+                                     input_data = wca.sp)
+plot(wca.vm5)
+```
+
+The automatic fitting results in a Matern model with Stein's parameterization. The Matern family of variogram models has an additional parameter (besides the nugget, sill, and range) kappa that allows for local smoothing. With an extra parameter these models will generally outperform models with fewer parameters.
+
+## Creating an interpolated surface with the method of kriging {-}
+
+Kriging uses the variogram model together with the observed data to estimate values at any location of interest. The kriged estimates are a weighted average of the neighborhood values with the weights defined by the variogram model. 
+
+Estimates are often made at locations defined on a regular grid. Here you create a regular grid of locations within the boundary of the spatial data frame using the `sf::st_make_grid()` function.  You specify the number of locations in the x and y direction using the argument `n =`. The `what = "centers"` returns the center locations of the grid cells as points.
+
+```{r}
+grid.sfc <- sf::st_make_grid(wca.sf,
+                             n = c(50, 50),
+                             what = "centers")
+```
+
+The result is a simple feature column (`sfc`) of points.
+
+Plot the grid locations together with the observation locations.
+
+```{r}
+sts <- USAboundaries::us_states()
+
+tmap::tmap_mode("plot")
+tmap::tm_shape(wca.sf) +
+  tmap::tm_bubbles(size = .25) +
+tmap::tm_shape(grid.sfc) +
+  tmap::tm_dots(col = "red") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders()
+```
+
+Since there is a trend term you need to add the X and Y values to the simple feature column of the grid. First make it a simple feature data frame then using then add the columns with `dplyr::mutate()`.
+
+```{r}
+XY <- grid.sfc |>
+  sf::st_coordinates() 
+grid.sf <- grid.sfc |>
+  sf::st_as_sf() |>
+  dplyr::mutate(X = XY[, 1],
+                Y = XY[, 2])
+```
+
+Next interpolate the aquifer heights to the grid locations. You do this with the `krige()` function. The first argument is the formula for the trend, the locations argument is the observed data locations from the simple feature data frame, the new data argument is the locations and independent variables (in this case the trend variables) and the model argument is the variogram model that you fit above.
+
+```{r}
+wca.int <- krige(head ~ X + Y,
+                 locations = wca.sf,
+                 newdata = grid.sf,
+                 model = wca.vm)
+head(wca.int)
+```
+
+The output says `using universal kriging`. This is because there is a trend and a variogram model.
+
+The output is a simple feature data frame containing the interpolated values at the grid locations in the column labeled `var1.pred`. The interpolated uncertainty is given in the column labeled `var1.var`.
+
+You plot the interpolated aquifer heights at the grid locations using functions from the {ggplot2} package.
+
+```{r}
+ggplot() +
+  geom_sf(data = wca.int,
+          mapping = aes(col = var1.pred)) +
+  scale_color_viridis_c() +
+  labs(col = "Height (ft)") +
+  theme_minimal()
+```
+
+The trend captures the large scale feature while the variogram captures the local spatial autocorrelation. Together they produce an interpolated surface that matches exactly the values at the observation locations (when the nugget is fixed at zero).
+
+Plot the uncertainty in the estimated interpolated values as the square root of the variance.
+
+```{r}
+ggplot() +
+  geom_sf(data = wca.int,
+          mapping = aes(col = sqrt(var1.var))) +
+  scale_color_viridis_c(option = "plasma") +
+  labs(col = "Uncertainty (ft)") +
+  theme_minimal()
+```
+
+Areas with the largest uncertainty are in areas away from observations (northwest corner). This makes sense our knowledge of the aquifer comes from these observations.
