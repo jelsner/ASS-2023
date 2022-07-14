@@ -9,7 +9,7 @@ Today
 
 Interpolating surface air temperatures across the Midwest. The data in `MidwestTemps.txt` are average temperatures in and around the state of Iowa for the month of April.
 
-You start by examining the data for spatial trends.
+Start by examining the data for spatial trends.
 
 ```{r}
 L <- "http://myweb.fsu.edu/jelsner/temp/data/MidwestTemps.txt"
@@ -39,65 +39,68 @@ tmap::tm_shape(sts) +
   tmap::tm_borders() 
 ```
 
+There is a clear trend in temperatures with the coolest values to the north Besides the trend there is likely some local spatial autocorrelation.
 
-
-
-
-
-Interpolating a surface representing the height of the Wolfcamp Aquifer in Texas/New Mexico.
-
-Read the data, create a simple feature data frame, add the coordinates as attributes and remove the duplicate location.
+Compute and plot the empirical variogram on the trend residuals.
 
 ```{r}
-L <- "http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv"
-wca.sf <- readr::read_csv(L, show_col_types = FALSE) |>
-  sf::st_as_sf(coords = c("lon", "lat"),
-               crs = 4326)
-
-XY <- wca.sf |>
-  sf::st_coordinates() 
-wca.sf$X <- XY[, 1]
-wca.sf$Y <- XY[, 2]
-
-wca.sf <- wca.sf |>
-  dplyr::filter(!duplicated(geometry))
+t.v <- variogram(temp ~ X + Y, 
+                 data = t.sf)
+plot(t.v)
 ```
 
-Plot the data values.
+Check for anisotropy. Specify four directions and compute the corresponding directional variograms.
 
 ```{r}
-library(ggplot2)
+t.vd <- variogram(temp ~ X + Y, 
+                  data = t.sf,
+                  alpha = c(0, 45, 90, 135))
+df <- t.vd |>
+  as.data.frame() |>
+  dplyr::mutate(direction = factor(dir.hor))
 
-ggplot() +
-  geom_sf(data = wca.sf,
-          mapping = aes(color = head)) +
-  scale_color_viridis_c() +
-  labs(col = "Height (ft)") +
+ggplot(data = df, 
+              mapping = aes(x = dist, y = gamma, color = direction)) + 
+  geom_point() + 
+  geom_smooth(alpha = .2) +
+  scale_y_continuous(limits = c(0, NA)) +
+  ylab(expression(paste("Variogram [", gamma,"(h)]"))) +
+  xlab("Lag distance (h)") +
   theme_minimal()
 ```
 
-There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue). Besides the trend there is local spatial autocorrelation.
+There is no strong evidence to reject the assumption of isotropy.
 
-You compute and save the empirical variogram, specify intial values for the parameters of a variogram model, and fit the variogram model.
+Use the `autofitVariogram()` function to get initial estimates.
 
 ```{r}
-wca.v <- variogram(head ~ X + Y, 
-                   data = wca.sf)
+t.sp <- as(t.sf, "Spatial")
+t.vm <- automap::autofitVariogram(formula = temp ~ X + Y, 
+                                     input_data = t.sp)
+plot(t.vm)
+```
 
-wca.vmi <- vgm(model = "Sph", 
-               psill = 32000, 
-               range = 100, 
-               nugget = 12000)
-wca.vm <- fit.variogram(object = wca.v, 
-                        model = wca.vmi)
-wca.vm
+Set the initial parameters for a Gaussian model then fit the model.
+
+```{r}
+t.vmi <- vgm(model = "Gau", 
+             psill = 2, 
+             range = 100, 
+             nugget = 1)
+t.vmi
+
+t.vm <- fit.variogram(object = t.v, 
+                      model = t.vmi)
+t.vm
+
+plot(t.v, t.vm)
 ```
 
 Make a grid for the interpolated values and add the coordinates as attributes.
 
 ```{r}
-grid.sfc <- sf::st_make_grid(wca.sf,
-                             n = c(50, 50),
+grid.sfc <- sf::st_make_grid(t.sf,
+                             n = c(100, 100),
                              what = "centers")
 XY <- grid.sfc |>
   sf::st_coordinates() 
@@ -110,21 +113,29 @@ grid.sf <- grid.sfc |>
 Interpolate with universal kriging.
 
 ```{r}
-wca.int <- krige(head ~ X + Y,
-                 locations = wca.sf,
-                 newdata = grid.sf,
-                 model = wca.vm)
+t.int <- krige(temp ~ X + Y,
+               locations = t.sf,
+               newdata = grid.sf,
+               model = t.vm)
 ```
 
 Map the output.
 
 ```{r}
-ggplot() +
-  geom_sf(data = wca.int,
-          mapping = aes(col = var1.pred)) +
-  scale_color_viridis_c() +
-  labs(col = "Height (ft)") +
-  theme_minimal()
+tmap::tm_shape(t.int) +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = "var1.pred", 
+                n = 9, 
+                palette = "OrRd") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() +
+tmap::tm_shape(t.sf) +
+  tmap::tm_text("temp", 
+                col = "white", 
+                size = .5) +
+tmap::tm_layout(legend.outside = TRUE)
 ```
 
 The trend captures the large scale feature while the variogram captures the local spatial autocorrelation
