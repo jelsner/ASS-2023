@@ -4,10 +4,11 @@
 
 Today
 
-- Interpolating to areas
+- Interpolating to areal units
 - Simulating spatial fields
+- Interpolating multiple variables
 
-## Interpolating to areas (block kriging)
+## Interpolating to areal units (block kriging) {-}
 
 Interpolating rainfall across Florida from tropical cyclone Fay (2008).
 
@@ -139,7 +140,23 @@ plot(variogram(tpm ~ 1,
      xlab = "Lag Distance (m)")
 ```
 
-We see the range of correlations is longer (about 300 km) in the north-south direction (0 degrees). We refit the variogram defining an anistropy ellipse with the `anis =` argument. The first parameter is the direction of longest range and the second parameter is the ratio of the longest to shortest. Here about (200/300 = .67).
+We see the range of correlations is longer (about 300 km) in the north-south direction (0 degrees). 
+
+Another way to look at directional dependence in variograms is through variogram maps. Instead of classifying point pairs Z(s) and Z(s + h) by direction and distance class separately, you can classify them jointly.
+
+If h = {x, y} is the two-dimensional coordinates of the separation
+vector, in the variogram map the semivariance contribution of each point pair (Z(s) − Z(s + h))^2 is attributed to the grid cell in which h lies. The map is centered around (0, 0), as h is distance rather than location. Cutoff and width correspond to some extent to map extent and cell size; the semivariance map is point symmetric around (0, 0), as γ(h) = γ(−h).
+
+```{r}
+vgm.map <- variogram(log(zinc) ~ sqrt(dist), 
+                     meuse, 
+                     cutoff = 1500, 
+                     width = 100,
+                     map = TRUE)
+plot(vgm.map, threshold = 5)
+```
+
+We refit the variogram defining an anistropy ellipse with the `anis =` argument. The first parameter is the direction of longest range and the second parameter is the ratio of the longest to shortest. Here about (200/300 = .67).
 ```{r}
 FR.vmi <- vgm(model = "Gau", 
               psill = 150, 
@@ -275,6 +292,8 @@ In contrast the median prediction variance for our block kriging is a much small
 round(fivenum(ipl2$var1.var)[3], 1)
 ```
 
+## Simulating spatial fields {-}
+
 Simulations exploit this uncertainty and provide synthetic data for use in deterministic models. 
 
 Conditional simulation, where the simulated field (realization) is generated given the data and the variogram model, is done using the same `krige()` function by adding the argument `nsim =` to specify the number of simulations.  
@@ -303,3 +322,108 @@ tm_shape(ipl.sim) +
 ```
 
 The overall pattern of rainfall remains the same, but there are differences especially in counties with fewer observations and in counties where the rainfall gradients are sharp.
+
+Unconditional simulation (see Section 4 https://www.r-bloggers.com/2022/03/gaussian-simulation-of-spatial-data-using-r/)
+
+## Interpolating multiple variables {-}
+
+Statistical interpolation can be extended to obtain surfaces of multiple field variables. The idea is that if two field variables are correlated then information about the spatial correlation in one field variable can help provide information about values in the other field variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to only two variables. 
+
+Here we consider data measuring concentrations of heavy metals in the flood plain of the Meuse River in Holland. The data are available in the {sp} package.
+```{r}
+library(gstat)
+library(sf)
+library(sp)
+
+data(meuse)
+names(meuse)
+
+meuse.sf <- st_as_sf(x = meuse,
+                    coords = c("x", "y"),
+                    crs = 28992)
+```
+
+Suppose we are interested in the spatial distribution of all the heavy metals in the soils along the river.
+
+First we need to organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the field variables into a single object. It is done successively with the `gstat()` function.
+
+Here we specify the trend using the square root of the distance to river as we did previously.
+```{r}
+g <- gstat(NULL, "logCd", log(cadmium) ~ sqrt(dist), meuse.sf)
+g <- gstat(g, "logCu", log(copper) ~ sqrt(dist), meuse.sf)
+g <- gstat(g, "logPb", log(lead) ~ sqrt(dist), meuse.sf)
+g <- gstat(g, "logZn", log(zinc) ~ sqrt(dist), meuse.sf)
+g
+```
+
+Next we use the `variogram()` function to compute empirical variograms. The function, when operating on a `gstat` object, computes all direct and cross variograms.
+```{r}
+v <- variogram(g)
+plot(v)
+```
+
+The plot method displays the set of direct and cross variograms. The direct variograms are shown in the four panels along the diagonal of the triangle of plots.
+
+The cross variograms are shown in the six panels below the diagonal. For example, the cross variogram between the values of cadmium and copper is given in the second row of the first column. 
+
+Note: The cross variogram is analogous to the `Kcross()` function from the {spatstat} package.
+
+Next we use `fit.lmc()` to fit separate models to each of the empirical variograms. We use an initial partial sill and nugget equal to one and a range of 800.
+```{r}
+vm <- fit.lmc(v, g, 
+              vgm(psill = 1, model = "Sph", 
+              range = 800, nugget = 1))
+plot(v, vm)
+```
+
+As the variograms indicate, the variables have a strong cross correlations. Because these variables are co-located, we can also compute direct correlations.
+```{r}
+cor(meuse[c("cadmium", "copper", "lead", "zinc")])
+```
+
+The correlation matrix confirms strong cross correlation among the four variables at zero lag. The cross variogram generalizes these correlations across lag distance.
+
+Given the variogram models, cokriged maps are produced using the `predict()` method after setting the grid locations for interpolation. The CRS for the grid locations matches the CRS of the data.
+```{r}
+data(meuse.grid)
+
+grid.sf <- st_as_sf(x = meuse.grid,
+                    coords = c("x", "y"),
+                    crs = 28992)
+
+cok <- predict(vm, grid.sf)
+names(cok)
+```
+
+The predictions for logarithm of zinc concentration are plotted.
+```{r}
+library(tmap)
+
+tm_shape(cok) +
+  tm_dots(col = "logZn.pred", size = .2)
+```
+
+Compare with predictions using only zinc.
+```{r}
+v2 <- variogram(log(zinc) ~ sqrt(dist), 
+                data = meuse.sf)
+vm2 <- fit.variogram(v2, vgm(psill = .15, model = "Sph", 
+                             range = 800, nugget = .1))
+uk <- krige(log(zinc) ~ sqrt(dist), meuse.sf, newdata = grid.sf, 
+              model = vm2)
+
+tm_shape(uk) +
+  tm_dots(col = "var1.pred", size = .2)
+```
+
+The predicted co-variances between zinc and cadmium are plotted.
+```{r}
+tm_shape(cok) +
+  tm_dots(col = "cov.logCd.logZn", size = .2)
+```
+
+The map shows areas of the flood plain with high (and low) correlations between cadmium and zinc.
+
+Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your toolbox.
+
+Kriging is super useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
