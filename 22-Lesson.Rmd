@@ -2,12 +2,12 @@
 
 Today
 
-- Evaluating the accuracy of the interpolated surface 
+- Comparing interpolation methods
+- Evaluating the accuracy of the interpolation
 
+## Comparing interplation methods {-}
 
-## Evaluating the accuracy of the interpolated surface {-}
-
-Interpolating surface air temperatures across the Midwest. The data in `MidwestTemps.txt` are average temperatures in and around the state of Iowa for the month of April.
+Here you consider a data set of monthly average surface air temperatures for April across the Midwest. The data are available on my website in the file `MidwestTemps.txt`.
 
 Start by examining the data for spatial trends.
 
@@ -39,9 +39,9 @@ tmap::tm_shape(sts) +
   tmap::tm_borders() 
 ```
 
-There is a clear trend in temperatures with the coolest values to the north Besides the trend there is likely some local spatial autocorrelation.
+There is a clear trend in the temperature field with the coolest values to the north. Besides the trend there is some local clustering of similar values (spatial autocorrelation).
 
-Compute and plot the empirical variogram on the trend residuals.
+Compute and plot the empirical variogram on the residuals after removing the trend. The trend term is specified in the formula as `temp ~ X + Y`.
 
 ```{r}
 t.v <- variogram(temp ~ X + Y, 
@@ -138,17 +138,128 @@ tmap::tm_shape(t.sf) +
 tmap::tm_layout(legend.outside = TRUE)
 ```
 
-The trend captures the large scale feature while the variogram captures the local spatial autocorrelation
+The trend term captures the north-south temperature gradient and the variogram captures the local spatial autocorrelation. Together they provide the best interpolated surface.
 
-How do we evaluate how good the interpolated surface is? If we use the variogram model to predict at the observation locations, we will get the observed values back (when the nugget is fixed at zero). So this is not helpful. Instead we use cross validation.
+To see this, you refit the interpolation without the variogram model.
 
-Cross validation is a procedure for assessing how well a model will do at predicting values when observations specific to the prediction are removed. The procedure first partitions the data into disjoint subsets. The model is then fit to one subset of the data (training set) and the model is validated on a different subset (testing set). 
+```{r}
+krige(temp ~ X + Y,
+      locations = t.sf,
+      newdata = grid.sf) |>
+  tmap::tm_shape() +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = "var1.pred", 
+                n = 9, 
+                palette = "OrRd") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() +
+tmap::tm_shape(t.sf) +
+  tmap::tm_text("temp", 
+                col = "white", 
+                size = .5) +
+tmap::tm_layout(legend.outside = TRUE)
+```
+
+The result is that the variation in temperatures is interpolated as a simple trend surface.
+
+For another comparison, here you interpolate assuming all variation is spatial autocorrelation (no trend term). This is called ordinary kriging.
+
+```{r}
+krige(temp ~ 1,
+      locations = t.sf,
+      newdata = grid.sf,
+      model = t.vm) |>
+  tmap::tm_shape() +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = "var1.pred", 
+                n = 9, 
+                palette = "OrRd") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() +
+tmap::tm_shape(t.sf) +
+  tmap::tm_text("temp", 
+                col = "white", 
+                size = .5) +
+tmap::tm_layout(legend.outside = TRUE)
+```
+
+The result is that all variation is local autocorrelation. This produces patches of higher and lower temperatures. 
+
+The pattern obtained with ordinary kriging is similar to that obtained using inverse distance weighting. Inverse distance weighting (IDW) is a deterministic method for interpolation. The values assigned to locations are calculated with a weighted average of the values available at the known locations, where the weights are the inverse of the distance to each known location.
+
+The `krige()` function does IDW when there is no trend and no variogram model given.
+
+```{r}
+krige(temp ~ 1,
+      locations = t.sf,
+      newdata = grid.sf) |>
+  tmap::tm_shape() +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = "var1.pred", 
+                n = 9, 
+                palette = "OrRd") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() +
+tmap::tm_shape(t.sf) +
+  tmap::tm_text("temp", 
+                col = "white", 
+                size = .5) +
+tmap::tm_layout(legend.outside = TRUE)
+```
+
+Simple kriging is ordinary kriging with a specified mean. This is done with the `beta =` argument.
+
+```{r}
+krige(temp ~ 1,
+      beta = mean(t.sf$temp),
+      locations = t.sf,
+      newdata = grid.sf,
+      model = t.vm) |>
+  tmap::tm_shape() +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = "var1.pred", 
+                n = 9, 
+                palette = "OrRd") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() +
+tmap::tm_shape(t.sf) +
+  tmap::tm_text("temp", 
+                col = "white", 
+                size = .5) +
+tmap::tm_layout(legend.outside = TRUE)
+```
+
+## Evaluating the accuracy of the interpolation {-}
+
+How do you evaluate how good the interpolated surface is? If you use the variogram model to predict at the observation locations, you will get the observed values back. 
+
+For example, here you interpolate to the observation locations by setting `newdata = t.sf` instead of `grid.sf`. You then compute the correlation between the interpolated value and the observed value.
+
+```{r}
+t.int2 <- krige(temp ~ X + Y,
+                locations = t.sf,
+                newdata = t.sf,
+                model = t.vm)
+cor(t.int2$var1.pred, t.sf$temp)
+```
+
+So this is not helpful. Instead we use cross validation.
+
+Cross validation is a procedure for assessing how well a model will do at predicting (interpolating) values when observations specific to the prediction are removed. The procedure first partitions the data into disjoint subsets. The model is then fit to one subset of the data (training set) and the model is validated on a different subset (testing set).
 
 Leave-one-out cross validation uses all but one observation for fitting and the left-out observation for testing. The procedure is repeated with every observation taking turns being left out. 
 
 K-fold cross validation uses K observations for fitting and N-K for testing. With large K there are many ways to slice the sample so the procedure is not exhaustive like hold-one-out. 
 
-With kriging, the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. Thus cross validation has two cases: weak and strong. Weak cross validation uses the entire dataset to estimate the variogram model. Then kriging is performed N times using a leave-one-out strategy with the predicted value saved only for the observation left out.
+With kriging, the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. Thus cross validation has two cases: weak and strong. Weak cross validation uses the entire data to estimate the variogram model. Then kriging is performed N times using a leave-one-out strategy with the predicted value saved only for the observation left out.
 
 The `xvalid()` function from the {geoR} package computes the cross-validated prediction error of the Wolfcamp aquifer interpolation in this weak sense.
 ```{r}
