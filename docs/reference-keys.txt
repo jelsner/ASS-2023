@@ -19,3 +19,4 @@ example-2-violent-tornado-occurrence
 modeling-the-occurrence-of-violent-tornadoes
 terrain-roughness-and-tornado-occurrence-rates
 spatial-logistic-regression
+interpolating-to-areas-block-kriging

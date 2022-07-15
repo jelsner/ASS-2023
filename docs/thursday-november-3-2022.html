@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Thursday November 3, 2022 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Thursday November 3, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Thursday November 3, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Thursday November 3, 2022 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tuesday-november-1-2022.html"/>
+<link rel="next" href="tuesday-november-8-2022.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i>Syllabus</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#materials-and-class-meetings"><i class="fa fa-check"></i>Materials and class meetings</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i>Are you completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#expectations"><i class="fa fa-check"></i>Expectations</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html"><i class="fa fa-check"></i>Tuesday September 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html"><i class="fa fa-check"></i>Thursday September 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html"><i class="fa fa-check"></i>Thursday September 22, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html"><i class="fa fa-check"></i>Tuesday September 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html"><i class="fa fa-check"></i>Thursday September 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#mapping-incidence-and-risk-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping incidence and risk with spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html"><i class="fa fa-check"></i>Thursday October 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html"><i class="fa fa-check"></i>Tuesday October 11, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#intensity-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Intensity trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html"><i class="fa fa-check"></i>Thursday October 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html"><i class="fa fa-check"></i>Tuesday October 18, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html"><i class="fa fa-check"></i>Thursday October 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#inferring-event-interaction-from-distance-functions"><i class="fa fa-check"></i>Inferring event interaction from distance functions</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#removing-duplicate-event-locations-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate event locations and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#modeling-point-pattern-data"><i class="fa fa-check"></i>Modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#fitting-and-interpreting-an-inhibition-model"><i class="fa fa-check"></i>Fitting and interpreting an inhibition model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html"><i class="fa fa-check"></i>Tuesday October 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#fitting-and-interpreting-a-cluster-model"><i class="fa fa-check"></i>Fitting and interpreting a cluster model</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html"><i class="fa fa-check"></i>Thursday October 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html"><i class="fa fa-check"></i>Tuesday November 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html"><i class="fa fa-check"></i>Thursday November 3, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#evaluating-the-accuracy-of-the-interpolation"><i class="fa fa-check"></i>Evaluating the accuracy of the interpolation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html"><i class="fa fa-check"></i>Tuesday November 8, 2022</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html#interpolating-to-areas-block-kriging"><i class="fa fa-check"></i><b>0.1</b> Interpolating to areas (block kriging)</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thursday-november-3-2022" class="section level1 unnumbered hasAnchor">
+<h1>Thursday November 3, 2022<a href="thursday-november-3-2022.html#thursday-november-3-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“The problem of nonparametric estimation consists in estimation, from the observations, of an unknown function belonging to a sufficiently large class of functions.”</strong> - A.B. Tsybakov</p>
+<p>Today</p>
+<ul>
+<li>Comparing interpolation methods</li>
+<li>Evaluating the accuracy of the interpolation</li>
+</ul>
+<div id="comparing-interpolation-methods" class="section level2 unnumbered hasAnchor">
+<h2>Comparing interpolation methods<a href="thursday-november-3-2022.html#comparing-interpolation-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here you consider a data set of monthly average surface air temperatures for April across the Midwest. The data are available on my website in the file <code>MidwestTemps.txt</code>.</p>
+<p>Start by examining the data for spatial trends.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="thursday-november-3-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/MidwestTemps.txt&quot;</span></span>
+<span id="cb1-2"><a href="thursday-november-3-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a>t.sf <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_table</span>(L, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="thursday-november-3-2022.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>),</span>
+<span id="cb1-4"><a href="thursday-november-3-2022.html#cb1-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb1-5"><a href="thursday-november-3-2022.html#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="thursday-november-3-2022.html#cb1-6" aria-hidden="true" tabindex="-1"></a>XY <span class="ot">&lt;-</span> t.sf <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="thursday-november-3-2022.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_coordinates</span>() </span>
+<span id="cb1-8"><a href="thursday-november-3-2022.html#cb1-8" aria-hidden="true" tabindex="-1"></a>t.sf<span class="sc">$</span>X <span class="ot">&lt;-</span> XY[, <span class="dv">1</span>]</span>
+<span id="cb1-9"><a href="thursday-november-3-2022.html#cb1-9" aria-hidden="true" tabindex="-1"></a>t.sf<span class="sc">$</span>Y <span class="ot">&lt;-</span> XY[, <span class="dv">2</span>]</span>
+<span id="cb1-10"><a href="thursday-november-3-2022.html#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="thursday-november-3-2022.html#cb1-11" aria-hidden="true" tabindex="-1"></a>t.sf<span class="sc">$</span>geometry <span class="sc">|&gt;</span></span>
+<span id="cb1-12"><a href="thursday-november-3-2022.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">duplicated</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-13"><a href="thursday-november-3-2022.html#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">any</span>()</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>Plot the values on a map.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="thursday-november-3-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a>sts <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>()</span>
+<span id="cb3-2"><a href="thursday-november-3-2022.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="thursday-november-3-2022.html#cb3-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(t.sf) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="thursday-november-3-2022.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_text</span>(<span class="at">text =</span> <span class="st">&quot;temp&quot;</span>, </span>
+<span id="cb3-5"><a href="thursday-november-3-2022.html#cb3-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="thursday-november-3-2022.html#cb3-6" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(sts) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="thursday-november-3-2022.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>() </span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>There is a clear trend in the temperature field with the coolest values to the north. Besides the trend there is some local clustering of similar values (spatial autocorrelation).</p>
+<p>Compute and plot the empirical variogram on the residuals after removing the trend. The trend term is specified in the formula as <code>temp ~ X + Y</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="thursday-november-3-2022.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb4-2"><a href="thursday-november-3-2022.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="thursday-november-3-2022.html#cb4-3" aria-hidden="true" tabindex="-1"></a>t.v <span class="ot">&lt;-</span> <span class="fu">variogram</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y, </span>
+<span id="cb4-4"><a href="thursday-november-3-2022.html#cb4-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> t.sf)</span>
+<span id="cb4-5"><a href="thursday-november-3-2022.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t.v)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Check for anisotropy. Specify four directions and compute the corresponding directional variograms.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="thursday-november-3-2022.html#cb5-1" aria-hidden="true" tabindex="-1"></a>t.vd <span class="ot">&lt;-</span> <span class="fu">variogram</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y, </span>
+<span id="cb5-2"><a href="thursday-november-3-2022.html#cb5-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> t.sf,</span>
+<span id="cb5-3"><a href="thursday-november-3-2022.html#cb5-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">45</span>, <span class="dv">90</span>, <span class="dv">135</span>))</span>
+<span id="cb5-4"><a href="thursday-november-3-2022.html#cb5-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> t.vd <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="thursday-november-3-2022.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="thursday-november-3-2022.html#cb5-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">direction =</span> <span class="fu">factor</span>(dir.hor))</span>
+<span id="cb5-7"><a href="thursday-november-3-2022.html#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="thursday-november-3-2022.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-9"><a href="thursday-november-3-2022.html#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="thursday-november-3-2022.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb5-11"><a href="thursday-november-3-2022.html#cb5-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> dist, <span class="at">y =</span> gamma, <span class="at">color =</span> direction)) <span class="sc">+</span> </span>
+<span id="cb5-12"><a href="thursday-november-3-2022.html#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb5-13"><a href="thursday-november-3-2022.html#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="thursday-november-3-2022.html#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb5-15"><a href="thursday-november-3-2022.html#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Variogram [&quot;</span>, gamma,<span class="st">&quot;(h)]&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb5-16"><a href="thursday-november-3-2022.html#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (h)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="thursday-november-3-2022.html#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>There is no strong evidence to reject the assumption of isotropy.</p>
+<p>Use the <code>autofitVariogram()</code> function to get initial estimates.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="thursday-november-3-2022.html#cb7-1" aria-hidden="true" tabindex="-1"></a>t.sp <span class="ot">&lt;-</span> <span class="fu">as</span>(t.sf, <span class="st">&quot;Spatial&quot;</span>)</span>
+<span id="cb7-2"><a href="thursday-november-3-2022.html#cb7-2" aria-hidden="true" tabindex="-1"></a>t.vm <span class="ot">&lt;-</span> automap<span class="sc">::</span><span class="fu">autofitVariogram</span>(<span class="at">formula =</span> temp <span class="sc">~</span> X <span class="sc">+</span> Y, </span>
+<span id="cb7-3"><a href="thursday-november-3-2022.html#cb7-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">input_data =</span> t.sp)</span>
+<span id="cb7-4"><a href="thursday-november-3-2022.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t.vm)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Set the initial parameters for a Gaussian model then fit the model.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="thursday-november-3-2022.html#cb8-1" aria-hidden="true" tabindex="-1"></a>t.vmi <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">&quot;Gau&quot;</span>, </span>
+<span id="cb8-2"><a href="thursday-november-3-2022.html#cb8-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">psill =</span> <span class="dv">2</span>, </span>
+<span id="cb8-3"><a href="thursday-november-3-2022.html#cb8-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">range =</span> <span class="dv">100</span>, </span>
+<span id="cb8-4"><a href="thursday-november-3-2022.html#cb8-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">nugget =</span> <span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="thursday-november-3-2022.html#cb8-5" aria-hidden="true" tabindex="-1"></a>t.vmi</span></code></pre></div>
+<pre><code>##   model psill range
+## 1   Nug     1     0
+## 2   Gau     2   100</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="thursday-november-3-2022.html#cb10-1" aria-hidden="true" tabindex="-1"></a>t.vm <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> t.v, </span>
+<span id="cb10-2"><a href="thursday-november-3-2022.html#cb10-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">model =</span> t.vmi)</span></code></pre></div>
+<pre><code>## Warning in fit.variogram(object = t.v, model = t.vmi): No convergence after 200
+## iterations: try different initial values?</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="thursday-november-3-2022.html#cb12-1" aria-hidden="true" tabindex="-1"></a>t.vm</span></code></pre></div>
+<pre><code>##   model     psill    range
+## 1   Nug 0.7571987  0.00000
+## 2   Gau 1.9959058 70.74804</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="thursday-november-3-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t.v, t.vm)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Make a grid for the interpolated values and add the coordinates as attributes.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="thursday-november-3-2022.html#cb15-1" aria-hidden="true" tabindex="-1"></a>grid.sfc <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_make_grid</span>(t.sf,</span>
+<span id="cb15-2"><a href="thursday-november-3-2022.html#cb15-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>),</span>
+<span id="cb15-3"><a href="thursday-november-3-2022.html#cb15-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">what =</span> <span class="st">&quot;centers&quot;</span>)</span>
+<span id="cb15-4"><a href="thursday-november-3-2022.html#cb15-4" aria-hidden="true" tabindex="-1"></a>XY <span class="ot">&lt;-</span> grid.sfc <span class="sc">|&gt;</span></span>
+<span id="cb15-5"><a href="thursday-november-3-2022.html#cb15-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_coordinates</span>() </span>
+<span id="cb15-6"><a href="thursday-november-3-2022.html#cb15-6" aria-hidden="true" tabindex="-1"></a>grid.sf <span class="ot">&lt;-</span> grid.sfc <span class="sc">|&gt;</span></span>
+<span id="cb15-7"><a href="thursday-november-3-2022.html#cb15-7" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="thursday-november-3-2022.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">X =</span> XY[, <span class="dv">1</span>],</span>
+<span id="cb15-9"><a href="thursday-november-3-2022.html#cb15-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">Y =</span> XY[, <span class="dv">2</span>])</span></code></pre></div>
+<p>Interpolate with universal kriging.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="thursday-november-3-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a>t.int <span class="ot">&lt;-</span> <span class="fu">krige</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb16-2"><a href="thursday-november-3-2022.html#cb16-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">locations =</span> t.sf,</span>
+<span id="cb16-3"><a href="thursday-november-3-2022.html#cb16-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">newdata =</span> grid.sf,</span>
+<span id="cb16-4"><a href="thursday-november-3-2022.html#cb16-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">model =</span> t.vm)</span></code></pre></div>
+<pre><code>## [using universal kriging]</code></pre>
+<p>Map the output.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="thursday-november-3-2022.html#cb18-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(t.int) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="thursday-november-3-2022.html#cb18-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_dots</span>(<span class="at">title =</span> <span class="st">&quot;°F&quot;</span>,</span>
+<span id="cb18-3"><a href="thursday-november-3-2022.html#cb18-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">shape =</span> <span class="dv">15</span>, </span>
+<span id="cb18-4"><a href="thursday-november-3-2022.html#cb18-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb18-5"><a href="thursday-november-3-2022.html#cb18-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;var1.pred&quot;</span>, </span>
+<span id="cb18-6"><a href="thursday-november-3-2022.html#cb18-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">9</span>, </span>
+<span id="cb18-7"><a href="thursday-november-3-2022.html#cb18-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="st">&quot;OrRd&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="thursday-november-3-2022.html#cb18-8" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(sts) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="thursday-november-3-2022.html#cb18-9" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb18-10"><a href="thursday-november-3-2022.html#cb18-10" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(t.sf) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="thursday-november-3-2022.html#cb18-11" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_text</span>(<span class="st">&quot;temp&quot;</span>, </span>
+<span id="cb18-12"><a href="thursday-november-3-2022.html#cb18-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb18-13"><a href="thursday-november-3-2022.html#cb18-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="thursday-november-3-2022.html#cb18-14" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The trend term captures the north-south temperature gradient and the variogram captures the local spatial autocorrelation. Together they provide the best interpolated surface.</p>
+<p>To see this, you refit the interpolation without the variogram model.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="thursday-november-3-2022.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb19-2"><a href="thursday-november-3-2022.html#cb19-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> t.sf,</span>
+<span id="cb19-3"><a href="thursday-november-3-2022.html#cb19-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">newdata =</span> grid.sf) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="thursday-november-3-2022.html#cb19-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="thursday-november-3-2022.html#cb19-5" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_dots</span>(<span class="at">title =</span> <span class="st">&quot;°F&quot;</span>,</span>
+<span id="cb19-6"><a href="thursday-november-3-2022.html#cb19-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">shape =</span> <span class="dv">15</span>, </span>
+<span id="cb19-7"><a href="thursday-november-3-2022.html#cb19-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb19-8"><a href="thursday-november-3-2022.html#cb19-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;var1.pred&quot;</span>, </span>
+<span id="cb19-9"><a href="thursday-november-3-2022.html#cb19-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">9</span>, </span>
+<span id="cb19-10"><a href="thursday-november-3-2022.html#cb19-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="st">&quot;OrRd&quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="thursday-november-3-2022.html#cb19-11" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(sts) <span class="sc">+</span></span>
+<span id="cb19-12"><a href="thursday-november-3-2022.html#cb19-12" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb19-13"><a href="thursday-november-3-2022.html#cb19-13" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(t.sf) <span class="sc">+</span></span>
+<span id="cb19-14"><a href="thursday-november-3-2022.html#cb19-14" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_text</span>(<span class="st">&quot;temp&quot;</span>, </span>
+<span id="cb19-15"><a href="thursday-november-3-2022.html#cb19-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb19-16"><a href="thursday-november-3-2022.html#cb19-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb19-17"><a href="thursday-november-3-2022.html#cb19-17" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [ordinary or weighted least squares prediction]</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>The result is that the variation in temperatures is interpolated as a simple trend surface.</p>
+<p>For another comparison, here you interpolate assuming all variation is spatial autocorrelation (no trend term). This is called ordinary kriging.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="thursday-november-3-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige</span>(temp <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb21-2"><a href="thursday-november-3-2022.html#cb21-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> t.sf,</span>
+<span id="cb21-3"><a href="thursday-november-3-2022.html#cb21-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">newdata =</span> grid.sf,</span>
+<span id="cb21-4"><a href="thursday-november-3-2022.html#cb21-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">model =</span> t.vm) <span class="sc">|&gt;</span></span>
+<span id="cb21-5"><a href="thursday-november-3-2022.html#cb21-5" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb21-6"><a href="thursday-november-3-2022.html#cb21-6" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_dots</span>(<span class="at">title =</span> <span class="st">&quot;°F&quot;</span>,</span>
+<span id="cb21-7"><a href="thursday-november-3-2022.html#cb21-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">shape =</span> <span class="dv">15</span>, </span>
+<span id="cb21-8"><a href="thursday-november-3-2022.html#cb21-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb21-9"><a href="thursday-november-3-2022.html#cb21-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;var1.pred&quot;</span>, </span>
+<span id="cb21-10"><a href="thursday-november-3-2022.html#cb21-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">9</span>, </span>
+<span id="cb21-11"><a href="thursday-november-3-2022.html#cb21-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="st">&quot;OrRd&quot;</span>) <span class="sc">+</span></span>
+<span id="cb21-12"><a href="thursday-november-3-2022.html#cb21-12" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(sts) <span class="sc">+</span></span>
+<span id="cb21-13"><a href="thursday-november-3-2022.html#cb21-13" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb21-14"><a href="thursday-november-3-2022.html#cb21-14" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(t.sf) <span class="sc">+</span></span>
+<span id="cb21-15"><a href="thursday-november-3-2022.html#cb21-15" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_text</span>(<span class="st">&quot;temp&quot;</span>, </span>
+<span id="cb21-16"><a href="thursday-november-3-2022.html#cb21-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb21-17"><a href="thursday-november-3-2022.html#cb21-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb21-18"><a href="thursday-november-3-2022.html#cb21-18" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [using ordinary kriging]</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>The result is that all variation is local autocorrelation. This produces patches of higher and lower temperatures.</p>
+<p>The pattern obtained with ordinary kriging is similar to that obtained using inverse distance weighting. Inverse distance weighting (IDW) is a deterministic method for interpolation. The values assigned to locations are calculated with a weighted average of the values available at the known locations, where the weights are the inverse of the distance to each known location.</p>
+<p>The <code>krige()</code> function does IDW when there is no trend and no variogram model given.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="thursday-november-3-2022.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige</span>(temp <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb23-2"><a href="thursday-november-3-2022.html#cb23-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> t.sf,</span>
+<span id="cb23-3"><a href="thursday-november-3-2022.html#cb23-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">newdata =</span> grid.sf) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="thursday-november-3-2022.html#cb23-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb23-5"><a href="thursday-november-3-2022.html#cb23-5" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_dots</span>(<span class="at">title =</span> <span class="st">&quot;°F&quot;</span>,</span>
+<span id="cb23-6"><a href="thursday-november-3-2022.html#cb23-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">shape =</span> <span class="dv">15</span>, </span>
+<span id="cb23-7"><a href="thursday-november-3-2022.html#cb23-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb23-8"><a href="thursday-november-3-2022.html#cb23-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;var1.pred&quot;</span>, </span>
+<span id="cb23-9"><a href="thursday-november-3-2022.html#cb23-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">9</span>, </span>
+<span id="cb23-10"><a href="thursday-november-3-2022.html#cb23-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="st">&quot;OrRd&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-11"><a href="thursday-november-3-2022.html#cb23-11" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(sts) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="thursday-november-3-2022.html#cb23-12" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb23-13"><a href="thursday-november-3-2022.html#cb23-13" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(t.sf) <span class="sc">+</span></span>
+<span id="cb23-14"><a href="thursday-november-3-2022.html#cb23-14" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_text</span>(<span class="st">&quot;temp&quot;</span>, </span>
+<span id="cb23-15"><a href="thursday-november-3-2022.html#cb23-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb23-16"><a href="thursday-november-3-2022.html#cb23-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb23-17"><a href="thursday-november-3-2022.html#cb23-17" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [inverse distance weighted interpolation]</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Simple kriging is ordinary kriging with a specified mean. This is done with the <code>beta =</code> argument.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="thursday-november-3-2022.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige</span>(temp <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb25-2"><a href="thursday-november-3-2022.html#cb25-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">beta =</span> <span class="fu">mean</span>(t.sf<span class="sc">$</span>temp),</span>
+<span id="cb25-3"><a href="thursday-november-3-2022.html#cb25-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> t.sf,</span>
+<span id="cb25-4"><a href="thursday-november-3-2022.html#cb25-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">newdata =</span> grid.sf,</span>
+<span id="cb25-5"><a href="thursday-november-3-2022.html#cb25-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">model =</span> t.vm) <span class="sc">|&gt;</span></span>
+<span id="cb25-6"><a href="thursday-november-3-2022.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb25-7"><a href="thursday-november-3-2022.html#cb25-7" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_dots</span>(<span class="at">title =</span> <span class="st">&quot;°F&quot;</span>,</span>
+<span id="cb25-8"><a href="thursday-november-3-2022.html#cb25-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">shape =</span> <span class="dv">15</span>, </span>
+<span id="cb25-9"><a href="thursday-november-3-2022.html#cb25-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb25-10"><a href="thursday-november-3-2022.html#cb25-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;var1.pred&quot;</span>, </span>
+<span id="cb25-11"><a href="thursday-november-3-2022.html#cb25-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">9</span>, </span>
+<span id="cb25-12"><a href="thursday-november-3-2022.html#cb25-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="st">&quot;OrRd&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-13"><a href="thursday-november-3-2022.html#cb25-13" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(sts) <span class="sc">+</span></span>
+<span id="cb25-14"><a href="thursday-november-3-2022.html#cb25-14" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb25-15"><a href="thursday-november-3-2022.html#cb25-15" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(t.sf) <span class="sc">+</span></span>
+<span id="cb25-16"><a href="thursday-november-3-2022.html#cb25-16" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_text</span>(<span class="st">&quot;temp&quot;</span>, </span>
+<span id="cb25-17"><a href="thursday-november-3-2022.html#cb25-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb25-18"><a href="thursday-november-3-2022.html#cb25-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb25-19"><a href="thursday-november-3-2022.html#cb25-19" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [using simple kriging]</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="evaluating-the-accuracy-of-the-interpolation" class="section level2 unnumbered hasAnchor">
+<h2>Evaluating the accuracy of the interpolation<a href="thursday-november-3-2022.html#evaluating-the-accuracy-of-the-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>How do you evaluate how good the interpolated surface is? If you use the variogram model to predict at the observation locations, you will get the observed values back.</p>
+<p>For example, here you interpolate to the observation locations by setting <code>newdata = t.sf</code> instead of <code>grid.sf</code>. You then compute the correlation between the interpolated value and the observed value.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="thursday-november-3-2022.html#cb27-1" aria-hidden="true" tabindex="-1"></a>t.int2 <span class="ot">&lt;-</span> <span class="fu">krige</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb27-2"><a href="thursday-november-3-2022.html#cb27-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">locations =</span> t.sf,</span>
+<span id="cb27-3"><a href="thursday-november-3-2022.html#cb27-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">newdata =</span> t.sf,</span>
+<span id="cb27-4"><a href="thursday-november-3-2022.html#cb27-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">model =</span> t.vm)</span></code></pre></div>
+<pre><code>## [using universal kriging]</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="thursday-november-3-2022.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(t.int2<span class="sc">$</span>var1.pred, t.sf<span class="sc">$</span>temp)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>So this is not helpful.</p>
+<p>Instead you use cross validation. Cross validation is a procedure for assessing how well a model does at predicting (interpolating) values when observations specific to the prediction are removed from the model fitting procedure. Cross validation partitions the data into two disjoint subsets and the model is fit to one subset of the data (training set) and the model is validated on the other subset (testing set).</p>
+<p>Leave-one-out cross validation (LOOCV) uses all but one observation for fitting and the left-out observation for testing. The procedure is repeated with every observation taking turns being left out.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="thursday-november-3-2022.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige.cv</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb31-2"><a href="thursday-november-3-2022.html#cb31-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">locations =</span> t.sf,</span>
+<span id="cb31-3"><a href="thursday-november-3-2022.html#cb31-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">model =</span> t.vm) <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href="thursday-november-3-2022.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb31-5"><a href="thursday-november-3-2022.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">r =</span> <span class="fu">cor</span>(var1.pred, observed),</span>
+<span id="cb31-6"><a href="thursday-november-3-2022.html#cb31-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">rmse =</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((var1.pred <span class="sc">-</span> observed)<span class="sc">^</span><span class="dv">2</span>)),</span>
+<span id="cb31-7"><a href="thursday-november-3-2022.html#cb31-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mae =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(var1.pred <span class="sc">-</span> observed)))</span></code></pre></div>
+<pre><code>##           r     rmse      mae
+## 1 0.9451559 1.309838 1.027983</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="thursday-november-3-2022.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige.cv</span>(temp <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb33-2"><a href="thursday-november-3-2022.html#cb33-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">locations =</span> t.sf,</span>
+<span id="cb33-3"><a href="thursday-november-3-2022.html#cb33-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">model =</span> t.vm) <span class="sc">|&gt;</span></span>
+<span id="cb33-4"><a href="thursday-november-3-2022.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb33-5"><a href="thursday-november-3-2022.html#cb33-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">r =</span> <span class="fu">cor</span>(var1.pred, observed),</span>
+<span id="cb33-6"><a href="thursday-november-3-2022.html#cb33-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">rmse =</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((var1.pred <span class="sc">-</span> observed)<span class="sc">^</span><span class="dv">2</span>)),</span>
+<span id="cb33-7"><a href="thursday-november-3-2022.html#cb33-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mae =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(var1.pred <span class="sc">-</span> observed)))</span></code></pre></div>
+<pre><code>##           r     rmse      mae
+## 1 0.8956607 1.969599 1.447589</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="thursday-november-3-2022.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige.cv</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb35-2"><a href="thursday-november-3-2022.html#cb35-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">locations =</span> t.sf) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="thursday-november-3-2022.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href="thursday-november-3-2022.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">r =</span> <span class="fu">cor</span>(var1.pred, observed),</span>
+<span id="cb35-5"><a href="thursday-november-3-2022.html#cb35-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">rmse =</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((var1.pred <span class="sc">-</span> observed)<span class="sc">^</span><span class="dv">2</span>)),</span>
+<span id="cb35-6"><a href="thursday-november-3-2022.html#cb35-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mae =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(var1.pred <span class="sc">-</span> observed)))</span></code></pre></div>
+<pre><code>##           r     rmse      mae
+## 1 0.9057414 1.698922 1.351733</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="thursday-november-3-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige.cv</span>(temp <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb37-2"><a href="thursday-november-3-2022.html#cb37-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">locations =</span> t.sf) <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href="thursday-november-3-2022.html#cb37-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb37-4"><a href="thursday-november-3-2022.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">r =</span> <span class="fu">cor</span>(var1.pred, observed),</span>
+<span id="cb37-5"><a href="thursday-november-3-2022.html#cb37-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">rmse =</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((var1.pred <span class="sc">-</span> observed)<span class="sc">^</span><span class="dv">2</span>)),</span>
+<span id="cb37-6"><a href="thursday-november-3-2022.html#cb37-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mae =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(var1.pred <span class="sc">-</span> observed)))</span></code></pre></div>
+<pre><code>##           r     rmse      mae
+## 1 0.9294513 1.785536 1.346272</code></pre>
+<p>All four interpolations result in high correlation between observed and interpolated values that exceed .9 and root-mean-squared errors (RMSE) less than 1.8. But the universal kriging interpolation gives the highest correlation and the lowest RMSE and mean-absolute errors.</p>
+<p>For a visual representation of the goodness of fit you plot the observed versus interpolated values from the cross validation procedure.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="thursday-november-3-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">krige.cv</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb39-2"><a href="thursday-november-3-2022.html#cb39-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">locations =</span> t.sf,</span>
+<span id="cb39-3"><a href="thursday-november-3-2022.html#cb39-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">model =</span> t.vm) <span class="sc">|&gt;</span></span>
+<span id="cb39-4"><a href="thursday-november-3-2022.html#cb39-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">interpolated =</span> var1.pred) <span class="sc">|&gt;</span></span>
+<span id="cb39-5"><a href="thursday-november-3-2022.html#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> observed, <span class="at">y =</span> interpolated)) <span class="sc">+</span> </span>
+<span id="cb39-6"><a href="thursday-november-3-2022.html#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb39-7"><a href="thursday-november-3-2022.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb39-8"><a href="thursday-november-3-2022.html#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb39-9"><a href="thursday-november-3-2022.html#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Interpolated temperatures (°F)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb39-10"><a href="thursday-november-3-2022.html#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Observed temperatures (°F)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb39-11"><a href="thursday-november-3-2022.html#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>The black line represents a perfect prediction and the red line is the best fit line when you regress the interpolated temperatures onto the observed temperatures. The fact that the two lines nearly coincide indicates the interpolation is good.</p>
+<p>The <code>nfold =</code> argument, which by default is set to the number of observations and does a LOOCV, allows you to divide the data into different size folds (instead of N-1).</p>
+<p>Note that these performance metrics are biased toward the sample of data because cross validation is done only on the interpolation (kriging) and not on the variogram model fitting.</p>
+<p>That is, with kriging the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values.</p>
+<p>To perform a full LOOCV you need to refit the variogram after removing the observation for which you want the interpolation.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="thursday-november-3-2022.html#cb41-1" aria-hidden="true" tabindex="-1"></a>vmi <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">&quot;Sph&quot;</span>, </span>
+<span id="cb41-2"><a href="thursday-november-3-2022.html#cb41-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">psill =</span> <span class="dv">2</span>, </span>
+<span id="cb41-3"><a href="thursday-november-3-2022.html#cb41-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">range =</span> <span class="dv">200</span>, </span>
+<span id="cb41-4"><a href="thursday-november-3-2022.html#cb41-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">nugget =</span> <span class="dv">1</span>)</span>
+<span id="cb41-5"><a href="thursday-november-3-2022.html#cb41-5" aria-hidden="true" tabindex="-1"></a>int <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb41-6"><a href="thursday-november-3-2022.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(t.sf)){</span>
+<span id="cb41-7"><a href="thursday-november-3-2022.html#cb41-7" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> t.sf[<span class="sc">-</span>i, ]</span>
+<span id="cb41-8"><a href="thursday-november-3-2022.html#cb41-8" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">variogram</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y, </span>
+<span id="cb41-9"><a href="thursday-november-3-2022.html#cb41-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> t)</span>
+<span id="cb41-10"><a href="thursday-november-3-2022.html#cb41-10" aria-hidden="true" tabindex="-1"></a>  vm <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> v, </span>
+<span id="cb41-11"><a href="thursday-november-3-2022.html#cb41-11" aria-hidden="true" tabindex="-1"></a>                      <span class="at">model =</span> vmi)</span>
+<span id="cb41-12"><a href="thursday-november-3-2022.html#cb41-12" aria-hidden="true" tabindex="-1"></a>  int[i] <span class="ot">&lt;-</span> <span class="fu">krige</span>(temp <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb41-13"><a href="thursday-november-3-2022.html#cb41-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">locations =</span> t,</span>
+<span id="cb41-14"><a href="thursday-november-3-2022.html#cb41-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> t[i, ],</span>
+<span id="cb41-15"><a href="thursday-november-3-2022.html#cb41-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">model =</span> vm)<span class="sc">$</span>var1.pred</span>
+<span id="cb41-16"><a href="thursday-november-3-2022.html#cb41-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The interpolation error using full cross validation will always be larger than the interpolation error using a fixed variogram model.</p>
+<p>One final note about cross validation in the context of spatial data is the observations are not independent. As such it is better to create spatial areas for training separate from the spatial areas for testing.</p>
+<p>A nice introduction to so-called ‘block’ cross validation in the context of species distribution modeling is available here
+<a href="https://cran.r-project.org/web/packages/blockCV/vignettes/BlockCV_for_SDM.html" class="uri">https://cran.r-project.org/web/packages/blockCV/vignettes/BlockCV_for_SDM.html</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tuesday-november-1-2022.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="tuesday-november-8-2022.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

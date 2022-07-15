@@ -1,11 +1,13 @@
 # Thursday November 3, 2022 {.unnumbered}
 
+**"The problem of nonparametric estimation consists in estimation, from the observations, of an unknown function belonging to a sufficiently large class of functions."** - A.B. Tsybakov
+
 Today
 
 - Comparing interpolation methods
 - Evaluating the accuracy of the interpolation
 
-## Comparing interplation methods {-}
+## Comparing interpolation methods {-}
 
 Here you consider a data set of monthly average surface air temperatures for April across the Midwest. The data are available on my website in the file `MidwestTemps.txt`.
 
@@ -44,6 +46,8 @@ There is a clear trend in the temperature field with the coolest values to the n
 Compute and plot the empirical variogram on the residuals after removing the trend. The trend term is specified in the formula as `temp ~ X + Y`.
 
 ```{r}
+library(gstat)
+
 t.v <- variogram(temp ~ X + Y, 
                  data = t.sf)
 plot(t.v)
@@ -58,6 +62,8 @@ t.vd <- variogram(temp ~ X + Y,
 df <- t.vd |>
   as.data.frame() |>
   dplyr::mutate(direction = factor(dir.hor))
+
+library(ggplot2)
 
 ggplot(data = df, 
               mapping = aes(x = dist, y = gamma, color = direction)) + 
@@ -251,68 +257,93 @@ t.int2 <- krige(temp ~ X + Y,
 cor(t.int2$var1.pred, t.sf$temp)
 ```
 
-So this is not helpful. Instead we use cross validation.
+So this is not helpful. 
 
-Cross validation is a procedure for assessing how well a model will do at predicting (interpolating) values when observations specific to the prediction are removed. The procedure first partitions the data into disjoint subsets. The model is then fit to one subset of the data (training set) and the model is validated on a different subset (testing set).
+Instead you use cross validation. Cross validation is a procedure for assessing how well a model does at predicting (interpolating) values when observations specific to the prediction are removed from the model fitting procedure. Cross validation partitions the data into two disjoint subsets and the model is fit to one subset of the data (training set) and the model is validated on the other subset (testing set).
 
-Leave-one-out cross validation uses all but one observation for fitting and the left-out observation for testing. The procedure is repeated with every observation taking turns being left out. 
+Leave-one-out cross validation (LOOCV) uses all but one observation for fitting and the left-out observation for testing. The procedure is repeated with every observation taking turns being left out. 
 
-K-fold cross validation uses K observations for fitting and N-K for testing. With large K there are many ways to slice the sample so the procedure is not exhaustive like hold-one-out. 
-
-With kriging, the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. Thus cross validation has two cases: weak and strong. Weak cross validation uses the entire data to estimate the variogram model. Then kriging is performed N times using a leave-one-out strategy with the predicted value saved only for the observation left out.
-
-The `xvalid()` function from the {geoR} package computes the cross-validated prediction error of the Wolfcamp aquifer interpolation in this weak sense.
 ```{r}
-xv.wk <- xvalid(wca.gdf, 
-                model = wca.vm)
-df <- data.frame(observed = xv.wk$data, 
-                 predicted = xv.wk$predicted)
+krige.cv(temp ~ X + Y,
+         locations = t.sf,
+         model = t.vm) |>
+  sf::st_drop_geometry() |>
+  dplyr::summarize(r = cor(var1.pred, observed),
+                   rmse = sqrt(mean((var1.pred - observed)^2)),
+                   mae = mean(abs(var1.pred - observed)))
 
-ggplot(df, aes(x = observed, y = predicted)) + 
+krige.cv(temp ~ 1,
+         locations = t.sf,
+         model = t.vm) |>
+  sf::st_drop_geometry() |>
+  dplyr::summarize(r = cor(var1.pred, observed),
+                   rmse = sqrt(mean((var1.pred - observed)^2)),
+                   mae = mean(abs(var1.pred - observed)))
+
+krige.cv(temp ~ X + Y,
+         locations = t.sf) |>
+  sf::st_drop_geometry() |>
+  dplyr::summarize(r = cor(var1.pred, observed),
+                   rmse = sqrt(mean((var1.pred - observed)^2)),
+                   mae = mean(abs(var1.pred - observed)))
+
+krige.cv(temp ~ 1,
+         locations = t.sf) |>
+  sf::st_drop_geometry() |>
+  dplyr::summarize(r = cor(var1.pred, observed),
+                   rmse = sqrt(mean((var1.pred - observed)^2)),
+                   mae = mean(abs(var1.pred - observed)))
+```
+
+All four interpolations result in high correlation between observed and interpolated values that exceed .9 and root-mean-squared errors (RMSE) less than 1.8. But the universal kriging interpolation gives the highest correlation and the lowest RMSE and mean-absolute errors.
+
+For a visual representation of the goodness of fit you plot the observed versus interpolated values from the cross validation procedure.
+
+```{r}
+krige.cv(temp ~ X + Y,
+               locations = t.sf,
+               model = t.vm) |>
+  dplyr::rename(interpolated = var1.pred) |>
+ggplot(mapping = aes(x = observed, y = interpolated)) + 
   geom_point() +
   geom_abline(intercept = 0, slope = 1) +
   geom_smooth(method = lm, color = "red") +
-  ylab("Predicted head heights (ft)") +
-  xlab("Observed head heights (ft)") +
-  ggtitle("Weak Cross Validation") +
+  ylab("Interpolated temperatures (°F)") +
+  xlab("Observed temperatures (°F)") +
   theme_minimal()
 ```
 
-The black line represents a perfect prediction and the red line is the best fit line when we regress the predicted head heights onto the observed head heights. The fact that the two lines nearly coincide indicates the interpolation is good.
+The black line represents a perfect prediction and the red line is the best fit line when you regress the interpolated temperatures onto the observed temperatures. The fact that the two lines nearly coincide indicates the interpolation is good.
 
-We quantify how good using the mean squared error and mean absolute error as follows.
-```{r}
-mean(xv.wk$error^2)
-mean(abs(xv.wk$error))
+The `nfold =` argument, which by default is set to the number of observations and does a LOOCV, allows you to divide the data into different size folds (instead of N-1).
+
+Note that these performance metrics are biased toward the sample of data because cross validation is done only on the interpolation (kriging) and not on the variogram model fitting.
+
+That is, with kriging the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. 
+
+To perform a full LOOCV you need to refit the variogram after removing the observation for which you want the interpolation.
+```{r, eval=FALSE}
+vmi <- vgm(model = "Sph", 
+           psill = 2, 
+           range = 200, 
+           nugget = 1)
+int <- NULL
+for(i in 1:nrow(t.sf)){
+  t <- t.sf[-i, ]
+  v <- variogram(temp ~ X + Y, 
+                 data = t)
+  vm <- fit.variogram(object = v, 
+                      model = vmi)
+  int[i] <- krige(temp ~ X + Y,
+                  locations = t,
+                  newdata = t[i, ],
+                  model = vm)$var1.pred
+}
 ```
 
-The mean squared cross-validated prediction error is 30636 ft^2 and the mean absolute cross-validated prediction error is 137 ft.
+The interpolation error using full cross validation will always be larger than the interpolation error using a fixed variogram model.
 
-In contrast to weak cross validation, strong cross validation requires that the variogram be re-estimated each time an observation is removed. The model must be fit using the `variofit()` function and the call must include the empirical variogram object. This is done with the argument `reestimate = TRUE`.
-```{r}
-wca.vm2 <- variofit(wca.v, 
-                    ini = c(33000, .8),
-                    nug = 10000, 
-                    cov.model = "spherical")
+One final note about cross validation in the context of spatial data is the observations are not independent. As such it is better to create spatial areas for training separate from the spatial areas for testing.
 
-xv.st <- xvalid(wca.gdf, 
-                model = wca.vm2,
-                variog.obj = wca.v,
-                reestimate = TRUE)
-df <- data.frame(observed = xv.st$data, 
-                 predicted = xv.st$predicted)
-
-ggplot(df, aes(x = observed, y = predicted)) + 
-  geom_point() +
-  geom_abline(intercept = 0, slope = 1) +
-  geom_smooth(method = lm, color = "red") +
-  ylab("Predicted head heights (ft)") +
-  xlab("Observed head heights (ft)") +
-  ggtitle("Strong Cross Validation") +
-  theme_minimal()
-
-mean(xv.st$error^2)
-mean(abs(xv.st$error))
-```
-
-The prediction error estimated using the procedure of strong cross validation will be larger than the prediction error estimated using the procedure of weak cross validation.
+A nice introduction to so-called 'block' cross validation in the context of species distribution modeling is available here
+https://cran.r-project.org/web/packages/blockCV/vignettes/BlockCV_for_SDM.html
