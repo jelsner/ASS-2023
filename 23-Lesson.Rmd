@@ -10,74 +10,79 @@ Today
 
 ## Interpolating to areal units (block kriging) {-}
 
-Interpolating rainfall across Florida from tropical cyclone Fay (2008).
+In 2008 tropical cyclone (TC) Fay formed from a tropical wave near the Dominican Republic, passed over the island of Hispaniola, Cuba, and the Florida Keys, then crossed the Florida peninsula and moved westward across portions of the Panhandle producing heavy rains in parts of the state.
 
-In 2008, Tropical Cyclone Fay formed from a tropical wave near the Dominican Republic, passed over the island of Hispaniola, Cuba, and the Florida Keys, then crossed the Florida peninsula and moved westward across portions of the panhandle producing heavy rains in parts of the state.
+Rainfall is an example of geostatistical data. In principle it can be measured anywhere, but typically you have values at a sample of sites. The pattern of observation sites is not of much interest as it is a consequence of constraints (convenience, opportunity, economics, etc) unrelated to the phenomenon. Interest centers on inference about how much rain fell across the region.
 
-Storm total rainfall amounts from stations in and around the state are in `FayRain.txt`. They are compiled reports from official weather sites and many cooperative sites. The cooperative sites are the Community Collaborative Rain, Hail and Snow Network (CoCoRaHS), a community-based, high density precipitation network made up of volunteers who take measurements of precipitation in their backyards. The data were obtained from NOAA/NCEP/HPC and from the Florida Climate Center.
+Storm total rainfall amounts from stations in and around the state are in `FayRain.txt` on my website. They are compiled reports from official weather sites and many cooperative sites. The cooperative sites are the Community Collaborative Rain, Hail and Snow Network (CoCoRaHS), a community-based, high density precipitation network made up of volunteers who take measurements of precipitation in their yards. The data were obtained from NOAA/NCEP/HPC and from the Florida Climate Center.
 
 Import the data.
 ```{r}
 L <- "http://myweb.fsu.edu/jelsner/temp/data/FayRain.txt"
-( FR.df <- read.table(L, header = TRUE) )
+( FR.df <- readr::read_table(L) )
 ```
 
-The data frame contains 803 rainfall sites. Longitude and latitude coordinates of the sites are given in the first two columns and total rainfall in inches and millimeters are given in the second two columns. Create a spatial points data frame by specifying columns that contain the spatial coordinates. Then assign a geographic coordinate system and convert the rainfall from millimeters to centimeters.
+The data frame contains 803 rainfall sites. Longitude and latitude coordinates of the sites are given in the first two columns and total rainfall in inches and millimeters are given in the second two columns. 
+
+Create a spatial points data frame by specifying columns that contain the spatial coordinates. Then assign a geographic coordinate system and convert the rainfall from millimeters to centimeters.
+
 ```{r}
-library(sf)
+FR.sf <- sf::st_as_sf(x = FR.df,
+                      coords = c("lon", "lat"),
+                      crs = 4326) |>
+  dplyr::mutate(tpm = tpm/10)
 
-FR.sf <- st_as_sf(x = FR.df,
-                  coords = c("lon", "lat"),
-                  crs = 4326)
-
-FR.sf$tpm <- FR.sf$tpm/10
 summary(FR.sf$tpm)
 ```
 
-The median rainfall amount is 15.8 cm and the highest amount is 60.2 cm. 
+The median rainfall across all available observations is 15.8 cm and the highest is 60.2 cm. 
 
-We get the Florida county boundaries from the {USAboundaries} package.
+Get the Florida county boundaries from the {USAboundaries} package.
+
 ```{r}
 FL.sf <- USAboundaries::us_counties(states = "Florida")
 ```
 
-We create a character string specifying the tags for a planar projection and transform the geographic coordinates of the site locations and map polygons to the projected coordinates. Here we use Florida GDL Albers (EPSG:3087) with meter as the distance unit.
+Transform the geographic coordinates of the site locations and map polygons to projected coordinates. Here you use Florida GDL Albers (EPSG:3087) with meter as the length unit.
 ```{r}
-FR.sf <- st_transform(FR.sf, crs = 3087)
-FL.sf <- st_transform(FL.sf, crs = 3087)
+FR.sf <- sf::st_transform(FR.sf, crs = 3087)
+FL.sf <- sf::st_transform(FL.sf, crs = 3087)
+sf::st_crs(FR.sf)
 ```
 
-We make a map of the rainfall sites and storm totals with the state boundaries.
-```{r}
-library(tmap)
+Start by making a map of the rainfall sites and storm total rainfall that includes the state border.
 
-tm_shape(FR.sf) +
-  tm_dots(col = "tpm", size = 1) +
-tm_shape(FL.sf) +
-  tm_borders()
+```{r}
+tmap::tm_shape(FR.sf) +
+  tmap::tm_dots(col = "tpm", size = .5) +
+tmap::tm_shape(FL.sf) +
+  tmap::tm_borders()
 ```
 
-Two areas of heavy rainfall are noted.  One running north-south along the east coast and another across the north. Rainfall collection sites are clustered in and around cities. This will make it difficult to use a spline interpolation.
+Two areas of very heavy rainfall are noted. One running north-south along the east coast and another across the north. 
 
-Rainfall is an example of geostatistical data. In principle it can be measured anywhere, but typically we have values at a sample of sites. The pattern of observation sites is not of much interest as it is a consequence of constraints (convenience, opportunity, economics, etc) unrelated to the phenomenon. Interest centers on inference about how much rain fell across the region.
+Rainfall reporting sites are clustered in and around cities and are located only over land. This type of station location arrangement will make it hard for deterministic interpolation methods (e.g., IDW or splines) to produce a reasonable surface.
 
-The empirical variogram is computed using the `variogram()` function. The first argument is the model formula specifying the rainfall column from the data frame and the second argument is the data frame name.  Here `~ 1` in the model formula indicates no covariates or trends in the data. Trends can be included by specifying coordinate names through the `st_coordinates()` function.
+The empirical variogram is computed using the `variogram()` function from the {gstat} package. The first argument is the model formula specifying the rainfall column from the data frame and the second argument is the data frame name.  Here `~ 1` in the model formula indicates no covariates or trends in the data. Trends are included by specifying coordinate names through the `st_coordinates()` function.
 
-We compute the empirical variogram for Fay's rainfall and save it by typing
+Compute the empirical variogram for these set of rainfall values. Use a cutoff distance of 400 km (400,000 m). The cutoff is the separation distance up to which point pairs are included in the semivariogram. The smaller the cutoff value the more the variogram is focused on nearest neighbor locations.
+
 ```{r}
 library(gstat)
 
-FR.v <- variogram(tpm ~ 1, 
-                  data = FR.sf)
+v <- variogram(tpm ~ 1, 
+               data = FR.sf,
+               cutoff = 400000)
 ```
 
-We plot the variogram values as a function of lag distance and add text indicating the number of point pairs for each lag distance.
+Plot the variogram values as a function of lag distance and add text indicating the number of point pairs for each lag distance. Save a copy of the plot for later.
+
 ```{r}
 library(ggplot2)
 
-v.df <- data.frame(dist = FR.v$dist/1000,
-                   gamma = FR.v$gamma,
-                   np = FR.v$np)
+v.df <- data.frame(dist = v$dist/1000,
+                   gamma = v$gamma,
+                   np = v$np)
 
 ( pv <- ggplot(v.df, aes(x = dist, y = gamma)) +
   geom_point() +
@@ -89,40 +94,44 @@ v.df <- data.frame(dist = FR.v$dist/1000,
   theme_minimal() )
 ```
 
-Values start low (~50 cm$^2$) at short lag distance, then increase to over 200 cm$^2$ at lag distance of about 200 km.
+Values start low (around 50 cm$^2$) at the shortest lag distance and increase to greater than 200 cm$^2$ at lag distances of 200 km and longer.
 
-The zero-lag semivariance is called the 'nugget' and the semivariance at a level where the variogram values no longer increase is called the 'sill.'  The lag distance to the sill is called the 'range.'  These three parameters (nugget, sill, and range) are used to fit a model to the variogram.
+The semivariance a lag zero is called the 'nugget' and the semivariance at a level where the variogram values no longer increase is called the 'sill.' The difference between the sill and the nugget is called the 'partial sill'.  The lag distance out to where the sill is reached is called the 'range.'  These three parameters (nugget, partial sill, and range) are used to model the variogram.
 
-Next we fit a model to the empirical variogram. The variogram model is a mathematical relationship defining the semivariance as a function of lag distance. We first save the family and the initial parameter guesses in a variogram model (`FR.vmi`) object by typing
+Next fit a model to the empirical variogram. The model is a mathematical relationship that defines the semivariance as a function of lag distance. First save the family and the initial parameter guesses in a variogram model (`vmi`) object.
+
 ```{r}
-FR.vmi <- vgm(model = "Gau", 
-              psill = 150, 
-              range = 200 * 1000, 
-              nugget = 50)
-FR.vmi
+vmi <- vgm(model = "Gau", 
+           psill = 150, 
+           range = 200 * 1000, 
+           nugget = 50)
+vmi
 ```
 
-The `psill` argument is the partial sill as the difference between the sill and the nugget. We get estimates of the parameter values from looking at the empirical variogram. 
+The `psill` argument is the partial sill (the difference between the sill and the nugget) along the vertical axis. Estimate the parameter values by looking at the empirical variogram. 
 
-Next we use the `fit.variogram()` function to improve the fit.  Given a set of initial parameter values, the method of weighted least squares improves the parameter estimates. Ordinary least squares is not appropriate as the semivariances are correlated across the lag distances and the precision on the estimates varies depending on the number of site pairs for a given lag.
+Next use the `fit.variogram()` function to improve the fit over these initial values. Given a set of initial parameter values the method of weighted least squares is used to improve the parameter estimates.
+
 ```{r}
-FR.vm <- fit.variogram(object = FR.v, 
-                       model = FR.vmi)
-FR.vm
+vm <- fit.variogram(object = v, 
+                    model = vmi)
+vm
 ```
 
-The result is a variogram model with a nugget of 46.8 cm$^2$, a partial sill of 157 cm$^2$, and a range on the sill of 129 km. 
+The result is a variogram model with a nugget of 46.6 cm$^2$, a partial sill of 156 cm$^2$, and a range on the sill of 128 km. 
 
-Let $r$ be the range, $c$ the partial sill and $c_o$ the nugget, then the equation defining the curve over the set of lag distances $h$ is
+Plot the model on top of the empirical variogram. Let $r$ be the range, $c$ the partial sill and $c_o$ the nugget, then the equation defining the function over the set of lag distances $h$ is
+
 $$
 \gamma(h)=c\left(1-\exp\left(-\frac{h^2}{r^2}\right)\right)+c_o
 $$
 
-We create a data frame with values of h and gamma using this equation.
+Create a data frame with values of h and gamma using this equation.
+
 ```{r}
-nug <- FR.vm$psill[1]
-ps <- FR.vm$psill[2]
-r <- FR.vm$range[2] / 1000
+nug <- vm$psill[1]
+ps <- vm$psill[2]
+r <- vm$range[2] / 1000
 h <- seq(0, 400, .2)
 gamma <- ps * (1 - exp(-h^2 / (r^2))) + nug
 
@@ -132,106 +141,121 @@ vm.df <- data.frame(dist = h,
 pv + geom_line(aes(x = dist, y = gamma), data = vm.df)
 ```
 
-Check for anisotropy.
+Check for anisotropy. Anisotropy refers to a dependence of the variogram shape on the direction of the location pairs used to compute semivariances. Isotropy refers to a directional independence.
+
 ```{r}
 plot(variogram(tpm ~ 1, 
                data = FR.sf, 
-               alpha = c(0, 45, 90, 135)), 
+               alpha = c(0, 45, 90, 135),
+               cutoff = 400000), 
      xlab = "Lag Distance (m)")
 ```
 
-We see the range of correlations is longer (about 300 km) in the north-south direction (0 degrees). 
+The semivariance values reach the sill at a longer range  (about 300 km) in the north-south direction (0 degrees) compared to the other three directions.
 
-Another way to look at directional dependence in variograms is through variogram maps. Instead of classifying point pairs Z(s) and Z(s + h) by direction and distance class separately, you can classify them jointly.
+Another way to look at directional dependence in the variogram is through a variogram map. Instead of classifying point pairs Z(s) and Z(s + h) by direction and distance class separately, you classify them jointly.
 
-If h = {x, y} is the two-dimensional coordinates of the separation
-vector, in the variogram map the semivariance contribution of each point pair (Z(s) − Z(s + h))^2 is attributed to the grid cell in which h lies. The map is centered around (0, 0), as h is distance rather than location. Cutoff and width correspond to some extent to map extent and cell size; the semivariance map is point symmetric around (0, 0), as γ(h) = γ(−h).
+If h = {x, y} is the two-dimensional coordinates of the separation vector, in the variogram map the variance contribution of each point pair (Z(s) − Z(s + h))^2 is attributed to the grid cell in which h lies. The map is centered at (0, 0) and h is lag distance. Cutoff and width correspond to map extent and cell size; the semivariance map is point symmetric around (0, 0), as γ(h) = γ(−h).
+
+The variogram map is made with the `variogram()` function by adding the `map = TRUE` argument. Here you set the cutoff to be 200 km (200,000 m) and the width (cell size) to be 20 km.
 
 ```{r}
-vgm.map <- variogram(log(zinc) ~ sqrt(dist), 
-                     meuse, 
-                     cutoff = 1500, 
-                     width = 100,
-                     map = TRUE)
-plot(vgm.map, threshold = 5)
+vmap <- variogram(tpm ~ 1, 
+                  data = FR.sf,
+                  cutoff = 200000,
+                  width = 20000,
+                  map = TRUE)
+plot(vmap)
 ```
 
-We refit the variogram defining an anistropy ellipse with the `anis =` argument. The first parameter is the direction of longest range and the second parameter is the ratio of the longest to shortest. Here about (200/300 = .67).
+The variogram map is centered on dx = 0 and dy = 0. Along the dx = 0 vertical line in the north-south direction (top-to-bottom on the plot) the semivariance values increase away from dy = 0, but the increase is less compared to along the dy = 0 horizontal line in the east-west direction (left-to-right on the plot) indicative of directional dependency.
+
+You refit the variogram model defining an anisotropy ellipse with the `anis =` argument. The first parameter is the direction of longest range (here north-south) and the second parameter is the ratio of the longest to shortest ranges. Here about (200/300 = .67).
+
 ```{r}
-FR.vmi <- vgm(model = "Gau", 
-              psill = 150, 
-              range = 300 * 1000, 
-              nugget = 50,
-              anis = c(0, .67))
-FR.vm <- fit.variogram(FR.v, FR.vmi)
+vmi <- vgm(model = "Gau", 
+           psill = 150, 
+           range = 300 * 1000, 
+           nugget = 50,
+           anis = c(0, .67))
+vm <- fit.variogram(v, vmi)
 ```
 
-In the final step we use the variogram model together with the rainfall values at the observation sites to create an interpolated surface. Here we use _ordinary_ kriging as there are no spatial trends in the rainfall.
+Use the variogram model together with the rainfall values at the observation sites to create an interpolated surface. Here you use ordinary kriging as there are no spatial trends in the rainfall.
 
-Interpolation is done using the `krige()` function. The first argument is the model specification and the second is the data. Two other arguments are needed. One is the variogram model using the argument name model and the other is a set of locations identifying where the interpolations are to be made. This is specified with the argument name `newdata =`.
+Interpolation is done using the `krige()` function. The first argument is the model specification and the second is the data. Two other arguments are needed. One is the variogram model using the argument name `model =` and the other is a set of locations identifying where the interpolations are to be made. This is specified with the argument name `newdata =`.
 
-Here we interpolate to locations on a regular grid. We create a grid of locations within the boundary of Florida using the `st_sample()` function.
+Here you interpolate to locations on a regular grid. You create a grid of locations within the borders of the state using the `st_sample()` function.
+
 ```{r}
-grid.sf <- st_sample(FL.sf,
-                     size = 5000,
-                     type = "regular")
+grid.sf <- sf::st_sample(FL.sf,
+                         size = 5000,
+                         type = "regular")
 ```
 
-We specify the number of locations using the argument `size =`. Note that the actual number of locations will be somewhat different because of the irregular boundary. 
+You specify the number of grid locations using the argument `size =`. Note that the actual number of locations will be somewhat different because of the irregular boundary.
 
-First we use the `krige()` function to interpolate the observed rainfall to the grid locations. Recall that for a given location, the interpolation is a weighted average of the rainfall across the entire region where the weights are determined by the variogram model.
+First use the `krige()` function to interpolate the observed rainfall to the grid locations. For a given location, the interpolation is a weighted average of the rainfall across the entire region where the weights are determined by the variogram model.
+
 ```{r}
-ipl <- krige(tpm ~ 1, 
-             locations = FR.sf, 
-             newdata = grid.sf,
-             model = FR.vm)
+r.int <- krige(tpm ~ 1, 
+               locations = FR.sf, 
+               newdata = grid.sf,
+               model = vm)
 ```
 
-If the variogram model is not included then inverse distance weighted interpolation is performed. The function will not work if different values share the same location. 
+If the variogram model is not included then inverse distance-weighted interpolation is performed. The function will not work if different values share the same location.
 
-The saved object (`ipl`) inherits the spatial object specified in the `newdata` argument, but extends it to a spatial data frame. The data frame with two variables.  The first `var1.pred` is the interpolated rainfall and the second `var1.var` is the prediction variance.
+The saved object (`r.int`) inherits the spatial geometry specified in the `newdata =` argument but extends it to a spatial data frame. The column `var1.pred` in the data frame is the interpolated rainfall and the second `var1.var` is the variability about the interpolated value.
 
-We plot the interpolated field.
+Plot the interpolated storm-total rainfall field.
+
 ```{r}
-tm_shape(ipl) +
-  tm_dots("var1.pred",
-          size = .1,
-          palette = "Greens",
-          title = "Rainfall (cm)") +
-  tm_shape(FL.sf) +
-  tm_borders() +
-  tm_layout(legend.position = c("left", "bottom"),
-            title = "Tropical Cyclone Fay (2008)",
-            title.position = c("left", "bottom"),
-            legend.outside = TRUE)
+tmap::tm_shape(r.int) +
+  tmap::tm_dots("var1.pred",
+                size = .1,
+                palette = "Greens",
+                title = "Rainfall (cm)") +
+  tmap::tm_shape(FL.sf) +
+  tmap::tm_borders() +
+  tmap::tm_layout(legend.position = c("left", "bottom"),
+                  title = "TC Fay (2008)",
+                  title.position = c("left", "bottom"),
+                  legend.outside = TRUE)
 ```
 
-Note: a portion of the data locations are outside of the state but our interest is only to have values on a grid within the state. 
+Note: a portion of the data locations are outside of the state but interest is only interpolated values within the state border as specified by the `newdata =` argument.
 
-The spatial interpolation shows that parts of east central and north Florida were deluged by Fay.
+The spatial interpolation shows that parts of east central and north Florida were deluged by Fay with rainfall totals exceeding 30 cm (12 in).
 
-We use _block_ kriging to estimate average rainfall within each county. The county-wide rainfall average is relevant for water resource managers. Block kriging produces a smoothed estimate of this area average, which will differ from a simple average over all sites within the county because of spatial autocorrelation.
+Block kriging
 
-We use the same function to interpolate but specify the spatial polygons rather than the spatial grid as the new data.
+The interpolation can also be done as an area average. For example what was the storm-total average rainfall for each county?
+
+County level rainfall is relevant for water resource managers. Block kriging produces an estimate of this area average, which will differ from a simple average over all sites within the county because of the spatial autocorrelation in rainfall observations.
+
+You use the same function to interpolate but specify the spatial polygons rather than the spatial grid as the new data. Here the spatial polygons are the county borders.
+
 ```{r}
-ipl2 <- krige(tpm ~ 1, 
-              locations = FR.sf, 
-              newdata = FL.sf, 
-              model = FR.vm)
+r.int2 <- krige(tpm ~ 1, 
+                locations = FR.sf, 
+                newdata = FL.sf, 
+                model = vm)
 ```
 
-Again we plot the interpolations.
+Again plot the interpolations.
+
 ```{r}
-tm_shape(ipl2) +
-  tm_polygons(col = "var1.pred",
-            palette = "Greens",
-            title = "Rainfall (cm)") +
-  tm_layout(legend.position = c("left", "bottom"),
-            title = "Tropical Cyclone Fay (2008)",
-            title.position = c("left", "bottom"))
+tmap::tm_shape(r.int2) +
+  tmap::tm_polygons(col = "var1.pred",
+                    palette = "Greens",
+                    title = "Rainfall (cm)") +
+  tmap::tm_layout(legend.position = c("left", "bottom"),
+                  title = "TC Fay (2008)",
+                  title.position = c("left", "bottom"))
 ```
 
-The overall pattern of rainfall from Fay featuring the largest amounts along the central east coast and over the eastern panhandle are similar in both maps.
+The overall pattern of rainfall from Fay featuring the largest amounts along the central east coast and over the eastern panhandle are similar in both maps but these estimates answer questions like on average how much rain fell over Leon County during TC Fay? 
 
 We compare the kriged average with the simple average at the county level with `aggregate()` from the {sf} package.
 ```{r}
@@ -258,12 +282,14 @@ round(cor(ipl3$tpm, ipl2$var1.pred), 2)
 ```
 
 The variogram model reduces the standard deviation of the kriged estimate relative to the standard deviation of the simple averages because of the local smoothing.
+
 ```{r}
 round(sd(ipl2$var1.pred), 2)
 round(sd(ipl3$tpm), 2)
 ```
 
 This can be seen with a scatter plot of simple averages versus kriged averages at the county level.
+
 ```{r}
 compare.df <- data.frame(simpleAvg = ipl3$tpm,
                          krigeAvg = ipl2$var1.pred)
@@ -327,7 +353,7 @@ Unconditional simulation (see Section 4 https://www.r-bloggers.com/2022/03/gauss
 
 ## Interpolating multiple variables {-}
 
-Statistical interpolation can be extended to obtain surfaces of multiple field variables. The idea is that if two field variables are correlated then information about the spatial correlation in one field variable can help provide information about values in the other field variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to only two variables. 
+This type of spatial interpolation can be extended to obtain surfaces of multiple variables. The idea is that if two field variables are correlated then information about the spatial correlation in one field variable can help provide information about values in the other field variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to only two variables. 
 
 Here we consider data measuring concentrations of heavy metals in the flood plain of the Meuse River in Holland. The data are available in the {sp} package.
 ```{r}
