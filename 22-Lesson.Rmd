@@ -343,6 +343,8 @@ for(i in 1:nrow(t.sf)){
 
 The interpolation error using full cross validation will always be larger than the interpolation error using a fixed variogram model.
 
+## Block cross validation {-}
+
 One final note about cross validation in the context of spatial data is the observations are not independent. As such it is better to create spatial areas for training separate from the spatial areas for testing.
 
 A nice introduction to so-called 'block' cross validation in the context of species distribution modeling is available here

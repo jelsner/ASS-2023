@@ -255,44 +255,48 @@ tmap::tm_shape(r.int2) +
                   title.position = c("left", "bottom"))
 ```
 
-The overall pattern of rainfall from Fay featuring the largest amounts along the central east coast and over the eastern panhandle are similar in both maps but these estimates answer questions like on average how much rain fell over Leon County during TC Fay? 
+The overall pattern of rainfall from Fay featuring the largest amounts along the central east coast and over the Big Bend region are similar in both maps but these estimates answer questions like on average how much rain fell over Leon County during TC Fay? 
 
-We compare the kriged average with the simple average at the county level with `aggregate()` from the {sf} package.
+You compare the kriged average with the simple average at the county level with the `aggregate()` method. The argument `FUN = mean` says to compute the average of the values in `FR.sf` across the polygons in `FL.sf`.
+
 ```{r}
-ipl3 <- aggregate(FR.sf, 
-                  by = FL.sf, 
-                  FUN = mean)
+r.int3 <- aggregate(FR.sf, 
+                    by = FL.sf, 
+                    FUN = mean)
 ```
 
-The function returns a simple feature data frame of the average rainfall in each county.
+The result is a simple feature data frame of the average rainfall in each county.
 
-The state-wide mean of the kriged estimates at the county level is 
+The state-wide mean of the kriged estimates at the county level is
+
 ```{r}
-round(mean(ipl2$var1.pred), 2)
+round(mean(r.int2$var1.pred), 2)
 ```
 
 This compares with a state-wide mean from the simple averages.
+
 ```{r}
-round(mean(ipl3$tpm), 2)
+round(mean(r.int3$tpm), 2)
 ```
 
 The correlation between the two estimates across the 67 counties is 
+
 ```{r}
-round(cor(ipl3$tpm, ipl2$var1.pred), 2)
+round(cor(r.int3$tpm, r.int2$var1.pred), 2)
 ```
 
 The variogram model reduces the standard deviation of the kriged estimate relative to the standard deviation of the simple averages because of the local smoothing.
 
 ```{r}
-round(sd(ipl2$var1.pred), 2)
-round(sd(ipl3$tpm), 2)
+round(sd(r.int2$var1.pred), 2)
+round(sd(r.int3$tpm), 2)
 ```
 
 This can be seen with a scatter plot of simple averages versus kriged averages at the county level.
 
 ```{r}
-compare.df <- data.frame(simpleAvg = ipl3$tpm,
-                         krigeAvg = ipl2$var1.pred)
+compare.df <- data.frame(simpleAvg = r.int3$tpm,
+                         krigeAvg = r.int2$var1.pred)
 ggplot(compare.df, aes(x = simpleAvg,
                        y = krigeAvg)) +
   geom_point() +
@@ -303,75 +307,91 @@ ggplot(compare.df, aes(x = simpleAvg,
 An advantage of kriging as a method of spatial interpolation is the accompanying uncertainty estimates. The prediction variances are listed in a column in the spatial data frame saved from apply the `krige()` function. Variances are smaller in regions with more rainfall observations.  
 
 Prediction variances are also smaller with block kriging as much of the variability within the county averages out. To compare the distribution characteristics of the prediction variances for the point and block kriging of the rainfall observations, type
+
 ```{r}
-round(summary(ipl$var1.var), 1)
-round(summary(ipl2$var1.var), 1)
+round(summary(r.int$var1.var), 1)
+round(summary(r.int2$var1.var), 1)
 ```
 
-The median prediction variance (in cm$^2$) for our point kriging is close to the value of the nugget.
+The median prediction variance (in cm$^2$) for the point kriging is close to the value of the nugget.
+
 ```{r}
-round(fivenum(ipl$var1.var)[3], 1)
+round(fivenum(r.int$var1.var)[3], 1)
 ```
 
-In contrast the median prediction variance for our block kriging is a much smaller 
+In contrast, the median prediction variance for our block kriging is a much smaller.
+
 ```{r} 
-round(fivenum(ipl2$var1.var)[3], 1)
+round(fivenum(r.int2$var1.var)[3], 1)
 ```
 
 ## Simulating spatial fields {-}
 
-Simulations exploit this uncertainty and provide synthetic data for use in deterministic models. 
+Simulations use this uncertainty to provide additional data for deterministic models. Suppose for example you have a hydrology model of rainfall runoff. Given a spatial field of rain amounts the model predicts a discharge rate at some location along a river. The uncertainty in the predicted runoff rate at the location is due to the uncertainty in where and how hard the rain fell (in the rainfall field) and not due to the deterministic hydrology model.
 
-Conditional simulation, where the simulated field (realization) is generated given the data and the variogram model, is done using the same `krige()` function by adding the argument `nsim =` to specify the number of simulations.  
+The uncertainty in the rainfall field is simulated conditional on the observations with the same `krige()` function by adding the argument `nsim =` that specifies the number of simulations.  
 
 For a large number it may be necessary to limit the number neighbors in the kriging. This is done using the `nmax` argument. For a given location, the weights assigned to observations far away are very small, so it is efficient to limit how many are used in the simulation.
 
-As an example, here we generate four realizations of the county-level storm total rainfall for Fay and limit the neighborhood to 50 of the closest observation sites. Note that it may take a few seconds.
+As an example, here you generate four realizations of the county-level average storm total rainfall for Fay and limit the neighborhood to 50 of the closest observation sites. This takes a few seconds.
+
 ```{r}
-ipl.sim <- krige(tpm ~ 1, 
-                 locations = FR.sf, 
-                 newdata = FL.sf, 
-                 model = FR.vm, 
-                 nsim = 4, 
-                 nmax = 50)
+r.sim <- krige(tpm ~ 1, 
+               locations = FR.sf, 
+               newdata = FL.sf, 
+               model = vm, 
+               nsim = 4, 
+               nmax = 50)
 ```
 
-Simulations are conditional on the observed rainfall and the variogram model using block kriging on the counties.
-```{r}
-library(tmap)
+Given the variogram model, the simulations are conditional on the observed rainfall.
 
-tm_shape(ipl.sim) +
-    tm_polygons(col = c("sim1", "sim2", "sim3", "sim4"),
+```{r}
+tmap::tm_shape(r.sim) +
+    tmap::tm_polygons(col = c("sim1", "sim2", "sim3", "sim4"),
                 palette = "Greens",
                 title = "Simulated Rainfall [cm]") +
-    tm_facets(free.scales = FALSE) 
+    tmap::tm_facets(free.scales = FALSE) 
 ```
 
 The overall pattern of rainfall remains the same, but there are differences especially in counties with fewer observations and in counties where the rainfall gradients are sharp.
 
-Unconditional simulation (see Section 4 https://www.r-bloggers.com/2022/03/gaussian-simulation-of-spatial-data-using-r/)
-
 ## Interpolating multiple variables {-}
 
-This type of spatial interpolation can be extended to obtain surfaces of multiple variables. The idea is that if two field variables are correlated then information about the spatial correlation in one field variable can help provide information about values in the other field variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to only two variables. 
+Spatial interpolation can be extended to obtain surfaces of multiple variables. The idea is that if two field variables are correlated then information about the spatial correlation in one field variable can help provide information about values in the other field variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to two variables. 
 
-Here we consider data measuring concentrations of heavy metals in the flood plain of the Meuse River in Holland. The data are available in the {sp} package.
+Here you consider observations of heavy metal concentrations in the flood plain of the Meuse River in Holland. The data are available in {sp} package.
 ```{r}
-library(gstat)
-library(sf)
 library(sp)
 
 data(meuse)
 names(meuse)
-
-meuse.sf <- st_as_sf(x = meuse,
-                    coords = c("x", "y"),
-                    crs = 28992)
 ```
 
-Suppose we are interested in the spatial distribution of all the heavy metals in the soils along the river.
+The metals include cadmium, copper, lead, and zinc. Observation locations are given by x and y. Other variables include elevation, soil type and distance to the river.
 
-First we need to organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the field variables into a single object. It is done successively with the `gstat()` function.
+Create a simple feature data frame with a projected coordinate system for the Netherlands.
+
+```{r}
+meuse.sf <- sf::st_as_sf(x = meuse,
+                         coords = c("x", "y"),
+                         crs = 28992)
+```
+
+Interest is on the spatial distribution of the heavy metals in the soils.
+
+Map the zinc levels at the observation locations.
+
+```{r}
+tmap::tmap_mode("view")
+tmap::tm_shape(meuse.sf) +
+  tmap::tm_dots(col = "zinc")
+```
+
+The soil samples are taken in the flood plain of the Meuse river outside the city of Stein. Highest concentrations of zinc are found nearest to the river.
+
+
+First you organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the field variables into a single object. It is done successively with the `gstat()` function.
 
 Here we specify the trend using the square root of the distance to river as we did previously.
 ```{r}
@@ -453,3 +473,11 @@ The map shows areas of the flood plain with high (and low) correlations between 
 Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your toolbox.
 
 Kriging is super useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
+
+On the other hand, if you want to spatially interpolate rare or extreme events then kriging 
+
+Kriging works does on data that can be adequately described with a normal distribution. tends to smooth out local details of the spatial variation of the attribute. Typically, small values are overestimated, whereas large values are underestimated. Such conditional bias is a shortcoming when trying to detect patterns of extreme values. A
+
+## Machine learning for spatial prediction {-}
+
+See https://geocompr.robinlovelace.net/spatial-cv.html
