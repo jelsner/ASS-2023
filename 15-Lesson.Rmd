@@ -89,12 +89,12 @@ The output tells you that there are 4281 events (tornado reports) with an averag
 
 The distance unit is meter since that is the length unit in the simple feature data frame (see `sf::st_crs(Torn.sf)` LENGTHUNIT["metre",1]) from which the `ppp` object was derived. So the area is in square meters making the spatial intensity (number of tornado reports per square meter) quite small.
 
-To make it easier to interpret the intensity convert the length unit from meters to kilometers within the `ppp` object with the `rescale()` function from the {spatstat} package. The scaling factor argument is `s =` and the conversion is 1000 m = 1 km so the argument is set to 1000. You then set the unit name to `km` with the `unitname =` argument.
+To make it easier to interpret the intensity convert the length unit from meters to kilometers within the `ppp` object with the `rescale()` function from the {spatstat} package (spatstat.geom). The scaling factor argument is `s =` and the conversion is 1000 m = 1 km so the argument is set to 1000. You then set the unit name to `km` with the `unitname =` argument.
 
 ```{r}
 T.ppp <- T.ppp |>
-  rescale(s = 1000, 
-          unitname = "km")
+  spatstat.geom::rescale(s = 1000, 
+                         unitname = "km")
 summary(T.ppp)
 ```
 
@@ -205,8 +205,8 @@ C.ppp <- C.sf |>
   unmark()
 
 C.ppp <- C.ppp[KS.win] |>
-  rescale(s = 1000,
-          unitname = "km")
+  spatstat.geom::rescale(s = 1000,
+                         unitname = "km")
 plot(C.ppp)
 ```
 
@@ -332,8 +332,8 @@ W <- USAboundaries::us_states(states = "Texas") |>
   as.owin()
 
 ( T.ppp <- T.ppp[W] |>
-    rescale(s = 1000, 
-            unitname = "km") )
+    spatstat.geom::rescale(s = 1000, 
+                           unitname = "km") )
 intensity(T.ppp)
 ```
 
@@ -361,8 +361,8 @@ C.ppp <- C.sf |>
   unmark()
 
 C.ppp <- C.ppp[W] |>
-  rescale(s = 1000,
-          unitname = "km")
+  spatstat.geom::rescale(s = 1000,
+                         unitname = "km")
 ```
 
 Next create a distance map of the city/town locations using the `distmap()` function.

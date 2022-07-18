@@ -269,7 +269,7 @@ $$
 
 where $X$ are the explanatory variables and $\beta$ are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor $\exp(\beta)$, holding the other variables constant.
 
-A popular form for the combined spatially structured random effect and the uncorrelated random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregressive distribution to $u$ as
+A popular form for the combined spatially structured random effect and the uncorrelated random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregression distribution to $u$ as
 
 $$
 u | u_{j \ne i} \sim N(\bar u_{\delta}, \frac{\sigma_u^2}{n_{\delta}})

@@ -139,8 +139,8 @@ W <- KS.sf |>
   as.owin()
 
 ST.ppp <- ST.ppp[W] |>
-  rescale(s = 1000, 
-          unitname = "km")
+  spatstat.geom::rescale(s = 1000, 
+                         unitname = "km")
 plot(ST.ppp)
 ```
 

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Thursday, August 25, 2022 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Thursday, August 25, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Thursday, August 25, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Thursday, August 25, 2022 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tuesday-august-23-2022.html"/>
+<link rel="next" href="tuesday-august-30-2022.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/Leaflet.Sync-0.0.5/L.Map.Sync.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i>Syllabus</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#materials-and-class-meetings"><i class="fa fa-check"></i>Materials and class meetings</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i>Are you completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#expectations"><i class="fa fa-check"></i>Expectations</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html"><i class="fa fa-check"></i>Thursday September 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html"><i class="fa fa-check"></i>Tuesday September 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html"><i class="fa fa-check"></i>Thursday September 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html"><i class="fa fa-check"></i>Thursday October 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html"><i class="fa fa-check"></i>Tuesday October 11, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#mapping-incidence-and-risk-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping incidence and risk with spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html"><i class="fa fa-check"></i>Tuesday October 18, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html"><i class="fa fa-check"></i>Thursday October 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#intensity-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Intensity trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html"><i class="fa fa-check"></i>Tuesday October 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html"><i class="fa fa-check"></i>Thursday October 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html"><i class="fa fa-check"></i>Tuesday November 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#inferring-event-interaction-from-distance-functions"><i class="fa fa-check"></i>Inferring event interaction from distance functions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#removing-duplicate-event-locations-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate event locations and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#modeling-point-pattern-data"><i class="fa fa-check"></i>Modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#fitting-and-interpreting-an-inhibition-model"><i class="fa fa-check"></i>Fitting and interpreting an inhibition model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html"><i class="fa fa-check"></i>Thursday November 3, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#fitting-and-interpreting-a-cluster-model"><i class="fa fa-check"></i>Fitting and interpreting a cluster model</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html"><i class="fa fa-check"></i>Thursday November 10, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html"><i class="fa fa-check"></i>Tuesday November 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html"><i class="fa fa-check"></i>Thursday November 17, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#evaluating-the-accuracy-of-the-interpolation"><i class="fa fa-check"></i>Evaluating the accuracy of the interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html"><i class="fa fa-check"></i>Thursday November 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#machine-learning-for-spatial-interpolation"><i class="fa fa-check"></i>Machine learning for spatial interpolation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thursday-august-25-2022" class="section level1 unnumbered hasAnchor">
+<h1>Thursday, August 25, 2022<a href="thursday-august-25-2022.html#thursday-august-25-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“The trouble with programmers is that you can never tell what a programmer is doing until it’s too late.”</strong> — Seymour Cray</p>
+<p>Today</p>
+<ul>
+<li>Expectations</li>
+<li>Data science workflow with R markdown</li>
+<li>An introduction to using R</li>
+<li>Data frames</li>
+</ul>
+<div id="expectations" class="section level2 unnumbered hasAnchor">
+<h2>Expectations<a href="thursday-august-25-2022.html#expectations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m., Lab Hours: Fri 9:05 a.m. - 9:55 a.m., Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m. The best way to contact me is through email: <a href="mailto:jelsner@fsu.edu" class="email">jelsner@fsu.edu</a>.</p>
+<p>This course is a survey of methods to describe, analyze, and model <em>spatial</em> data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.</p>
+<p>During each lesson I will work through and explain the R code within an <code>xx-Lesson.Rmd</code> file. The notes in the files are comprehensive, so you can work through them on your own. The notes are written using the markdown language.</p>
+<p>Grades are determined by how well you do on the weekly assignments.</p>
+<p>There are online sites dedicated to all aspects of the R programming language. A list of some of the ones related to spatial analysis and modeling are in the syllabus.</p>
+<p>You should now be set up with R and RStudio. If not I will help you after class. I will spend the first several lessons teaching you how to work with R. For some of you this material might be a review.</p>
+<p>On the other hand, if this is entirely new don’t get discouraged. This class does not involve writing complex code.</p>
+<p>Today I review how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your installation. They form the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages.</p>
+<p>The one exception is that I introduce functions from the {readr} package today that simplify getting data into R. These functions are similar to the corresponding functions in the {base} package.</p>
+</div>
+<div id="data-science-workflow-with-r-markdown" class="section level2 unnumbered hasAnchor">
+<h2>Data science workflow with R markdown<a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A scientific paper is <em>advertisement</em> for a claim about the world. The <em>proof</em> is the procedure that was used to obtain the result that under girds the claim. The computer code is the exact procedure.</p>
+<p>Computer code is the recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self.</p>
+<p>When you use a spreadsheet, it’s hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words you use to describe these types of procedures are not standard.</p>
+<p>If you’ve ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code with new data is simple.</p>
+<p>Code is an efficient way to communicate because all important information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.</p>
+<p>The person most likely to reproduce our work a few months later is us. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code we write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.</p>
+<p>In data science we toggle between:</p>
+<ol style="list-style-type: decimal">
+<li><p>Writing code: Code to get our data into R, code to look at tables and summary statistics, code to make graphs, code to compute spatial statistics, code to model and plot our results.</p></li>
+<li><p>Looking at output: Our code is a set of instructions that produces the output we want: a table, a model, or a figure. It is helpful to be able to see that output.</p></li>
+<li><p>Taking notes: We also write text about what we are doing, why we are doing it, and what our results mean.</p></li>
+</ol>
+<p>To do be efficient we write our code and our comments <em>together</em> in the same file. This is where R markdown comes in (files that end with <code>.Rmd</code>). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When we <code>Knit</code> this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output.</p>
+<p>The resulting file is converted into a HTML, PDF, or Word document. The text in the markdown file they has simple format instructions. For example, the following symbols are used for emphasis <em>italics</em>, <strong>bold</strong>, and <code>code font</code>. When we create a <em>new</em> markdown document in R Studio, it contains a sample example.</p>
+<p>Lesson notes for this class are written in text using markdown formatting as needed. Text is interspersed with code. The format for code chunks is</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="thursday-august-25-2022.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lines of code here</span></span></code></pre></div>
+<p>Three back-ticks (on a U.S. keyboard, the character under the escape key) followed by a pair of curly braces containing the name of the language we are using. The back-ticks-and-braces part signal that code is about to begin. We write our code as needed, and then end the chunk with a new line containing three more back-ticks. We can use the <em>Insert</em> button above to save time.</p>
+<p>In the markdown file, the lines between the first and second set of back ticks is grayed and a few small icons are noted in the upper-right corner of the grayed area. The green triangle is used to execute the code and either post the results in the console below or in the line below.</p>
+<p>When we keep our notes in this way, we are able to see everything together, the code, the output it produces, and our commentary or clarification on it. Also we can turn it into a good-looking document with one click. This is how we will do everything in this course.</p>
+<p>For example, select the <em>Knit</em> button above.</p>
+<p>Finally, note the <em>Outline</em> button in the upper right corner of the markdown file. We can organize and navigate through the markdown file section by section based on the pound symbol (<code>#</code>).</p>
+</div>
+<div id="an-introduction-to-using-r" class="section level2 unnumbered hasAnchor">
+<h2>An introduction to using R<a href="thursday-august-25-2022.html#an-introduction-to-using-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Applied spatial statistics is the analysis and modeling of data that was collected across space. To begin you need to know about data objects.</p>
+<p>The <code>c()</code> function is used to create a simple data object (vector object). The function combines (concatenates) individual values into a vector. The length of the vector is the number of data values.</p>
+<p>Consider a set of annual land falling hurricane counts over a ten-year period. In the first year there were two hurricanes, the next year there were three, and so on.</p>
+<p>2 3 0 3 1 0 0 1 2 1</p>
+<p>You save these ten values by assigning them to an object that you call <code>counts</code>. The assignment operator is an equal sign (<code>&lt;-</code> or <code>=</code>).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="thursday-august-25-2022.html#cb23-1" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<p>By clicking on the <em>Environment</em> tab in the upper-right panel you see that the object <code>counts</code> with numerical values (<code>num</code>) 2 3, etc below word <em>Values</em>. The elements of the vector object are indexed between 1 and 10 (<code>1:10</code>).</p>
+<p>You print the values to the console by typing the name of the data object.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="thursday-august-25-2022.html#cb24-1" aria-hidden="true" tabindex="-1"></a>counts</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
+<p>When printed the values are prefaced with a <code>[1]</code>. This indicates that the object is a vector and the first element in the vector has a value of 2 (The number immediately to the right of <code>[1]</code>).</p>
+<p>Note: You can assign and print by wrapping the entire line of code in parentheses.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="thursday-august-25-2022.html#cb26-1" aria-hidden="true" tabindex="-1"></a>( counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>) )</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
+<p>You can use the arrow keys on your keyboard to retrieve previous commands. Each command is stored in the history file (click on the <em>History</em> tab in the upper-right panel). The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.</p>
+<p>You apply functions to data objects. A function has a name and parentheses. Inside the parentheses are the function arguments. Many functions have only a single argument, the data object.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="thursday-august-25-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="thursday-august-25-2022.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="thursday-august-25-2022.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)<span class="sc">/</span><span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="thursday-august-25-2022.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<p>The function <code>sum()</code> totals the hurricane counts over all years, <code>length()</code> returns the number of elements in the vector. Other functions include <code>sort()</code>, <code>min()</code>, <code>max()</code>, <code>range()</code>, <code>diff()</code>, and <code>cumsum()</code>.</p>
+<p>The object <code>counts</code> that you create is a vector in the sense that the elements are ordered. There is a first element, a second element, and so on. This is good for several reasons.</p>
+<p>The hurricane counts have a chronological order: year 1, year 2, etc and you want that ordered reflected in the data object. Also, you would like to be able to make changes to the data values by element. Also, vectors are math objects so that math operations can be performed on them in a natural way.</p>
+<p>For example, math tells us that a scalar multiplied by a vector is a vector where each element of the product has been multiplied by the scalar. The asterisk <code>*</code> is used for multiplication.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="thursday-august-25-2022.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">*</span> counts</span></code></pre></div>
+<pre><code>##  [1] 20 30  0 30 10  0  0 10 20 10</code></pre>
+<p>Further, suppose <code>counts</code> contain the annual landfall count from the first decade of a longer record. You want to keep track of counts over other decades.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="thursday-august-25-2022.html#cb38-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> counts</span>
+<span id="cb38-2"><a href="thursday-august-25-2022.html#cb38-2" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<p>Most functions operate on each element of the data vector all at once.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="thursday-august-25-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">+</span> d2</span></code></pre></div>
+<pre><code>##  [1] 2 8 4 5 4 0 3 4 4 2</code></pre>
+<p>The first year of the first decade is added to the first year of the second decade and so on.</p>
+<p>What happens if you apply the <code>c()</code> function to these two vectors?</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="thursday-august-25-2022.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(d1, d2)</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1 0 5 4 2 3 0 3 3 2 1</code></pre>
+<p>You get a vector with elements from both <code>d1</code> and <code>d2</code> in the order of first the first decade counts and then the second decade counts.</p>
+<p>If you are interested in each year’s count as a difference from the average number over the decade you type</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="thursday-august-25-2022.html#cb43-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">-</span> <span class="fu">mean</span>(d1)</span></code></pre></div>
+<pre><code>##  [1]  0.7  1.7 -1.3  1.7 -0.3 -1.3 -1.3 -0.3  0.7 -0.3</code></pre>
+<p>In this case a single number (the average of the first decade) is subtracted from each element of the vector.</p>
+<p>Suppose you are interested in the inter annual variability in the set of landfall counts. The variance is computed as
+<span class="math display">\[
+\hbox{var}(x) = \frac{(x_1 - \bar x)^2 + (x_2 - \bar x)^2 + \cdots + (x_n - \bar x)^2}{n-1} = \frac{1}{n-1}\sum_{i=1}^n (x_i - \bar x)^2
+\]</span></p>
+<p>Although the <code>var()</code> function computes this, here you see how to do this using simple functions. The key is to find the squared differences and then sum.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="thursday-august-25-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> d1</span>
+<span id="cb45-2"><a href="thursday-august-25-2022.html#cb45-2" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb45-3"><a href="thursday-august-25-2022.html#cb45-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> xbar</span></code></pre></div>
+<pre><code>##  [1]  0.7  1.7 -1.3  1.7 -0.3 -1.3 -1.3 -0.3  0.7 -0.3</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="thursday-august-25-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a>(x <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<pre><code>##  [1] 0.49 2.89 1.69 2.89 0.09 1.69 1.69 0.09 0.49 0.09</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="thursday-august-25-2022.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((x <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 12.1</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="thursday-august-25-2022.html#cb51-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb51-2"><a href="thursday-august-25-2022.html#cb51-2" aria-hidden="true" tabindex="-1"></a>n</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="thursday-august-25-2022.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((x <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(n <span class="sc">-</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 1.344444</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="thursday-august-25-2022.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x)</span></code></pre></div>
+<pre><code>## [1] 1.344444</code></pre>
+<p>Elements in a vector object must all have the same type. This type can be numeric, as in counts, character strings, as in</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="thursday-august-25-2022.html#cb57-1" aria-hidden="true" tabindex="-1"></a>simpsons <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Homer&#39;</span>, <span class="st">&#39;Marge&#39;</span>, <span class="st">&#39;Bart&#39;</span>, <span class="st">&#39;Lisa&#39;</span>, <span class="st">&#39;Maggie&#39;</span>)</span>
+<span id="cb57-2"><a href="thursday-august-25-2022.html#cb57-2" aria-hidden="true" tabindex="-1"></a>simpsons</span></code></pre></div>
+<pre><code>## [1] &quot;Homer&quot;  &quot;Marge&quot;  &quot;Bart&quot;   &quot;Lisa&quot;   &quot;Maggie&quot;</code></pre>
+<p>Character strings are made with matching quotes, either double, <code>"</code>, or single, <code>'</code>. If you mix types the values will be coerced into a common type, which is usually a character string. Arithmetic operations do not work on character strings.</p>
+<p>Returning to the land falling hurricane counts. Now suppose the National Hurricane Center (NHC) reanalyzes a storm, and that the 6th year of the 2nd decade is a 1 rather than a 0 for the number of landfalls. In this case you change the sixth element to have the value 1.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="thursday-august-25-2022.html#cb59-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="dv">6</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
+<p>You assign to the 6th year of the decade a value of one. The square brackets <code>[]</code> are used to reference elements of the data vector.</p>
+<p>It is important to keep this straight: Parentheses <code>()</code> are used by functions and square brackets <code>[]</code> are used by data objects.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="thursday-august-25-2022.html#cb60-1" aria-hidden="true" tabindex="-1"></a>d2</span></code></pre></div>
+<pre><code>##  [1] 0 5 4 2 3 1 3 3 2 1</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="thursday-august-25-2022.html#cb62-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="thursday-august-25-2022.html#cb64-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="sc">-</span><span class="dv">4</span>]</span></code></pre></div>
+<pre><code>## [1] 0 5 4 3 1 3 3 2 1</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="thursday-august-25-2022.html#cb66-1" aria-hidden="true" tabindex="-1"></a>d2[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>)]</span></code></pre></div>
+<pre><code>## [1] 0 4 3 3 2</code></pre>
+<p>The first line prints all the elements of the vector <code>df2</code>. The second prints only the 2nd value of the vector. The third prints all but the 4th value. The fourth prints the values with odd element numbers.</p>
+<p>To create structured data, for example the integers 1 through 99 you can use the <code>:</code> operator.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="thursday-august-25-2022.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">99</span></span>
+<span id="cb68-2"><a href="thursday-august-25-2022.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rev</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">99</span>)</span>
+<span id="cb68-3"><a href="thursday-august-25-2022.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="dv">99</span><span class="sc">:</span><span class="dv">1</span></span></code></pre></div>
+<p>The <code>seq()</code> function is more general. You specify the sequence interval with the <code>by =</code> or <code>length =</code> arguments.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="thursday-august-25-2022.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">9</span>, <span class="at">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="thursday-august-25-2022.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="thursday-august-25-2022.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">9</span>, <span class="at">length =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<p>The <code>rep()</code> function is used to create repetitive sequences. The first argument is a value or vector that we want repeated and the second argument is the number of times you want it repeated.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="thursday-august-25-2022.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="thursday-august-25-2022.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(simpsons, <span class="at">times =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;Homer&quot;  &quot;Marge&quot;  &quot;Bart&quot;   &quot;Lisa&quot;   &quot;Maggie&quot; &quot;Homer&quot;  &quot;Marge&quot;  &quot;Bart&quot;  
+##  [9] &quot;Lisa&quot;   &quot;Maggie&quot;</code></pre>
+<p>In the second example the vector <code>simpsons</code> containing the Simpson characters is repeated twice.</p>
+<p>To repeat each element of the vector use the <code>each =</code> argument.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="thursday-august-25-2022.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(simpsons, <span class="at">each =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;Homer&quot;  &quot;Homer&quot;  &quot;Marge&quot;  &quot;Marge&quot;  &quot;Bart&quot;   &quot;Bart&quot;   &quot;Lisa&quot;   &quot;Lisa&quot;  
+##  [9] &quot;Maggie&quot; &quot;Maggie&quot;</code></pre>
+<p>More complicated patterns can be repeated by specifying pairs of equal length vectors. In this case, each element of the first vector is repeated the corresponding number of times specified by the element in the second vector.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="thursday-august-25-2022.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;short&quot;</span>),  <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;long&quot;  &quot;long&quot;  &quot;short&quot; &quot;short&quot; &quot;short&quot;</code></pre>
+<p>To find the maximum number of landfalls during the first decade you type</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="thursday-august-25-2022.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>What years had the maximum?</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="thursday-august-25-2022.html#cb85-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">==</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>##  [1] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<p>Notice the double equals signs (<code>==</code>). This is a logical operator that tests each value in <code>d1</code> to see if it is equal to 3. The 2nd and 4th values are equal to 3 so <code>TRUE</code>s are returned.</p>
+<p>Think of this as asking R a question. Is the value equal to 3? R answers all at once with a vector of <code>TRUE</code>’s and <code>FALSE</code>’s.</p>
+<p>What years had fewer than 2 hurricanes?</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="thursday-august-25-2022.html#cb87-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">&lt;</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>##  [1] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE</code></pre>
+<p>Now the question is how do you get the vector element corresponding to the <code>TRUE</code> values? That is, which years have 3 landfalls?</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="thursday-august-25-2022.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(d1 <span class="sc">==</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 2 4</code></pre>
+<p>The function <code>which.max()</code> can be used to get the first maximum.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="thursday-august-25-2022.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>You might also want to know the total number of landfalls in each decade and the number of years in a decade without a landfall. Or how about the ratio of the mean number of landfalls over the two decades.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="thursday-august-25-2022.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="thursday-august-25-2022.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d2)</span></code></pre></div>
+<pre><code>## [1] 24</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="thursday-august-25-2022.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d1 <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="thursday-august-25-2022.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d2 <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="thursday-august-25-2022.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(d2)<span class="sc">/</span><span class="fu">mean</span>(d1)</span></code></pre></div>
+<pre><code>## [1] 1.846154</code></pre>
+<p>So there are 85% more landfalls during the second decade. Is this difference statistically significant?</p>
+<p>To remove an object from the environment use the <code>rm()</code> function.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="thursday-august-25-2022.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(d1, d2)</span></code></pre></div>
+</div>
+<div id="data-frames" class="section level2 unnumbered hasAnchor">
+<h2>Data frames<a href="thursday-august-25-2022.html#data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Spatial data frames will be used throughout this course. A spatial data frame is a data frame plus information about the spatial geometry. Let’s start with data frames.</p>
+<p>A data frame stores data in a tabular format like a spreadsheet. It is a list of vectors each with the same length. It has column names (and sometimes row names).</p>
+<p>For example, you create a data frame object <code>df</code> containing three vectors <code>n</code>, <code>s</code>, <code>b</code> each with three elements using the <code>data.frame()</code> function.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="thursday-august-25-2022.html#cb104-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>) </span>
+<span id="cb104-2"><a href="thursday-august-25-2022.html#cb104-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;aa&quot;</span>, <span class="st">&quot;bb&quot;</span>, <span class="st">&quot;cc&quot;</span>) </span>
+<span id="cb104-3"><a href="thursday-august-25-2022.html#cb104-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>) </span>
+<span id="cb104-4"><a href="thursday-august-25-2022.html#cb104-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-5"><a href="thursday-august-25-2022.html#cb104-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, s, b)</span></code></pre></div>
+<p>To see that the object is indeed a data frame you use the <code>class()</code> function with the name of the object inside the parentheses.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="thursday-august-25-2022.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>The object <code>df</code> is of class <code>data.frame</code>. Note that the object name shows up in our <em>Environment</em> under <em>Data</em> and it includes a little blue arrow indicating that you can view it by clicking on the row.</p>
+<p>The data frame shows up as a table (like a spreadsheet) in the <code>View()</code> mode (see the command in the console below). Caution: This is not advised for large data frames.</p>
+<p>The top line of the table is called the header. Each line below the header contains a row of data, which begins with the name (or number) of the row followed by the data values.</p>
+<p>Each data element is in a cell. To retrieve a data value from a cell, you enter its row and column coordinates in that order in the single square bracket <code>[]</code> operator and separated by a column.</p>
+<p>Here is the cell value from the first row, second column of <code>df</code>.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="thursday-august-25-2022.html#cb107-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">1</span>, <span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] &quot;aa&quot;</code></pre>
+<p>You can print the column names (located in the top row in the <code>View()</code> mode) with the <code>names()</code> function.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="thursday-august-25-2022.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span></code></pre></div>
+<pre><code>## [1] &quot;n&quot; &quot;s&quot; &quot;b&quot;</code></pre>
+<p>The list of names is a vector of length three containing the elements “n”, “s”, and “b” in that order.</p>
+<p>You access individual columns of a data frame as vectors by appending the dollar sign (<code>$</code>) to the object name. For example, to print the values of the column labeled <code>s</code> type</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="thursday-august-25-2022.html#cb111-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>s</span></code></pre></div>
+<pre><code>## [1] &quot;aa&quot; &quot;bb&quot; &quot;cc&quot;</code></pre>
+<p>Many of the packages we will use this semester include example data frames. The data frame called <code>mtcars</code>, for instance, contains information extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="thursday-august-25-2022.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mtcars)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="thursday-august-25-2022.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mtcars)</span></code></pre></div>
+<pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+## [11] &quot;carb&quot;</code></pre>
+<p>The number of data rows and data columns in the data frame are printed using the <code>nrow()</code> and <code>ncol()</code> functions.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="thursday-august-25-2022.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mtcars)</span></code></pre></div>
+<pre><code>## [1] 32</code></pre>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="thursday-august-25-2022.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(mtcars)</span></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<p>Further details of built-in data frames like <code>mtcars</code> is available in the documentation accessed with the <code>help()</code> (or <code>?</code>) function.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="thursday-august-25-2022.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(mtcars)</span></code></pre></div>
+<p>If you type the name of the data frame in the console all the data are printed.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="thursday-august-25-2022.html#cb122-1" aria-hidden="true" tabindex="-1"></a>mtcars</span></code></pre></div>
+<pre><code>##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+<p>Instead, to get a glimpse of our data we used the functions <code>head()</code>, which prints the first six rows, or <code>str()</code>, which lists all the columns by data type.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="thursday-august-25-2022.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code></pre></div>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="thursday-august-25-2022.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mtcars)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tuesday-august-23-2022.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="tuesday-august-30-2022.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

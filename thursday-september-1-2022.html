@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Thursday September 1, 2022 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Thursday September 1, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Thursday September 1, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Thursday September 1, 2022 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tuesday-august-30-2022.html"/>
+<link rel="next" href="thursday-september-8-2022.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/Leaflet.Sync-0.0.5/L.Map.Sync.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i>Syllabus</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#materials-and-class-meetings"><i class="fa fa-check"></i>Materials and class meetings</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i>Are you completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#expectations"><i class="fa fa-check"></i>Expectations</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html"><i class="fa fa-check"></i>Thursday September 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html"><i class="fa fa-check"></i>Tuesday September 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html"><i class="fa fa-check"></i>Thursday September 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html"><i class="fa fa-check"></i>Thursday October 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html"><i class="fa fa-check"></i>Tuesday October 11, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#mapping-incidence-and-risk-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping incidence and risk with spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html"><i class="fa fa-check"></i>Tuesday October 18, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html"><i class="fa fa-check"></i>Thursday October 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#intensity-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Intensity trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html"><i class="fa fa-check"></i>Tuesday October 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html"><i class="fa fa-check"></i>Thursday October 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html"><i class="fa fa-check"></i>Tuesday November 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#inferring-event-interaction-from-distance-functions"><i class="fa fa-check"></i>Inferring event interaction from distance functions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#removing-duplicate-event-locations-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate event locations and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#modeling-point-pattern-data"><i class="fa fa-check"></i>Modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#fitting-and-interpreting-an-inhibition-model"><i class="fa fa-check"></i>Fitting and interpreting an inhibition model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html"><i class="fa fa-check"></i>Thursday November 3, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#fitting-and-interpreting-a-cluster-model"><i class="fa fa-check"></i>Fitting and interpreting a cluster model</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html"><i class="fa fa-check"></i>Thursday November 10, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html"><i class="fa fa-check"></i>Tuesday November 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html"><i class="fa fa-check"></i>Thursday November 17, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#evaluating-the-accuracy-of-the-interpolation"><i class="fa fa-check"></i>Evaluating the accuracy of the interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html"><i class="fa fa-check"></i>Thursday November 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#machine-learning-for-spatial-interpolation"><i class="fa fa-check"></i>Machine learning for spatial interpolation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thursday-september-1-2022" class="section level1 unnumbered hasAnchor">
+<h1>Thursday September 1, 2022<a href="thursday-september-1-2022.html#thursday-september-1-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread.”</strong> — Hadley Wickham</p>
+<p>Today</p>
+<ul>
+<li>Making graphs</li>
+</ul>
+<p>Working with data frames is part of the iterative cycle of data science, along with visualizing, and modeling. The iterative cycle of data science:</p>
+<ol style="list-style-type: decimal">
+<li>Generate questions about our data.</li>
+<li>Look for answers by visualizing and modeling the data after the data are in suitably arranged data frames.</li>
+<li>Use what we learn to refine our questions and/or ask new ones.</li>
+</ol>
+<p>Questions are tools to guide your investigation. When you ask a question, the question focuses your attention on a specific part of the data set and helps you decide what to do.</p>
+<p>For additional practice working with data frames using functions from the {tidyverse} set of packages.</p>
+<ul>
+<li>See <a href="http://r4ds.had.co.nz/index.html" class="uri">http://r4ds.had.co.nz/index.html</a></li>
+<li>Cheat sheets <a href="http://rstudio.com/cheatsheets" class="uri">http://rstudio.com/cheatsheets</a></li>
+</ul>
+<p>Before moving on, let’s consider another data frame. The data frame contains observations on Palmer penguins and is available from <a href="https://education.rstudio.com/blog/2020/07/palmerpenguins-cran/" class="uri">https://education.rstudio.com/blog/2020/07/palmerpenguins-cran/</a>.</p>
+<p>You import the data frame using the <code>read_csv()</code> function.</p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="thursday-september-1-2022.html#cb247-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv&quot;</span></span>
+<span id="cb247-2"><a href="thursday-september-1-2022.html#cb247-2" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> loc)</span></code></pre></div>
+<pre><code>## Rows: 344 Columns: 8
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (3): species, island, sex
+## dbl (5): bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, year
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="thursday-september-1-2022.html#cb249-1" aria-hidden="true" tabindex="-1"></a>penguins</span></code></pre></div>
+<pre><code>## # A tibble: 344 × 8
+##    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+##    &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Adelie  Torgersen           39.1          18.7               181        3750
+##  2 Adelie  Torgersen           39.5          17.4               186        3800
+##  3 Adelie  Torgersen           40.3          18                 195        3250
+##  4 Adelie  Torgersen           NA            NA                  NA          NA
+##  5 Adelie  Torgersen           36.7          19.3               193        3450
+##  6 Adelie  Torgersen           39.3          20.6               190        3650
+##  7 Adelie  Torgersen           38.9          17.8               181        3625
+##  8 Adelie  Torgersen           39.2          19.6               195        4675
+##  9 Adelie  Torgersen           34.1          18.1               193        3475
+## 10 Adelie  Torgersen           42            20.2               190        4250
+## # … with 334 more rows, and 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
+<p>The observations are 344 individual penguins each described by species (Adelie, Chinstrap, Gentoo), where it was found (island name), length of bill (mm), depth of bill (mm), body mass (g), male or female, and year.</p>
+<p>Each penguin belongs to one of three species. To see how many of the 344 penguins are in each species you use the <code>table()</code> function.</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="thursday-september-1-2022.html#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(penguins<span class="sc">$</span>species)</span></code></pre></div>
+<pre><code>## 
+##    Adelie Chinstrap    Gentoo 
+##       152        68       124</code></pre>
+<p>There are 152 Adelie, 68 Chinstrap, and 124 Gentoo penguins.</p>
+<p>To create a data frame that includes only the female penguins you type</p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="thursday-september-1-2022.html#cb253-1" aria-hidden="true" tabindex="-1"></a>( df <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb253-2"><a href="thursday-september-1-2022.html#cb253-2" aria-hidden="true" tabindex="-1"></a>          dplyr<span class="sc">::</span><span class="fu">filter</span>(sex <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) )</span></code></pre></div>
+<pre><code>## # A tibble: 165 × 8
+##    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+##    &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Adelie  Torgersen           39.5          17.4               186        3800
+##  2 Adelie  Torgersen           40.3          18                 195        3250
+##  3 Adelie  Torgersen           36.7          19.3               193        3450
+##  4 Adelie  Torgersen           38.9          17.8               181        3625
+##  5 Adelie  Torgersen           41.1          17.6               182        3200
+##  6 Adelie  Torgersen           36.6          17.8               185        3700
+##  7 Adelie  Torgersen           38.7          19                 195        3450
+##  8 Adelie  Torgersen           34.4          18.4               184        3325
+##  9 Adelie  Biscoe              37.8          18.3               174        3400
+## 10 Adelie  Biscoe              35.9          19.2               189        3800
+## # … with 155 more rows, and 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
+<p>To create a data frame that includes only penguins that are not of species Adalie you type</p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="thursday-september-1-2022.html#cb255-1" aria-hidden="true" tabindex="-1"></a>( df <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb255-2"><a href="thursday-september-1-2022.html#cb255-2" aria-hidden="true" tabindex="-1"></a>          dplyr<span class="sc">::</span><span class="fu">filter</span>(species <span class="sc">!=</span> <span class="st">&quot;Adelie&quot;</span>) )</span></code></pre></div>
+<pre><code>## # A tibble: 192 × 8
+##    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+##    &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Gentoo  Biscoe           46.1          13.2               211        4500
+##  2 Gentoo  Biscoe           50            16.3               230        5700
+##  3 Gentoo  Biscoe           48.7          14.1               210        4450
+##  4 Gentoo  Biscoe           50            15.2               218        5700
+##  5 Gentoo  Biscoe           47.6          14.5               215        5400
+##  6 Gentoo  Biscoe           46.5          13.5               210        4550
+##  7 Gentoo  Biscoe           45.4          14.6               211        4800
+##  8 Gentoo  Biscoe           46.7          15.3               219        5200
+##  9 Gentoo  Biscoe           43.3          13.4               209        4400
+## 10 Gentoo  Biscoe           46.8          15.4               215        5150
+## # … with 182 more rows, and 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
+<p>To create a data frame containing only penguins that weigh more than 6000 grams you type</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="thursday-september-1-2022.html#cb257-1" aria-hidden="true" tabindex="-1"></a>( df <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb257-2"><a href="thursday-september-1-2022.html#cb257-2" aria-hidden="true" tabindex="-1"></a>          dplyr<span class="sc">::</span><span class="fu">filter</span>(body_mass_g <span class="sc">&gt;</span> <span class="dv">6000</span>) )</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 8
+##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+##   &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;
+## 1 Gentoo  Biscoe           49.2          15.2              221        6300 male 
+## 2 Gentoo  Biscoe           59.6          17                230        6050 male 
+## # … with 1 more variable: year &lt;dbl&gt;</code></pre>
+<p>To create a data frame with female penguins that have flippers longer than 220 mm we type</p>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="thursday-september-1-2022.html#cb259-1" aria-hidden="true" tabindex="-1"></a>( df <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb259-2"><a href="thursday-september-1-2022.html#cb259-2" aria-hidden="true" tabindex="-1"></a>          dplyr<span class="sc">::</span><span class="fu">filter</span>(flipper_length_mm <span class="sc">&gt;</span> <span class="dv">220</span> <span class="sc">&amp;</span> </span>
+<span id="cb259-3"><a href="thursday-september-1-2022.html#cb259-3" aria-hidden="true" tabindex="-1"></a>                        sex <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) )</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 8
+##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+##   &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;
+## 1 Gentoo  Biscoe           46.9          14.6              222        4875 fema…
+## # … with 1 more variable: year &lt;dbl&gt;</code></pre>
+<p>To create a data frame containing rows where the bill length value is NOT missing.</p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="thursday-september-1-2022.html#cb261-1" aria-hidden="true" tabindex="-1"></a>( df <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb261-2"><a href="thursday-september-1-2022.html#cb261-2" aria-hidden="true" tabindex="-1"></a>          dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(bill_length_mm)) )</span></code></pre></div>
+<pre><code>## # A tibble: 342 × 8
+##    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+##    &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Adelie  Torgersen           39.1          18.7               181        3750
+##  2 Adelie  Torgersen           39.5          17.4               186        3800
+##  3 Adelie  Torgersen           40.3          18                 195        3250
+##  4 Adelie  Torgersen           36.7          19.3               193        3450
+##  5 Adelie  Torgersen           39.3          20.6               190        3650
+##  6 Adelie  Torgersen           38.9          17.8               181        3625
+##  7 Adelie  Torgersen           39.2          19.6               195        4675
+##  8 Adelie  Torgersen           34.1          18.1               193        3475
+##  9 Adelie  Torgersen           42            20.2               190        4250
+## 10 Adelie  Torgersen           37.8          17.1               186        3300
+## # … with 332 more rows, and 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
+<p>Note that this filtering will keep rows with other column values missing values but there will be no penguins where the <code>bill_length</code> value is <code>NA</code>.</p>
+<p>Finally, to compute the average bill length for each species.</p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="thursday-september-1-2022.html#cb263-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb263-2"><a href="thursday-september-1-2022.html#cb263-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb263-3"><a href="thursday-september-1-2022.html#cb263-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">AvgBL =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 2
+##   species   AvgBL
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 Adelie     38.8
+## 2 Chinstrap  48.8
+## 3 Gentoo     47.5</code></pre>
+<div id="making-graphs" class="section level2 unnumbered hasAnchor">
+<h2>Making graphs<a href="thursday-september-1-2022.html#making-graphs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The {ggplot2} package is a popular graphics tool among data scientists (e.g., New York Times and 538). Functionality is built on principles of good data visualization.</p>
+<ol style="list-style-type: decimal">
+<li>Mapping data to aesthetics</li>
+<li>Layering</li>
+<li>Building plots step by step</li>
+</ol>
+<p>You make the functions available to your current working directory by typing</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="thursday-september-1-2022.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<p>Map data to aesthetics</p>
+<p>Consider the following numeric vectors (<code>foo</code>, <code>bar</code> and <code>zaz</code>). Create a data frame <code>df</code> using the <code>data.frame()</code> function.</p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="thursday-september-1-2022.html#cb266-1" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">122.419416</span>,<span class="sc">-</span><span class="fl">121.886329</span>,<span class="sc">-</span><span class="fl">71.05888</span>,<span class="sc">-</span><span class="fl">74.005941</span>,<span class="sc">-</span><span class="fl">118.243685</span>,<span class="sc">-</span><span class="fl">117.161084</span>,<span class="sc">-</span><span class="fl">0.127758</span>,<span class="sc">-</span><span class="fl">77.036871</span>,</span>
+<span id="cb266-2"><a href="thursday-september-1-2022.html#cb266-2" aria-hidden="true" tabindex="-1"></a>         <span class="fl">116.407395</span>,<span class="sc">-</span><span class="fl">122.332071</span>,<span class="sc">-</span><span class="fl">87.629798</span>,<span class="sc">-</span><span class="fl">79.383184</span>,<span class="sc">-</span><span class="fl">97.743061</span>,<span class="fl">121.473701</span>,<span class="fl">72.877656</span>,<span class="fl">2.352222</span>,</span>
+<span id="cb266-3"><a href="thursday-september-1-2022.html#cb266-3" aria-hidden="true" tabindex="-1"></a>         <span class="fl">77.594563</span>,<span class="sc">-</span><span class="fl">75.165222</span>,<span class="sc">-</span><span class="fl">112.074037</span>,<span class="fl">37.6173</span>)</span>
+<span id="cb266-4"><a href="thursday-september-1-2022.html#cb266-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb266-5"><a href="thursday-september-1-2022.html#cb266-5" aria-hidden="true" tabindex="-1"></a>bar <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">37.77493</span>,<span class="fl">37.338208</span>,<span class="fl">42.360083</span>,<span class="fl">40.712784</span>,<span class="fl">34.052234</span>,<span class="fl">32.715738</span>,<span class="fl">51.507351</span>,<span class="fl">38.907192</span>,<span class="fl">39.904211</span>,</span>
+<span id="cb266-6"><a href="thursday-september-1-2022.html#cb266-6" aria-hidden="true" tabindex="-1"></a>         <span class="fl">47.60621</span>,<span class="fl">41.878114</span>,<span class="fl">43.653226</span>,<span class="fl">30.267153</span>,<span class="fl">31.230416</span>,<span class="fl">19.075984</span>,<span class="fl">48.856614</span>,<span class="fl">12.971599</span>,<span class="fl">39.952584</span>,</span>
+<span id="cb266-7"><a href="thursday-september-1-2022.html#cb266-7" aria-hidden="true" tabindex="-1"></a>         <span class="fl">33.448377</span>,<span class="fl">55.755826</span>)</span>
+<span id="cb266-8"><a href="thursday-september-1-2022.html#cb266-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb266-9"><a href="thursday-september-1-2022.html#cb266-9" aria-hidden="true" tabindex="-1"></a>zaz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6471</span>,<span class="dv">4175</span>,<span class="dv">3144</span>,<span class="dv">2106</span>,<span class="dv">1450</span>,<span class="dv">1410</span>,<span class="dv">842</span>,<span class="dv">835</span>,<span class="dv">758</span>,<span class="dv">727</span>,<span class="dv">688</span>,<span class="dv">628</span>,<span class="dv">626</span>,<span class="dv">510</span>,<span class="dv">497</span>,<span class="dv">449</span>,<span class="dv">419</span>,<span class="dv">413</span>,<span class="dv">325</span>,<span class="dv">318</span>)</span>
+<span id="cb266-10"><a href="thursday-september-1-2022.html#cb266-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb266-11"><a href="thursday-september-1-2022.html#cb266-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(foo, bar, zaz)</span>
+<span id="cb266-12"><a href="thursday-september-1-2022.html#cb266-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb266-13"><a href="thursday-september-1-2022.html#cb266-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
+<pre><code>##          foo      bar  zaz
+## 1 -122.41942 37.77493 6471
+## 2 -121.88633 37.33821 4175
+## 3  -71.05888 42.36008 3144
+## 4  -74.00594 40.71278 2106
+## 5 -118.24368 34.05223 1450
+## 6 -117.16108 32.71574 1410</code></pre>
+<p>To make a scatter plot you use the <code>ggplot()</code> function. Note that the package name is {ggplot2} but the function is <code>ggplot()</code> (without the 2).</p>
+<p>Inside the <code>ggplot()</code> function you specify the data frame with the <code>data =</code> argument. You also specify what columns from the data frame are to be mapped to what ‘aesthetics’ with the <code>aes()</code> function using the <code>mapping =</code> argument. The <code>aes()</code> function is nested inside the <code>ggplot()</code> function or inside a layer function.</p>
+<p>For a scatter plot the aesthetics must include the x and y coordinates at a minimum, and for this example they are in the columns labeled <code>foo</code> and <code>bar</code> respectively.</p>
+<p>Then to render the scatter plot you include the function <code>geom_point()</code> as a layer with the <code>+</code> symbol. Numeric values are specified using the arguments <code>x =</code> and <code>y =</code> in the <code>aes()</code> function and are rendered as points on a plot.</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="thursday-september-1-2022.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb268-2"><a href="thursday-september-1-2022.html#cb268-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> foo, <span class="at">y =</span> bar)) <span class="sc">+</span></span>
+<span id="cb268-3"><a href="thursday-september-1-2022.html#cb268-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
+<p>You map data values to aesthetic attributes. The <em>points</em> in the scatter plot are geometric objects that get drawn. In {ggplot2} lingo, the points are <em>geoms</em>. More specifically, the points are point <em>geoms</em> that are denoted syntactically with the function <code>geom_point()</code>.</p>
+<p>All geometric objects have aesthetic attributes (aesthetics):</p>
+<ul>
+<li>x-position</li>
+<li>y-position</li>
+<li>color</li>
+<li>size</li>
+<li>transparency</li>
+</ul>
+<p>You create a mapping between variables in your data frame and the aesthetic attributes of geometric objects. In the scatter plot you mapped <code>foo</code> to the x-position aesthetic and <code>bar</code> to the y-position aesthetic. This may seem trivial <code>foo</code> is the x-axis and <code>bar</code> is on the y-axis. You certainly can do that in Excel.</p>
+<p>Here there is a deeper structure. Theoretically, geometric objects (i.e., the things you draw in a plot, like points) don’t just have attributes like position. They have a color, size, etc.</p>
+<p>For example here you map a new variable to the size aesthetic.</p>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="thursday-september-1-2022.html#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb269-2"><a href="thursday-september-1-2022.html#cb269-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> foo, <span class="at">y =</span> bar)) <span class="sc">+</span></span>
+<span id="cb269-3"><a href="thursday-september-1-2022.html#cb269-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">size =</span> zaz))</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+<p>You changed the scatter plot to a bubble chart by mapping a new variable to the size aesthetic. Any visualization can be deconstructed into <em>geom</em> specifications and a mapping from data to the aesthetic attributes of the geometric objects.</p>
+<p>Build plots in layers</p>
+<p>The principle of layering is important. To create good visualizations you often need to:</p>
+<ul>
+<li>Plot multiple datasets, or</li>
+<li>Plot a dataset with additional contextual information contained in a second dataset, or</li>
+<li>Plot summaries or statistical transformations over the raw data</li>
+</ul>
+<p>Let’s modify the bubble chart by getting additional data and plotting it as a new layer below the bubbles. First get the data from the {maps} package using the <code>map_data()</code> function and specifying the name of the map (here <code>"World"</code>) and assigning it to a data frame with the name <code>df2</code>.</p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="thursday-september-1-2022.html#cb270-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="at">map =</span> <span class="st">&quot;world&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb270-2"><a href="thursday-september-1-2022.html#cb270-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 99,338
+## Columns: 6
+## $ long      &lt;dbl&gt; -69.89912, -69.89571, -69.94219, -70.00415, -70.06612, -70.0…
+## $ lat       &lt;dbl&gt; 12.45200, 12.42300, 12.43853, 12.50049, 12.54697, 12.59707, …
+## $ group     &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, …
+## $ order     &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 1…
+## $ region    &lt;chr&gt; &quot;Aruba&quot;, &quot;Aruba&quot;, &quot;Aruba&quot;, &quot;Aruba&quot;, &quot;Aruba&quot;, &quot;Aruba&quot;, &quot;Aruba…
+## $ subregion &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …</code></pre>
+<p>Plot the new data as a new layer underneath the bubbles.</p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="thursday-september-1-2022.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb272-2"><a href="thursday-september-1-2022.html#cb272-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> foo, <span class="at">y =</span> bar)) <span class="sc">+</span></span>
+<span id="cb272-3"><a href="thursday-september-1-2022.html#cb272-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">data =</span> df2, </span>
+<span id="cb272-4"><a href="thursday-september-1-2022.html#cb272-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> long, <span class="at">y =</span> lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb272-5"><a href="thursday-september-1-2022.html#cb272-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">size =</span> zaz), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<p>This is the same bubble chart but now with a new layer added. You changed the bubble chart into a new visualization called a “dot distribution map,” which is more insightful and visually interesting.</p>
+<p>The bubble chart is a modified scatter plot and the dot distribution map is a modified bubble chart.</p>
+<p>You used two of the data visualization principles (mapping &amp; layering) to build this plot:</p>
+<ul>
+<li>To create the scatter plot, you mapped <code>foo</code> to the x-aesthetic and mapped <code>bar</code> to the y-aesthetic</li>
+<li>To create the bubble chart, you mapped a <code>zaz</code> to the size-aesthetic</li>
+<li>To create the dot distribution map, you added a layer of polygon data under the bubbles.</li>
+</ul>
+<p>Iteration (step by step)</p>
+<p>The third principle is about process. The graphing process begins with mapping and layering but ends with iteration when you add layers that modify scales, legends, colors, etc. The syntax of <code>ggplot</code> <em>layerability</em> enables and rewards iteration.</p>
+<p>Instead of plotting the result of the above code for making a bubble chart, assign the result to an object called <code>p1</code>. Coping/paste the code from above then include the assignment operator <code>p1 &lt;-</code>.</p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="thursday-september-1-2022.html#cb273-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb273-2"><a href="thursday-september-1-2022.html#cb273-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> foo, <span class="at">y =</span> bar)) <span class="sc">+</span></span>
+<span id="cb273-3"><a href="thursday-september-1-2022.html#cb273-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_polygon</span>(<span class="at">data =</span> df2, </span>
+<span id="cb273-4"><a href="thursday-september-1-2022.html#cb273-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> long, <span class="at">y =</span> lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb273-5"><a href="thursday-september-1-2022.html#cb273-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> zaz), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p>Now modify the axes labels saving the new plot to an object called <code>p2</code>.</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="thursday-september-1-2022.html#cb274-1" aria-hidden="true" tabindex="-1"></a>( p2 <span class="ot">&lt;-</span> p1 <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Latitude&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<p>Next modify the scale label.</p>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="thursday-september-1-2022.html#cb275-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="sc">+</span> <span class="fu">scale_size_continuous</span>(<span class="at">name =</span> <span class="st">&quot;Venture Capital Investment</span><span class="sc">\n</span><span class="st">(USD, Millions)</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
+<p>Of course you can do this all together with</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="thursday-september-1-2022.html#cb276-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb276-2"><a href="thursday-september-1-2022.html#cb276-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">ylab</span>(<span class="st">&quot;Latitude&quot;</span>) <span class="sc">+</span></span>
+<span id="cb276-3"><a href="thursday-september-1-2022.html#cb276-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">scale_size_continuous</span>(<span class="at">name =</span> <span class="st">&quot;Venture Capital Investment</span><span class="sc">\n</span><span class="st">(USD, Millions)</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p>The <code>facet_wrap()</code> function is a layer to iterate (repeat) the entire plot conditional on another variable. It is like the <code>dplyr::group_by()</code> function in the data grammar.</p>
+<p>US tornadoes</p>
+<p>Consider the tornado records in the file <code>Tornadoes.csv</code>. Import the data using the <code>readr::read_csv()</code> function then create new columns called <code>Year</code>, <code>Month</code> and <code>EF</code> using the <code>dplyr::mutate()</code> function.</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="thursday-september-1-2022.html#cb277-1" aria-hidden="true" tabindex="-1"></a>( Torn.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Tornadoes.csv&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb277-2"><a href="thursday-september-1-2022.html#cb277-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Year =</span> yr,</span>
+<span id="cb277-3"><a href="thursday-september-1-2022.html#cb277-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">Month =</span> <span class="fu">as.integer</span>(mo),</span>
+<span id="cb277-4"><a href="thursday-september-1-2022.html#cb277-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">EF =</span> mag) )</span></code></pre></div>
+<pre><code>## Rows: 65162 Columns: 29
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (4): mo, dy, st, stf
+## dbl  (23): om, yr, tz, stn, mag, inj, fat, loss, closs, slat, slon, elat, el...
+## date  (1): date
+## time  (1): time
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 65,162 × 32
+##       om    yr mo    dy    date       time      tz st    stf     stn   mag   inj
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;date&gt;     &lt;time&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1     1  1950 01    03    1950-01-03 11:00      3 MO    29        1     3     3
+##  2     2  1950 01    03    1950-01-03 11:55      3 IL    17        2     3     3
+##  3     3  1950 01    03    1950-01-03 16:00      3 OH    39        1     1     1
+##  4     4  1950 01    13    1950-01-13 05:25      3 AR    5         1     3     1
+##  5     5  1950 01    25    1950-01-25 19:30      3 MO    29        2     2     5
+##  6     6  1950 01    25    1950-01-25 21:00      3 IL    17        3     2     0
+##  7     7  1950 01    26    1950-01-26 18:00      3 TX    48        1     2     2
+##  8     8  1950 02    11    1950-02-11 13:10      3 TX    48        2     2     0
+##  9     9  1950 02    11    1950-02-11 13:50      3 TX    48        3     3    12
+## 10    10  1950 02    11    1950-02-11 21:00      3 TX    48        4     2     5
+## # … with 65,152 more rows, and 20 more variables: fat &lt;dbl&gt;, loss &lt;dbl&gt;,
+## #   closs &lt;dbl&gt;, slat &lt;dbl&gt;, slon &lt;dbl&gt;, elat &lt;dbl&gt;, elon &lt;dbl&gt;, len &lt;dbl&gt;,
+## #   wid &lt;dbl&gt;, ns &lt;dbl&gt;, sn &lt;dbl&gt;, sg &lt;dbl&gt;, f1 &lt;dbl&gt;, f2 &lt;dbl&gt;, f3 &lt;dbl&gt;,
+## #   f4 &lt;dbl&gt;, fc &lt;dbl&gt;, Year &lt;dbl&gt;, Month &lt;int&gt;, EF &lt;dbl&gt;</code></pre>
+<p>Next create a data frame (<code>df</code>) containing the number of tornadoes by year for the state of Kansas.</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="thursday-september-1-2022.html#cb280-1" aria-hidden="true" tabindex="-1"></a>( df <span class="ot">&lt;-</span> Torn.df <span class="sc">|&gt;</span></span>
+<span id="cb280-2"><a href="thursday-september-1-2022.html#cb280-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(st <span class="sc">==</span> <span class="st">&quot;KS&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb280-3"><a href="thursday-september-1-2022.html#cb280-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span></span>
+<span id="cb280-4"><a href="thursday-september-1-2022.html#cb280-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">nT =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) )</span></code></pre></div>
+<pre><code>## # A tibble: 70 × 2
+##     Year    nT
+##    &lt;dbl&gt; &lt;int&gt;
+##  1  1950    30
+##  2  1951    77
+##  3  1952    19
+##  4  1953    29
+##  5  1954    68
+##  6  1955    96
+##  7  1956    57
+##  8  1957    63
+##  9  1958    49
+## 10  1959    65
+## # … with 60 more rows</code></pre>
+<p>Then use the functions from the {ggplot2} package to plot the number of tornadoes by year using lines to connect the values in order of the variable on the x-axis.</p>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="thursday-september-1-2022.html#cb282-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df,</span>
+<span id="cb282-2"><a href="thursday-september-1-2022.html#cb282-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> nT)) <span class="sc">+</span></span>
+<span id="cb282-3"><a href="thursday-september-1-2022.html#cb282-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
+<p>Note: In the early production stage of research, I like to break the code into steps as above: (1) Import the data, (2) manipulate the data, and (3) plot the data. It is easier to document but it also introduces the potential for mistakes because of the intermediary objects in the environment (e.g., <code>Torn.df</code>, <code>df</code>).</p>
+<p>Below you bring together the above code to create the time series of Kansas tornado frequency without producing intermediary objects.</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="thursday-september-1-2022.html#cb283-1" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Tornadoes.csv&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb283-2"><a href="thursday-september-1-2022.html#cb283-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Year =</span> yr,</span>
+<span id="cb283-3"><a href="thursday-september-1-2022.html#cb283-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">Month =</span> <span class="fu">as.integer</span>(mo),</span>
+<span id="cb283-4"><a href="thursday-september-1-2022.html#cb283-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">EF =</span> mag) <span class="sc">|&gt;</span></span>
+<span id="cb283-5"><a href="thursday-september-1-2022.html#cb283-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(st <span class="sc">==</span> <span class="st">&quot;KS&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb283-6"><a href="thursday-september-1-2022.html#cb283-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span></span>
+<span id="cb283-7"><a href="thursday-september-1-2022.html#cb283-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">nT =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb283-8"><a href="thursday-september-1-2022.html#cb283-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> nT)) <span class="sc">+</span></span>
+<span id="cb283-9"><a href="thursday-september-1-2022.html#cb283-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb283-10"><a href="thursday-september-1-2022.html#cb283-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<p>Recall that the <code>group_by()</code> function allows you to repeat an operation depending on the value (or level) of some variable. For example to count the number of tornadoes by EF damage rating since 2007 and ignoring missing ratings</p>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="thursday-september-1-2022.html#cb284-1" aria-hidden="true" tabindex="-1"></a>Torn.df <span class="sc">|&gt;</span></span>
+<span id="cb284-2"><a href="thursday-september-1-2022.html#cb284-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2007</span>, EF <span class="sc">!=</span> <span class="sc">-</span><span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb284-3"><a href="thursday-september-1-2022.html#cb284-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(EF) <span class="sc">|&gt;</span></span>
+<span id="cb284-4"><a href="thursday-september-1-2022.html#cb284-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Count =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) </span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##      EF Count
+##   &lt;dbl&gt; &lt;int&gt;
+## 1     0  8597
+## 2     1  5180
+## 3     2  1354
+## 4     3   354
+## 5     4    74
+## 6     5     9</code></pre>
+<p>The result is a table listing the number of tornadoes grouped by EF rating.</p>
+<p>Instead of printing the table, you create a bar chart using the <code>geom_col()</code> function.</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="thursday-september-1-2022.html#cb286-1" aria-hidden="true" tabindex="-1"></a>Torn.df <span class="sc">|&gt;</span></span>
+<span id="cb286-2"><a href="thursday-september-1-2022.html#cb286-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2007</span>, EF <span class="sc">!=</span> <span class="sc">-</span><span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb286-3"><a href="thursday-september-1-2022.html#cb286-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(EF) <span class="sc">|&gt;</span></span>
+<span id="cb286-4"><a href="thursday-september-1-2022.html#cb286-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Count =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb286-5"><a href="thursday-september-1-2022.html#cb286-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> EF, <span class="at">y =</span> Count)) <span class="sc">+</span></span>
+<span id="cb286-6"><a href="thursday-september-1-2022.html#cb286-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
+<p>The <code>geom_bar()</code> function counts the number of cases at each x position so you don’t need the <code>group_by()</code> and <code>summarize()</code> functions.</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="thursday-september-1-2022.html#cb287-1" aria-hidden="true" tabindex="-1"></a>Torn.df <span class="sc">|&gt;</span></span>
+<span id="cb287-2"><a href="thursday-september-1-2022.html#cb287-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2007</span>, EF <span class="sc">!=</span> <span class="sc">-</span><span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb287-3"><a href="thursday-september-1-2022.html#cb287-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> EF)) <span class="sc">+</span></span>
+<span id="cb287-4"><a href="thursday-september-1-2022.html#cb287-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
+<p>Improve the bar chart and to make it ready for publication.</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="thursday-september-1-2022.html#cb288-1" aria-hidden="true" tabindex="-1"></a>Torn.df <span class="sc">|&gt;</span></span>
+<span id="cb288-2"><a href="thursday-september-1-2022.html#cb288-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2007</span>, EF <span class="sc">!=</span> <span class="sc">-</span><span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb288-3"><a href="thursday-september-1-2022.html#cb288-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(EF) <span class="sc">|&gt;</span></span>
+<span id="cb288-4"><a href="thursday-september-1-2022.html#cb288-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Count =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb288-5"><a href="thursday-september-1-2022.html#cb288-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(EF), <span class="at">y =</span> Count, <span class="at">fill =</span> Count)) <span class="sc">+</span></span>
+<span id="cb288-6"><a href="thursday-september-1-2022.html#cb288-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb288-7"><a href="thursday-september-1-2022.html#cb288-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;EF Rating&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb288-8"><a href="thursday-september-1-2022.html#cb288-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of Tornadoes&quot;</span>) <span class="sc">+</span></span>
+<span id="cb288-9"><a href="thursday-september-1-2022.html#cb288-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_continuous</span>(<span class="at">low =</span> <span class="st">&#39;green&#39;</span>, <span class="at">high =</span> <span class="st">&#39;orange&#39;</span>) <span class="sc">+</span></span>
+<span id="cb288-10"><a href="thursday-september-1-2022.html#cb288-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> Count), <span class="at">vjust =</span> <span class="sc">-</span>.<span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb288-11"><a href="thursday-september-1-2022.html#cb288-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb288-12"><a href="thursday-september-1-2022.html#cb288-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>) </span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
+<p>You create a set of plots with the <code>facet_wrap()</code> function. Here you create a set of bar charts showing the frequency of tornadoes by EF rating for each year in the data set since 2004.</p>
+<p>You add the function after the <code>geom_bar()</code> layer and use the formula syntax (<code>~ Year</code>) inside the parentheses. You interpret the syntax as “plot bar charts conditioned on the variable year.”</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="thursday-september-1-2022.html#cb289-1" aria-hidden="true" tabindex="-1"></a>Torn.df <span class="sc">|&gt;</span></span>
+<span id="cb289-2"><a href="thursday-september-1-2022.html#cb289-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2004</span>, EF <span class="sc">!=</span> <span class="sc">-</span><span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb289-3"><a href="thursday-september-1-2022.html#cb289-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(EF))) <span class="sc">+</span></span>
+<span id="cb289-4"><a href="thursday-september-1-2022.html#cb289-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb289-5"><a href="thursday-september-1-2022.html#cb289-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Year)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
+<p>Hot days in Tallahassee and Las Vegas</p>
+<p>The data are <a href="http://www.ncdc.noaa.gov/cdo-web/datasets">daily weather observations</a> from the Tallahassee International Airport.</p>
+<p>Import the data.</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="thursday-september-1-2022.html#cb290-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/TLH_Daily1940-2021.csv&quot;</span></span>
+<span id="cb290-2"><a href="thursday-september-1-2022.html#cb290-2" aria-hidden="true" tabindex="-1"></a>TLH.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> loc)</span></code></pre></div>
+<pre><code>## Rows: 29997 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): STATION, NAME
+## dbl  (4): TAVG, TMAX, TMIN, TOBS
+## date (1): DATE
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>The variables of interest are the daily high (and low) temperature in the column labeled <code>TMAX</code> (<code>TMIN</code>). The values are in degrees F.</p>
+<p>Rename the columns then select only the date and temperature columns.</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="thursday-september-1-2022.html#cb292-1" aria-hidden="true" tabindex="-1"></a>TLH.df <span class="ot">&lt;-</span> TLH.df <span class="sc">|&gt;</span></span>
+<span id="cb292-2"><a href="thursday-september-1-2022.html#cb292-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">TmaxF =</span> TMAX,</span>
+<span id="cb292-3"><a href="thursday-september-1-2022.html#cb292-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">TminF =</span> TMIN,</span>
+<span id="cb292-4"><a href="thursday-september-1-2022.html#cb292-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">Date =</span> DATE) <span class="sc">|&gt;</span></span>
+<span id="cb292-5"><a href="thursday-september-1-2022.html#cb292-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Date, TmaxF, TminF) <span class="sc">|&gt;</span></span>
+<span id="cb292-6"><a href="thursday-september-1-2022.html#cb292-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 29,997
+## Columns: 3
+## $ Date  &lt;date&gt; 1940-03-01, 1940-03-02, 1940-03-03, 1940-03-04, 1940-03-05, 194…
+## $ TmaxF &lt;dbl&gt; 72, 77, 73, 72, 61, 66, 72, 56, 60, 72, 72, 65, 74, 63, 56, 73, …
+## $ TminF &lt;dbl&gt; 56, 53, 56, 44, 45, 40, 36, 41, 33, 32, 37, 51, 59, 49, 37, 32, …</code></pre>
+<p>Q: Based on these data, is it getting hotter in Tallahassee? Let’s compute the annual average high temperature and create a time series graph.</p>
+<p>You use the <code>year()</code> function from the {lubridate} package to get a column called <code>Year</code>. Since the data only has values through mid May 2022 you keep all observations with the <code>Year</code> column value less than 2021. You then use the <code>group_by()</code> function to group by <code>Year</code>, and the <code>summarize()</code> function to get the average daily maximum temperature for each year.</p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="thursday-september-1-2022.html#cb294-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> TLH.df <span class="sc">|&gt;</span></span>
+<span id="cb294-2"><a href="thursday-september-1-2022.html#cb294-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(Date)) <span class="sc">|&gt;</span></span>
+<span id="cb294-3"><a href="thursday-september-1-2022.html#cb294-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&lt;</span> <span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
+<span id="cb294-4"><a href="thursday-september-1-2022.html#cb294-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span></span>
+<span id="cb294-5"><a href="thursday-september-1-2022.html#cb294-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">AvgT =</span> <span class="fu">mean</span>(TmaxF, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb294-6"><a href="thursday-september-1-2022.html#cb294-6" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 82
+## Columns: 2
+## $ Year &lt;dbl&gt; 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950,…
+## $ AvgT &lt;dbl&gt; 80.45425, 78.78904, 78.95808, 79.18356, 79.24863, 79.43014, 80.30…</code></pre>
+<p>You now have a data frame with two columns: <code>Year</code> and <code>AvgT</code> (annual average daily high temperature in degrees F). If a day is missing a value it is skipped when computing the average because of the <code>na.rm = TRUE</code> argument in the <code>mean()</code> function.</p>
+<p>Next you use functions from the {ggplot2} package to make a time series graph. You specify the x aesthetic as <code>Year</code> and the y aesthetic as the <code>AvgT</code> and include point and line layers.</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="thursday-september-1-2022.html#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb296-2"><a href="thursday-september-1-2022.html#cb296-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> AvgT)) <span class="sc">+</span></span>
+<span id="cb296-3"><a href="thursday-september-1-2022.html#cb296-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb296-4"><a href="thursday-september-1-2022.html#cb296-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb296-5"><a href="thursday-september-1-2022.html#cb296-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Average Annual Temperature in Tallahassee, FL (F)&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
+<p>You can go directly to the graph without saving the resulting data frame. That is, you pipe <code>|&gt;</code> the resulting data frame after applying the {dplyr} verbs to the <code>ggplot()</code> function. The object in the first argument of the <code>ggplot()</code> function is the result (data frame) from the code above. Here you also add a smooth curve through the set of averages with the <code>geom_smooth()</code> layer.</p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="thursday-september-1-2022.html#cb297-1" aria-hidden="true" tabindex="-1"></a>TLH.df <span class="sc">|&gt;</span></span>
+<span id="cb297-2"><a href="thursday-september-1-2022.html#cb297-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(Date)) <span class="sc">|&gt;</span></span>
+<span id="cb297-3"><a href="thursday-september-1-2022.html#cb297-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&lt;</span> <span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
+<span id="cb297-4"><a href="thursday-september-1-2022.html#cb297-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span></span>
+<span id="cb297-5"><a href="thursday-september-1-2022.html#cb297-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">AvgT =</span> <span class="fu">mean</span>(TmaxF, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb297-6"><a href="thursday-september-1-2022.html#cb297-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> AvgT)) <span class="sc">+</span></span>
+<span id="cb297-7"><a href="thursday-september-1-2022.html#cb297-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb297-8"><a href="thursday-september-1-2022.html#cb297-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb297-9"><a href="thursday-september-1-2022.html#cb297-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Average Annual Temperature in Tallahassee, FL (F)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb297-10"><a href="thursday-september-1-2022.html#cb297-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb297-11"><a href="thursday-september-1-2022.html#cb297-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
+<p>Q: Is the frequency of extremely hot days increasing over time? Let’s consider a daily high temperature of 100 F and above as extremely hot.</p>
+<p>Here you count the number of days at or above 100F using the <code>summarize()</code> function together with the <code>sum()</code> function on the logical operator <code>&gt;=</code>. If a day is missing a temperature, you remove it with the <code>na.rm = TRUE</code> argument in the <code>sum()</code> function.</p>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="thursday-september-1-2022.html#cb299-1" aria-hidden="true" tabindex="-1"></a>TLH.df <span class="sc">|&gt;</span></span>
+<span id="cb299-2"><a href="thursday-september-1-2022.html#cb299-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(Date)) <span class="sc">|&gt;</span></span>
+<span id="cb299-3"><a href="thursday-september-1-2022.html#cb299-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&lt;</span> <span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
+<span id="cb299-4"><a href="thursday-september-1-2022.html#cb299-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span></span>
+<span id="cb299-5"><a href="thursday-september-1-2022.html#cb299-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">N100 =</span> <span class="fu">sum</span>(TmaxF <span class="sc">&gt;=</span> <span class="dv">100</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb299-6"><a href="thursday-september-1-2022.html#cb299-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> N100, <span class="at">fill =</span> N100)) <span class="sc">+</span> </span>
+<span id="cb299-7"><a href="thursday-september-1-2022.html#cb299-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&#39;identity&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb299-8"><a href="thursday-september-1-2022.html#cb299-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_continuous</span>(<span class="at">low =</span> <span class="st">&#39;orange&#39;</span>, <span class="at">high =</span> <span class="st">&#39;red&#39;</span>) <span class="sc">+</span></span>
+<span id="cb299-9"><a href="thursday-september-1-2022.html#cb299-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> N100), <span class="at">vjust =</span> <span class="fl">1.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb299-10"><a href="thursday-september-1-2022.html#cb299-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1940</span>, <span class="dv">2020</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb299-11"><a href="thursday-september-1-2022.html#cb299-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Number of days in Tallahassee, Florida at or above 100&quot;</span>, {}<span class="sc">^</span>o, <span class="st">&quot; F&quot;</span>)),</span>
+<span id="cb299-12"><a href="thursday-september-1-2022.html#cb299-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Last official 100+ day was September 18, 2019&quot;</span>,</span>
+<span id="cb299-13"><a href="thursday-september-1-2022.html#cb299-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb299-14"><a href="thursday-september-1-2022.html#cb299-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  ylab(expression(paste(&quot;Number of days in Tallahassee, FL at or above 100&quot;, {}^o, &quot; F&quot;))) +</span></span>
+<span id="cb299-15"><a href="thursday-september-1-2022.html#cb299-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb299-16"><a href="thursday-september-1-2022.html#cb299-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>), <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-132-1.png" width="672" /></p>
+<p>What does the histogram of daily high temperatures look like?</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="thursday-september-1-2022.html#cb300-1" aria-hidden="true" tabindex="-1"></a>( gTLH <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> TLH.df, </span>
+<span id="cb300-2"><a href="thursday-september-1-2022.html#cb300-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> TmaxF)) <span class="sc">+</span> </span>
+<span id="cb300-3"><a href="thursday-september-1-2022.html#cb300-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="fu">aes</span>(<span class="at">fill =</span> ..count..)) <span class="sc">+</span></span>
+<span id="cb300-4"><a href="thursday-september-1-2022.html#cb300-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_continuous</span>(<span class="at">low =</span> <span class="st">&#39;green&#39;</span>, <span class="at">high =</span> <span class="st">&#39;blue&#39;</span>) <span class="sc">+</span></span>
+<span id="cb300-5"><a href="thursday-september-1-2022.html#cb300-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>() <span class="sc">+</span></span>
+<span id="cb300-6"><a href="thursday-september-1-2022.html#cb300-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>() <span class="sc">+</span></span>
+<span id="cb300-7"><a href="thursday-september-1-2022.html#cb300-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of Days&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb300-8"><a href="thursday-september-1-2022.html#cb300-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Daily High Temperature in Tallahassee, FL (&quot;</span>, {}<span class="sc">^</span>o, <span class="st">&quot; F)&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb300-9"><a href="thursday-september-1-2022.html#cb300-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb300-10"><a href="thursday-september-1-2022.html#cb300-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) )</span></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-133-1.png" width="672" /></p>
+<p>Q: The most common high temperatures are in the low 90s, but there are relatively few 100+ days. Why?</p>
+<p>Compare the histogram of daily high temperatures in Tallahassee with a histogram of daily high temperatures in Las Vegas, Nevada. Here we repeat the code above but for the data frame <code>LVG.df</code>. We then use the operators from the {patchwork} package to plot them side by side.</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="thursday-september-1-2022.html#cb302-1" aria-hidden="true" tabindex="-1"></a>LVG.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/LV_DailySummary.csv&quot;</span>,</span>
+<span id="cb302-2"><a href="thursday-september-1-2022.html#cb302-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">na =</span> <span class="st">&quot;-9999&quot;</span>)</span></code></pre></div>
+<pre><code>## New names:
+## • `Measurement Flag` -&gt; `Measurement Flag...8`
+## • `Quality Flag` -&gt; `Quality Flag...9`
+## • `Source Flag` -&gt; `Source Flag...10`
+## • `Time of Observation` -&gt; `Time of Observation...11`
+## • `Measurement Flag` -&gt; `Measurement Flag...13`
+## • `Quality Flag` -&gt; `Quality Flag...14`
+## • `Source Flag` -&gt; `Source Flag...15`
+## • `Time of Observation` -&gt; `Time of Observation...16`</code></pre>
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 23872 Columns: 16
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (7): STATION, STATION_NAME, ELEVATION, LATITUDE, LONGITUDE, Source Flag....
+## dbl (5): DATE, TMAX, Time of Observation...11, TMIN, Time of Observation...16
+## lgl (4): Measurement Flag...8, Quality Flag...9, Measurement Flag...13, Qual...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="thursday-september-1-2022.html#cb306-1" aria-hidden="true" tabindex="-1"></a>LVG.df <span class="ot">&lt;-</span> LVG.df <span class="sc">|&gt;</span></span>
+<span id="cb306-2"><a href="thursday-september-1-2022.html#cb306-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TmaxF =</span> <span class="fu">round</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">5</span> <span class="sc">*</span> TMAX<span class="sc">/</span><span class="dv">10</span> <span class="sc">+</span> <span class="dv">32</span>),</span>
+<span id="cb306-3"><a href="thursday-september-1-2022.html#cb306-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">TminF =</span> <span class="fu">round</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">5</span> <span class="sc">*</span> TMIN<span class="sc">/</span><span class="dv">10</span> <span class="sc">+</span> <span class="dv">32</span>),</span>
+<span id="cb306-4"><a href="thursday-september-1-2022.html#cb306-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">Date =</span> <span class="fu">as.Date</span>(<span class="fu">as.character</span>(DATE), </span>
+<span id="cb306-5"><a href="thursday-september-1-2022.html#cb306-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">format =</span> <span class="st">&quot;%Y%m%d&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb306-6"><a href="thursday-september-1-2022.html#cb306-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Date, TmaxF, TminF)</span>
+<span id="cb306-7"><a href="thursday-september-1-2022.html#cb306-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-8"><a href="thursday-september-1-2022.html#cb306-8" aria-hidden="true" tabindex="-1"></a>gLVG <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> LVG.df, </span>
+<span id="cb306-9"><a href="thursday-september-1-2022.html#cb306-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> TmaxF)) <span class="sc">+</span> </span>
+<span id="cb306-10"><a href="thursday-september-1-2022.html#cb306-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="fu">aes</span>(<span class="at">fill =</span> ..count..)) <span class="sc">+</span></span>
+<span id="cb306-11"><a href="thursday-september-1-2022.html#cb306-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_continuous</span>(<span class="at">low =</span> <span class="st">&#39;green&#39;</span>, <span class="at">high =</span> <span class="st">&#39;blue&#39;</span>) <span class="sc">+</span></span>
+<span id="cb306-12"><a href="thursday-september-1-2022.html#cb306-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>() <span class="sc">+</span></span>
+<span id="cb306-13"><a href="thursday-september-1-2022.html#cb306-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>() <span class="sc">+</span></span>
+<span id="cb306-14"><a href="thursday-september-1-2022.html#cb306-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of Days&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb306-15"><a href="thursday-september-1-2022.html#cb306-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Daily High Temperature in Las Vegas, NV (&quot;</span>, {}<span class="sc">^</span>o, <span class="st">&quot; F)&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb306-16"><a href="thursday-september-1-2022.html#cb306-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb306-17"><a href="thursday-september-1-2022.html#cb306-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb306-18"><a href="thursday-september-1-2022.html#cb306-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-19"><a href="thursday-september-1-2022.html#cb306-19" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;patchwork&quot;)</span></span>
+<span id="cb306-20"><a href="thursday-september-1-2022.html#cb306-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb306-21"><a href="thursday-september-1-2022.html#cb306-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-22"><a href="thursday-september-1-2022.html#cb306-22" aria-hidden="true" tabindex="-1"></a>gTLH <span class="sc">/</span> gLVG</span></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-134-1.png" width="672" /></p>
+<p>US population and area by state</p>
+<p>The object <code>us_states</code> from the {spData} package is a data frame from the U.S. Census Bureau. The variables include the state <code>GEOID</code> and <code>NAME</code>, the <code>REGION</code> (<code>South</code>, <code>West</code>, etc), <code>AREA</code> (in square km), and total population in 2010 (<code>total_pop_10</code>) and in 2015 (<code>total_pop_15</code>).</p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="thursday-september-1-2022.html#cb308-1" aria-hidden="true" tabindex="-1"></a>us_states <span class="ot">&lt;-</span> spData<span class="sc">::</span>us_states</span>
+<span id="cb308-2"><a href="thursday-september-1-2022.html#cb308-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(us_states)</span></code></pre></div>
+<pre><code>## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="thursday-september-1-2022.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(us_states)</span></code></pre></div>
+<pre><code>##   GEOID        NAME   REGION      AREA total_pop_10 total_pop_15
+## 1    01     Alabama    South 133709.27      4712651      4830620
+## 2    04     Arizona     West 295281.25      6246816      6641928
+## 3    08    Colorado     West 269573.06      4887061      5278906
+## 4    09 Connecticut Norteast  12976.59      3545837      3593222
+## 5    12     Florida    South 151052.01     18511620     19645772
+## 6    13     Georgia    South 152725.21      9468815     10006693
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 geometry
+## 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          -88.20006, -88.20296, -87.42861, -86.86215, -85.60516, -85.47047, -85.30449, -85.18440, -85.12219, -85.10534, -85.00710, -84.96343, -85.00187, -84.89184, -85.05875, -85.05382, -85.14183, -85.12553, -85.05817, -85.04499, -85.09249, -85.10752, -85.03562, -85.00250, -85.89363, -86.52000, -87.59894, -87.63494, -87.53262, -87.40697, -87.44659, -87.42958, -87.51832, -87.65689, -87.75552, -87.90634, -87.90171, -87.93672, -88.00840, -88.10087, -88.10727, -88.20449, -88.33228, -88.39502, -88.43898, -88.47323, -88.40379, -88.33093, -88.21074, -88.09789, -88.20006, 34.99563, 35.00803, 35.00279, 34.99196, 34.98468, 34.32824, 33.48288, 32.86132, 32.77335, 32.64484, 32.52387, 32.42254, 32.32202, 32.26340, 32.13602, 32.01350, 31.83926, 31.69496, 31.62023, 31.51823, 31.36288, 31.18645, 31.10819, 31.00068, 30.99346, 30.99322, 30.99742, 30.86586, 30.74347, 30.67515, 30.52706, 30.40649, 30.28044, 30.24971, 30.29122, 30.40938, 30.55088, 30.65743, 30.68496, 30.50975, 30.37725, 30.36210, 30.38844, 30.36942, 31.24690, 31.89386, 32.44977, 33.07312, 34.02920, 34.89220, 34.99563
+## 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             -114.71963, -114.53909, -114.46897, -114.50613, -114.67080, -114.70790, -114.67703, -114.72287, -114.62964, -114.55890, -114.49649, -114.53368, -114.46026, -114.41591, -114.25414, -114.13828, -114.34261, -114.47162, -114.63068, -114.63349, -114.57275, -114.59593, -114.67764, -114.65341, -114.68941, -114.71211, -114.66719, -114.73116, -114.73616, -114.57203, -114.37211, -114.23880, -114.15413, -114.04684, -114.05060, -112.96647, -112.35769, -111.41278, -110.50069, -110.47019, -109.62567, -109.04522, -109.04618, -109.04602, -109.04618, -109.04666, -109.04748, -109.04829, -109.05004, -109.82969, -111.07483, -111.56019, -112.39942, -113.12596, -113.78168, -114.81361, -114.80939, -114.71963, 32.71876, 32.75695, 32.84515, 33.01701, 33.03798, 33.09743, 33.27017, 33.39878, 33.42814, 33.53182, 33.69690, 33.92607, 33.99665, 34.10764, 34.17383, 34.30323, 34.45144, 34.71297, 34.86635, 35.00186, 35.13873, 35.32523, 35.48974, 35.61079, 35.65141, 35.80618, 35.87479, 35.94392, 36.10437, 36.15161, 36.14311, 36.01456, 36.02386, 36.19407, 37.00040, 37.00022, 37.00102, 37.00148, 37.00426, 36.99800, 36.99831, 36.99908, 36.18175, 35.17551, 34.52239, 33.62506, 33.06842, 32.08911, 31.33250, 31.33407, 31.33224, 31.48814, 31.75176, 31.97278, 32.17903, 32.49428, 32.61712, 32.71876
+## 3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 -109.05008, -108.25065, -107.62562, -106.21757, -105.73042, -104.85527, -104.05325, -102.86578, -102.05161, -102.05174, -102.04845, -102.04539, -102.04464, -102.04224, -103.00220, -104.33883, -105.00055, -106.20147, -106.86980, -107.42092, -108.24936, -109.04522, -109.04187, -109.04176, -109.06006, -109.05151, -109.05061, -109.05008, 41.00066, 41.00011, 41.00212, 40.99773, 40.99689, 40.99805, 41.00141, 41.00199, 41.00238, 40.00308, 39.30314, 38.81339, 38.04553, 36.99308, 37.00010, 36.99354, 36.99326, 36.99412, 36.99243, 37.00001, 36.99901, 36.99908, 37.53073, 38.16469, 38.27549, 39.12609, 39.87497, 41.00066
+## 4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                -73.48731, -72.99955, -71.80065, -71.79924, -71.78699, -71.79768, -71.86051, -71.94565, -72.38663, -72.45193, -72.96205, -73.13025, -73.17777, -73.33066, -73.38723, -73.49333, -73.65734, -73.72777, -73.48271, -73.55096, -73.48731, 42.04964, 42.03865, 42.02357, 42.00807, 41.65599, 41.41671, 41.32025, 41.33780, 41.26180, 41.27889, 41.25160, 41.14680, 41.16670, 41.11000, 41.05825, 41.04817, 40.98517, 41.10070, 41.21276, 41.29542, 42.04964
+## 5 -81.81169, -81.74565, -81.44351, -81.30505, -81.25771, -81.40189, -81.51740, -81.68524, -81.81169, 24.56874, 24.65988, 24.81336, 24.75519, 24.66431, 24.62354, 24.62124, 24.55868, 24.56874, -85.00250, -84.93696, -84.91445, -84.86469, -84.05732, -83.13143, -82.21487, -82.21032, -82.17008, -82.04794, -82.01213, -82.03966, -81.94981, -81.69479, -81.44412, -81.38550, -81.25671, -81.16358, -80.96618, -80.70973, -80.57487, -80.52509, -80.58781, -80.60421, -80.56643, -80.38370, -80.25366, -80.09391, -80.03136, -80.03886, -80.10957, -80.12799, -80.24453, -80.33942, -80.32578, -80.35818, -80.46883, -80.46455, -80.66403, -80.74775, -80.81213, -80.90058, -81.07986, -81.17204, -81.11727, -81.29033, -81.35056, -81.38381, -81.46849, -81.62348, -81.68954, -81.80166, -81.83314, -81.91171, -82.01368, -82.10567, -82.13787, -82.18157, -82.06658, -82.07635, -82.17524, -82.14707, -82.24989, -82.44572, -82.56925, -82.70782, -82.58463, -82.39338, -82.41392, -82.62959, -82.58652, -82.63362, -82.73802, -82.85113, -82.82816, -82.86081, -82.76264, -82.67479, -82.65414, -82.66872, -82.73024, -82.68886, -82.76055, -82.75970, -82.82707, -82.99614, -83.16958, -83.21807, -83.40025, -83.41277, -83.53764, -83.63798, -84.02427, -84.15728, -84.26936, -84.36611, -84.33375, -84.53587, -84.82420, -84.91511, -84.99326, -85.12147, -85.04507, -85.22161, -85.31921, -85.30133, -85.40505, -85.48776, -85.58824, -85.69681, -85.87814, -86.08996, -86.29870, -86.63295, -86.90968, -87.15539, -87.29542, -87.51832, -87.42958, -87.44659, -87.40697, -87.53262, -87.63494, -87.59894, -86.52000, -85.89363, -85.00250, 31.00068, 30.88468, 30.75358, 30.71154, 30.67470, 30.62357, 30.56858, 30.42458, 30.35891, 30.36325, 30.59377, 30.74773, 30.82750, 30.74842, 30.70971, 30.27384, 29.78469, 29.55529, 29.14796, 28.75669, 28.58517, 28.45945, 28.41086, 28.25773, 28.09563, 27.74004, 27.37979, 27.01859, 26.79634, 26.56935, 26.08716, 25.77225, 25.71709, 25.49943, 25.39801, 25.15323, 25.09203, 25.20907, 25.18726, 25.14744, 25.18604, 25.13967, 25.11880, 25.22228, 25.35495, 25.68751, 25.68983, 25.77675, 25.80332, 25.89716, 25.85271, 26.08823, 26.29452, 26.42716, 26.49083, 26.48393, 26.63744, 26.68171, 26.74266, 26.95826, 26.91687, 26.78980, 26.76295, 27.06063, 27.29859, 27.48762, 27.59602, 27.83752, 27.90140, 27.99847, 27.81670, 27.71061, 27.70681, 27.88630, 28.02013, 28.21708, 28.21901, 28.44196, 28.59084, 28.69566, 28.85016, 28.90561, 28.99309, 29.05419, 29.15843, 29.17807, 29.29036, 29.42049, 29.51724, 29.66849, 29.72306, 29.88607, 30.10327, 30.07271, 30.09766, 30.00866, 29.92372, 29.91009, 29.75829, 29.78330, 29.71496, 29.71585, 29.58699, 29.67776, 29.68149, 29.79712, 29.93849, 29.96123, 30.05554, 30.09689, 30.21562, 30.30357, 30.36305, 30.39630, 30.37242, 30.32775, 30.32350, 30.28044, 30.40649, 30.52706, 30.67515, 30.74347, 30.86586, 30.99742, 30.99322, 30.99346, 31.00068
+## 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   -85.60516, -84.32187, -83.61998, -83.10861, -83.12111, -83.23908, -83.32387, -83.33869, -83.16828, -83.00292, -82.90266, -82.74666, -82.71751, -82.59615, -82.55684, -82.34693, -82.25527, -82.19658, -82.04633, -81.91353, -81.94474, -81.84730, -81.82794, -81.70463, -81.61778, -81.49142, -81.50272, -81.42161, -81.41191, -81.28132, -81.11963, -81.15600, -81.11723, -81.00674, -80.88552, -80.84055, -81.13063, -81.13349, -81.17725, -81.27880, -81.27469, -81.42047, -81.40515, -81.44693, -81.44412, -81.69479, -81.94981, -82.03966, -82.01213, -82.04794, -82.17008, -82.21032, -82.21487, -83.13143, -84.05732, -84.86469, -84.91445, -84.93696, -85.00250, -85.03562, -85.10752, -85.09249, -85.04499, -85.05817, -85.12553, -85.14183, -85.05382, -85.05875, -84.89184, -85.00187, -84.96343, -85.00710, -85.10534, -85.12219, -85.18440, -85.30449, -85.47047, -85.60516, 34.98468, 34.98841, 34.98659, 35.00066, 34.93913, 34.87566, 34.78971, 34.68200, 34.59100, 34.47213, 34.48590, 34.26641, 34.15050, 34.03052, 33.94535, 33.83430, 33.75969, 33.63058, 33.56383, 33.44127, 33.36404, 33.30678, 33.22875, 33.11645, 33.09528, 33.00808, 32.93869, 32.83518, 32.61841, 32.55646, 32.28760, 32.24148, 32.11760, 32.10115, 32.03460, 32.01131, 31.72269, 31.62335, 31.51707, 31.36721, 31.28945, 31.01670, 30.90820, 30.81039, 30.70971, 30.74842, 30.82750, 30.74773, 30.59377, 30.36325, 30.35891, 30.42458, 30.56858, 30.62357, 30.67470, 30.71154, 30.75358, 30.88468, 31.00068, 31.10819, 31.18645, 31.36288, 31.51823, 31.62023, 31.69496, 31.83926, 32.01350, 32.13602, 32.26340, 32.32202, 32.42254, 32.52387, 32.64484, 32.77335, 32.86132, 33.48288, 34.32824, 34.98468</code></pre>
+<p>The object <code>us_states</code> has two classes: simple feature and data frame. It is a data frame that has spatial information stored in the column labeled <code>geometry</code>. More about this next lesson.</p>
+<p>Note also that the variable <code>AREA</code> is numeric with units (km^2). Thus in order to perform some operations you need to specify units or convert the column using <code>as.numeric()</code>. For example, if you want to filter by area keeping only states with an area greater than 300,000 square km you could do the following</p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="thursday-september-1-2022.html#cb312-1" aria-hidden="true" tabindex="-1"></a>us_states <span class="sc">|&gt;</span> </span>
+<span id="cb312-2"><a href="thursday-september-1-2022.html#cb312-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Area =</span> <span class="fu">as.numeric</span>(AREA)) <span class="sc">|&gt;</span></span>
+<span id="cb312-3"><a href="thursday-september-1-2022.html#cb312-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Area <span class="sc">&gt;</span> <span class="dv">300000</span>)</span></code></pre></div>
+<p>For now, suppose you want to plot area versus population for each state including state names on the plot. We note large differences between the minimum and maximum values for both variables.</p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="thursday-september-1-2022.html#cb313-1" aria-hidden="true" tabindex="-1"></a>us_states <span class="sc">|&gt;</span></span>
+<span id="cb313-2"><a href="thursday-september-1-2022.html#cb313-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">rA =</span> <span class="fu">range</span>(AREA),</span>
+<span id="cb313-3"><a href="thursday-september-1-2022.html#cb313-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">rP =</span> <span class="fu">range</span>(total_pop_15))</span></code></pre></div>
+<pre><code>##          rA       rP
+## 1    178.21   579679
+## 2 687714.28 38421464</code></pre>
+<p>Let’s start with a simple scatter plot using logarithmic scales. The variable <code>AREA</code> has units so you convert it to a numeric with the <code>as.numeric()</code> function.</p>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="thursday-september-1-2022.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> us_states,</span>
+<span id="cb315-2"><a href="thursday-september-1-2022.html#cb315-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(AREA),</span>
+<span id="cb315-3"><a href="thursday-september-1-2022.html#cb315-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> total_pop_15)) <span class="sc">+</span></span>
+<span id="cb315-4"><a href="thursday-september-1-2022.html#cb315-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb315-5"><a href="thursday-september-1-2022.html#cb315-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb315-6"><a href="thursday-september-1-2022.html#cb315-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
+<p>Next you use the {scales} package so the tic labels can be expressed in whole numbers with commas.</p>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="thursday-september-1-2022.html#cb316-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> us_states,</span>
+<span id="cb316-2"><a href="thursday-september-1-2022.html#cb316-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(AREA),</span>
+<span id="cb316-3"><a href="thursday-september-1-2022.html#cb316-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> total_pop_15)) <span class="sc">+</span></span>
+<span id="cb316-4"><a href="thursday-september-1-2022.html#cb316-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb316-5"><a href="thursday-september-1-2022.html#cb316-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb316-6"><a href="thursday-september-1-2022.html#cb316-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-139-1.png" width="672" /></p>
+<p>Next you add text labels. You can do this with <code>geom_text()</code> or <code>geom_label()</code></p>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="thursday-september-1-2022.html#cb317-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> us_states,</span>
+<span id="cb317-2"><a href="thursday-september-1-2022.html#cb317-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(AREA),</span>
+<span id="cb317-3"><a href="thursday-september-1-2022.html#cb317-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> total_pop_15)) <span class="sc">+</span></span>
+<span id="cb317-4"><a href="thursday-september-1-2022.html#cb317-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb317-5"><a href="thursday-september-1-2022.html#cb317-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> NAME)) <span class="sc">+</span></span>
+<span id="cb317-6"><a href="thursday-september-1-2022.html#cb317-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb317-7"><a href="thursday-september-1-2022.html#cb317-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
+<p>The labels are centered on top of the points. To fix this you use functions from the {grepel} package.</p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="thursday-september-1-2022.html#cb318-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> us_states,</span>
+<span id="cb318-2"><a href="thursday-september-1-2022.html#cb318-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(AREA),</span>
+<span id="cb318-3"><a href="thursday-september-1-2022.html#cb318-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> total_pop_15)) <span class="sc">+</span></span>
+<span id="cb318-4"><a href="thursday-september-1-2022.html#cb318-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb318-5"><a href="thursday-september-1-2022.html#cb318-5" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> NAME)) <span class="sc">+</span></span>
+<span id="cb318-6"><a href="thursday-september-1-2022.html#cb318-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb318-7"><a href="thursday-september-1-2022.html#cb318-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma)</span></code></pre></div>
+<pre><code>## Warning: ggrepel: 8 unlabeled data points (too many overlaps). Consider
+## increasing max.overlaps</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-141-1.png" width="672" /></p>
+<p>Finally, since the data object is a simple feature data frame you can make a map.</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="thursday-september-1-2022.html#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb320-2"><a href="thursday-september-1-2022.html#cb320-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> spData<span class="sc">::</span>us_states, </span>
+<span id="cb320-3"><a href="thursday-september-1-2022.html#cb320-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> total_pop_15)) <span class="sc">+</span></span>
+<span id="cb320-4"><a href="thursday-september-1-2022.html#cb320-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb320-5"><a href="thursday-september-1-2022.html#cb320-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
+<p>More resources and additional examples</p>
+<ul>
+<li>ggplot extensions <a href="https://exts.ggplot2.tidyverse.org/" class="uri">https://exts.ggplot2.tidyverse.org/</a></li>
+<li>Cheat sheets: <a href="https://rstudio.com/resources/cheatsheets/" class="uri">https://rstudio.com/resources/cheatsheets/</a></li>
+<li>More examples: <a href="https://geocompr.robinlovelace.net/" class="uri">https://geocompr.robinlovelace.net/</a> {spData} package.</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tuesday-august-30-2022.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="thursday-september-8-2022.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
