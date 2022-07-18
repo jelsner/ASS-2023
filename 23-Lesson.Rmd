@@ -7,6 +7,7 @@ Today
 - Interpolating to areal units
 - Simulating spatial fields
 - Interpolating multiple variables
+- Machine learning for spatial prediction
 
 ## Interpolating to areal units (block kriging) {-}
 
@@ -360,7 +361,8 @@ The overall pattern of rainfall remains the same, but there are differences espe
 
 Spatial interpolation can be extended to obtain surfaces of multiple variables. The idea is that if two field variables are correlated then information about the spatial correlation in one field variable can help provide information about values in the other field variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to two variables. 
 
-Here you consider observations of heavy metal concentrations in the flood plain of the Meuse River in Holland. The data are available in {sp} package.
+Here you consider observations of heavy metal concentrations (ppm) in the top soil in the flood plain of the river Meuse near the village of Stein. The data are available in {sp} package.
+
 ```{r}
 library(sp)
 
@@ -378,31 +380,54 @@ meuse.sf <- sf::st_as_sf(x = meuse,
                          crs = 28992)
 ```
 
-Interest is on the spatial distribution of the heavy metals in the soils.
+Interest is on the spatial distribution of all four heavy metals in the soil.
 
-Map the zinc levels at the observation locations.
+Map the concentrations at the observation locations.
 
 ```{r}
 tmap::tmap_mode("view")
 tmap::tm_shape(meuse.sf) +
-  tmap::tm_dots(col = "zinc")
+  tmap::tm_dots(col = c("cadmium", "copper", "lead", "zinc"))
 ```
 
-The soil samples are taken in the flood plain of the Meuse river outside the city of Stein. Highest concentrations of zinc are found nearest to the river.
+All observations (bulk sampled from an area of approximately 15 m x 15 m) have units of ppm. The most abundant heavy metal is zinc followed by lead and copper. For all metals highest concentrations are found nearest to the river. Thus you want to include distance to river as a covariate (trend term) and use universal kriging.
 
+The distribution of concentrations is skewed with many locations having only low levels of heavy metals with a few having very high levels.
 
-First you organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the field variables into a single object. It is done successively with the `gstat()` function.
-
-Here we specify the trend using the square root of the distance to river as we did previously.
 ```{r}
-g <- gstat(NULL, "logCd", log(cadmium) ~ sqrt(dist), meuse.sf)
-g <- gstat(g, "logCu", log(copper) ~ sqrt(dist), meuse.sf)
-g <- gstat(g, "logPb", log(lead) ~ sqrt(dist), meuse.sf)
-g <- gstat(g, "logZn", log(zinc) ~ sqrt(dist), meuse.sf)
+ggplot(data = meuse.sf,
+       mapping = aes(x = lead)) +
+  geom_histogram(bins = 17) +
+  theme_minimal()
+```
+
+Thus you use a logarithmic transformation.
+
+First you organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the variables into a single object. Ordering is done successively.
+
+Here you specify the trend using the square root of the distance to river and take the natural logarithm of the heavy metal concentration. You give the dependent variable a new name with the `id =` argument.
+
+```{r}
+g <- gstat(id = "logCd", 
+           formula = log(cadmium) ~ sqrt(dist), 
+           data = meuse.sf)
+g <- gstat(g, 
+           id = "logCu", 
+           formula = log(copper) ~ sqrt(dist), 
+           data = meuse.sf)
+g <- gstat(g, 
+           id = "logPb", 
+           formula = log(lead) ~ sqrt(dist), 
+           data = meuse.sf)
+g <- gstat(g, 
+           id = "logZn",
+           formula = log(zinc) ~ sqrt(dist), 
+           data = meuse.sf)
 g
 ```
 
-Next we use the `variogram()` function to compute empirical variograms. The function, when operating on a `gstat` object, computes all direct and cross variograms.
+Next you use the `variogram()` function to compute empirical variograms. The function, when operating on a `gstat` object, computes all direct and cross variograms.
+
 ```{r}
 v <- variogram(g)
 plot(v)
@@ -410,73 +435,89 @@ plot(v)
 
 The plot method displays the set of direct and cross variograms. The direct variograms are shown in the four panels along the diagonal of the triangle of plots.
 
-The cross variograms are shown in the six panels below the diagonal. For example, the cross variogram between the values of cadmium and copper is given in the second row of the first column. 
+The cross variograms are shown in the six panels below the diagonal. For example, the cross variogram between the values of cadmium and copper is given in the second row of the first column and so on. 
 
-Note: The cross variogram is analogous to the `Kcross()` function from the {spatstat} package.
+The cross variogram is analogous to the multi-type $K$ function for analyzing point pattern data.
 
-Next we use `fit.lmc()` to fit separate models to each of the empirical variograms. We use an initial partial sill and nugget equal to one and a range of 800.
-```{r}
-vm <- fit.lmc(v, g, 
-              vgm(psill = 1, model = "Sph", 
-              range = 800, nugget = 1))
-plot(v, vm)
-```
+The cross variograms show small semivariance values at short lag distance with increasing semivariance values at longer lags. Because these variables are co-located, you can also compute direct correlations.
 
-As the variograms indicate, the variables have a strong cross correlations. Because these variables are co-located, we can also compute direct correlations.
 ```{r}
 cor(meuse[c("cadmium", "copper", "lead", "zinc")])
 ```
 
-The correlation matrix confirms strong cross correlation among the four variables at zero lag. The cross variogram generalizes these correlations across lag distance.
+The direct correlation between cadmium and copper is .92 and between cadmium and lead is .8.
 
-Given the variogram models, cokriged maps are produced using the `predict()` method after setting the grid locations for interpolation. The CRS for the grid locations matches the CRS of the data.
+The correlation matrix confirms strong cross correlation among the four variables at zero lag. The cross variogram generalizes these correlations across lag distance. For instance, the cross variogram indicates the strength of the relationship between cadmium at one location and copper at nearby locations.
+
+You use the `fit.lmc()` function to fit separate variogram models to each of the empirical variograms. You use an initial partial sill of .5, an initial nugget of zero and an initial range of 800 meters.
+```{r}
+vm <- fit.lmc(v, g, 
+              vgm(model = "Sph", 
+                  psill = .5,
+                  nugget = 0,
+                  range = 800))
+plot(v, vm)
+```
+
+The final variogram models (blue line) fit the empirical variogram (direct and cross) well.
+
+Given the variogram models, co-kriged maps are produced using the `predict()` method after setting the grid locations for the interpolations. The CRS for the grid locations must match the CRS of the data.
+
 ```{r}
 data(meuse.grid)
 
-grid.sf <- st_as_sf(x = meuse.grid,
-                    coords = c("x", "y"),
-                    crs = 28992)
+grid.sf <- sf::st_as_sf(x = meuse.grid,
+                        coords = c("x", "y"),
+                        crs = 28992)
 
-cok <- predict(vm, grid.sf)
-names(cok)
+hm.int <- predict(vm, grid.sf)
+names(hm.int)
 ```
 
-The predictions for logarithm of zinc concentration are plotted.
+Plot the interpolated for logarithm of zinc concentration are plotted.
 ```{r}
-library(tmap)
-
-tm_shape(cok) +
-  tm_dots(col = "logZn.pred", size = .2)
+tmap::tmap_mode("plot")
+tmap::tm_shape(hm.int) +
+  tmap::tm_dots(col = c("logCd.pred", "logCu.pred", "logPb.pred", "logZn.pred"), 
+                size = .2, breaks = seq(-2, 8, by = 1), palette = "Reds", midpoint = NA)
 ```
 
-Compare with predictions using only zinc.
+The pattern of heavy metal concentrations are similar with highest values along the river bank. 
+
+Compare with predictions using only cadmium
 ```{r}
-v2 <- variogram(log(zinc) ~ sqrt(dist), 
+v2 <- variogram(log(cadmium) ~ sqrt(dist), 
                 data = meuse.sf)
 vm2 <- fit.variogram(v2, vgm(psill = .15, model = "Sph", 
                              range = 800, nugget = .1))
-uk <- krige(log(zinc) ~ sqrt(dist), meuse.sf, newdata = grid.sf, 
-              model = vm2)
+int <- krige(log(cadmium) ~ sqrt(dist), meuse.sf, newdata = grid.sf, 
+                 model = vm2)
 
-tm_shape(uk) +
-  tm_dots(col = "var1.pred", size = .2)
+p1 <- tmap::tm_shape(int) +
+        tmap::tm_dots(col = "var1.pred", 
+                      size = .2, palette = "Reds", breaks = seq(-2, 3, by = .5))
+p2 <- tmap::tm_shape(hm.int) +
+        tmap::tm_dots(col = "logCd.pred", 
+                      size = .2, palette = "Reds", breaks = seq(-2, 3, by = .5))
+tmap::tmap_arrange(p1, p2)
+
+cor(hm.int$logCu.pred, int$var1.pred)
 ```
 
-The predicted co-variances between zinc and cadmium are plotted.
+Only minor differences are visible on the plot and the correlation between the two interpolations exceeds .9.
+
+Plot the covariances between zinc and cadmium.
+
 ```{r}
-tm_shape(cok) +
-  tm_dots(col = "cov.logCd.logZn", size = .2)
+tmap::tm_shape(hm.int) +
+  tmap::tm_dots(col = "cov.logCd.logZn", size = .2)
 ```
 
-The map shows areas of the flood plain with high (and low) correlations between cadmium and zinc.
+The map shows areas of the flood plain with high (and low) correlations between cadmium and zinc. Caution: Higher values of the covariance indicate lower correlations. There is an inverse relationship between the correlogram and the covariogram.
 
 Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your toolbox.
 
-Kriging is super useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
-
-On the other hand, if you want to spatially interpolate rare or extreme events then kriging 
-
-Kriging works does on data that can be adequately described with a normal distribution. tends to smooth out local details of the spatial variation of the attribute. Typically, small values are overestimated, whereas large values are underestimated. Such conditional bias is a shortcoming when trying to detect patterns of extreme values. A
+Kriging is useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
 
 ## Machine learning for spatial prediction {-}
 
