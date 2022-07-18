@@ -1,0 +1,82 @@
+---
+title: "Assignment 7"
+author: "Answers"
+date: March 5, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: March 5, 2021, 3pm
+
+Total Points: 50
+
+The file `1950-2018-torn-initpoint.zip` contains shapefiles of the initial location of all tornado reports in the United States over the period 1950-2018. Use the code below to download the file, unzip it, and import the data as a simple feature data frame called `Torn.sf`.
+```{r}
+if(!"1950-2018-torn-initpoint" %in% list.files()) {
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/1950-2018-torn-initpoint.zip",
+              destfile = "1950-2018-torn-initpoint.zip")
+unzip("1950-2018-torn-initpoint.zip")
+}
+
+library(sf)
+
+Torn.sf <- st_read(dsn = "1950-2018-torn-initpoint", 
+                   layer = "1950-2018-torn-initpoint")
+```
+
+(a) Remove the tornado records (rows) where the EF damage rating is less than 1. Recycle the name `Torn.sf`. Hint: Use the `filter()` function with `mag > 0`. (5)
+```{r}
+library(tidyverse)
+
+Torn.sf <- Torn.sf %>%
+  filter(mag > 0)
+```
+
+(b) Transform the CRS of the geometry in `Torn.sf` to an Albers equal-area conic projection centered on the state of Iowa using the ESPG code 26975. (5)
+```{r}
+Torn.sf <- Torn.sf %>%
+  st_transform(crs = 26975)
+```
+
+(c) Use functions from the {spatstat} and the {maptools} packages to create an unmarked planar point pattern (`ppp`) object called `T.ppp`. Hints: First use the function `as_Spatial()` to convert the simple feature data frame to an S4 spatial class and then use `as.ppp()` to create the `ppp` object and `unmark()` to remove the marks.  (10)
+```{r}
+library(spatstat)
+library(maptools)
+
+T.ppp <- Torn.sf %>%
+  as_Spatial() %>%
+  as.ppp() %>%
+  unmark()
+```
+
+(d) Use functions from the {spatstat} package to create an `owin` object called `W` using the boundary of the state of Iowa. Hints: use the `us_states()` function from the {USAboundaries} package and transform the CRS to that in `Torn.sf` then use `as_Spatial()` and `as.owin()`. (10)
+```{r}
+library(USAboundaries)
+
+W <- us_states(states = "Iowa") %>%
+  st_transform(crs = st_crs(Torn.sf)) %>%
+  as_Spatial() %>%
+  as.owin()
+```
+
+(e) Subset the tornado event locations `ppp` object `T.ppp` by the `owin` object and convert the distance unit to kilometers with the `rescale()` function. (10)
+```{r}
+T.ppp <- T.ppp[W] %>%
+  spatstat::rescale(s = 1000, 
+                    unitname = "km")
+```
+
+(f) Determine the average intensity of tornado reports for the state as a whole. Then make a map showing the local intensity of the tornado reports using the `plot()` method. Which part of the state has experienced the fewest tornadoes? (10)
+```{r}
+intensity(T.ppp)
+T.ppp %>%
+  density() %>%
+  plot()
+
+plot(T.ppp, 
+     pch = '.', 
+     add = TRUE)
+```

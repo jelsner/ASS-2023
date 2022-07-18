@@ -1,0 +1,60 @@
+---
+title: "Assignment 3"
+author: "Answers"
+date: January 29, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: January 29, 2021, 3pm
+
+Total Points: 40
+
+**1** Use the file `Tornadoes.csv` and create a time series plot of the annual number of tornadoes in Florida since 1950. Use a point and a line layer (15).
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+download.file(url = "http://www.spc.noaa.gov/wcm/data/1950-2019_actual_tornadoes.csv",
+              destfile = "Tornadoes.csv")
+
+read_csv(file = "Tornadoes.csv") %>%
+  filter(st == "FL") %>%
+  group_by(yr) %>%
+  summarize(nT = n()) %>%
+ggplot(mapping = aes(x = yr, y = nT)) +
+  geom_line() +
+  geom_point()
+```
+
+**2** Create a simple feature data frame from the following information about the Joplin tornado that killed 158 people on May 22, 2011 then determine the length in meters. Hint: use `st_linestring()` and `rbind()` to create the simple feature data frame then use `st_length()` to determine the length. (25)
+
+Start longitude: -94.5932 
+Start latitude: 37.0524 
+End longitude: -94.2213 
+End latitude: 36.9838 
+crs: 4326
+
+Attributes:
+number of fatalities: 158
+name: "Joplin Tornado"
+
+```{r}
+# sfg object
+Joplin_track <- st_linestring(rbind(c(-94.5932, 37.0524), c(-94.2213, 36.9838)))
+# sfc object
+Joplin.geometry <- st_sfc(Joplin_track, 
+                          crs = 4326)
+# data.frame object
+Joplin.attributes <- data.frame(name = "Joplin Tornado",
+                                nFat = 158)
+# sf object
+Joplin.sf <- st_sf(Joplin.attributes, 
+                   geometry = Joplin.geometry)
+
+Joplin.sf %>%
+  st_length()
+```

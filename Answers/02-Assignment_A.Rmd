@@ -1,0 +1,63 @@
+---
+title: "Assignment 2"
+author: "Your Name"
+date: January 22, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Name on file. For each problem, I am looking only for code, unless I ask you to write a sentence or two summarize the output. More than one way to do things unless I tell you to use functions from a particular package.
+
+Due: January 22, 2021, 3pm
+
+Total Points: 35
+
+The object `us_states` from the {spData} package is a data frame (simple feature data frame) from the U.S. Census Bureau. The variables include the state `GEOID` and `NAME`, the `REGION` (`South`, `West`, etc), `AREA` (in square km), and total population in 2010 (`total_pop_10`) and in 2015 (`total_pop_15`).
+
+Make sure you have the {tidyverse}, {spData}, and {sf} packages available by running the following code chunk. Then answer the five questions below using the appropriate functions `select()`, `filter()`, `summarize()`, and `group_by()`.
+```{r}
+if(!require(tidyverse)) install.packages(pkgs = "tidyverse", repos = "http://cran.us.r-project.org")
+library(tidyverse)
+if(!require(sf)) install.packages(pkgs = "sf", repos = "http://cran.us.r-project.org")
+library(sf)
+if(!require(spData)) install.packages(pkgs = "spData", repos = "http://cran.us.r-project.org")
+library(spData)
+```
+
+a. Create a new data frame containing only the population columns. (5)
+```{r}
+us_states %>% 
+  select(starts_with("total"))
+```
+
+b. Create a new data frame containing only states from the South region. (5)
+```{r}
+us_states %>% 
+  filter(REGION == "South")
+```
+
+c. Create a new data frame containing only states from the West region with a 2015 population of more than 6 million people. (5)
+```{r}
+us_states %>% 
+  filter(REGION == "West") %>% 
+  filter(total_pop_15 > 6e6)
+```
+
+d. What was the total population of the Midwest region in 2010 and 2015? (10)
+```{r}
+us_states %>% 
+  filter(REGION == "Midwest") %>% 
+  summarize(TotalPop2010 = sum(total_pop_10),
+            TotalPop2015 = sum(total_pop_15))
+```
+
+e. How many states are in each region and what is the _average_ statewide 2015 population in each region? (10) Hint: Use the `group_by()` function.
+```{r}
+us_states %>% 
+  group_by(REGION) %>% 
+  summarize(nStates = n(),
+            AvgPop2015 = mean(total_pop_15))
+```

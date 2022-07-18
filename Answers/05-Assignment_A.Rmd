@@ -1,0 +1,63 @@
+---
+title: "Assignment 5"
+author: "Answers"
+date: February 12, 2021
+output: 
+  html_document:
+    keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Due: February 12, 2021, 3pm
+
+Total Points: 40
+
+**1** The file `http://myweb.fsu.edu/jelsner/temp/data/police.zip` contains demographic information at the county level across the state of Mississippi.
+
+(a) Import the data as a simple features spatial object and assign it to an object called `PE.sf`. Set the CRS to 4326 using the `set_set_crs()` function. (5)
+```{r}
+if(!"police" %in% list.files()) {
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/sids2.zip",
+              destfil = "police.zip")
+unzip("police.zip")
+}
+
+library(sf)
+
+PE.sf <- read_sf(dsn = "police",
+                   layer = "police") %>%
+  st_set_crs(value = 4326)
+```
+
+(b) Using the simple feature data frame `PE.sf` from part (a), create a choropleth map of the percentage of people unemployed in 1980 (variable name `UNEMP`) using functions from the {tmap} package. (5)
+```{r}
+library(tmap)
+
+tm_shape(PE.sf) +
+  tm_polygons(col = "UNEMP")
+```
+
+(c) Using the simple feature data frame `PE.sf` from part (a), create a choropleth map of the percentage of people unemployed using functions from the {ggplot2} package. (5)
+```{r}
+library(ggplot2)
+
+ggplot(data = PE.sf) +
+  geom_sf(mapping = aes(fill = UNEMP))
+```
+
+**2** With data in the simple feature data frame imported in question (1) above, compute the spatial autocorrelation of the percentage of people unemployed using the `moran()` function from the {spdep} package. Hint: First create a list of neighbors and weights using the `poly2nb()` and `nb2list2()` functions. (25)
+```{r}
+library(spdep)
+
+nbs <- poly2nb(PE.sf)
+wts <- nb2listw(nbs)
+
+m <- length(PE.sf$UNEMP)
+s <- Szero(wts)
+
+moran(PE.sf$UNEMP, 
+      listw = wts, 
+      n = m, 
+      S0 = s)
+```

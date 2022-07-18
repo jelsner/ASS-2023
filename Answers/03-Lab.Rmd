@@ -1,8 +1,8 @@
-# Tuesday November 8, 2022 {.unnumbered}
+# Thursday November 10, 2022 {.unnumbered}
 
 Today
 
-- Lab 3
+- Lab 4
 
 Import the Florida wildfire data as a simple feature data frame called `FL_Fires.sf` and transform the native CRS to a Florida GDL Albers (EPSG 3086) using the following code chunk.
 ```{r}
