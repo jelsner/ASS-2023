@@ -1,4 +1,4 @@
-# Thursday November 10, 2022 {.unnumbered}
+# Thursday November 17, 2022 {.unnumbered}
 
 **"Statistics is such a powerful language for describing data in ways that reveal nothing about their causes. Of course statistics is powerful for revealing causes as well. But it takes some care. Like the difference between talking and making sense."** - Richard McElreath
 

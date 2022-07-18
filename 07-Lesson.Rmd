@@ -1,4 +1,4 @@
-# Tuesday September 13, 2022 {.unnumbered}
+# Thursday September 15, 2022 {.unnumbered}
 
 **"Measuring programming progress by lines of code is like measuring aircraft building progress by weight."** -- Bill Gates
 
