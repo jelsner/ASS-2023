@@ -355,3 +355,5 @@ More on this topic is available from
 - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895
 
 The second source is a paper we published addressing long and short term views of tornado risk across the eastern half of the United States.
+
+An online book on Bayesian statistics using R is available here https://www.bayesrulesbook.com/

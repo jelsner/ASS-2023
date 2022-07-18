@@ -21,7 +21,7 @@ Links to my professional stuff (if you are curious)
 
 This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes that students know basic statistics through multiple linear regression. And that students have some prior experience with using R. Students without any knowledge of R should look various online tutorials (see below).
 
-In this course you will get a survey of the methods used to describe, analyze, and model *spatial* data. Focus will be on applications. Emphasis is given to how spatial **statistical** methods are related through the concept of spatial autocorrelation.
+In this course you will get a survey of the methods used to describe, analyze, and model *spatial* data. Focus will be on applications. Emphasis is on how **statistical** methods are related through the concept of spatial autocorrelation.
 
 Expected learning outcomes
 
