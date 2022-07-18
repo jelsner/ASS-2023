@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Tuesday November 15, 2022 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Tuesday November 15, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Tuesday November 15, 2022 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Tuesday November 15, 2022 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="thursday-november-10-2022.html"/>
+<link rel="next" href="thursday-november-17-2022.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/Leaflet.Sync-0.0.5/L.Map.Sync.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i>Syllabus</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#materials-and-class-meetings"><i class="fa fa-check"></i>Materials and class meetings</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html"><i class="fa fa-check"></i>Tuesday, August 23, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#install-r-and-rstudio-on-your-computer"><i class="fa fa-check"></i>Install R and RStudio on your computer</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#download-course-materials"><i class="fa fa-check"></i>Download course materials</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#read-the-syllabus"><i class="fa fa-check"></i>Read the syllabus</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-23-2022.html"><a href="tuesday-august-23-2022.html#are-you-completely-new-to-r"><i class="fa fa-check"></i>Are you completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#expectations"><i class="fa fa-check"></i>Expectations</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
+<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html"><i class="fa fa-check"></i>Thursday September 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html"><i class="fa fa-check"></i>Tuesday September 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html"><i class="fa fa-check"></i>Thursday September 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html"><i class="fa fa-check"></i>Thursday October 6, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html"><i class="fa fa-check"></i>Tuesday October 11, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#mapping-incidence-and-risk-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping incidence and risk with spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html"><i class="fa fa-check"></i>Tuesday October 18, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html"><i class="fa fa-check"></i>Thursday October 20, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#intensity-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Intensity trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html"><i class="fa fa-check"></i>Tuesday October 25, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html"><i class="fa fa-check"></i>Thursday October 27, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html"><i class="fa fa-check"></i>Tuesday November 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#inferring-event-interaction-from-distance-functions"><i class="fa fa-check"></i>Inferring event interaction from distance functions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#removing-duplicate-event-locations-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate event locations and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#modeling-point-pattern-data"><i class="fa fa-check"></i>Modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#fitting-and-interpreting-an-inhibition-model"><i class="fa fa-check"></i>Fitting and interpreting an inhibition model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html"><i class="fa fa-check"></i>Thursday November 3, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#fitting-and-interpreting-a-cluster-model"><i class="fa fa-check"></i>Fitting and interpreting a cluster model</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html"><i class="fa fa-check"></i>Thursday November 10, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html"><i class="fa fa-check"></i>Tuesday November 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html"><i class="fa fa-check"></i>Thursday November 17, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#evaluating-the-accuracy-of-the-interpolation"><i class="fa fa-check"></i>Evaluating the accuracy of the interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html"><i class="fa fa-check"></i>Thursday November 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#machine-learning-for-spatial-interpolation"><i class="fa fa-check"></i>Machine learning for spatial interpolation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tuesday-november-15-2022" class="section level1 unnumbered hasAnchor">
+<h1>Tuesday November 15, 2022<a href="tuesday-november-15-2022.html#tuesday-november-15-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“Statistics is such a powerful language for describing data in ways that reveal nothing about their causes. Of course statistics is powerful for revealing causes as well. But it takes some care. Like the difference between talking and making sense.”</strong> - Richard McElreath</p>
+<p>Today</p>
+<ul>
+<li>Fitting a variogram model to the sample variogram</li>
+<li>Creating an interpolated surface with the method of kriging</li>
+</ul>
+<div id="fitting-a-variogram-model-to-the-sample-variogram" class="section level2 unnumbered hasAnchor">
+<h2>Fitting a variogram model to the sample variogram<a href="tuesday-november-15-2022.html#fitting-a-variogram-model-to-the-sample-variogram" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Some years ago there were three nuclear waste repository sites being proposed in Nevada, Texas, and Washington. The proposed site needed to be large enough for more than 68,000 high-level waste containers placed underground, about 9 m (~30 feet) apart, in trenches surrounded by salt.</p>
+<p>In July of 2002 the Congress approved <a href="https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository">Yucca Mountain</a>, Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste.</p>
+<p>The site must isolate the waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters. The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seeks its own level in the pipe (piezometer).</p>
+<p>The head measurements, given in units of feet above sea level, are from drill stem tests and indicate the total energy of the water in units of height. The higher the head height, the greater the potential energy. Water flows away from areas of high potential energy with aquifer discharge proportional to the gradient of the piezometric head. The data are in <code>wolfcamp.csv</code> on my website.</p>
+<p>Examine the observed data for trends and check to see if the observations are adequately described by a normal distribution.</p>
+<p>Import the data as a data frame from the csv file.</p>
+<div class="sourceCode" id="cb1445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1445-1"><a href="tuesday-november-15-2022.html#cb1445-1" aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv&quot;</span></span>
+<span id="cb1445-2"><a href="tuesday-november-15-2022.html#cb1445-2" aria-hidden="true" tabindex="-1"></a>wca.df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(L, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Create a simple feature data frame and make a map showing the locations and the values for the head heights.</p>
+<div class="sourceCode" id="cb1446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1446-1"><a href="tuesday-november-15-2022.html#cb1446-1" aria-hidden="true" tabindex="-1"></a>wca.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">x =</span> wca.df, </span>
+<span id="cb1446-2"><a href="tuesday-november-15-2022.html#cb1446-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>),</span>
+<span id="cb1446-3"><a href="tuesday-november-15-2022.html#cb1446-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb1446-4"><a href="tuesday-november-15-2022.html#cb1446-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1446-5"><a href="tuesday-november-15-2022.html#cb1446-5" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<pre><code>## tmap mode set to interactive viewing</code></pre>
+<div class="sourceCode" id="cb1448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1448-1"><a href="tuesday-november-15-2022.html#cb1448-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(wca.sf) <span class="sc">+</span></span>
+<span id="cb1448-2"><a href="tuesday-november-15-2022.html#cb1448-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_dots</span>(<span class="st">&quot;head&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-4b5d813b984f732a0626" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4b5d813b984f732a0626">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addCircleMarkers","args":[[35.25,34.71,34.62,34.49,34.32,34.59,34.2,33.95,33.86,34.2,33.89,33.98,34.24,36.09,35.05,33.76,33.65,33.56,33.58,34.95,34.78,34.99,34.16,34.28,34.04,35.54,34.08,33.96,33.81,33.87,33.87,34.54,35.95,35.9,35.7,35.71,33.59,33.51,33.69,33.62,35.95,33.71,33.71,33.67,33.83,33.81,33.8,33.93,33.95,33.65,33.85,33.87,33.87,35.59,35.4,35.31,35.39,35.42,35.24,34.95,35.89,35.79,35.98,35.74,35.77,35.87,35.93,35.93,34.53,34.51,35.43,35.31,33.53,33.78,34.66,34.64,34.5,34.56,34.17,34,34,33.97,34.05,33.9,33.8],[-101.25,-102.48,-102.02,-102.33,-100.31,-100.1,-100.45,-100.42,-100.37,-100.29,-100.41,-100.38,-100.25,-102.42,-102.46,-101.01,-100.72,-100.59,-100.59,-100.79,-100.66,-100.87,-101.24,-101.31,-100.02,-101.05,-101.89,-102.07,-102.04,-102.04,-102.04,-100.89,-102.19,-102.33,-102.68,-100.54,-102.38,-102.41,-102.35,-102.29,-101.48,-100.23,-100.22,-100.19,-102.25,-102.32,-102.32,-102.17,-102.21,-101.8,-100.92,-100.78,-100.83,-102.64,-102.34,-102.37,-102.39,-101.63,-101.87,-102.15,-101.01,-100.96,-100.79,-100.76,-100.72,-100.95,-100.91,-100.88,-101.9,-101.68,-100.5,-100.16,-103.78,-104.55,-103.3,-103.66,-103.56,-104.11,-103.51,-103.28,-103.76,-103.38,-103.47,-103.68,-103.54],[2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619,2.82842712474619],["X1464","X2553","X2158","X2455","X1756","X1702","X1805","X1797","X1714","X1466","X1729","X1638","X1736","X1476","X2200","X1999","X1680","X1806","X1682","X1306","X1722","X1437","X1828","X2118","X1725","X1606","X2648","X2560","X2544","X2386","X2400","X1757","X1402","X1364","X1735","X1376","X2729","X2766","X2736","X2432","X1024","X1611","X1548","X1591","X2540","X2352","X2528","X2575","X2468","X2646","X1739","X1674","X1868","X1865","X1777","X1579","X1771","X1408","X1527","X2003","X1386","X1089","X1384","X1030","X1092","X1161","X1415","X1231","X2300","X2238","X1038","X1332","X3510","X3490","X2594","X2650","X2533","X3571","X2811","X2728","X3136","X2553.1","X2798","X2691","X2946"],"wca.sf",{"interactive":true,"className":"","pane":"tmap401","stroke":true,"color":"#666666","weight":1,"opacity":0.5,"fill":true,"fillColor":["#FFFACE","#F88B22","#FEBE4A","#FEBE4A","#FEE697","#FEE697","#FEE697","#FEE697","#FEE697","#FFFACE","#FEE697","#FEE697","#FEE697","#FFFACE","#FEBE4A","#FEE697","#FEE697","#FEE697","#FEE697","#FFFACE","#FEE697","#FFFACE","#FEE697","#FEBE4A","#FEE697","#FEE697","#F88B22","#F88B22","#F88B22","#FEBE4A","#FEBE4A","#FEE697","#FFFACE","#FFFACE","#FEE697","#FFFACE","#F88B22","#F88B22","#F88B22","#FEBE4A","#FFFACE","#FEE697","#FEE697","#FEE697","#F88B22","#FEBE4A","#F88B22","#F88B22","#FEBE4A","#F88B22","#FEE697","#FEE697","#FEE697","#FEE697","#FEE697","#FEE697","#FEE697","#FFFACE","#FEE697","#FEBE4A","#FFFACE","#FFFACE","#FFFACE","#FFFACE","#FFFACE","#FFFACE","#FFFACE","#FFFACE","#FEBE4A","#FEBE4A","#FFFACE","#FFFACE","#A33803","#DB5D0A","#F88B22","#F88B22","#F88B22","#A33803","#F88B22","#F88B22","#DB5D0A","#F88B22","#F88B22","#F88B22","#F88B22"],"fillOpacity":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},null,null,["<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1464<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,464<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2553<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,553<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2158<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,158<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2455<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,455<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1756<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,756<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1702<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,702<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1805<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,805<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1797<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,797<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1714<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,714<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1466<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,466<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1729<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,729<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1638<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,638<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1736<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,736<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1476<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,476<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2200<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,200<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1999<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,999<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1680<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,680<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1806<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,806<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1682<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,682<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1306<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,306<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1722<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,722<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1437<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,437<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1828<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,828<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2118<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,118<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1725<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,725<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1606<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,606<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2648<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,648<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2560<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,560<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2544<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,544<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2386<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,386<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2400<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,400<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1757<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,757<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1402<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,402<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1364<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,364<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1735<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,735<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1376<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,376<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2729<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,729<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2766<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,766<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2736<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,736<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2432<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,432<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1024<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,024<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1611<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,611<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1548<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,548<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1591<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,591<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2540<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,540<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2352<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,352<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2528<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,528<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2575<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,575<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2468<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,468<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2646<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,646<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1739<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,739<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1674<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,674<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1868<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,868<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1865<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,865<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1777<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,777<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1579<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,579<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1771<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,771<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1408<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,408<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1527<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,527<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2003<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,003<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1386<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,386<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1089<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,089<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1384<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,384<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1030<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,030<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1092<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,092<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1161<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,161<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1415<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,415<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1231<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,231<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2300<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,300<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2238<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,238<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1038<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,038<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1332<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>1,332<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>3510<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>3,510<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>3490<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>3,490<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2594<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,594<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2650<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,650<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2533<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,533<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>3571<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>3,571<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2811<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,811<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2728<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,728<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>3136<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>3,136<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2553<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,553<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2798<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,798<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2691<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,691<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>2946<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>head<\/nobr><\/td><td align=\"right\"><nobr>2,946<\/nobr><\/td><\/tr><\/table><\/div>"],null,["1464","2553","2158","2455","1756","1702","1805","1797","1714","1466","1729","1638","1736","1476","2200","1999","1680","1806","1682","1306","1722","1437","1828","2118","1725","1606","2648","2560","2544","2386","2400","1757","1402","1364","1735","1376","2729","2766","2736","2432","1024","1611","1548","1591","2540","2352","2528","2575","2468","2646","1739","1674","1868","1865","1777","1579","1771","1408","1527","2003","1386","1089","1384","1030","1092","1161","1415","1231","2300","2238","1038","1332","3510","3490","2594","2650","2533","3571","2811","2728","3136","2553","2798","2691","2946"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#FFFACE","#FEE697","#FEBE4A","#F88B22","#DB5D0A","#A33803"],"labels":["1,000 to 1,500","1,500 to 2,000","2,000 to 2,500","2,500 to 3,000","3,000 to 3,500","3,500 to 4,000"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"unknown","title":"head","extra":null,"layerId":"legend401","className":"info legend wca.sf","group":"wca.sf"}]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"wca.sf",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[33.51,36.09],"lng":[-104.55,-100.02]},"fitBounds":[33.51,-104.55,36.09,-100.02,[]]},"evals":[],"jsHooks":[]}</script>
+<p>You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trends. So you include them as attributes in your spatial data frame.</p>
+<div class="sourceCode" id="cb1449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1449-1"><a href="tuesday-november-15-2022.html#cb1449-1" aria-hidden="true" tabindex="-1"></a>XY <span class="ot">&lt;-</span> wca.sf <span class="sc">|&gt;</span></span>
+<span id="cb1449-2"><a href="tuesday-november-15-2022.html#cb1449-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_coordinates</span>() </span>
+<span id="cb1449-3"><a href="tuesday-november-15-2022.html#cb1449-3" aria-hidden="true" tabindex="-1"></a>wca.sf<span class="sc">$</span>X <span class="ot">&lt;-</span> XY[, <span class="dv">1</span>]</span>
+<span id="cb1449-4"><a href="tuesday-november-15-2022.html#cb1449-4" aria-hidden="true" tabindex="-1"></a>wca.sf<span class="sc">$</span>Y <span class="ot">&lt;-</span> XY[, <span class="dv">2</span>]</span></code></pre></div>
+<p>Are all observations at different locations? Duplicate coordinates might be due to an error or they might represent multiple measurements at a location.</p>
+<p>You check for duplicates with the {base} <code>duplicated()</code> function applied to the geometry field.</p>
+<div class="sourceCode" id="cb1450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1450-1"><a href="tuesday-november-15-2022.html#cb1450-1" aria-hidden="true" tabindex="-1"></a>wca.sf<span class="sc">$</span>geometry <span class="sc">|&gt;</span></span>
+<span id="cb1450-2"><a href="tuesday-november-15-2022.html#cb1450-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">duplicated</span>()</span></code></pre></div>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [25] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [37] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [49] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [61] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [73] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [85] FALSE</code></pre>
+<p>Observation 31 is a location that already has an observed head height.</p>
+<p>You remove this observation from the data frame.</p>
+<div class="sourceCode" id="cb1452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1452-1"><a href="tuesday-november-15-2022.html#cb1452-1" aria-hidden="true" tabindex="-1"></a>wca.sf <span class="ot">&lt;-</span> wca.sf <span class="sc">|&gt;</span></span>
+<span id="cb1452-2"><a href="tuesday-november-15-2022.html#cb1452-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">duplicated</span>(geometry))</span>
+<span id="cb1452-3"><a href="tuesday-november-15-2022.html#cb1452-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1452-4"><a href="tuesday-november-15-2022.html#cb1452-4" aria-hidden="true" tabindex="-1"></a>wca.sf<span class="sc">$</span>geometry <span class="sc">|&gt;</span></span>
+<span id="cb1452-5"><a href="tuesday-november-15-2022.html#cb1452-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">duplicated</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1452-6"><a href="tuesday-november-15-2022.html#cb1452-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">any</span>()</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>Summarize the information in the spatial data frame.</p>
+<div class="sourceCode" id="cb1454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1454-1"><a href="tuesday-november-15-2022.html#cb1454-1" aria-hidden="true" tabindex="-1"></a>wca.sf <span class="sc">|&gt;</span></span>
+<span id="cb1454-2"><a href="tuesday-november-15-2022.html#cb1454-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>##       head               geometry        X                Y        
+##  Min.   :1024   POINT        :84   Min.   :-104.5   Min.   :33.51  
+##  1st Qu.:1543   epsg:4326    : 0   1st Qu.:-102.4   1st Qu.:33.87  
+##  Median :1787   +proj=long...: 0   Median :-101.7   Median :34.26  
+##  Mean   :1998                      Mean   :-101.7   Mean   :34.55  
+##  3rd Qu.:2541                      3rd Qu.:-100.8   3rd Qu.:35.31  
+##  Max.   :3571                      Max.   :-100.0   Max.   :36.09</code></pre>
+<div class="sourceCode" id="cb1456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1456-1"><a href="tuesday-november-15-2022.html#cb1456-1" aria-hidden="true" tabindex="-1"></a>wca.sf <span class="sc">|&gt;</span></span>
+<span id="cb1456-2"><a href="tuesday-november-15-2022.html#cb1456-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_bbox</span>(wca.sf)</span></code></pre></div>
+<pre><code>##    xmin    ymin    xmax    ymax 
+## -104.55   33.51 -100.02   36.09</code></pre>
+<p>There are 84 well sites bounded between longitude lines 104.55W and 100.02W and latitude lines 33.51N and 36.09N.</p>
+<p>The data values are summarized. The values are piezometric head heights in units of feet.</p>
+<div class="sourceCode" id="cb1458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1458-1"><a href="tuesday-november-15-2022.html#cb1458-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1458-2"><a href="tuesday-november-15-2022.html#cb1458-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1458-3"><a href="tuesday-november-15-2022.html#cb1458-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1458-4"><a href="tuesday-november-15-2022.html#cb1458-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> wca.sf,</span>
+<span id="cb1458-5"><a href="tuesday-november-15-2022.html#cb1458-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">color =</span> head)) <span class="sc">+</span></span>
+<span id="cb1458-6"><a href="tuesday-november-15-2022.html#cb1458-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb1458-7"><a href="tuesday-november-15-2022.html#cb1458-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">col =</span> <span class="st">&quot;Height (ft)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1458-8"><a href="tuesday-november-15-2022.html#cb1458-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-657-1.png" width="672" /></p>
+<p>There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue).</p>
+<p>Compute and plot the empirical variogram using the <code>variogram()</code> function from the {gstat} package.</p>
+<div class="sourceCode" id="cb1459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1459-1"><a href="tuesday-november-15-2022.html#cb1459-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb1459-2"><a href="tuesday-november-15-2022.html#cb1459-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1459-3"><a href="tuesday-november-15-2022.html#cb1459-3" aria-hidden="true" tabindex="-1"></a><span class="fu">variogram</span>(head <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb1459-4"><a href="tuesday-november-15-2022.html#cb1459-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> wca.sf) <span class="sc">|&gt;</span></span>
+<span id="cb1459-5"><a href="tuesday-november-15-2022.html#cb1459-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-658-1.png" width="672" /></p>
+<p>The continuously increasing set of variances with little fluctuation results from the data trend you saw in the map. There are at least two sources of variation in any set of geostatistical data: trend and spatial autocorrelation. Trend is modeled with a smooth curve and autocorrelation is modeled with the variogram.</p>
+<p>Note: since the spatial coordinates are unprojected (decimal latitude/longitude) great circle distances are used and the units are kilometers.</p>
+<p>You compute and plot the variogram this time with the trend removed. You replace the <code>1</code> with <code>X + Y</code> on the right hand side of the formula. The variogram is then computed on the residuals from the linear trend model.</p>
+<div class="sourceCode" id="cb1460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1460-1"><a href="tuesday-november-15-2022.html#cb1460-1" aria-hidden="true" tabindex="-1"></a><span class="fu">variogram</span>(head <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb1460-2"><a href="tuesday-november-15-2022.html#cb1460-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> wca.sf) <span class="sc">|&gt;</span></span>
+<span id="cb1460-3"><a href="tuesday-november-15-2022.html#cb1460-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-659-1.png" width="672" /></p>
+<p>Here you see an increase in the variance with lag distance out to about 100 km, but then the values fluctuate about a variance of about 41000 (ft<span class="math inline">\(^2\)</span>).</p>
+<p>You save the variogram object computed on the residuals.</p>
+<div class="sourceCode" id="cb1461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1461-1"><a href="tuesday-november-15-2022.html#cb1461-1" aria-hidden="true" tabindex="-1"></a>wca.v <span class="ot">&lt;-</span> <span class="fu">variogram</span>(head <span class="sc">~</span> X <span class="sc">+</span> Y, </span>
+<span id="cb1461-2"><a href="tuesday-november-15-2022.html#cb1461-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> wca.sf)</span></code></pre></div>
+<p>You then use this information contained in the variogram object to anticipate the type of variogram model.</p>
+<div class="sourceCode" id="cb1462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1462-1"><a href="tuesday-november-15-2022.html#cb1462-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> wca.v <span class="sc">|&gt;</span></span>
+<span id="cb1462-2"><a href="tuesday-november-15-2022.html#cb1462-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb1462-3"><a href="tuesday-november-15-2022.html#cb1462-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1462-4"><a href="tuesday-november-15-2022.html#cb1462-4" aria-hidden="true" tabindex="-1"></a>( p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb1462-5"><a href="tuesday-november-15-2022.html#cb1462-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> dist, <span class="at">y =</span> gamma)) <span class="sc">+</span> </span>
+<span id="cb1462-6"><a href="tuesday-november-15-2022.html#cb1462-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb1462-7"><a href="tuesday-november-15-2022.html#cb1462-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb1462-8"><a href="tuesday-november-15-2022.html#cb1462-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb1462-9"><a href="tuesday-november-15-2022.html#cb1462-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Variogram [&quot;</span>, gamma,<span class="st">&quot;(h)]&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb1462-10"><a href="tuesday-november-15-2022.html#cb1462-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (h)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1462-11"><a href="tuesday-november-15-2022.html#cb1462-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() )</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-661-1.png" width="672" /></p>
+<p>The blue line is a least-squares regression smoother through the variogram estimates. The fact that it is not a flat horizontal line indicates spatial autocorrelation in the residuals (distinct from the first-order trend).</p>
+<p>Directional variograms</p>
+<p>The assumption of isotropy implies the same spatial autocorrelation function in all directions.</p>
+<p>You compute variograms using observational pairs located along the same orientation to examine this assumption. Instead of considering all observational pairs within a lag distance <span class="math inline">\(h\)</span> and lag tolerance <span class="math inline">\(\delta h\)</span>, you consider only pairs within a directional segment.</p>
+<p>This is done with the <code>alpha =</code> argument specifying the direction in plane (x,y), in positive degrees clockwise from positive y (North): alpha = 0 for direction North (increasing y), alpha = 90 for direction East (increasing x).</p>
+<p>Here you specify four directions (north-south-0, northeast-southwest-45, east-west-90, and southeast-northeast-135) and compute the corresponding directional variograms.</p>
+<div class="sourceCode" id="cb1464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1464-1"><a href="tuesday-november-15-2022.html#cb1464-1" aria-hidden="true" tabindex="-1"></a>wca.vd <span class="ot">&lt;-</span> <span class="fu">variogram</span>(head <span class="sc">~</span> X <span class="sc">+</span> Y, </span>
+<span id="cb1464-2"><a href="tuesday-november-15-2022.html#cb1464-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> wca.sf,</span>
+<span id="cb1464-3"><a href="tuesday-november-15-2022.html#cb1464-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">alpha =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">45</span>, <span class="dv">90</span>, <span class="dv">135</span>))</span>
+<span id="cb1464-4"><a href="tuesday-november-15-2022.html#cb1464-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> wca.vd <span class="sc">|&gt;</span></span>
+<span id="cb1464-5"><a href="tuesday-november-15-2022.html#cb1464-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1464-6"><a href="tuesday-november-15-2022.html#cb1464-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">direction =</span> <span class="fu">factor</span>(dir.hor))</span>
+<span id="cb1464-7"><a href="tuesday-november-15-2022.html#cb1464-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1464-8"><a href="tuesday-november-15-2022.html#cb1464-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb1464-9"><a href="tuesday-november-15-2022.html#cb1464-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> dist, <span class="at">y =</span> gamma, <span class="at">color =</span> direction)) <span class="sc">+</span> </span>
+<span id="cb1464-10"><a href="tuesday-november-15-2022.html#cb1464-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb1464-11"><a href="tuesday-november-15-2022.html#cb1464-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1464-12"><a href="tuesday-november-15-2022.html#cb1464-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb1464-13"><a href="tuesday-november-15-2022.html#cb1464-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Variogram [&quot;</span>, gamma,<span class="st">&quot;(h)]&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb1464-14"><a href="tuesday-november-15-2022.html#cb1464-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (h)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1464-15"><a href="tuesday-november-15-2022.html#cb1464-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-662-1.png" width="672" /></p>
+<p>The four variograms all have a similar shape and there is large overlap in the uncertainty bands surrounding the smooth curves so you conclude that the assumption of isotropy is reasonable.</p>
+<p>Fit a variogram model to the empirical variogram</p>
+<p>You are now ready to fit a variogram model to the empirical variogram. This amounts to fitting a parametric curve through the set of points that make up the empirical variogram.</p>
+<p>Start by plotting the (omni-directional) empirical variogram saved in object <code>p</code>.</p>
+<div class="sourceCode" id="cb1466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1466-1"><a href="tuesday-november-15-2022.html#cb1466-1" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-663-1.png" width="672" /></p>
+<p>The shape of the blue line gives you an idea of the type of variogram family of models you should consider.</p>
+<p>Now you can guess at a family for the variogram model and eyeball the parameters. A <em>spherical</em> variogram model has a nearly linear increase in variances with lag distance before an abrupt flattening so that is a good choice.</p>
+<p>The parameters for the model can be estimated from the graph as follows.</p>
+<div class="sourceCode" id="cb1468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1468-1"><a href="tuesday-november-15-2022.html#cb1468-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span></span>
+<span id="cb1468-2"><a href="tuesday-november-15-2022.html#cb1468-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">c</span>(<span class="dv">12000</span>, <span class="dv">45000</span>), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1468-3"><a href="tuesday-november-15-2022.html#cb1468-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">100</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1468-4"><a href="tuesday-november-15-2022.html#cb1468-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">xend =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="dv">12000</span>,), <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">length =</span> <span class="fu">unit</span>(.<span class="dv">3</span>, <span class="st">&quot;cm&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb1468-5"><a href="tuesday-november-15-2022.html#cb1468-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">15</span>, <span class="at">y =</span> <span class="dv">11000</span>, <span class="at">label =</span> <span class="st">&quot;nugget&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb1468-6"><a href="tuesday-november-15-2022.html#cb1468-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">12000</span>, <span class="at">xend =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="dv">45000</span>,), <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">length =</span> <span class="fu">unit</span>(.<span class="dv">3</span>, <span class="st">&quot;cm&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb1468-7"><a href="tuesday-november-15-2022.html#cb1468-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">10</span>, <span class="at">y =</span> <span class="dv">44000</span>, <span class="at">label =</span> <span class="st">&quot;sill&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb1468-8"><a href="tuesday-november-15-2022.html#cb1468-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">47000</span>, <span class="at">xend =</span> <span class="dv">100</span>, <span class="at">yend =</span> <span class="dv">47000</span>,), <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">length =</span> <span class="fu">unit</span>(.<span class="dv">3</span>, <span class="st">&quot;cm&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb1468-9"><a href="tuesday-november-15-2022.html#cb1468-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">50</span>, <span class="at">y =</span> <span class="dv">48000</span>, <span class="at">label =</span> <span class="st">&quot;range&quot;</span>))</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-664-1.png" width="672" /></p>
+<p>The three parameters used in fitting a variogram model are nugget, sill, and range.</p>
+<ul>
+<li><p>Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag. The nugget is the variation in the values at the observation locations without regard to spatial variation. Related to the observation (or measurement) precision.</p></li>
+<li><p>Sill: The height of the variogram at which the values are uncorrelated. The sill is indicated by the height of the plateau in the variogram.</p></li>
+<li><p>Range: The distance beyond which the values are uncorrelated. The range is indicated by distance along the horizontal axis from zero lag until the plateau in the variogram.</p></li>
+</ul>
+<p>Other terms: (1) Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage. (2) Lag distance: Relative distance between observation locations.</p>
+<p>From the figure you estimate the sill at 44000 ft^2, the nugget at 12000 ft^2 and the range at 100 km.</p>
+<p>To fit a model to the empirical variogram you start with the <code>vgm()</code> function that sets the curve family (here spherical) and the initial parameter values. You save result in an object called <code>wca.vmi</code>. The function needs the partial sill (<code>psill =</code> argument) as the difference between the sill and the nugget.</p>
+<div class="sourceCode" id="cb1470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1470-1"><a href="tuesday-november-15-2022.html#cb1470-1" aria-hidden="true" tabindex="-1"></a>wca.vmi <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">&quot;Sph&quot;</span>, </span>
+<span id="cb1470-2"><a href="tuesday-november-15-2022.html#cb1470-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">psill =</span> <span class="dv">32000</span>, </span>
+<span id="cb1470-3"><a href="tuesday-november-15-2022.html#cb1470-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">range =</span> <span class="dv">100</span>, </span>
+<span id="cb1470-4"><a href="tuesday-november-15-2022.html#cb1470-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">nugget =</span> <span class="dv">12000</span>)</span>
+<span id="cb1470-5"><a href="tuesday-november-15-2022.html#cb1470-5" aria-hidden="true" tabindex="-1"></a>wca.vmi</span></code></pre></div>
+<pre><code>##   model psill range
+## 1   Nug 12000     0
+## 2   Sph 32000   100</code></pre>
+<p>Next you apply the function <code>fit.variogram()</code>, which uses the method of weighted least squares to improve the parameter estimates from the set of initial estimates. The function takes the empirical variogram and the set of initial estimates as <code>object =</code> and <code>model =</code>, respectively.</p>
+<div class="sourceCode" id="cb1472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1472-1"><a href="tuesday-november-15-2022.html#cb1472-1" aria-hidden="true" tabindex="-1"></a>wca.vm <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> wca.v, </span>
+<span id="cb1472-2"><a href="tuesday-november-15-2022.html#cb1472-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">model =</span> wca.vmi)</span>
+<span id="cb1472-3"><a href="tuesday-november-15-2022.html#cb1472-3" aria-hidden="true" tabindex="-1"></a>wca.vm</span></code></pre></div>
+<pre><code>##   model     psill    range
+## 1   Nug  9812.335   0.0000
+## 2   Sph 34851.456 106.9623</code></pre>
+<p>Note: Ordinary least squares is not an appropriate method for fitting a variogram model to the empirical variogram because the semivariances are correlated across the lag distances and the precision on the estimates depends on the number of site pairs for a given lag.</p>
+<p>The output table shows the nugget and spherical model. The nugget is 9812 ft^2 and the partial sill for the spherical model is 34851 ft^2 with a range of 107 km. These values are close to your initial estimates.</p>
+<p>To check the model and fit plot them together with the <code>plot()</code> method.</p>
+<div class="sourceCode" id="cb1474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1474-1"><a href="tuesday-november-15-2022.html#cb1474-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wca.v, wca.vm)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-667-1.png" width="672" /></p>
+<p>The blue line is the variogram model and the points are the empirical variogram values.</p>
+<p>Note that the <code>fit.variogram()</code> function will find the optimal fit even if the initial values are not very good. Here you lower the partial sill to 10000 ft^2, reduce the range to 50 km and set the nugget to 8000 ft^2.</p>
+<div class="sourceCode" id="cb1475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1475-1"><a href="tuesday-november-15-2022.html#cb1475-1" aria-hidden="true" tabindex="-1"></a>wca.vmi2 <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">&quot;Sph&quot;</span>, </span>
+<span id="cb1475-2"><a href="tuesday-november-15-2022.html#cb1475-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">psill =</span> <span class="dv">10000</span>, </span>
+<span id="cb1475-3"><a href="tuesday-november-15-2022.html#cb1475-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">range =</span> <span class="dv">50</span>, </span>
+<span id="cb1475-4"><a href="tuesday-november-15-2022.html#cb1475-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">nugget =</span> <span class="dv">8000</span>)</span>
+<span id="cb1475-5"><a href="tuesday-november-15-2022.html#cb1475-5" aria-hidden="true" tabindex="-1"></a>wca.vm2 <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> wca.v, </span>
+<span id="cb1475-6"><a href="tuesday-november-15-2022.html#cb1475-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">model =</span> wca.vmi2)</span>
+<span id="cb1475-7"><a href="tuesday-november-15-2022.html#cb1475-7" aria-hidden="true" tabindex="-1"></a>wca.vm2</span></code></pre></div>
+<pre><code>##   model     psill    range
+## 1   Nug  9812.412   0.0000
+## 2   Sph 34851.684 106.9645</code></pre>
+<p>The initial values are poor but good enough for the <code>fit.variogram()</code> function to find the optimal model.</p>
+<p>Compare the spherical model to a Gaussian and an exponential model.</p>
+<div class="sourceCode" id="cb1477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1477-1"><a href="tuesday-november-15-2022.html#cb1477-1" aria-hidden="true" tabindex="-1"></a>wca.vmi3 <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">&quot;Gau&quot;</span>, </span>
+<span id="cb1477-2"><a href="tuesday-november-15-2022.html#cb1477-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">psill =</span> <span class="dv">30000</span>, </span>
+<span id="cb1477-3"><a href="tuesday-november-15-2022.html#cb1477-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">range =</span> <span class="dv">30</span>, </span>
+<span id="cb1477-4"><a href="tuesday-november-15-2022.html#cb1477-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">nugget =</span> <span class="dv">10000</span>)</span>
+<span id="cb1477-5"><a href="tuesday-november-15-2022.html#cb1477-5" aria-hidden="true" tabindex="-1"></a>wca.vm3 <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> wca.v, </span>
+<span id="cb1477-6"><a href="tuesday-november-15-2022.html#cb1477-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model =</span> wca.vmi3)</span>
+<span id="cb1477-7"><a href="tuesday-november-15-2022.html#cb1477-7" aria-hidden="true" tabindex="-1"></a>wca.vmi4 <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="at">model =</span> <span class="st">&quot;Exp&quot;</span>, </span>
+<span id="cb1477-8"><a href="tuesday-november-15-2022.html#cb1477-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">psill =</span> <span class="dv">30000</span>, </span>
+<span id="cb1477-9"><a href="tuesday-november-15-2022.html#cb1477-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">range =</span> <span class="dv">10</span>, </span>
+<span id="cb1477-10"><a href="tuesday-november-15-2022.html#cb1477-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">nugget =</span> <span class="dv">10000</span>)</span>
+<span id="cb1477-11"><a href="tuesday-november-15-2022.html#cb1477-11" aria-hidden="true" tabindex="-1"></a>wca.vm4 <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> wca.v, </span>
+<span id="cb1477-12"><a href="tuesday-november-15-2022.html#cb1477-12" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model =</span> wca.vmi4)</span>
+<span id="cb1477-13"><a href="tuesday-november-15-2022.html#cb1477-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wca.v, wca.vm3)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-669-1.png" width="672" /></p>
+<div class="sourceCode" id="cb1478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1478-1"><a href="tuesday-november-15-2022.html#cb1478-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wca.v, wca.vm4)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-669-2.png" width="672" /></p>
+<p>The Gaussian model has a S-shaped curve (sigmodial) indicating more spatial autocorrelation at close distances. The exponential model has no plateau. Both models fit the empirical variogram values reasonably well.</p>
+<p>In practice, the choice often makes very little difference in the quality of the spatial interpolation.</p>
+<p>On the other hand, it is possible to optimize over all sets of variogram models and parameters using the <code>autofitVariogram()</code> function from the {automap} package. The package requires the data to be of S4 class but uses the functions from the {gstat} package.</p>
+<p>Here you use the function on the Wolfcamp aquifer data.</p>
+<div class="sourceCode" id="cb1479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1479-1"><a href="tuesday-november-15-2022.html#cb1479-1" aria-hidden="true" tabindex="-1"></a>wca.sp <span class="ot">&lt;-</span> <span class="fu">as</span>(wca.sf, <span class="st">&quot;Spatial&quot;</span>)</span>
+<span id="cb1479-2"><a href="tuesday-november-15-2022.html#cb1479-2" aria-hidden="true" tabindex="-1"></a>wca.vm5 <span class="ot">&lt;-</span> automap<span class="sc">::</span><span class="fu">autofitVariogram</span>(<span class="at">formula =</span> head <span class="sc">~</span> X <span class="sc">+</span> Y, </span>
+<span id="cb1479-3"><a href="tuesday-november-15-2022.html#cb1479-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">input_data =</span> wca.sp)</span>
+<span id="cb1479-4"><a href="tuesday-november-15-2022.html#cb1479-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wca.vm5)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-670-1.png" width="672" /></p>
+<p>The automatic fitting results in a Matern model with Stein’s parameterization. The Matern family of variogram models has an additional parameter (besides the nugget, sill, and range) kappa that allows for local smoothing. With an extra parameter these models will generally outperform models with fewer parameters.</p>
+</div>
+<div id="creating-an-interpolated-surface-with-the-method-of-kriging" class="section level2 unnumbered hasAnchor">
+<h2>Creating an interpolated surface with the method of kriging<a href="tuesday-november-15-2022.html#creating-an-interpolated-surface-with-the-method-of-kriging" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Kriging uses the variogram model together with the observed data to estimate values at any location of interest. The kriged estimates are a weighted average of the neighborhood values with the weights defined by the variogram model.</p>
+<p>Estimates are often made at locations defined on a regular grid. Here you create a regular grid of locations within the boundary of the spatial data frame using the <code>sf::st_make_grid()</code> function. You specify the number of locations in the x and y direction using the argument <code>n =</code>. The <code>what = "centers"</code> returns the center locations of the grid cells as points.</p>
+<div class="sourceCode" id="cb1480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1480-1"><a href="tuesday-november-15-2022.html#cb1480-1" aria-hidden="true" tabindex="-1"></a>grid.sfc <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_make_grid</span>(wca.sf,</span>
+<span id="cb1480-2"><a href="tuesday-november-15-2022.html#cb1480-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">50</span>),</span>
+<span id="cb1480-3"><a href="tuesday-november-15-2022.html#cb1480-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">what =</span> <span class="st">&quot;centers&quot;</span>)</span></code></pre></div>
+<p>The result is a simple feature column (<code>sfc</code>) of points.</p>
+<p>Plot the grid locations together with the observation locations.</p>
+<div class="sourceCode" id="cb1481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1481-1"><a href="tuesday-november-15-2022.html#cb1481-1" aria-hidden="true" tabindex="-1"></a>sts <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>()</span>
+<span id="cb1481-2"><a href="tuesday-november-15-2022.html#cb1481-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1481-3"><a href="tuesday-november-15-2022.html#cb1481-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</span></code></pre></div>
+<pre><code>## tmap mode set to plotting</code></pre>
+<div class="sourceCode" id="cb1483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1483-1"><a href="tuesday-november-15-2022.html#cb1483-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(wca.sf) <span class="sc">+</span></span>
+<span id="cb1483-2"><a href="tuesday-november-15-2022.html#cb1483-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_bubbles</span>(<span class="at">size =</span> .<span class="dv">25</span>) <span class="sc">+</span></span>
+<span id="cb1483-3"><a href="tuesday-november-15-2022.html#cb1483-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(grid.sfc) <span class="sc">+</span></span>
+<span id="cb1483-4"><a href="tuesday-november-15-2022.html#cb1483-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1483-5"><a href="tuesday-november-15-2022.html#cb1483-5" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(sts) <span class="sc">+</span></span>
+<span id="cb1483-6"><a href="tuesday-november-15-2022.html#cb1483-6" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-672-1.png" width="672" /></p>
+<p>Since there is a trend term you need to add the X and Y values to the simple feature column of the grid. First make it a simple feature data frame then using then add the columns with <code>dplyr::mutate()</code>.</p>
+<div class="sourceCode" id="cb1484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1484-1"><a href="tuesday-november-15-2022.html#cb1484-1" aria-hidden="true" tabindex="-1"></a>XY <span class="ot">&lt;-</span> grid.sfc <span class="sc">|&gt;</span></span>
+<span id="cb1484-2"><a href="tuesday-november-15-2022.html#cb1484-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_coordinates</span>() </span>
+<span id="cb1484-3"><a href="tuesday-november-15-2022.html#cb1484-3" aria-hidden="true" tabindex="-1"></a>grid.sf <span class="ot">&lt;-</span> grid.sfc <span class="sc">|&gt;</span></span>
+<span id="cb1484-4"><a href="tuesday-november-15-2022.html#cb1484-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1484-5"><a href="tuesday-november-15-2022.html#cb1484-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">X =</span> XY[, <span class="dv">1</span>],</span>
+<span id="cb1484-6"><a href="tuesday-november-15-2022.html#cb1484-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">Y =</span> XY[, <span class="dv">2</span>])</span></code></pre></div>
+<p>Next interpolate the aquifer heights to the grid locations. You do this with the <code>krige()</code> function. The first argument is the formula for the trend, the locations argument is the observed data locations from the simple feature data frame, the new data argument is the locations and independent variables (in this case the trend variables) and the model argument is the variogram model that you fit above.</p>
+<div class="sourceCode" id="cb1485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1485-1"><a href="tuesday-november-15-2022.html#cb1485-1" aria-hidden="true" tabindex="-1"></a>wca.int <span class="ot">&lt;-</span> <span class="fu">krige</span>(head <span class="sc">~</span> X <span class="sc">+</span> Y,</span>
+<span id="cb1485-2"><a href="tuesday-november-15-2022.html#cb1485-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">locations =</span> wca.sf,</span>
+<span id="cb1485-3"><a href="tuesday-november-15-2022.html#cb1485-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">newdata =</span> grid.sf,</span>
+<span id="cb1485-4"><a href="tuesday-november-15-2022.html#cb1485-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">model =</span> wca.vm)</span></code></pre></div>
+<pre><code>## [using universal kriging]</code></pre>
+<div class="sourceCode" id="cb1487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1487-1"><a href="tuesday-november-15-2022.html#cb1487-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wca.int)</span></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 2 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -104.5047 ymin: 33.5358 xmax: -104.0517 ymax: 33.5358
+## Geodetic CRS:  WGS 84
+##   var1.pred var1.var                  geometry
+## 1  3618.148 36503.33 POINT (-104.5047 33.5358)
+## 2  3594.685 36325.39 POINT (-104.4141 33.5358)
+## 3  3571.307 36332.17 POINT (-104.3235 33.5358)
+## 4  3546.016 35848.59 POINT (-104.2329 33.5358)
+## 5  3520.252 34424.00 POINT (-104.1423 33.5358)
+## 6  3494.375 31846.14 POINT (-104.0517 33.5358)</code></pre>
+<p>The output says <code>using universal kriging</code>. This is because there is a trend and a variogram model.</p>
+<p>The output is a simple feature data frame containing the interpolated values at the grid locations in the column labeled <code>var1.pred</code>. The interpolated uncertainty is given in the column labeled <code>var1.var</code>.</p>
+<p>You plot the interpolated aquifer heights at the grid locations using functions from the {ggplot2} package.</p>
+<div class="sourceCode" id="cb1489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1489-1"><a href="tuesday-november-15-2022.html#cb1489-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1489-2"><a href="tuesday-november-15-2022.html#cb1489-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> wca.int,</span>
+<span id="cb1489-3"><a href="tuesday-november-15-2022.html#cb1489-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">col =</span> var1.pred)) <span class="sc">+</span></span>
+<span id="cb1489-4"><a href="tuesday-november-15-2022.html#cb1489-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb1489-5"><a href="tuesday-november-15-2022.html#cb1489-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">col =</span> <span class="st">&quot;Height (ft)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1489-6"><a href="tuesday-november-15-2022.html#cb1489-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-675-1.png" width="672" /></p>
+<p>The trend captures the large scale feature while the variogram captures the local spatial autocorrelation. Together they produce an interpolated surface that matches exactly the values at the observation locations (when the nugget is fixed at zero).</p>
+<p>Plot the uncertainty in the estimated interpolated values as the square root of the variance.</p>
+<div class="sourceCode" id="cb1490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1490-1"><a href="tuesday-november-15-2022.html#cb1490-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1490-2"><a href="tuesday-november-15-2022.html#cb1490-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> wca.int,</span>
+<span id="cb1490-3"><a href="tuesday-november-15-2022.html#cb1490-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">col =</span> <span class="fu">sqrt</span>(var1.var))) <span class="sc">+</span></span>
+<span id="cb1490-4"><a href="tuesday-november-15-2022.html#cb1490-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;plasma&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1490-5"><a href="tuesday-november-15-2022.html#cb1490-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">col =</span> <span class="st">&quot;Uncertainty (ft)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1490-6"><a href="tuesday-november-15-2022.html#cb1490-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-676-1.png" width="672" /></p>
+<p>Areas with the largest uncertainty are in areas away from observations (northwest corner). This makes sense our knowledge of the aquifer comes from these observations.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="thursday-november-10-2022.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="thursday-november-17-2022.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

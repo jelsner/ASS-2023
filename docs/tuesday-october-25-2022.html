@@ -51,6 +51,17 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/Leaflet.Sync-0.0.5/L.Map.Sync.js"></script>
 
 
 <style type="text/css">
@@ -171,101 +182,118 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html"><i class="fa fa-check"></i>Tuesday September 6, 2022</a>
-<ul>
-<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
-<li class="chapter" data-level="" data-path="tuesday-september-6-2022.html"><a href="tuesday-september-6-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
-</ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
-<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html"><i class="fa fa-check"></i>Thursday September 15, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
-<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
-<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html"><i class="fa fa-check"></i>Thursday September 22, 2022</a>
-<ul>
-<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-22-2022.html"><a href="thursday-september-22-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html"><i class="fa fa-check"></i>Tuesday September 27, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
-<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
-<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-27-2022.html"><a href="tuesday-september-27-2022.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html"><i class="fa fa-check"></i>Thursday September 29, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
-<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-29-2022.html"><a href="thursday-september-29-2022.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#mapping-incidence-and-risk-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping incidence and risk with spatial regression models</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html"><i class="fa fa-check"></i>Thursday October 6, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-y-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged Y model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-a-spatially-lagged-x-model"><i class="fa fa-check"></i>Fitting and interpreting a spatially-lagged X model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-6-2022.html"><a href="thursday-october-6-2022.html#fitting-and-interpreting-spatial-durbin-models"><i class="fa fa-check"></i>Fitting and interpreting spatial Durbin models</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html"><i class="fa fa-check"></i>Tuesday October 11, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#intensity-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Intensity trend as a possible confounding factor</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html"><i class="fa fa-check"></i>Thursday October 13, 2022</a>
-<ul>
-<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-13-2022.html"><a href="thursday-october-13-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#fitting-and-interpreting-geographic-regressions"><i class="fa fa-check"></i>Fitting and interpreting geographic regressions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-11-2022.html"><a href="tuesday-october-11-2022.html#mapping-incidence-and-risk-with-spatial-regression-models"><i class="fa fa-check"></i>Mapping incidence and risk with spatial regression models</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html"><i class="fa fa-check"></i>Tuesday October 18, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-18-2022.html"><a href="tuesday-october-18-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html"><i class="fa fa-check"></i>Thursday October 20, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#inferring-event-interaction-from-distance-functions"><i class="fa fa-check"></i>Inferring event interaction from distance functions</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#removing-duplicate-event-locations-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate event locations and defining the domain</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#modeling-point-pattern-data"><i class="fa fa-check"></i>Modeling point pattern data</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#fitting-and-interpreting-an-inhibition-model"><i class="fa fa-check"></i>Fitting and interpreting an inhibition model</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#intensity-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Intensity trend as a possible confounding factor</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html"><i class="fa fa-check"></i>Tuesday October 25, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#fitting-and-interpreting-a-cluster-model"><i class="fa fa-check"></i>Fitting and interpreting a cluster model</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
-<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-the-relative-risk-of-events"><i class="fa fa-check"></i>Estimating the relative risk of events</a></li>
+<li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#estimating-second-moment-properties-of-spatial-events"><i class="fa fa-check"></i>Estimating second-moment properties of spatial events</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html"><i class="fa fa-check"></i>Thursday October 27, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#working-with-geor-package-spatial-data"><i class="fa fa-check"></i>Working with {geoR} package spatial data</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#estimating-the-empirical-variogram"><i class="fa fa-check"></i>Estimating the empirical variogram</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#examples-of-spatially-clustered-events"><i class="fa fa-check"></i>Examples of spatially clustered events</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#determining-the-statistical-significance-of-event-clustering"><i class="fa fa-check"></i>Determining the statistical significance of event clustering</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#estimating-event-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating event clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#more-about-the-ripley-k-function"><i class="fa fa-check"></i>More about the Ripley K function</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html"><i class="fa fa-check"></i>Tuesday November 1, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#inferring-event-interaction-from-distance-functions"><i class="fa fa-check"></i>Inferring event interaction from distance functions</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#removing-duplicate-event-locations-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate event locations and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#modeling-point-pattern-data"><i class="fa fa-check"></i>Modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-1-2022.html"><a href="tuesday-november-1-2022.html#fitting-and-interpreting-an-inhibition-model"><i class="fa fa-check"></i>Fitting and interpreting an inhibition model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html"><i class="fa fa-check"></i>Thursday November 3, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#fitting-and-interpreting-a-cluster-model"><i class="fa fa-check"></i>Fitting and interpreting a cluster model</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html"><i class="fa fa-check"></i>Thursday November 10, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-10-2022.html"><a href="thursday-november-10-2022.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html"><i class="fa fa-check"></i>Tuesday November 15, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-15-2022.html"><a href="tuesday-november-15-2022.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html"><i class="fa fa-check"></i>Thursday November 17, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#evaluating-the-accuracy-of-the-interpolation"><i class="fa fa-check"></i>Evaluating the accuracy of the interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-17-2022.html"><a href="thursday-november-17-2022.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html"><i class="fa fa-check"></i>Thursday November 29, 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="thursday-november-29-2022.html"><a href="thursday-november-29-2022.html#machine-learning-for-spatial-interpolation"><i class="fa fa-check"></i>Machine learning for spatial interpolation</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -289,373 +317,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="tuesday-october-25-2022" class="section level1 unnumbered hasAnchor">
 <h1>Tuesday October 25, 2022<a href="tuesday-october-25-2022.html#tuesday-october-25-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>“Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week debugging Monday’s code.”</strong> - Christopher Thompson</p>
+<p><strong>“To me programming is more than an important practical art. It is also a gigantic undertaking in the foundations of knowledge.”</strong> – Grace Hopper</p>
 <p>Today</p>
 <ul>
-<li>Fitting and interpreting a cluster model</li>
-<li>Assessing how well the model fits</li>
-<li>Spatial logistic regression</li>
+<li>Estimating the relative risk of events</li>
+<li>Estimating second-order properties of spatial events</li>
 </ul>
-<div id="fitting-and-interpreting-a-cluster-model" class="section level2 unnumbered hasAnchor">
-<h2>Fitting and interpreting a cluster model<a href="tuesday-october-25-2022.html#fitting-and-interpreting-a-cluster-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Let’s compare the inhibition model fit previously to describe the Swedish pine saplings data with a cluster model for describing the Lansing Woods maple trees (in the <code>ppp</code> object called <code>lansing</code> from the {spatstat} package).</p>
-<p>Start by extracting the events marked as <code>maple</code> and putting them in a separate <code>ppp</code> object called <code>MT</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-october-25-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(spatstat))</span>
-<span id="cb1-2"><a href="tuesday-october-25-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(lansing)</span>
-<span id="cb1-3"><a href="tuesday-october-25-2022.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lansing)</span></code></pre></div>
-<pre><code>## Marked planar point pattern:  2251 points
-## Average intensity 2251 points per square unit (one unit = 924 feet)
-## 
-## *Pattern contains duplicated points*
-## 
-## Coordinates are given to 3 decimal places
-## i.e. rounded to the nearest multiple of 0.001 units (one unit = 924 feet)
-## 
-## Multitype:
-##          frequency proportion intensity
-## blackoak       135 0.05997335       135
-## hickory        703 0.31230560       703
-## maple          514 0.22834300       514
-## misc           105 0.04664594       105
-## redoak         346 0.15370950       346
-## whiteoak       448 0.19902270       448
-## 
-## Window: rectangle = [0, 1] x [0, 1] units
-## Window area = 1 square unit
-## Unit of length: 924 feet</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-october-25-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a>MT <span class="ot">&lt;-</span> lansing <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="tuesday-october-25-2022.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(marks <span class="sc">==</span> <span class="st">&quot;maple&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="tuesday-october-25-2022.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unmark</span>()</span>
-<span id="cb3-4"><a href="tuesday-october-25-2022.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="tuesday-october-25-2022.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(MT)</span></code></pre></div>
-<pre><code>## Planar point pattern:  514 points
-## Average intensity 514 points per square unit (one unit = 924 feet)
-## 
-## Coordinates are given to 3 decimal places
-## i.e. rounded to the nearest multiple of 0.001 units (one unit = 924 feet)
-## 
-## Window: rectangle = [0, 1] x [0, 1] units
-## Window area = 1 square unit
-## Unit of length: 924 feet</code></pre>
-<p>There are 514 maple trees over this square region (924 x 924 square feet).</p>
-<p>Plots of the tree locations and the local intensity function help you understand the first-order property of these data.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tuesday-october-25-2022.html#cb5-1" aria-hidden="true" tabindex="-1"></a>MT <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="tuesday-october-25-2022.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="tuesday-october-25-2022.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
-<span id="cb5-4"><a href="tuesday-october-25-2022.html#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="tuesday-october-25-2022.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MT, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>There are maple trees across the southern and central parts of the study domain.</p>
-<p>A plot of the <span class="math inline">\(G\)</span> function summarizes the second-order properties under the assumption of no trend.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="tuesday-october-25-2022.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-2"><a href="tuesday-october-25-2022.html#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="tuesday-october-25-2022.html#cb6-3" aria-hidden="true" tabindex="-1"></a>G.df <span class="ot">&lt;-</span> MT <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="tuesday-october-25-2022.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Gest</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="tuesday-october-25-2022.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="tuesday-october-25-2022.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(r <span class="sc">&lt;</span> .<span class="dv">033</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="tuesday-october-25-2022.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">r =</span> r <span class="sc">*</span> <span class="dv">924</span>)</span>
-<span id="cb6-8"><a href="tuesday-october-25-2022.html#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="tuesday-october-25-2022.html#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(G.df, <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> km)) <span class="sc">+</span></span>
-<span id="cb6-10"><a href="tuesday-october-25-2022.html#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb6-11"><a href="tuesday-october-25-2022.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> theo), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb6-12"><a href="tuesday-october-25-2022.html#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">18</span>, <span class="at">lty =</span> <span class="st">&#39;dashed&#39;</span>) <span class="sc">+</span></span>
-<span id="cb6-13"><a href="tuesday-october-25-2022.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (ft)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;G(r): Cumulative % of events within a distance r of another maple&quot;</span>) <span class="sc">+</span></span>
-<span id="cb6-14"><a href="tuesday-october-25-2022.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>The plot provides evidence that the maple trees are clustered. The empirical curve is above the theoretical curve. For example about 74% of the maple trees are within 18 feet of another maple tree (vertical blue line). If the trees were arranged as CSR then only 49% of the trees would be within 18 feet of another maple.</p>
-<p>Is the clustering due to interaction or trends (or both)?</p>
-<p>You start the modeling process by investigating event interaction using a stationary Strauss model with interaction radius of .019 units (18 ft).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tuesday-october-25-2022.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ppm</span>(MT, </span>
-<span id="cb7-2"><a href="tuesday-october-25-2022.html#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">trend =</span> <span class="sc">~</span> <span class="dv">1</span>, </span>
-<span id="cb7-3"><a href="tuesday-october-25-2022.html#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">interaction =</span> <span class="fu">Strauss</span>(<span class="at">r =</span> .<span class="dv">019</span>))</span></code></pre></div>
-<pre><code>## Stationary Strauss process
-## 
-## First order term:  beta = 344.625
-## 
-## Interaction distance:    0.019
-## Fitted interaction parameter gamma:  1.7253743
-## 
-## Relevant coefficients:
-## Interaction 
-##    0.545444 
-## 
-## For standard errors, type coef(summary(x))
-## 
-## *** Model is not valid ***
-## *** Interaction parameters are outside valid range ***</code></pre>
-<p>Here the first order term beta is 345. It is the ‘latent’ rate (intensity) of maple trees per unit area. This rate is less than the 514 actual maple trees. The fitted interaction parameter (gamma) is 1.72. It is greater than one since the trees are clustered. The logarithm of gamma is positive at .545.</p>
-<p>The model is interpreted as follows. The process producing the maple trees is such that you expect to see about 345 maples. Because of clustering where maple trees are more likely in the vicinity of other maple trees, the number of maples increases to the observed 514 per unit area.</p>
-<p>Here the physical explanation could be event interaction. But it also could be explained by inhibition with hickory trees. You can model this using a term for cross event type interaction.</p>
-<p>The Strauss process is for inhibition models. So although you use it here for diagnostics, you need to fit a cluster model (thus the <code>*** Model is not valid ***</code> warning).</p>
-<p>For a cluster model the spatial intensity <span class="math display">\[\lambda(s) = \kappa \mu(s)\]</span> where <span class="math inline">\(\kappa\)</span> is the average number of clusters and where <span class="math inline">\(\mu(s)\)</span> is the spatial varying cluster size (number events per cluster).</p>
-<p>Cluster models are fit using the <code>kppm()</code> function from the {spatstat} package. Here you specify the cluster process with <code>clusters = "Thomas"</code>.</p>
-<p>That means each cluster consists of a Poisson number of maple trees and where each tree in the cluster is placed randomly about the ‘parent’ tree with intensity that varies inversely with distance from the parent as a Gaussian function.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tuesday-october-25-2022.html#cb9-1" aria-hidden="true" tabindex="-1"></a>( model.cl <span class="ot">&lt;-</span> <span class="fu">kppm</span>(MT, </span>
-<span id="cb9-2"><a href="tuesday-october-25-2022.html#cb9-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">trend =</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb9-3"><a href="tuesday-october-25-2022.html#cb9-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">clusters =</span> <span class="st">&quot;Thomas&quot;</span>) )</span></code></pre></div>
-<pre><code>## Stationary cluster point process model
-## Fitted to point pattern dataset &#39;MT&#39;
-## Fitted by minimum contrast
-##  Summary statistic: K-function
-## 
-## Uniform intensity:   514
-## 
-## Cluster model: Thomas process
-## Fitted cluster parameters:
-##       kappa       scale 
-## 21.74344366  0.06752959 
-## Mean cluster size:  23.63931 points</code></pre>
-<p>Here <span class="math inline">\(\kappa\)</span> is 21.75 and <span class="math inline">\(\bar \mu(s)\)</span> (mean cluster size) is 23.6 trees. The product of kappa and the mean cluster size is the number of events. The cluster model describes a parent-child process. The number of parents is about 22. The distribution of the parents can be described as CSR. Each parent produces about 24 offspring distributed randomly about the location of the parent within a characteristic distance. Note: The physical process might be different from the statistical process used to describe it.</p>
-<p>The cluster scale parameter indicating the characteristic size (area units) of the clusters is <span class="math inline">\(\sigma^2\)</span>.</p>
-<p>A <code>plot()</code> method verifies that the cluster process statistically ‘explains’ the spatial correlation.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tuesday-october-25-2022.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model.cl, </span>
-<span id="cb11-2"><a href="tuesday-october-25-2022.html#cb11-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">what =</span> <span class="st">&quot;statistic&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>The model (black line) is very close to the cluster process line (red dashed line). Also note that it is far from the CSR model (green line).</p>
-<p>The spatial scale of the clustering is visualized with the <code>what = "cluster"</code> argument.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="tuesday-october-25-2022.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model.cl, </span>
-<span id="cb12-2"><a href="tuesday-october-25-2022.html#cb12-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">what =</span> <span class="st">&quot;cluster&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>The color ramp is the spatial intensity (number of events per unit area) about an arbitrary single event revealing the spatial scale and extent of clustering.</p>
-</div>
-<div id="assessing-how-well-the-model-fits" class="section level2 unnumbered hasAnchor">
-<h2>Assessing how well the model fits<a href="tuesday-october-25-2022.html#assessing-how-well-the-model-fits" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Workflow in fitting spatial event location models</p>
-<ul>
-<li>Analyze/plot the intensity and nearest neighbor statistics</li>
-<li>Select a model including trend, interaction distance, etc informed by the results of step 1</li>
-<li>Choose an inhibition or cluster model</li>
-<li>Fit the model to the event pattern</li>
-<li>Assess how well the model fits the data by generating samples and comparing statistics from the samples with the statistics from the original data</li>
-</ul>
-<p>The model should be capable of generating samples of event locations that are statistically indistinguishable from the actual event locations.</p>
-<p>Note: The development of spatial point process methods has largely been theory driven (not by actual problems/data). More work needs to be done to apply the theory to environmental data with spatial heterogeneity, properties at the individual level (marks), and with time information.</p>
-<p>You produce samples of event locations with the <code>simulate()</code> function applied to the model object.</p>
-<p>Let’s return to the Swedish pine sapling data and the inhibition model.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="tuesday-october-25-2022.html#cb13-1" aria-hidden="true" tabindex="-1"></a>SP <span class="ot">&lt;-</span> swedishpines</span>
-<span id="cb13-2"><a href="tuesday-october-25-2022.html#cb13-2" aria-hidden="true" tabindex="-1"></a>model.in <span class="ot">&lt;-</span> <span class="fu">ppm</span>(SP, </span>
-<span id="cb13-3"><a href="tuesday-october-25-2022.html#cb13-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">trend =</span> <span class="sc">~</span> <span class="dv">1</span>, </span>
-<span id="cb13-4"><a href="tuesday-october-25-2022.html#cb13-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">interaction =</span> <span class="fu">Strauss</span>(<span class="at">r =</span> <span class="dv">10</span>), </span>
-<span id="cb13-5"><a href="tuesday-october-25-2022.html#cb13-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">rbord =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p>Here you generate three samples of the Swedish pine sapling data and plot them alongside the actual data for comparison.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tuesday-october-25-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> model.in <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="tuesday-october-25-2022.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">simulate</span>(<span class="at">nsim =</span> <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## Generating 3 simulated patterns ...1, 2,  3.</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tuesday-october-25-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb16-2"><a href="tuesday-october-25-2022.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(SP) </span>
-<span id="cb16-3"><a href="tuesday-october-25-2022.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(X[[<span class="dv">1</span>]])</span>
-<span id="cb16-4"><a href="tuesday-october-25-2022.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(X[[<span class="dv">2</span>]])</span>
-<span id="cb16-5"><a href="tuesday-october-25-2022.html#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(X[[<span class="dv">3</span>]])</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>The samples of point pattern data look similar to the actual data providing evidence that the inhibition model is adequate.</p>
-<p>To quantitatively assess the similarity use the <code>envelope()</code> function that computes the <span class="math inline">\(K\)</span> function on 99 samples and the actual data. The <span class="math inline">\(K\)</span> function values are averaged over all samples and a mean line represents the best model curve. Uncertainty is assessed with a band that ranges from the minimum to the maximum K at each distance.</p>
-<p>Do this with the inhibition model for the pine saplings. This takes a few seconds to complete.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tuesday-october-25-2022.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb17-2"><a href="tuesday-october-25-2022.html#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="tuesday-october-25-2022.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">envelope</span>(model.in, </span>
-<span id="cb17-4"><a href="tuesday-october-25-2022.html#cb17-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">fun =</span> Kest, </span>
-<span id="cb17-5"><a href="tuesday-october-25-2022.html#cb17-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">nsim =</span> <span class="dv">99</span>, </span>
-<span id="cb17-6"><a href="tuesday-october-25-2022.html#cb17-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">correction =</span> <span class="st">&#39;border&#39;</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## Generating 99 simulated realisations of fitted Gibbs model  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-## 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-## 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.</code></pre>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>The black line is the empirical (data) curve and the red line is the average over the 99 samples. The two lines are close and the black line falls nearly completely within the gray uncertainty band indicating the model fits the data well. The kink in the red curve is the result of specifying 10 units for the interaction distance.</p>
-<p>From this plot you confidently conclude that a homogeneous inhibition model is adequate for describing the pine sapling data.</p>
-<p>What about the model for the maple trees? The model is saved as <code>model.cl</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tuesday-october-25-2022.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">envelope</span>(model.cl, </span>
-<span id="cb19-2"><a href="tuesday-october-25-2022.html#cb19-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">fun =</span> Kest, </span>
-<span id="cb19-3"><a href="tuesday-october-25-2022.html#cb19-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">nsim =</span> <span class="dv">99</span>, </span>
-<span id="cb19-4"><a href="tuesday-october-25-2022.html#cb19-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">correction =</span> <span class="st">&#39;border&#39;</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## Generating 99 simulated realisations of fitted cluster model  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-## 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-## 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.</code></pre>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>In the case of the maple trees, a cluster model is adequate. However, it is not satisfying since you know about the potential for inhibition caused by the presence of hickory trees.</p>
-<p>Also you saw that there were more trees in the south than in the north so the stationary assumption is suspect.</p>
-<p>You fit a second cluster model where the intensity is a linear function of distance in the north-south direction.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tuesday-october-25-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a>model.cl2 <span class="ot">&lt;-</span> <span class="fu">kppm</span>(MT, </span>
-<span id="cb21-2"><a href="tuesday-october-25-2022.html#cb21-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">trend =</span> <span class="sc">~</span> y,</span>
-<span id="cb21-3"><a href="tuesday-october-25-2022.html#cb21-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">clusters =</span> <span class="st">&quot;Thomas&quot;</span>)</span>
-<span id="cb21-4"><a href="tuesday-october-25-2022.html#cb21-4" aria-hidden="true" tabindex="-1"></a>model.cl2</span></code></pre></div>
-<pre><code>## Inhomogeneous cluster point process model
-## Fitted to point pattern dataset &#39;MT&#39;
-## Fitted by minimum contrast
-##  Summary statistic: inhomogeneous K-function
-## 
-## Log intensity:  ~y
-## 
-## Fitted trend coefficients:
-## (Intercept)           y 
-##    6.894933   -1.486252 
-## 
-## Cluster model: Thomas process
-## Fitted cluster parameters:
-##     kappa     scale 
-## 26.955877  0.053585 
-## Mean cluster size:  [pixel image]</code></pre>
-<p>This is an inhomogeneous cluster point process model. The logarithm of the intensity depends on y (<code>Log intensity:  ~y</code>). The fitted trend coefficient is negative as expected, since there are fewer trees as you move north (increasing y direction). There is one spatial unit in the north-south direction so you interpret this coefficient to mean there are 77% fewer trees in the north than in the south. The 77% comes from the formula 1 - exp(-1.486) = .77.</p>
-<p>The average number of clusters (<code>kappa</code>) is higher at about 27 (it was 22 for stationary model). The cluster scale parameter (<code>sigma</code>), indicating the characteristic size of the cluster (in distance units) is lower at .0536. That makes sense since some of the event-to-event distance is accounted for by the trend term.</p>
-<p>Simulate data using the new model and compare the inhomogenous <span class="math inline">\(K\)</span> function between the simulations and the observed data.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tuesday-october-25-2022.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">envelope</span>(model.cl2, </span>
-<span id="cb23-2"><a href="tuesday-october-25-2022.html#cb23-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">fun =</span> Kinhom, </span>
-<span id="cb23-3"><a href="tuesday-october-25-2022.html#cb23-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">nsim =</span> <span class="dv">99</span>,</span>
-<span id="cb23-4"><a href="tuesday-october-25-2022.html#cb23-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">correction =</span> <span class="st">&#39;border&#39;</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## Generating 99 simulated realisations of fitted cluster model  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-## 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-## 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.</code></pre>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>The black line falls within the gray band and the gray band is narrower than the simulations using the homogeneous cluster model.</p>
-<p>Tropical trees</p>
-<p>If the intensity of events depends on spatial location as it does with the maple trees you can include a trend and covariate term in the model.</p>
-<p>For a trend term, the <code>formula ~ x</code> corresponds to a spatial trend of the form <span class="math inline">\(\lambda(x) = \exp(a + bx)\)</span>, while <code>~ x + y</code> corresponds to <span class="math inline">\(\lambda(x, y) = \exp(a + bx + cy)\)</span> where <code>x</code>, <code>y</code> are the spatial coordinates. For a covariates, the formula is <code>~ covariate1 + covariate2</code>.</p>
-<p>Consider the <code>bei</code> data from the {spatstat} package containing the locations of 3605 trees in a tropical rain forest.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="tuesday-october-25-2022.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(bei)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>Accompanied by covariate data giving the elevation (altitude) and slope of elevation in the study region. The data <code>bei.extra</code> is a list containing two pixel images, <code>elev</code> (elevation in meters) and <code>grad</code> (norm of elevation gradient). These pixel images are objects of class <code>im</code>, see <code>im.object</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="tuesday-october-25-2022.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(bei.extra)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Compute and plot the <span class="math inline">\(K\)</span> function on the <code>ppp</code> object <code>bei</code>.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="tuesday-october-25-2022.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">envelope</span>(bei, </span>
-<span id="cb27-2"><a href="tuesday-october-25-2022.html#cb27-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">fun =</span> Kest, </span>
-<span id="cb27-3"><a href="tuesday-october-25-2022.html#cb27-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">nsim =</span> <span class="dv">39</span>, </span>
-<span id="cb27-4"><a href="tuesday-october-25-2022.html#cb27-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">global =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb27-5"><a href="tuesday-october-25-2022.html#cb27-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">correction =</span> <span class="st">&quot;border&quot;</span>), </span>
-<span id="cb27-6"><a href="tuesday-october-25-2022.html#cb27-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## Generating 39 simulations of CSR  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,  39.
-## 
-## Done.</code></pre>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<p>There is significant clustering indicated by the black line sitting far above the CSR line. There are more trees in the vicinity of other trees than expected by chance.</p>
-<p>But how much of the clustering is due to variations in terrain?</p>
-<p>You start by fitting a model that includes elevation and gradient as covariates without clustering. This is done with the <code>trend =</code> argument naming the image variables and including the argument <code>covariates =</code> indicating a data frame or, in this case, a list whose entries are image functions.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="tuesday-october-25-2022.html#cb29-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">ppm</span>(bei, </span>
-<span id="cb29-2"><a href="tuesday-october-25-2022.html#cb29-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">trend =</span> <span class="sc">~</span> elev <span class="sc">+</span> grad, </span>
-<span id="cb29-3"><a href="tuesday-october-25-2022.html#cb29-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">covariates =</span> bei.extra)</span></code></pre></div>
-<p>Check to see if elevation and gradient as explanatory variables are significant in the model.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="tuesday-october-25-2022.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code></pre></div>
-<pre><code>## Point process model
-## Fitting method: maximum likelihood (Berman-Turner approximation)
-## Model was fitted using glm()
-## Algorithm converged
-## Call:
-## ppm.ppp(Q = bei, trend = ~elev + grad, covariates = bei.extra)
-## Edge correction: &quot;border&quot;
-##  [border correction distance r = 0 ]
-## --------------------------------------------------------------------------------
-## Quadrature scheme (Berman-Turner) = data + dummy + weights
-## 
-## Data pattern:
-## Planar point pattern:  3604 points
-## Average intensity 0.00721 points per square metre
-## Window: rectangle = [0, 1000] x [0, 500] metres
-## Window area = 5e+05 square metres
-## Unit of length: 1 metre
-## 
-## Dummy quadrature points:
-##      130 x 130 grid of dummy points, plus 4 corner points
-##      dummy spacing: 7.692308 x 3.846154 metres
-## 
-## Original dummy parameters: =
-## Planar point pattern:  16904 points
-## Average intensity 0.0338 points per square metre
-## Window: rectangle = [0, 1000] x [0, 500] metres
-## Window area = 5e+05 square metres
-## Unit of length: 1 metre
-## Quadrature weights:
-##      (counting weights based on 130 x 130 array of rectangular tiles)
-## All weights:
-##  range: [1.64, 29.6] total: 5e+05
-## Weights on data points:
-##  range: [1.64, 14.8] total: 41000
-## Weights on dummy points:
-##  range: [1.64, 29.6] total: 459000
-## --------------------------------------------------------------------------------
-## FITTED MODEL:
-## 
-## Nonstationary Poisson process
-## 
-## ---- Intensity: ----
-## 
-## Log intensity: ~elev + grad
-## Model depends on external covariates &#39;elev&#39; and &#39;grad&#39;
-## Covariates provided:
-##  elev: im
-##  grad: im
-## 
-## Fitted trend coefficients:
-## (Intercept)        elev        grad 
-## -8.56355220  0.02143995  5.84646680 
-## 
-##                Estimate        S.E.     CI95.lo     CI95.hi Ztest       Zval
-## (Intercept) -8.56355220 0.341113849 -9.23212306 -7.89498134   *** -25.104675
-## elev         0.02143995 0.002287866  0.01695581  0.02592408   ***   9.371155
-## grad         5.84646680 0.255781018  5.34514522  6.34778838   ***  22.857313
-## 
-## ----------- gory details -----
-## 
-## Fitted regular parameters (theta):
-## (Intercept)        elev        grad 
-## -8.56355220  0.02143995  5.84646680 
-## 
-## Fitted exp(theta):
-##  (Intercept)         elev         grad 
-## 1.909398e-04 1.021671e+00 3.460097e+02</code></pre>
-<p>The output shows that both elevation and elevation gradient are significant in explaining the spatial varying intensity of the trees.</p>
-<p>Since the conditional intensity is on a log scale you interpret the elevation coefficient as follows: For a one meter increase in elevation the local spatial intensity increases by a amount equal to exp(.021) or 2%.</p>
-<p>Check how well the model fits the data. Again this is done with the <code>envelope()</code> function using the model object as the first argument.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tuesday-october-25-2022.html#cb32-1" aria-hidden="true" tabindex="-1"></a>E <span class="ot">&lt;-</span> <span class="fu">envelope</span>(model1, </span>
-<span id="cb32-2"><a href="tuesday-october-25-2022.html#cb32-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">fun =</span> Kest, </span>
-<span id="cb32-3"><a href="tuesday-october-25-2022.html#cb32-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">nsim =</span> <span class="dv">39</span>,</span>
-<span id="cb32-4"><a href="tuesday-october-25-2022.html#cb32-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">correction =</span> <span class="st">&quot;border&quot;</span>,</span>
-<span id="cb32-5"><a href="tuesday-october-25-2022.html#cb32-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">global =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## Generating 78 simulated realisations of fitted Poisson model (39 to estimate 
-## the mean and 39 to calculate envelopes) ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-## 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77,  78.
-## 
-## Done.</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="tuesday-october-25-2022.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(E, <span class="at">main =</span> <span class="st">&quot;Inhomogeneous Poisson Model&quot;</span>, </span>
-<span id="cb34-2"><a href="tuesday-october-25-2022.html#cb34-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>You conclude that although elevation and elevation slope are significant in explaining the spatial distribution of trees, they do not explain all the clustering.</p>
-<p>An improvement is made by adding a cluster process to the model. This is done with the function <code>kppm()</code>.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tuesday-october-25-2022.html#cb35-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">kppm</span>(bei, </span>
-<span id="cb35-2"><a href="tuesday-october-25-2022.html#cb35-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">trend =</span> <span class="sc">~</span> elev <span class="sc">+</span> grad, </span>
-<span id="cb35-3"><a href="tuesday-october-25-2022.html#cb35-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">covariates =</span> bei.extra, </span>
-<span id="cb35-4"><a href="tuesday-october-25-2022.html#cb35-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">clusters =</span> <span class="st">&quot;Thomas&quot;</span>)</span>
-<span id="cb35-5"><a href="tuesday-october-25-2022.html#cb35-5" aria-hidden="true" tabindex="-1"></a>E <span class="ot">&lt;-</span> <span class="fu">envelope</span>(model2, Lest, <span class="at">nsim =</span> <span class="dv">39</span>, </span>
-<span id="cb35-6"><a href="tuesday-october-25-2022.html#cb35-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">global =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb35-7"><a href="tuesday-october-25-2022.html#cb35-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">correction =</span> <span class="st">&quot;border&quot;</span>)</span></code></pre></div>
-<pre><code>## Generating 78 simulated realisations of fitted cluster model (39 to estimate 
-## the mean and 39 to calculate envelopes) ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-## 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77,  78.
-## 
-## Done.</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="tuesday-october-25-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(E, <span class="at">main =</span> <span class="st">&quot;Clustered Inhomogeneous Model&quot;</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>The uncertainty band is much wider. The empirical curve fits completely inside the band so you conclude that an inhomogeneous cluster process appears to be an adequate description of the point pattern data.</p>
-<p>Violent tornadoes</p>
-<p>The vast majority of tornadoes have winds of less than 60 m/s (120 mph). A violent tornado, with winds exceeding 90 m/s, is rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions.</p>
-<p>The long-term risk of a tornado at a given location is assessed using historical records, however, the rarity of the most violent tornadoes make these rate estimates unstable. Here you use the more stable rate estimates from the larger set of less violent tornadoes to create more reliable estimates of violent tornado frequency.</p>
-<p>For this exercise attention is restricted to tornadoes occurring in Kansas over the period 1954–2020.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="tuesday-october-25-2022.html#cb38-1" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb38-2"><a href="tuesday-october-25-2022.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3082</span>) <span class="sc">|&gt;</span></span>
-<span id="cb38-3"><a href="tuesday-october-25-2022.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(mag <span class="sc">&gt;=</span> <span class="dv">0</span>, yr <span class="sc">&gt;=</span> <span class="dv">1954</span>) <span class="sc">|&gt;</span></span>
-<span id="cb38-4"><a href="tuesday-october-25-2022.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">EF =</span> mag,</span>
-<span id="cb38-5"><a href="tuesday-october-25-2022.html#cb38-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">EFf =</span> <span class="fu">as.factor</span>(EF)) <span class="sc">|&gt;</span></span>
-<span id="cb38-6"><a href="tuesday-october-25-2022.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(yr, EF, EFf)</span></code></pre></div>
+<div id="estimating-the-relative-risk-of-events" class="section level2 unnumbered hasAnchor">
+<h2>Estimating the relative risk of events<a href="tuesday-october-25-2022.html#estimating-the-relative-risk-of-events" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Separate spatial intensity maps across two marked types provides a way to estimate the risk of one event type conditional on the other event type. More generally, the relative risk of occurrence of some event is a conditional probability. In a non-spatial context, the risk of catching a disease if you are elderly relative to the risk if you are young.</p>
+<p>Given a tornado somewhere in Texas what is the chance that it will cause at least EF3 damage? With the historical set of all tornadoes marked by the damage rating you can make a map of all tornadoes and a map of the EF3+ tornadoes and then take the ratio.</p>
+<p>To see this start by importing the tornado data, mutating and selecting the damage rating as a factor called <code>EF</code> before turning the resulting simple feature data frame into a planar point pattern.</p>
+<div class="sourceCode" id="cb1159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1159-1"><a href="tuesday-october-25-2022.html#cb1159-1" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1159-2"><a href="tuesday-october-25-2022.html#cb1159-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3082</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1159-3"><a href="tuesday-october-25-2022.html#cb1159-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(mag <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1159-4"><a href="tuesday-october-25-2022.html#cb1159-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">EF =</span> <span class="fu">as.factor</span>(mag)) <span class="sc">|&gt;</span></span>
+<span id="cb1159-5"><a href="tuesday-october-25-2022.html#cb1159-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(EF)</span></code></pre></div>
 <pre><code>## Reading layer `1950-2020-torn-initpoint&#39; from data source 
 ##   `/Users/jelsner/Desktop/ClassNotes/ASS-2022/data/1950-2020-torn-initpoint&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -664,249 +341,459 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Dimension:     XY
 ## Bounding box:  xmin: -163.53 ymin: 17.7212 xmax: -64.7151 ymax: 61.02
 ## Geodetic CRS:  WGS 84</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tuesday-october-25-2022.html#cb40-1" aria-hidden="true" tabindex="-1"></a>W.sfc <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>(<span class="at">states =</span> <span class="st">&quot;Kansas&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb40-2"><a href="tuesday-october-25-2022.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(Torn.sf)) <span class="sc">|&gt;</span></span>
-<span id="cb40-3"><a href="tuesday-october-25-2022.html#cb40-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_geometry</span>()</span>
-<span id="cb40-4"><a href="tuesday-october-25-2022.html#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-5"><a href="tuesday-october-25-2022.html#cb40-5" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> Torn.sf[W.sfc, ]</span></code></pre></div>
-<p>Create a <code>owin</code> and <code>ppp</code> objects. Note that although you already subset by Kansas tornadoes above you need to subset on the <code>ppp</code> object to assign the KS boundary as the analysis window.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="tuesday-october-25-2022.html#cb41-1" aria-hidden="true" tabindex="-1"></a>KS.win <span class="ot">&lt;-</span> W.sfc <span class="sc">|&gt;</span></span>
-<span id="cb41-2"><a href="tuesday-october-25-2022.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.owin</span>()</span>
-<span id="cb41-3"><a href="tuesday-october-25-2022.html#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-4"><a href="tuesday-october-25-2022.html#cb41-4" aria-hidden="true" tabindex="-1"></a>T.ppp <span class="ot">&lt;-</span> Torn.sf[<span class="st">&quot;EF&quot;</span>] <span class="sc">|&gt;</span></span>
-<span id="cb41-5"><a href="tuesday-october-25-2022.html#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ppp</span>()</span>
-<span id="cb41-6"><a href="tuesday-october-25-2022.html#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="tuesday-october-25-2022.html#cb41-7" aria-hidden="true" tabindex="-1"></a>T.ppp <span class="ot">&lt;-</span> T.ppp[KS.win]</span>
-<span id="cb41-8"><a href="tuesday-october-25-2022.html#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-9"><a href="tuesday-october-25-2022.html#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(T.ppp)</span></code></pre></div>
-<pre><code>## Marked planar point pattern:  4139 points
-## Average intensity 1.918005e-08 points per square unit
+<div class="sourceCode" id="cb1161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1161-1"><a href="tuesday-october-25-2022.html#cb1161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb1161-2"><a href="tuesday-october-25-2022.html#cb1161-2" aria-hidden="true" tabindex="-1"></a>T.ppp <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb1161-3"><a href="tuesday-october-25-2022.html#cb1161-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ppp</span>()</span></code></pre></div>
+<p>Then subset by the boundary of Texas.</p>
+<div class="sourceCode" id="cb1162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1162-1"><a href="tuesday-october-25-2022.html#cb1162-1" aria-hidden="true" tabindex="-1"></a>TX.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>(<span class="at">states =</span> <span class="st">&quot;Texas&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1162-2"><a href="tuesday-october-25-2022.html#cb1162-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(Torn.sf))</span>
+<span id="cb1162-3"><a href="tuesday-october-25-2022.html#cb1162-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1162-4"><a href="tuesday-october-25-2022.html#cb1162-4" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> TX.sf <span class="sc">|&gt;</span></span>
+<span id="cb1162-5"><a href="tuesday-october-25-2022.html#cb1162-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.owin</span>()</span>
+<span id="cb1162-6"><a href="tuesday-october-25-2022.html#cb1162-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1162-7"><a href="tuesday-october-25-2022.html#cb1162-7" aria-hidden="true" tabindex="-1"></a>T.ppp <span class="ot">&lt;-</span> T.ppp[W]</span>
+<span id="cb1162-8"><a href="tuesday-october-25-2022.html#cb1162-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(T.ppp)</span></code></pre></div>
+<pre><code>## Marked planar point pattern:  8932 points
+## Average intensity 1.293119e-08 points per square unit
 ## 
 ## *Pattern contains duplicated points*
 ## 
 ## Coordinates are given to 1 decimal place
 ## i.e. rounded to the nearest multiple of 0.1 units
 ## 
-## marks are numeric, of type &#39;double&#39;
-## Summary:
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.0000  0.0000  0.0000  0.6139  1.0000  5.0000 
+## Multitype:
+##   frequency   proportion    intensity
+## 0      4773 0.5343708000 6.910052e-09
+## 1      2557 0.2862741000 3.701865e-09
+## 2      1225 0.1371473000 1.773479e-09
+## 3       323 0.0361621100 4.676192e-10
+## 4        48 0.0053739360 6.949141e-11
+## 5         6 0.0006717421 8.686426e-12
 ## 
 ## Window: polygonal boundary
-## single connected closed polygon with 169 vertices
-## enclosing rectangle: [1317675.9, 1980294.8] x [7114969, 7458570] units
-##                      (662600 x 343600 units)
-## Window area = 2.15797e+11 square units
-## Fraction of frame area: 0.948</code></pre>
-<p>There are 4139 tornadoes over the period with an average intensity of 192 per 100 square kilometer (multiply the average intensity in square meters by 10^10).</p>
-<p>Separate the point pattern data into non-violent tornadoes and violent tornadoes. The non-violent tornadoes include those with an EF rating of 0, 1, 2 or 3. The violent tornadoes include those with an EF rating of 4 or 5.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="tuesday-october-25-2022.html#cb43-1" aria-hidden="true" tabindex="-1"></a>NV.ppp <span class="ot">&lt;-</span> T.ppp <span class="sc">|&gt;</span></span>
-<span id="cb43-2"><a href="tuesday-october-25-2022.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(marks <span class="sc">&lt;=</span> <span class="dv">3</span> <span class="sc">&amp;</span> marks <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb43-3"><a href="tuesday-october-25-2022.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unmark</span>()</span>
-<span id="cb43-4"><a href="tuesday-october-25-2022.html#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="tuesday-october-25-2022.html#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(NV.ppp)</span></code></pre></div>
-<pre><code>## Planar point pattern:  4098 points
-## Average intensity 1.899006e-08 points per square unit
-## 
-## *Pattern contains duplicated points*
-## 
-## Coordinates are given to 1 decimal place
-## i.e. rounded to the nearest multiple of 0.1 units
-## 
-## Window: polygonal boundary
-## single connected closed polygon with 169 vertices
-## enclosing rectangle: [1317675.9, 1980294.8] x [7114969, 7458570] units
-##                      (662600 x 343600 units)
-## Window area = 2.15797e+11 square units
-## Fraction of frame area: 0.948</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tuesday-october-25-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a>V.ppp <span class="ot">&lt;-</span> T.ppp <span class="sc">|&gt;</span></span>
-<span id="cb45-2"><a href="tuesday-october-25-2022.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(marks <span class="sc">&gt;=</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb45-3"><a href="tuesday-october-25-2022.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unmark</span>()</span>
-<span id="cb45-4"><a href="tuesday-october-25-2022.html#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-5"><a href="tuesday-october-25-2022.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(V.ppp)</span></code></pre></div>
-<pre><code>## Planar point pattern:  41 points
-## Average intensity 1.899933e-10 points per square unit
-## 
-## Coordinates are given to 1 decimal place
-## i.e. rounded to the nearest multiple of 0.1 units
-## 
-## Window: polygonal boundary
-## single connected closed polygon with 169 vertices
-## enclosing rectangle: [1317675.9, 1980294.8] x [7114969, 7458570] units
-##                      (662600 x 343600 units)
-## Window area = 2.15797e+11 square units
-## Fraction of frame area: 0.948</code></pre>
-<p>The spatial intensity of the non-violent tornadoes is 190 per 100 sq km. The spatial intensity of the violent tornadoes is 1.9 per 100 square kilometer.</p>
-<p>Plot the locations of the violent tornado events.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tuesday-october-25-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(V.ppp)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>Early we found that the spatial intensity of tornado reports was a function of distance to nearest city.</p>
-<p>So here you include this as an explanatory variable. Import the data, set the CRS, and transform the CRS to match that of the tornadoes. Exclude cities with fewer than 1000 people.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="tuesday-october-25-2022.html#cb48-1" aria-hidden="true" tabindex="-1"></a>C.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_cities</span>() <span class="sc">|&gt;</span></span>
-<span id="cb48-2"><a href="tuesday-october-25-2022.html#cb48-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(population <span class="sc">&gt;=</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
-<span id="cb48-3"><a href="tuesday-october-25-2022.html#cb48-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(Torn.sf))</span></code></pre></div>
+## single connected closed polygon with 550 vertices
+## enclosing rectangle: [873763.8, 2116649.8] x [5881245, 7063086] units
+##                      (1243000 x 1182000 units)
+## Window area = 6.90733e+11 square units
+## Fraction of frame area: 0.47</code></pre>
+<p>Chance that a tornado anywhere in Texas will be at least EF3 or worse is the sum of the proportions for these types: .03616 + .00537 + .00067 = .042 (or 4.2%).</p>
+<p>As found previously there is a spatial intensity gradient across the state with fewer tornadoes in the southwest and more in the northeast. Also the more damaging tornadoes might be more common relative to all tornadoes in some parts of the state compared with other parts.</p>
+<p>To create a map of the relative risk of the more damaging tornadoes you start by making two <code>ppp</code> objects, one being the set of all tornado events with damage ratings 0, 1, or 2 and the other the set of all tornado locations with damage ratings 3, 4, or 5. You do this by subset the object using brackets (<code>[]</code>) and the logical operator <code>|</code> (or) and then merge the two subsets assigning names <code>H</code> and <code>I</code> as marks with the <code>superimpose()</code> function.</p>
+<div class="sourceCode" id="cb1164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1164-1"><a href="tuesday-october-25-2022.html#cb1164-1" aria-hidden="true" tabindex="-1"></a>H.ppp <span class="ot">&lt;-</span> <span class="fu">unmark</span>(T.ppp[T.ppp<span class="sc">$</span>marks <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> T.ppp<span class="sc">$</span>marks <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> T.ppp<span class="sc">$</span>marks <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb1164-2"><a href="tuesday-october-25-2022.html#cb1164-2" aria-hidden="true" tabindex="-1"></a>I.ppp <span class="ot">&lt;-</span> <span class="fu">unmark</span>(T.ppp[T.ppp<span class="sc">$</span>marks <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> T.ppp<span class="sc">$</span>marks <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span> T.ppp<span class="sc">$</span>marks <span class="sc">==</span> <span class="dv">5</span>])</span>
+<span id="cb1164-3"><a href="tuesday-october-25-2022.html#cb1164-3" aria-hidden="true" tabindex="-1"></a>T2.ppp <span class="ot">&lt;-</span> <span class="fu">superimpose</span>(<span class="at">H =</span> H.ppp, </span>
+<span id="cb1164-4"><a href="tuesday-october-25-2022.html#cb1164-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">I =</span> I.ppp)</span></code></pre></div>
+<pre><code>## Warning: data contain duplicated points</code></pre>
+<p>See <a href="https://en.wikipedia.org/wiki/Enhanced_Fujita_scale" class="uri">https://en.wikipedia.org/wiki/Enhanced_Fujita_scale</a> for definitions of EF tornado rating.</p>
+<p>The chance that a tornado chosen at random is intense (EF3+) is 4.2%. Plot the event locations for the set of intense tornadoes.</p>
+<div class="sourceCode" id="cb1166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1166-1"><a href="tuesday-october-25-2022.html#cb1166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(I.ppp, </span>
+<span id="cb1166-2"><a href="tuesday-october-25-2022.html#cb1166-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="dv">25</span>, </span>
+<span id="cb1166-3"><a href="tuesday-october-25-2022.html#cb1166-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cols =</span> <span class="st">&quot;red&quot;</span>, </span>
+<span id="cb1166-4"><a href="tuesday-october-25-2022.html#cb1166-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1166-5"><a href="tuesday-october-25-2022.html#cb1166-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(T.ppp, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> .<span class="dv">1</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-517-1.png" width="672" /></p>
+<p>To get the relative risk use the <code>relrisk()</code> function. If X is a multi-type point pattern with factor marks and two levels of the factor then the events of the first type (the first level of <code>marks(X)</code>) are treated as controls (conditionals) or non-events, and events of the second type are treated as cases.</p>
+<p>The <code>relrisk()</code> function estimates the local chance of a case (i.e. the probability <span class="math inline">\(p(u)\)</span> that a point at <span class="math inline">\(u\)</span> will be a case) using a kernel density smoother. The bandwidth for the kernel is specified or can be found through an iterative cross-validation procedure (recall the bandwidth selection procedure used in geographic regression) using the <code>bw.relrisk()</code> function.</p>
+<p>The bandwidth has units of length (here meters). You specify a minimum and maximum bandwidth with the <code>hmin =</code> and <code>hmax =</code> arguments. This takes a few seconds.</p>
+<div class="sourceCode" id="cb1167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1167-1"><a href="tuesday-october-25-2022.html#cb1167-1" aria-hidden="true" tabindex="-1"></a>( bw <span class="ot">&lt;-</span> <span class="fu">bw.relrisk</span>(T2.ppp,</span>
+<span id="cb1167-2"><a href="tuesday-october-25-2022.html#cb1167-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">hmin =</span> <span class="dv">1000</span>,</span>
+<span id="cb1167-3"><a href="tuesday-october-25-2022.html#cb1167-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">hmax =</span> <span class="dv">200000</span>) )</span></code></pre></div>
+<pre><code>##    sigma 
+## 119770.4</code></pre>
+<p>The optimal bandwidth (<code>sigma</code>) is 119770 meters or about 120 km.</p>
+<p>Now estimate the relative risk at points defined by a 256 by 256 grid and using the 120 km bandwidth for the kernel smoother.</p>
+<div class="sourceCode" id="cb1169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1169-1"><a href="tuesday-october-25-2022.html#cb1169-1" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">relrisk</span>(T2.ppp, </span>
+<span id="cb1169-2"><a href="tuesday-october-25-2022.html#cb1169-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">sigma =</span> bw,</span>
+<span id="cb1169-3"><a href="tuesday-october-25-2022.html#cb1169-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">dimyx =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>))</span></code></pre></div>
+<p>The result is an object of class <code>im</code> (image) with values you interpret as the conditional probability of an ‘intense’ tornado.</p>
+<p>You retrieve the range of probabilities with the <code>range()</code> function. Note that many of the values are <code>NA</code> corresponding pixels that are outside the window so you set the <code>na.rm</code> argument to <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb1170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1170-1"><a href="tuesday-october-25-2022.html#cb1170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(rr, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.005003694 0.060170214</code></pre>
+<p>The probabilities range from a low of .5% to a high of 6%. This range compares with the statewide average probability of 4.2%.</p>
+<p>Map the probabilities with the <code>plot()</code> method.</p>
+<div class="sourceCode" id="cb1172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1172-1"><a href="tuesday-october-25-2022.html#cb1172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rr)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-521-1.png" width="672" /></p>
+<p>Make a better map by converting the image to a raster, setting the CRS, and then using functions from the {tmap} package.</p>
+<div class="sourceCode" id="cb1173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1173-1"><a href="tuesday-october-25-2022.html#cb1173-1" aria-hidden="true" tabindex="-1"></a>tr.r <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(rr)</span>
+<span id="cb1173-2"><a href="tuesday-october-25-2022.html#cb1173-2" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">crs</span>(tr.r) <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(Torn.sf)<span class="sc">$</span>proj4string</span>
+<span id="cb1173-3"><a href="tuesday-october-25-2022.html#cb1173-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1173-4"><a href="tuesday-october-25-2022.html#cb1173-4" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(tr.r) <span class="sc">+</span></span>
+<span id="cb1173-5"><a href="tuesday-october-25-2022.html#cb1173-5" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_raster</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-522-1.png" width="672" /></p>
+<p>The chance that a tornado is more damaging peaks in the northeast part of the state.</p>
+<p>Since the relative risk is computed for any point it is of interest to extract the probabilities for cities and towns.</p>
+<p>You get city locations with the <code>us_cities()</code> function from the {USAboundaries} package that extracts a simple feature data frame of cities. The CRS is 4326 and you filter to keep only cities with at least 100000 in 2010.</p>
+<div class="sourceCode" id="cb1174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1174-1"><a href="tuesday-october-25-2022.html#cb1174-1" aria-hidden="true" tabindex="-1"></a>Cities.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_cities</span>(<span class="at">state =</span> <span class="st">&quot;TX&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1174-2"><a href="tuesday-october-25-2022.html#cb1174-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> raster<span class="sc">::</span><span class="fu">crs</span>(tr.r)) <span class="sc">|&gt;</span></span>
+<span id="cb1174-3"><a href="tuesday-october-25-2022.html#cb1174-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(population <span class="sc">&gt;</span> <span class="dv">100000</span>)</span></code></pre></div>
 <pre><code>## City populations for contemporary data come from the 2010 census.</code></pre>
-<p>Then convert the simple feature data frame to a <code>ppp</code> object. Then subset the events by the analysis window (Kansas border).</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="tuesday-october-25-2022.html#cb50-1" aria-hidden="true" tabindex="-1"></a>C.ppp <span class="ot">&lt;-</span> C.sf <span class="sc">|&gt;</span></span>
-<span id="cb50-2"><a href="tuesday-october-25-2022.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ppp</span>()</span></code></pre></div>
-<pre><code>## Warning in as.ppp.sf(C.sf): only first attribute column is used for marks</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="tuesday-october-25-2022.html#cb52-1" aria-hidden="true" tabindex="-1"></a>C.ppp <span class="ot">&lt;-</span> C.ppp[KS.win] <span class="sc">|&gt;</span></span>
-<span id="cb52-2"><a href="tuesday-october-25-2022.html#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unmark</span>()</span>
-<span id="cb52-3"><a href="tuesday-october-25-2022.html#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-4"><a href="tuesday-october-25-2022.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(C.ppp)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<p>Next create a distance map of the city locations using the <code>distmap()</code> function.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tuesday-october-25-2022.html#cb53-1" aria-hidden="true" tabindex="-1"></a>Zc <span class="ot">&lt;-</span> <span class="fu">distmap</span>(C.ppp)</span>
-<span id="cb53-2"><a href="tuesday-october-25-2022.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Zc)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-<p>The pixel values of the <code>im</code> object are distances is meters. Blue indicates locations that are less than 20 km from a city.</p>
-<p>Interest lies with the distance to nearest non-violent tornado. You check to see if this might be a useful variable in a model so you make a distance map for the non-violent events and then use the <code>rhohat()</code> function.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="tuesday-october-25-2022.html#cb54-1" aria-hidden="true" tabindex="-1"></a>Znv <span class="ot">&lt;-</span> <span class="fu">distmap</span>(NV.ppp)</span>
-<span id="cb54-2"><a href="tuesday-october-25-2022.html#cb54-2" aria-hidden="true" tabindex="-1"></a>rhat <span class="ot">&lt;-</span> <span class="fu">rhohat</span>(V.ppp, Znv, </span>
-<span id="cb54-3"><a href="tuesday-october-25-2022.html#cb54-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">adjust =</span> <span class="fl">1.5</span>, </span>
-<span id="cb54-4"><a href="tuesday-october-25-2022.html#cb54-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">smoother =</span> <span class="st">&quot;kernel&quot;</span>, </span>
-<span id="cb54-5"><a href="tuesday-october-25-2022.html#cb54-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&quot;transform&quot;</span>)</span>
-<span id="cb54-6"><a href="tuesday-october-25-2022.html#cb54-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-7"><a href="tuesday-october-25-2022.html#cb54-7" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> rhat<span class="sc">$</span>Znv</span>
-<span id="cb54-8"><a href="tuesday-october-25-2022.html#cb54-8" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> rhat<span class="sc">$</span>rho</span>
-<span id="cb54-9"><a href="tuesday-october-25-2022.html#cb54-9" aria-hidden="true" tabindex="-1"></a>hi <span class="ot">&lt;-</span> rhat<span class="sc">$</span>hi</span>
-<span id="cb54-10"><a href="tuesday-october-25-2022.html#cb54-10" aria-hidden="true" tabindex="-1"></a>lo <span class="ot">&lt;-</span> rhat<span class="sc">$</span>lo</span>
-<span id="cb54-11"><a href="tuesday-october-25-2022.html#cb54-11" aria-hidden="true" tabindex="-1"></a>Rho.df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dist =</span> dist, <span class="at">rho =</span> rho, <span class="at">hi =</span> hi, <span class="at">lo =</span> lo)</span>
-<span id="cb54-12"><a href="tuesday-october-25-2022.html#cb54-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-13"><a href="tuesday-october-25-2022.html#cb54-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Rho.df) <span class="sc">+</span> </span>
-<span id="cb54-14"><a href="tuesday-october-25-2022.html#cb54-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x =</span> dist, <span class="at">ymin =</span> lo, <span class="at">ymax =</span> hi), <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb54-15"><a href="tuesday-october-25-2022.html#cb54-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> dist, <span class="at">y =</span> rho), <span class="at">col =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb54-16"><a href="tuesday-october-25-2022.html#cb54-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Spatial intensity of violent tornadoes&quot;</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Distance from nearest non-violent tornado (m)&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb54-17"><a href="tuesday-october-25-2022.html#cb54-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
-<p>This shows that regions that get non-violent tornadoes also see higher rates of violent tornadoes.</p>
-<p>So the model should include two covariates (trend terms), distance to nearest city and distance to nearest non-violent tornado.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="tuesday-october-25-2022.html#cb55-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">ppm</span>(V.ppp, </span>
-<span id="cb55-2"><a href="tuesday-october-25-2022.html#cb55-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">trend =</span> <span class="sc">~</span> Zc <span class="sc">+</span> Znv, </span>
-<span id="cb55-3"><a href="tuesday-october-25-2022.html#cb55-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">covariates =</span> <span class="fu">list</span>(<span class="at">Zc =</span> Zc, <span class="at">Znv =</span> Znv))</span>
-<span id="cb55-4"><a href="tuesday-october-25-2022.html#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="tuesday-october-25-2022.html#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(model1))</span></code></pre></div>
-<pre><code>##                  Estimate         S.E.       CI95.lo       CI95.hi Ztest
-## (Intercept) -2.079665e+01 3.689920e-01 -2.151986e+01 -2.007344e+01   ***
-## Zc          -3.213231e-05 1.118327e-05 -5.405111e-05 -1.021350e-05    **
-## Znv         -2.235788e-04 8.585891e-05 -3.918592e-04 -5.529845e-05    **
-##                   Zval
-## (Intercept) -56.360705
-## Zc           -2.873248
-## Znv          -2.604026</code></pre>
-<p>As expected the model shows fewer violent tornadoes with increasing distance from the nearest city (negative coefficient on <code>Zc</code>) and fewer violent tornadoes with increasing distance from a non-violent tornado (negative coefficient on <code>Znv</code>).</p>
-<p>Since the spatial unit is meters the coefficient of -3.06e-05 is interpreted as a [1 - exp(-.0306)] * 100% or 3% decrease in violent tornado reports per kilometer of distance from a city. Similarly the coefficient on distance from nearest non-violent tornado is interpreted as a 23% decrease in violent tornado reports per kilometer of distance from nearest non-violent tornado.</p>
-<p>Check if there is any residual nearest neighbor correlation.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="tuesday-october-25-2022.html#cb57-1" aria-hidden="true" tabindex="-1"></a>E <span class="ot">&lt;-</span> <span class="fu">envelope</span>(model1, </span>
-<span id="cb57-2"><a href="tuesday-october-25-2022.html#cb57-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">fun =</span> Kest, </span>
-<span id="cb57-3"><a href="tuesday-october-25-2022.html#cb57-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">nsim =</span> <span class="dv">39</span>,</span>
-<span id="cb57-4"><a href="tuesday-october-25-2022.html#cb57-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">global =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## Generating 78 simulated realisations of fitted Poisson model (39 to estimate 
-## the mean and 39 to calculate envelopes) ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-## 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77,  78.
+<p>Use the <code>extract()</code> function from the {raster} package to get a single value for each city. Put these values into the simple feature data frame.</p>
+<div class="sourceCode" id="cb1176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1176-1"><a href="tuesday-october-25-2022.html#cb1176-1" aria-hidden="true" tabindex="-1"></a>Cities.sf<span class="sc">$</span>tr <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">extract</span>(tr.r, </span>
+<span id="cb1176-2"><a href="tuesday-october-25-2022.html#cb1176-2" aria-hidden="true" tabindex="-1"></a>                                Cities.sf)</span>
+<span id="cb1176-3"><a href="tuesday-october-25-2022.html#cb1176-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1176-4"><a href="tuesday-october-25-2022.html#cb1176-4" aria-hidden="true" tabindex="-1"></a>Cities.sf <span class="sc">|&gt;</span></span>
+<span id="cb1176-5"><a href="tuesday-october-25-2022.html#cb1176-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(tr)) </span></code></pre></div>
+<pre><code>## Simple feature collection with 29 features and 13 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 893306.2 ymin: 5900924 xmax: 2063028 ymax: 6916010
+## CRS:           PROJCRS[&quot;unknown&quot;,
+##     BASEGEOGCRS[&quot;unknown&quot;,
+##         DATUM[&quot;North American Datum 1983&quot;,
+##             ELLIPSOID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##                 LENGTHUNIT[&quot;metre&quot;,1]],
+##             ID[&quot;EPSG&quot;,6269]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8901]]],
+##     CONVERSION[&quot;unknown&quot;,
+##         METHOD[&quot;Lambert Conic Conformal (2SP)&quot;,
+##             ID[&quot;EPSG&quot;,9802]],
+##         PARAMETER[&quot;Latitude of false origin&quot;,18,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8821]],
+##         PARAMETER[&quot;Longitude of false origin&quot;,-100,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8822]],
+##         PARAMETER[&quot;Latitude of 1st standard parallel&quot;,27.5,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8823]],
+##         PARAMETER[&quot;Latitude of 2nd standard parallel&quot;,35,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8824]],
+##         PARAMETER[&quot;Easting at false origin&quot;,1500000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8826]],
+##         PARAMETER[&quot;Northing at false origin&quot;,5000000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8827]]],
+##     CS[Cartesian,2],
+##         AXIS[&quot;(E)&quot;,east,
+##             ORDER[1],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]],
+##         AXIS[&quot;(N)&quot;,north,
+##             ORDER[2],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]]]
+## # A tibble: 29 × 14
+##    city         state_name state_abbr county county_name stplfips_2010 name_2010
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;    
+##  1 Mckinney     Texas      TX         COLLIN Collin      4845744       McKinney…
+##  2 Mesquite     Texas      TX         Dallas Dallas      4847892       Mesquite…
+##  3 Garland      Texas      TX         Dallas Dallas      4829000       Garland …
+##  4 Plano        Texas      TX         Collin Collin      4858016       Plano ci…
+##  5 Frisco       Texas      TX         Collin Collin      4827684       Frisco c…
+##  6 Dallas       Texas      TX         DALLAS Dallas      4819000       Dallas c…
+##  7 Carrollton   Texas      TX         Dallas Dallas      4813024       Carrollt…
+##  8 Irving       Texas      TX         Dallas Dallas      4837000       Irving c…
+##  9 Denton       Texas      TX         DENTON Denton      4819972       Denton c…
+## 10 Grand Prair… Texas      TX         Dallas Dallas      4830464       Grand Pr…
+## # … with 19 more rows, and 7 more variables: city_source &lt;chr&gt;,
+## #   population_source &lt;chr&gt;, place_type &lt;chr&gt;, year &lt;int&gt;, population &lt;int&gt;,
+## #   geometry &lt;POINT [m]&gt;, tr &lt;dbl&gt;</code></pre>
+<p>To illustrate the results create a graph using the <code>geom_lollipop()</code> function from the {ggalt} package. Use the package {scales} to allow for labels in percent.</p>
+<div class="sourceCode" id="cb1178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1178-1"><a href="tuesday-october-25-2022.html#cb1178-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggalt)</span></code></pre></div>
+<pre><code>## Registered S3 methods overwritten by &#39;ggalt&#39;:
+##   method                  from   
+##   grid.draw.absoluteGrob  ggplot2
+##   grobHeight.absoluteGrob ggplot2
+##   grobWidth.absoluteGrob  ggplot2
+##   grobX.absoluteGrob      ggplot2
+##   grobY.absoluteGrob      ggplot2</code></pre>
+<div class="sourceCode" id="cb1180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1180-1"><a href="tuesday-october-25-2022.html#cb1180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:spatstat.geom&#39;:
 ## 
-## Done.</code></pre>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="tuesday-october-25-2022.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(E, <span class="at">main =</span> <span class="st">&quot;Inhomogeneous Poisson Model&quot;</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
-<p>There appears to be a bit of regularity at smaller scales. The empirical curve (black line) falls slightly below the model (dashed red line). There are fewer nearby violent tornadoes than one would expect.</p>
-<p>To see if this is statistically significant, you add an inhibition process to the model.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="tuesday-october-25-2022.html#cb60-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">ppm</span>(V.ppp, </span>
-<span id="cb60-2"><a href="tuesday-october-25-2022.html#cb60-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">trend =</span> <span class="sc">~</span> Zc <span class="sc">+</span> Znv, </span>
-<span id="cb60-3"><a href="tuesday-october-25-2022.html#cb60-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">covariates =</span> <span class="fu">list</span>(<span class="at">Zc =</span> Zc, <span class="at">Znv =</span> Znv),</span>
-<span id="cb60-4"><a href="tuesday-october-25-2022.html#cb60-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">interaction =</span> <span class="fu">Strauss</span>(<span class="at">r =</span> <span class="dv">40000</span>))</span>
-<span id="cb60-5"><a href="tuesday-october-25-2022.html#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-6"><a href="tuesday-october-25-2022.html#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(model2))</span></code></pre></div>
-<pre><code>##                  Estimate         S.E.       CI95.lo       CI95.hi Ztest
-## (Intercept) -1.999626e+01 0.6389281922 -2.124853e+01 -1.874398e+01   ***
-## Zc          -4.125674e-05 0.0000129859 -6.670864e-05 -1.580484e-05    **
-## Znv         -2.325491e-04 0.0001163074 -4.605075e-04 -4.590757e-06     *
-## Interaction -6.232454e-01 0.3926001130 -1.392727e+00  1.462367e-01      
-##                   Zval
-## (Intercept) -31.296564
-## Zc           -3.177041
-## Znv          -1.999435
-## Interaction  -1.587481</code></pre>
-<p>The interaction coefficient has a negative sign as expected from the above plot, but the standard error is relatively large so it is not significant.</p>
-<p>Remove the inhibition process and add a trend term in the east-west direction.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="tuesday-october-25-2022.html#cb62-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">ppm</span>(V.ppp, </span>
-<span id="cb62-2"><a href="tuesday-october-25-2022.html#cb62-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">trend =</span> <span class="sc">~</span> Zc <span class="sc">+</span> Znv <span class="sc">+</span> x, </span>
-<span id="cb62-3"><a href="tuesday-october-25-2022.html#cb62-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">covariates =</span> <span class="fu">list</span>(<span class="at">Zc =</span> Zc, <span class="at">Znv =</span> Znv))</span>
-<span id="cb62-4"><a href="tuesday-october-25-2022.html#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-5"><a href="tuesday-october-25-2022.html#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(model3))</span></code></pre></div>
-<pre><code>##                  Estimate         S.E.       CI95.lo       CI95.hi Ztest
-## (Intercept) -2.381531e+01 1.891801e+00 -2.752317e+01 -2.010745e+01   ***
-## Zc          -2.274246e-05 1.255697e-05 -4.735366e-05  1.868739e-06      
-## Znv         -2.379710e-04 8.651254e-05 -4.075324e-04 -6.840952e-05    **
-## x            1.681064e-06 1.020308e-06 -3.187026e-07  3.680830e-06      
-##                   Zval
-## (Intercept) -12.588694
-## Zc           -1.811143
-## Znv          -2.750711
-## x             1.647605</code></pre>
-<p>There is a significant eastward trend but it appears to confound the distance to city term. Why is this?</p>
-<p>Plot simulated data.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="tuesday-october-25-2022.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(V.ppp)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="tuesday-october-25-2022.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulate</span>(model1, <span class="at">nsim =</span> <span class="dv">6</span>))</span></code></pre></div>
-<pre><code>## Generating 6 simulated patterns ...1, 2, 3, 4, 5,  6.</code></pre>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
-<p>Model one appears to due a good job simulating data that looks like the actual data.</p>
-</div>
-<div id="spatial-logistic-regression" class="section level2 unnumbered hasAnchor">
-<h2>Spatial logistic regression<a href="tuesday-october-25-2022.html#spatial-logistic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise.</p>
-<p>Then a logistic regression models the presence probability <span class="math inline">\(p = P(Y = 1)\)</span> as a function of explanatory variables <span class="math inline">\(X\)</span> in the (matrix) form <span class="math display">\[
-\log \frac{p}{1-p} = \beta X
-\]</span> where the left-hand side is the logit (log of the odds ratio) and the <span class="math inline">\(\beta\)</span> are the coefficients to be determined.</p>
-<p>If your data are stored as <code>ppp</code> objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.</p>
-<p>Let’s consider an example from the package (a good strategy in general when learning a new technique).</p>
-<p>Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological ‘lineaments.’ Lineaments are linear features that consist of geological faults.</p>
-<p>It is of interest to be able to predict the probability of a copper ore from the lineament pattern. The data are stored as a list in <code>copper</code>. The list contains a <code>ppp</code> object for the ore deposits and a <code>psp</code> object for the lineaments.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="tuesday-october-25-2022.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(copper)</span>
-<span id="cb67-2"><a href="tuesday-october-25-2022.html#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(copper<span class="sc">$</span>SouthPoints)</span>
-<span id="cb67-3"><a href="tuesday-october-25-2022.html#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(copper<span class="sc">$</span>SouthLines, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
-<p>For convenience you first rotate the events (points and lines) by 90 degrees in the anticlockwise direction and save them as separate objects.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="tuesday-october-25-2022.html#cb68-1" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">rotate</span>(copper<span class="sc">$</span>SouthPoints, pi<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb68-2"><a href="tuesday-october-25-2022.html#cb68-2" aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="fu">rotate</span>(copper<span class="sc">$</span>SouthLines, pi<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb68-3"><a href="tuesday-october-25-2022.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(C)</span>
-<span id="cb68-4"><a href="tuesday-october-25-2022.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
-<p>You summarize the planar point pattern data object <code>C</code>.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="tuesday-october-25-2022.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(C)</span></code></pre></div>
-<pre><code>## Planar point pattern:  57 points
-## Average intensity 0.01020691 points per square km
+##     rescale</code></pre>
+<div class="sourceCode" id="cb1183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1183-1"><a href="tuesday-october-25-2022.html#cb1183-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Cities.sf, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(city, tr), <span class="at">y =</span> tr)) <span class="sc">+</span></span>
+<span id="cb1183-2"><a href="tuesday-october-25-2022.html#cb1183-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_lollipop</span>(<span class="at">point.colour =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">point.size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb1183-3"><a href="tuesday-october-25-2022.html#cb1183-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> percent, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">0625</span>)) <span class="sc">+</span></span>
+<span id="cb1183-4"><a href="tuesday-october-25-2022.html#cb1183-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb1183-5"><a href="tuesday-october-25-2022.html#cb1183-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="cn">NULL</span>, </span>
+<span id="cb1183-6"><a href="tuesday-october-25-2022.html#cb1183-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&quot;Historical chance that a tornado caused at least EF3 damage&quot;</span>,</span>
+<span id="cb1183-7"><a href="tuesday-october-25-2022.html#cb1183-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">&quot;Cities in Texas with a 2010 population &gt; 100,000&quot;</span>,</span>
+<span id="cb1183-8"><a href="tuesday-october-25-2022.html#cb1183-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">&quot;Data from SPC (1950-2020)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1183-9"><a href="tuesday-october-25-2022.html#cb1183-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-525-1.png" width="672" /></p>
+<p>Another example: Florida wildfires</p>
+<p>Given a wildfire in Florida what is the probability that it was started by lightning?</p>
+<p>Import wildfire data (available here: <a href="https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.4" class="uri">https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.4</a>) as a simple feature data frame and transform the native CRS to a Florida GDL Albers (EPSG 3086).</p>
+<div class="sourceCode" id="cb1184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1184-1"><a href="tuesday-october-25-2022.html#cb1184-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;FL_Fires&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))){</span>
+<span id="cb1184-2"><a href="tuesday-october-25-2022.html#cb1184-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip&quot;</span>,</span>
+<span id="cb1184-3"><a href="tuesday-october-25-2022.html#cb1184-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;FL_Fires.zip&quot;</span>))</span>
+<span id="cb1184-4"><a href="tuesday-october-25-2022.html#cb1184-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;FL_Fires.zip&quot;</span>),</span>
+<span id="cb1184-5"><a href="tuesday-october-25-2022.html#cb1184-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
+<span id="cb1184-6"><a href="tuesday-october-25-2022.html#cb1184-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1184-7"><a href="tuesday-october-25-2022.html#cb1184-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1184-8"><a href="tuesday-october-25-2022.html#cb1184-8" aria-hidden="true" tabindex="-1"></a>FL_Fires.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;FL_Fires&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1184-9"><a href="tuesday-october-25-2022.html#cb1184-9" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3086</span>)</span></code></pre></div>
+<pre><code>## Reading layer `FL_Fires&#39; from data source 
+##   `/Users/jelsner/Desktop/ClassNotes/ASS-2022/data/FL_Fires&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 90261 features and 37 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -9750382 ymin: 2824449 xmax: -8908899 ymax: 3632749
+## Projected CRS: Mercator_2SP</code></pre>
+<div class="sourceCode" id="cb1186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1186-1"><a href="tuesday-october-25-2022.html#cb1186-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(FL_Fires.sf)</span></code></pre></div>
+<pre><code>## [1] 90261    38</code></pre>
+<p>Each row is a unique fire and the data spans the period 1992-2015. There are over 90K rows and 38 variables.</p>
+<p>To make things run faster, here you analyze only a random sample of all the data. You do this with the <code>dplyr::sample_n()</code> function where the argument <code>size =</code> specifies the number of rows to choose at random. Save the sample of events to the object <code>FL_FiresS.sf</code>. First set the seed for the random number generator so that the set of rows chosen will be the same every time you run the code.</p>
+<div class="sourceCode" id="cb1188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1188-1"><a href="tuesday-october-25-2022.html#cb1188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">78732</span>)</span>
+<span id="cb1188-2"><a href="tuesday-october-25-2022.html#cb1188-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1188-3"><a href="tuesday-october-25-2022.html#cb1188-3" aria-hidden="true" tabindex="-1"></a>FL_FiresS.sf <span class="ot">&lt;-</span> FL_Fires.sf <span class="sc">|&gt;</span></span>
+<span id="cb1188-4"><a href="tuesday-october-25-2022.html#cb1188-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">sample_n</span>(<span class="at">size =</span> <span class="dv">2000</span>)</span>
+<span id="cb1188-5"><a href="tuesday-october-25-2022.html#cb1188-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1188-6"><a href="tuesday-october-25-2022.html#cb1188-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(FL_FiresS.sf)</span></code></pre></div>
+<pre><code>## [1] 2000   38</code></pre>
+<p>The result is a simple feature data frame with exactly 2000 rows.</p>
+<p>The character variable <code>STAT_CAU_1</code> indicates the cause of the wildfire.</p>
+<div class="sourceCode" id="cb1190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1190-1"><a href="tuesday-october-25-2022.html#cb1190-1" aria-hidden="true" tabindex="-1"></a>FL_FiresS.sf<span class="sc">$</span>STAT_CAU_1 <span class="sc">|&gt;</span></span>
+<span id="cb1190-2"><a href="tuesday-october-25-2022.html#cb1190-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code></pre></div>
+<pre><code>## 
+##             Arson          Campfire          Children    Debris Burning 
+##               147                32                93               239 
+##     Equipment Use         Fireworks         Lightning     Miscellaneous 
+##               308                 4               495               199 
+## Missing/Undefined         Powerline          Railroad           Smoking 
+##                74                 9               365                31 
+##         Structure 
+##                 4</code></pre>
+<p>There are 13 causes (listed in alphabetical order) with various occurrence frequencies. Lightning is the most common.</p>
+<p>To analyze these data as spatial events, you first convert the simple feature data to a <code>ppp</code> object over a window defined by the state boundaries. Use the cause of the fire as a factor mark.</p>
+<div class="sourceCode" id="cb1192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1192-1"><a href="tuesday-october-25-2022.html#cb1192-1" aria-hidden="true" tabindex="-1"></a>F.ppp <span class="ot">&lt;-</span> FL_FiresS.sf[<span class="st">&quot;STAT_CAU_1&quot;</span>] <span class="sc">|&gt;</span></span>
+<span id="cb1192-2"><a href="tuesday-october-25-2022.html#cb1192-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ppp</span>()</span>
+<span id="cb1192-3"><a href="tuesday-october-25-2022.html#cb1192-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1192-4"><a href="tuesday-october-25-2022.html#cb1192-4" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>(<span class="at">states =</span> <span class="st">&quot;Florida&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1192-5"><a href="tuesday-october-25-2022.html#cb1192-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(FL_Fires.sf)) <span class="sc">|&gt;</span></span>
+<span id="cb1192-6"><a href="tuesday-october-25-2022.html#cb1192-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.owin</span>()</span>
+<span id="cb1192-7"><a href="tuesday-october-25-2022.html#cb1192-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1192-8"><a href="tuesday-october-25-2022.html#cb1192-8" aria-hidden="true" tabindex="-1"></a>F.ppp <span class="ot">&lt;-</span> F.ppp[W]</span>
+<span id="cb1192-9"><a href="tuesday-october-25-2022.html#cb1192-9" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(F.ppp) <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">marks</span>(F.ppp)) <span class="co"># make the character marks factor marks</span></span>
+<span id="cb1192-10"><a href="tuesday-october-25-2022.html#cb1192-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1192-11"><a href="tuesday-october-25-2022.html#cb1192-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(F.ppp)</span></code></pre></div>
+<pre><code>## Marked planar point pattern:  2000 points
+## Average intensity 1.297232e-08 points per square unit
+## 
+## *Pattern contains duplicated points*
 ## 
 ## Coordinates are given to 2 decimal places
-## i.e. rounded to the nearest multiple of 0.01 km
+## i.e. rounded to the nearest multiple of 0.01 units
 ## 
-## Window: rectangle = [-158.233, -0.19] x [-0.335, 35] km
-##                     (158 x 35.34 km)
-## Window area = 5584.45 square km
-## Unit of length: 1 km</code></pre>
-<p>There are 57 ore deposits over a region of size 5584 square km resulting in an intensity of about .01 ore deposits per square km.</p>
-<p>Next you create a distance map of the lineaments to be used as a covariate.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="tuesday-october-25-2022.html#cb71-1" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">distmap</span>(L)</span>
-<span id="cb71-2"><a href="tuesday-october-25-2022.html#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(D)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
-<p>Spatial logistic regression models are fit with the <code>slrm()</code> function from the {spatstat} package.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="tuesday-october-25-2022.html#cb72-1" aria-hidden="true" tabindex="-1"></a>model.slr <span class="ot">&lt;-</span> <span class="fu">slrm</span>(C <span class="sc">~</span> D)</span>
-<span id="cb72-2"><a href="tuesday-october-25-2022.html#cb72-2" aria-hidden="true" tabindex="-1"></a>model.slr</span></code></pre></div>
-<pre><code>## Fitted spatial logistic regression model
-## Formula: C ~ D
-## Fitted coefficients:
-## (Intercept)           D 
-## -4.72337865  0.07811134</code></pre>
-<p>The model says that the odds of a copper ore along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.</p>
-<p>The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments.</p>
-<p>The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. The values are the probability of a random ore deposit in each pixel.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="tuesday-october-25-2022.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(model.slr))</span>
-<span id="cb74-2"><a href="tuesday-october-25-2022.html#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(C, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<p>Integrating the predictions over the area equals the observed number of ore deposits.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="tuesday-october-25-2022.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">fitted</span>(model.slr))</span></code></pre></div>
-<pre><code>## [1] 57</code></pre>
+## Multitype:
+##                   frequency proportion    intensity
+## Arson                   147     0.0735 9.534653e-10
+## Campfire                 32     0.0160 2.075571e-10
+## Children                 93     0.0465 6.032128e-10
+## Debris Burning          239     0.1195 1.550192e-09
+## Equipment Use           308     0.1540 1.997737e-09
+## Fireworks                 4     0.0020 2.594463e-11
+## Lightning               495     0.2475 3.210649e-09
+## Miscellaneous           199     0.0995 1.290746e-09
+## Missing/Undefined        74     0.0370 4.799757e-10
+## Powerline                 9     0.0045 5.837543e-11
+## Railroad                365     0.1825 2.367448e-09
+## Smoking                  31     0.0155 2.010709e-10
+## Structure                 4     0.0020 2.594463e-11
+## 
+## Window: polygonal boundary
+## 4 separate polygons (no holes)
+##            vertices        area relative.area
+## polygon 1       356 1.53185e+11      0.994000
+## polygon 2        15 8.05114e+08      0.005220
+## polygon 3         5 7.46249e+07      0.000484
+## polygon 4         5 1.09937e+08      0.000713
+## enclosing rectangle: [52649.1, 794026.5] x [56850.4, 781579.4] units
+##                      (741400 x 724700 units)
+## Window area = 1.54174e+11 square units
+## Fraction of frame area: 0.287</code></pre>
+<p>Output from the <code>summary()</code> method displays a table of frequency by type including the proportion and the average spatial intensity (per square meters).</p>
+<p>The probability that a wildfire is caused by lightning is about 25% (<code>proportion</code> column of the frequency versus type table). How does this probability vary over the state?</p>
+<p>Note that the window contains four separate polygons to capture the main boundary (<code>polygon 4</code>) and the Florida Keys.</p>
+<div class="sourceCode" id="cb1194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1194-1"><a href="tuesday-october-25-2022.html#cb1194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(W)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-530-1.png" width="672" /></p>
+<p>First split the object <code>F.ppp</code> on whether or not the cause was lightning and then merge the two event types and assign names <code>NL</code> (human caused) and <code>L</code> (lightning caused) as marks.</p>
+<div class="sourceCode" id="cb1195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1195-1"><a href="tuesday-october-25-2022.html#cb1195-1" aria-hidden="true" tabindex="-1"></a>L.ppp <span class="ot">&lt;-</span> F.ppp[F.ppp<span class="sc">$</span>marks <span class="sc">==</span> <span class="st">&quot;Lightning&quot;</span>] <span class="sc">|&gt;</span></span>
+<span id="cb1195-2"><a href="tuesday-october-25-2022.html#cb1195-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unmark</span>()</span>
+<span id="cb1195-3"><a href="tuesday-october-25-2022.html#cb1195-3" aria-hidden="true" tabindex="-1"></a>NL.ppp <span class="ot">&lt;-</span> F.ppp[F.ppp<span class="sc">$</span>marks <span class="sc">!=</span> <span class="st">&quot;Lightning&quot;</span>] <span class="sc">|&gt;</span></span>
+<span id="cb1195-4"><a href="tuesday-october-25-2022.html#cb1195-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unmark</span>()</span>
+<span id="cb1195-5"><a href="tuesday-october-25-2022.html#cb1195-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1195-6"><a href="tuesday-october-25-2022.html#cb1195-6" aria-hidden="true" tabindex="-1"></a>LNL.ppp <span class="ot">&lt;-</span> <span class="fu">superimpose</span>(<span class="at">NL =</span> NL.ppp, </span>
+<span id="cb1195-7"><a href="tuesday-october-25-2022.html#cb1195-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">L =</span> L.ppp)</span></code></pre></div>
+<pre><code>## Warning: data contain duplicated points</code></pre>
+<div class="sourceCode" id="cb1197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1197-1"><a href="tuesday-october-25-2022.html#cb1197-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(LNL.ppp)</span></code></pre></div>
+<pre><code>## Marked planar point pattern:  2000 points
+## Average intensity 1.297232e-08 points per square unit
+## 
+## *Pattern contains duplicated points*
+## 
+## Coordinates are given to 2 decimal places
+## i.e. rounded to the nearest multiple of 0.01 units
+## 
+## Multitype:
+##    frequency proportion    intensity
+## NL      1505     0.7525 9.761669e-09
+## L        495     0.2475 3.210649e-09
+## 
+## Window: polygonal boundary
+## 4 separate polygons (no holes)
+##            vertices        area relative.area
+## polygon 1       356 1.53185e+11      0.994000
+## polygon 2        15 8.05114e+08      0.005220
+## polygon 3         5 7.46249e+07      0.000484
+## polygon 4         5 1.09937e+08      0.000713
+## enclosing rectangle: [52649.1, 794026.5] x [56850.4, 781579.4] units
+##                      (741400 x 724700 units)
+## Window area = 1.54174e+11 square units
+## Fraction of frame area: 0.287</code></pre>
+<p>Now the two types are <code>NL</code> and <code>L</code> composing 75% and 25% of all wildfire events.</p>
+<p>The function <code>relrisk()</code> computes the spatially-varying probability of a case (event type), (i.e. the probability <span class="math inline">\(p(u)\)</span> that a point at location <span class="math inline">\(u\)</span> will be a case).</p>
+<p>Here you compute the relative risk on a 256 by 256 grid.</p>
+<div class="sourceCode" id="cb1199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1199-1"><a href="tuesday-october-25-2022.html#cb1199-1" aria-hidden="true" tabindex="-1"></a>wfr <span class="ot">&lt;-</span> <span class="fu">relrisk</span>(LNL.ppp, </span>
+<span id="cb1199-2"><a href="tuesday-october-25-2022.html#cb1199-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">dimyx =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>))</span></code></pre></div>
+<p>Create a map from the raster by first converting the image object to a raster object and assigning the CRS with the <code>crs()</code> function from the {raster} package. Add the county borders for geographic reference.</p>
+<div class="sourceCode" id="cb1200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1200-1"><a href="tuesday-october-25-2022.html#cb1200-1" aria-hidden="true" tabindex="-1"></a>wfr.r <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(wfr)</span>
+<span id="cb1200-2"><a href="tuesday-october-25-2022.html#cb1200-2" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">crs</span>(wfr.r) <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(FL_Fires.sf)<span class="sc">$</span>proj4string</span>
+<span id="cb1200-3"><a href="tuesday-october-25-2022.html#cb1200-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1200-4"><a href="tuesday-october-25-2022.html#cb1200-4" aria-hidden="true" tabindex="-1"></a>FL.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_counties</span>(<span class="at">state =</span> <span class="st">&quot;FL&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1200-5"><a href="tuesday-october-25-2022.html#cb1200-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(FL_Fires.sf))</span>
+<span id="cb1200-6"><a href="tuesday-october-25-2022.html#cb1200-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1200-7"><a href="tuesday-october-25-2022.html#cb1200-7" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(wfr.r) <span class="sc">+</span></span>
+<span id="cb1200-8"><a href="tuesday-october-25-2022.html#cb1200-8" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_raster</span>(<span class="at">title =</span> <span class="st">&quot;Probability&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1200-9"><a href="tuesday-october-25-2022.html#cb1200-9" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(FL.sf) <span class="sc">+</span></span>
+<span id="cb1200-10"><a href="tuesday-october-25-2022.html#cb1200-10" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1200-11"><a href="tuesday-october-25-2022.html#cb1200-11" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_legend</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;center&quot;</span>) ) <span class="sc">+</span></span>
+<span id="cb1200-12"><a href="tuesday-october-25-2022.html#cb1200-12" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">&quot;Chance a wildfire was started by lightning (1992-2015)&quot;</span>,</span>
+<span id="cb1200-13"><a href="tuesday-october-25-2022.html#cb1200-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">main.title.size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1200-14"><a href="tuesday-october-25-2022.html#cb1200-14" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;top&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb1200-15"><a href="tuesday-october-25-2022.html#cb1200-15" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_credits</span>(<span class="at">text =</span> <span class="st">&quot;Data source: Karen Short https://doi.org/10.2737/RDS-2013-0009.4&quot;</span>,</span>
+<span id="cb1200-16"><a href="tuesday-october-25-2022.html#cb1200-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>)) </span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-533-1.png" width="672" /></p>
+</div>
+<div id="estimating-second-moment-properties-of-spatial-events" class="section level2 unnumbered hasAnchor">
+<h2>Estimating second-moment properties of spatial events<a href="tuesday-october-25-2022.html#estimating-second-moment-properties-of-spatial-events" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Spatial intensity is a first-moment property of event locations (like the average of a set of numbers). It answers the question: where are events more and less frequent?</p>
+<p>Clustering is a second-moment property of event locations (like the variance of a a set of numbers). It answers the question: is the probability of an event in the proximity of another event higher than expected by chance?</p>
+<p>On example of cluster occurs with the location of trees in a forest. A tree’s seed dispersal mechanism leads to a greater likelihood of another tree nearby.</p>
+<p>Let <span class="math inline">\(r\)</span> be the distance between two event locations or the distance between an event and an arbitrary point within the domain, then functions to describe clustering include:</p>
+<ul>
+<li><p>The nearest neighbor distance function <span class="math inline">\(G(r)\)</span>: The cumulative distribution of the distances from an event to the nearest other event (event-to-event function). It summarizes the distance between events (amount of clustering).</p></li>
+<li><p>The empty space function <span class="math inline">\(F(r)\)</span>: The cumulative distribution of the distances from a point in the domain to the nearest event (point-to-event function). It summarizes the distance gaps between events (amount of gappiness or lacunarity).</p></li>
+<li><p>The reduced second-moment function (Ripley <span class="math inline">\(K\)</span>) <span class="math inline">\(K(r)\)</span>: Defined such that <span class="math inline">\(\lambda \times K(r)\)</span> is the expected number of additional events within a distance <span class="math inline">\(r\)</span> of an event, where <span class="math inline">\(\lambda\)</span> is the average intensity of the events. It is a measure of the spatial autocorrelation among the events.</p></li>
+</ul>
+<p>To assess the degree of clustering and significance (in a statistical sense), we estimate values of the function using our data set and compare the resulting curve (empirical curve) to a theoretical curve assuming a homogeneous Poisson process.</p>
+<p>The theoretical curve is well defined for homogeneous point patterns (recall: CSR–complete spatial randomness). Deviations of an ‘empirical’ curve from a theoretical curve provides evidence against CSR.</p>
+<p>The theoretical functions assuming a homogeneous Poisson process are:</p>
+<ul>
+<li><span class="math inline">\(F(r) = G(r) = 1 - \exp(-\lambda \pi r^2)\)</span></li>
+<li><span class="math inline">\(K(r) = \pi r^2\)</span></li>
+</ul>
+<p>where <span class="math inline">\(\lambda\)</span> is the domain average spatial intensity and <span class="math inline">\(\exp()\)</span> is the exponential function.</p>
+<p>Recall the Swedish pine saplings data that comes with the {spatstat} package.</p>
+<div class="sourceCode" id="cb1201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1201-1"><a href="tuesday-october-25-2022.html#cb1201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(swedishpines)</span>
+<span id="cb1201-2"><a href="tuesday-october-25-2022.html#cb1201-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(swedishpines)</span></code></pre></div>
+<pre><code>## [1] &quot;ppp&quot;</code></pre>
+<p>Assign the data to an object called <code>SP</code> to reduce the amount of typing.</p>
+<div class="sourceCode" id="cb1203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1203-1"><a href="tuesday-october-25-2022.html#cb1203-1" aria-hidden="true" tabindex="-1"></a>( SP <span class="ot">&lt;-</span> swedishpines )</span></code></pre></div>
+<pre><code>## Planar point pattern: 71 points
+## window: rectangle = [0, 96] x [0, 100] units (one unit = 0.1 metres)</code></pre>
+<p>The output indicates that there are 71 events within a rectangle window 96 by 100 units where one unit is .1 meters.</p>
+<p>You obtain the values for the nearest neighbor function using the <code>Gest()</code> function from the {spatstat} package. Use the argument <code>correction = "none"</code> so no corrections are made for events near the window borders. Assign the output to a list object called <code>G</code>.</p>
+<div class="sourceCode" id="cb1205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1205-1"><a href="tuesday-october-25-2022.html#cb1205-1" aria-hidden="true" tabindex="-1"></a>( G <span class="ot">&lt;-</span> <span class="fu">Gest</span>(SP,</span>
+<span id="cb1205-2"><a href="tuesday-october-25-2022.html#cb1205-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">correction =</span> <span class="st">&quot;none&quot;</span>) )</span></code></pre></div>
+<pre><code>## Function value object (class &#39;fv&#39;)
+## for the function r -&gt; G(r)
+## ................................................
+##      Math.label     Description                 
+## r    r              distance argument r         
+## theo G[pois](r)     theoretical Poisson G(r)    
+## raw  hat(G)[raw](r) uncorrected estimate of G(r)
+## ................................................
+## Default plot formula:  .~r
+## where &quot;.&quot; stands for &#39;raw&#39;, &#39;theo&#39;
+## Recommended range of argument r: [0, 22.26]
+## Available range of argument r: [0, 22.26]
+## Unit of length: 0.1 metres</code></pre>
+<p>The output includes the distance <code>r</code>, the raw uncorrected estimate of <span class="math inline">\(G(r)\)</span> (empirical estimate) at various distances, and a theoretical estimate at those same distances based on a homogeneous Poisson process. Using the <code>plot()</code> method on the saved object <code>G</code> you compare the empirical estimates with the theoretical estimates. Here two horizontal lines are added to help with the interpretation.</p>
+<div class="sourceCode" id="cb1207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1207-1"><a href="tuesday-october-25-2022.html#cb1207-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(G)</span>
+<span id="cb1207-2"><a href="tuesday-october-25-2022.html#cb1207-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">5</span>), </span>
+<span id="cb1207-3"><a href="tuesday-october-25-2022.html#cb1207-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb1207-4"><a href="tuesday-october-25-2022.html#cb1207-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-537-1.png" width="672" /></p>
+<p>Values of G are on the vertical axis and values of distance (lag) are on the horizontal axis starting at 0. The black curve is the uncorrected estimate of <span class="math inline">\(G_{raw}(r)\)</span> from the event locations and the red curve is <span class="math inline">\(G_{pois}(r)\)</span> estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.</p>
+<p>The horizontal dashed line at G = .2 intersects the black line at a relative distance (r) of 5 units. This means that 20% of the events have another event <em>within</em> 5 units. This means that 20% of the saplings have another sapling withing .5 meter.</p>
+<p>Imagine placing a disc of radius 5 units around all 71 events then counting the number of events that have another event under the disc. That number divided by 71 is G(r).</p>
+<p>To check this compute all pairwise distances with the <code>pairdist()</code> function.</p>
+<div class="sourceCode" id="cb1208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1208-1"><a href="tuesday-october-25-2022.html#cb1208-1" aria-hidden="true" tabindex="-1"></a>PDmatrix <span class="ot">&lt;-</span> <span class="fu">pairdist</span>(SP)</span>
+<span id="cb1208-2"><a href="tuesday-october-25-2022.html#cb1208-2" aria-hidden="true" tabindex="-1"></a>PDmatrix[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code></pre></div>
+<pre><code>##          [,1]      [,2]     [,3]     [,4]     [,5]      [,6]
+## [1,]  0.00000 27.000000 37.01351 15.03330 54.33231 25.298221
+## [2,] 27.00000  0.000000 10.04988 12.04159 27.65863  8.544004
+## [3,] 37.01351 10.049876  0.00000 22.00000 17.72005 14.764823
+## [4,] 15.03330 12.041595 22.00000  0.00000 39.31921 11.401754
+## [5,] 54.33231 27.658633 17.72005 39.31921  0.00000 30.066593
+## [6,] 25.29822  8.544004 14.76482 11.40175 30.06659  0.000000</code></pre>
+<p>This creates a 71 x 71 square matrix of distances.</p>
+<p>Sum the number of rows whose distances are within 5 units. The minus one means you don’t count the row containing event over which you are summing (an event location is not a neighbor of itself).</p>
+<div class="sourceCode" id="cb1210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1210-1"><a href="tuesday-october-25-2022.html#cb1210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">rowSums</span>(PDmatrix <span class="sc">&lt;</span> <span class="dv">5</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="fu">nrow</span>(PDmatrix) <span class="sc">*</span> <span class="dv">100</span></span></code></pre></div>
+<pre><code>## [1] 19.71831</code></pre>
+<p>Returning to the plot, the horizontal dashed line at G = .5 intersects the black line at .8 meters indicating that 50% of the pine saplings have another pine sapling within .8 meter.</p>
+<p>You see that for a given radius the <span class="math inline">\(G_{raw}\)</span> line is <em>below</em> the <span class="math inline">\(G_{pois}(r)\)</span> line indicating that there are <em>fewer</em> pine saplings with another pine sapling in the vicinity than expected by chance.</p>
+<p>For example, if the saplings were arranged under a model of CSR, you would expect 20% of the pairwise distances to be within .3 meter and 50% of them to be within .55 meter.</p>
+<p>You make a better plot by first converting the object <code>G</code> to a data frame and then using {ggplot2} functions. Here you do this and then remove estimates for distances greater than 1.1 meter and convert the distance units to meters.</p>
+<div class="sourceCode" id="cb1212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1212-1"><a href="tuesday-october-25-2022.html#cb1212-1" aria-hidden="true" tabindex="-1"></a>G.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(G) <span class="sc">|&gt;</span></span>
+<span id="cb1212-2"><a href="tuesday-october-25-2022.html#cb1212-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(r <span class="sc">&lt;</span> <span class="dv">11</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1212-3"><a href="tuesday-october-25-2022.html#cb1212-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">r =</span> r <span class="sc">*</span> .<span class="dv">1</span>)</span>
+<span id="cb1212-4"><a href="tuesday-october-25-2022.html#cb1212-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1212-5"><a href="tuesday-october-25-2022.html#cb1212-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> G.df, </span>
+<span id="cb1212-6"><a href="tuesday-october-25-2022.html#cb1212-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> raw)) <span class="sc">+</span></span>
+<span id="cb1212-7"><a href="tuesday-october-25-2022.html#cb1212-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb1212-8"><a href="tuesday-october-25-2022.html#cb1212-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> theo), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1212-9"><a href="tuesday-october-25-2022.html#cb1212-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">5</span>), <span class="at">lty =</span> <span class="st">&#39;dashed&#39;</span>) <span class="sc">+</span></span>
+<span id="cb1212-10"><a href="tuesday-october-25-2022.html#cb1212-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (m)&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;G(r): Cumulative % of events having another event within a distance r&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1212-11"><a href="tuesday-october-25-2022.html#cb1212-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-540-1.png" width="672" /></p>
+<p>Values for the empty space function are obtained from the <code>Fest()</code> function. Here you apply the Kaplan-Meier correction for edge effects with <code>correction = "km"</code>. The function returns the percent of the domain within a distance from any event.</p>
+<p>Imagine again placing the disc, but this time on top of every point in the window and counting the number of points that have an event underneath.</p>
+<p>Make a plot and add some lines to help with interpretation.</p>
+<div class="sourceCode" id="cb1213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1213-1"><a href="tuesday-october-25-2022.html#cb1213-1" aria-hidden="true" tabindex="-1"></a>F.df <span class="ot">&lt;-</span> SP <span class="sc">|&gt;</span></span>
+<span id="cb1213-2"><a href="tuesday-october-25-2022.html#cb1213-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Fest</span>(<span class="at">correction =</span> <span class="st">&quot;km&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1213-3"><a href="tuesday-october-25-2022.html#cb1213-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1213-4"><a href="tuesday-october-25-2022.html#cb1213-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(r <span class="sc">&lt;</span> <span class="dv">11</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1213-5"><a href="tuesday-october-25-2022.html#cb1213-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">r =</span> r <span class="sc">*</span> .<span class="dv">1</span>)</span>
+<span id="cb1213-6"><a href="tuesday-october-25-2022.html#cb1213-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1213-7"><a href="tuesday-october-25-2022.html#cb1213-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> F.df, </span>
+<span id="cb1213-8"><a href="tuesday-october-25-2022.html#cb1213-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> km)) <span class="sc">+</span></span>
+<span id="cb1213-9"><a href="tuesday-october-25-2022.html#cb1213-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb1213-10"><a href="tuesday-october-25-2022.html#cb1213-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> theo), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1213-11"><a href="tuesday-october-25-2022.html#cb1213-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">c</span>(.<span class="dv">7</span>, .<span class="dv">58</span>), <span class="at">lty =</span> <span class="st">&#39;dashed&#39;</span>) <span class="sc">+</span></span>
+<span id="cb1213-12"><a href="tuesday-october-25-2022.html#cb1213-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> .<span class="dv">61</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1213-13"><a href="tuesday-october-25-2022.html#cb1213-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (m)&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;Percent of domain within a distance r of an event&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1213-14"><a href="tuesday-october-25-2022.html#cb1213-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-541-1.png" width="672" /></p>
+<p>The horizontal dashed line at F = .7 intersects the black line at a distance of .61 meter. This means that 70% of the spatial domain is less than .61 meters from a sapling. The red line is the theoretical homogeneous Poisson process model. If the process was CSR slightly less than 58% (F = .58) of the domain would be less than .6 meter from a sapling. In words, the arrangement of saplings is less “gappy” (more regular) than expected by chance.</p>
+<p>The J function is the ratio of the F function to the G function. For a CSR processes the value of J is one. Here we see a large and systematic departure of J from one for distances greater than about .5 meter, due to the regularity in the spacing of the saplings.</p>
+<div class="sourceCode" id="cb1214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1214-1"><a href="tuesday-october-25-2022.html#cb1214-1" aria-hidden="true" tabindex="-1"></a>J.df <span class="ot">&lt;-</span> SP <span class="sc">|&gt;</span></span>
+<span id="cb1214-2"><a href="tuesday-october-25-2022.html#cb1214-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Jest</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1214-3"><a href="tuesday-october-25-2022.html#cb1214-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1214-4"><a href="tuesday-october-25-2022.html#cb1214-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(r <span class="sc">&lt;</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1214-5"><a href="tuesday-october-25-2022.html#cb1214-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">r =</span> r <span class="sc">*</span> .<span class="dv">1</span>)</span>
+<span id="cb1214-6"><a href="tuesday-october-25-2022.html#cb1214-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1214-7"><a href="tuesday-october-25-2022.html#cb1214-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> J.df, </span>
+<span id="cb1214-8"><a href="tuesday-october-25-2022.html#cb1214-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> km)) <span class="sc">+</span></span>
+<span id="cb1214-9"><a href="tuesday-october-25-2022.html#cb1214-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb1214-10"><a href="tuesday-october-25-2022.html#cb1214-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> theo), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1214-11"><a href="tuesday-october-25-2022.html#cb1214-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance (m)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1214-12"><a href="tuesday-october-25-2022.html#cb1214-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-542-1.png" width="672" /></p>
+<p>A commonly used distance function for assessing clustering in point pattern data is called Ripley’s K function. It is estimated with the <code>Kest()</code> function.</p>
+<p>Mathematically it is defined as</p>
+<p><span class="math display">\[
+\hat K(r) = \frac{1}{\hat \lambda} \sum_{j \ne i} \frac{I(r_{ij} &lt; r)}{n}
+\]</span></p>
+<p>where <span class="math inline">\(r_{ij}\)</span> is the Euclidean distance between event <span class="math inline">\(i\)</span> and event <span class="math inline">\(j\)</span>, <span class="math inline">\(r\)</span> is the search radius, and <span class="math inline">\(\hat \lambda\)</span> is an estimate of the intensity <span class="math inline">\((\hat \lambda = n/|A|)\)</span> where <span class="math inline">\(|A|\)</span> is the window area and <span class="math inline">\(n\)</span> is the number of events. <span class="math inline">\(I(.)\)</span> is an indicator function equal to 1 when the expression <span class="math inline">\(r_{ij} &lt; r\)</span>, and 0 otherwise. If the events are homogeneous, <span class="math inline">\(\hat{K}(r)\)</span> increases at a rate proportional to <span class="math inline">\(\pi r^2\)</span>.</p>
 
 </div>
 </div>
