@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="tuesday-october-25-2022.html"/>
-<link rel="next" href="thursday-october-27-2022.html"/>
+<link rel="prev" href="tuesday-november-8-2022.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -261,7 +261,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
 <li class="chapter" data-level="" data-path="tuesday-october-25-2022.html"><a href="tuesday-october-25-2022.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html"><i class="fa fa-check"></i>Tuesday November 8, 2022</a></li>
 <li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html"><i class="fa fa-check"></i>Thursday October 27, 2022</a>
 <ul>
 <li class="chapter" data-level="" data-path="thursday-october-27-2022.html"><a href="thursday-october-27-2022.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
@@ -278,13 +277,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#evaluating-the-accuracy-of-the-interpolation"><i class="fa fa-check"></i>Evaluating the accuracy of the interpolation</a></li>
 <li class="chapter" data-level="" data-path="thursday-november-3-2022.html"><a href="thursday-november-3-2022.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="tuesday-november-8-2022-1.html"><a href="tuesday-november-8-2022-1.html"><i class="fa fa-check"></i>Tuesday November 8, 2022</a>
+<li class="chapter" data-level="" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html"><i class="fa fa-check"></i>Tuesday November 8, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-november-8-2022-1.html"><a href="tuesday-november-8-2022-1.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
-<li class="chapter" data-level="" data-path="tuesday-november-8-2022-1.html"><a href="tuesday-november-8-2022-1.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
-<li class="chapter" data-level="" data-path="tuesday-november-8-2022-1.html"><a href="tuesday-november-8-2022-1.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
-<li class="chapter" data-level="" data-path="tuesday-november-8-2022-1.html"><a href="tuesday-november-8-2022-1.html#machine-learning-for-spatial-prediction"><i class="fa fa-check"></i>Machine learning for spatial prediction</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="tuesday-november-8-2022.html"><a href="tuesday-november-8-2022.html#machine-learning-for-spatial-prediction"><i class="fa fa-check"></i>Machine learning for spatial prediction</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="tuesday-november-8-2022-1.html"><a href="tuesday-november-8-2022-1.html"><i class="fa fa-check"></i>Tuesday November 8, 2022</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -305,22 +305,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="tuesday-november-8-2022" class="section level1 unnumbered hasAnchor">
-<h1>Tuesday November 8, 2022<a href="tuesday-november-8-2022.html#tuesday-november-8-2022" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="tuesday-november-8-2022-1" class="section level1 unnumbered hasAnchor">
+<h1>Tuesday November 8, 2022<a href="tuesday-november-8-2022-1.html#tuesday-november-8-2022-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Today</p>
 <ul>
 <li>Lab 3</li>
 </ul>
 <p>Import the Florida wildfire data as a simple feature data frame called <code>FL_Fires.sf</code> and transform the native CRS to a Florida GDL Albers (EPSG 3086) using the following code chunk.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-november-8-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;FL_Fires&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))){</span>
-<span id="cb1-2"><a href="tuesday-november-8-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip&quot;</span>,</span>
-<span id="cb1-3"><a href="tuesday-november-8-2022.html#cb1-3" aria-hidden="true" tabindex="-1"></a>                here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>,<span class="st">&quot;FL_Fires.zip&quot;</span>))</span>
-<span id="cb1-4"><a href="tuesday-november-8-2022.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;FL_Fires.zip&quot;</span>),</span>
-<span id="cb1-5"><a href="tuesday-november-8-2022.html#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
-<span id="cb1-6"><a href="tuesday-november-8-2022.html#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-7"><a href="tuesday-november-8-2022.html#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="tuesday-november-8-2022.html#cb1-8" aria-hidden="true" tabindex="-1"></a>FL_Fires.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;FL_Fires&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb1-9"><a href="tuesday-november-8-2022.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3086</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-november-8-2022-1.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;FL_Fires&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))){</span>
+<span id="cb1-2"><a href="tuesday-november-8-2022-1.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="st">&quot;http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip&quot;</span>,</span>
+<span id="cb1-3"><a href="tuesday-november-8-2022-1.html#cb1-3" aria-hidden="true" tabindex="-1"></a>                here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>,<span class="st">&quot;FL_Fires.zip&quot;</span>))</span>
+<span id="cb1-4"><a href="tuesday-november-8-2022-1.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;FL_Fires.zip&quot;</span>),</span>
+<span id="cb1-5"><a href="tuesday-november-8-2022-1.html#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
+<span id="cb1-6"><a href="tuesday-november-8-2022-1.html#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-7"><a href="tuesday-november-8-2022-1.html#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="tuesday-november-8-2022-1.html#cb1-8" aria-hidden="true" tabindex="-1"></a>FL_Fires.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;FL_Fires&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="tuesday-november-8-2022-1.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3086</span>)</span></code></pre></div>
 <pre><code>## Reading layer `FL_Fires&#39; from data source 
 ##   `/Users/jelsner/Desktop/ClassNotes/ASS-2022/data/FL_Fires&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -329,27 +329,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Dimension:     XY
 ## Bounding box:  xmin: -9750382 ymin: 2824449 xmax: -8908899 ymax: 3632749
 ## Projected CRS: Mercator_2SP</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-november-8-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(FL_Fires.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-november-8-2022-1.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(FL_Fires.sf)</span></code></pre></div>
 <pre><code>## [1] 90261    38</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>Use the <code>us_counties()</code> function from the {USAboundaries} package to get county boundaries in Florida as a simple feature data frame called <code>Bay.sf</code>. Filter on <code>name</code> to keep only Bay County. Transform the geometry using EPSG 3086. (5)</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tuesday-november-8-2022.html#cb5-1" aria-hidden="true" tabindex="-1"></a>Bay.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_counties</span>(<span class="at">states =</span> <span class="st">&quot;FL&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="tuesday-november-8-2022.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="tuesday-november-8-2022.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">&quot;Bay&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="tuesday-november-8-2022.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3086</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tuesday-november-8-2022-1.html#cb5-1" aria-hidden="true" tabindex="-1"></a>Bay.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_counties</span>(<span class="at">states =</span> <span class="st">&quot;FL&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="tuesday-november-8-2022-1.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="tuesday-november-8-2022-1.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">&quot;Bay&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="tuesday-november-8-2022-1.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3086</span>)</span></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Use the function <code>st_intersection()</code> to create a new simple feature data frame called <code>BayFires.sf</code> from the <code>FL_Fires.sf</code> simple feature data frame that contains only the lightning caused wildfires inside the Bay County polygon. (10)</li>
 </ol>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="tuesday-november-8-2022.html#cb6-1" aria-hidden="true" tabindex="-1"></a>BayFires.sf <span class="ot">&lt;-</span> FL_Fires.sf <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="tuesday-november-8-2022.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersection</span>(Bay.sf) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="tuesday-november-8-2022.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(STAT_CAU_1 <span class="sc">==</span> <span class="st">&quot;Lightning&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="tuesday-november-8-2022-1.html#cb6-1" aria-hidden="true" tabindex="-1"></a>BayFires.sf <span class="ot">&lt;-</span> FL_Fires.sf <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="tuesday-november-8-2022-1.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersection</span>(Bay.sf) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="tuesday-november-8-2022-1.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(STAT_CAU_1 <span class="sc">==</span> <span class="st">&quot;Lightning&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: attribute variables are assumed to be spatially constant throughout all
 ## geometries</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Create a <code>ppp</code> object of the lightning caused wildfire locations in Bay County as unmarked events. Create an <code>owin</code> object of the county polygon (see Assignment 17). (10)</li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="tuesday-november-8-2022.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="tuesday-november-8-2022-1.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span></code></pre></div>
 <pre><code>## Loading required package: spatstat.data</code></pre>
 <pre><code>## Loading required package: spatstat.geom</code></pre>
 <pre><code>## spatstat.geom 2.4-0</code></pre>
@@ -364,35 +364,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## 
 ## spatstat 2.3-4       (nickname: &#39;Watch this space&#39;) 
 ## For an introduction to spatstat, type &#39;beginner&#39;</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tuesday-november-8-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a>BF.ppp <span class="ot">&lt;-</span> BayFires.sf<span class="sc">$</span>geometry <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="tuesday-november-8-2022.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ppp</span>() </span>
-<span id="cb21-3"><a href="tuesday-november-8-2022.html#cb21-3" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> Bay.sf <span class="sc">|&gt;</span></span>
-<span id="cb21-4"><a href="tuesday-november-8-2022.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.owin</span>() </span>
-<span id="cb21-5"><a href="tuesday-november-8-2022.html#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="tuesday-november-8-2022.html#cb21-6" aria-hidden="true" tabindex="-1"></a>( BF.ppp <span class="ot">&lt;-</span> BF.ppp[W] )</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tuesday-november-8-2022-1.html#cb21-1" aria-hidden="true" tabindex="-1"></a>BF.ppp <span class="ot">&lt;-</span> BayFires.sf<span class="sc">$</span>geometry <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="tuesday-november-8-2022-1.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ppp</span>() </span>
+<span id="cb21-3"><a href="tuesday-november-8-2022-1.html#cb21-3" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> Bay.sf <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href="tuesday-november-8-2022-1.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.owin</span>() </span>
+<span id="cb21-5"><a href="tuesday-november-8-2022-1.html#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="tuesday-november-8-2022-1.html#cb21-6" aria-hidden="true" tabindex="-1"></a>( BF.ppp <span class="ot">&lt;-</span> BF.ppp[W] )</span></code></pre></div>
 <pre><code>## Planar point pattern: 276 points
 ## window: polygonal boundary
 ## enclosing rectangle: [208178.4, 267362.83] x [658205.4, 729733.7] units</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Plot a map displaying the local intensity. (5)</li>
 </ol>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tuesday-november-8-2022.html#cb23-1" aria-hidden="true" tabindex="-1"></a>BF.ppp <span class="sc">|&gt;</span></span>
-<span id="cb23-2"><a href="tuesday-november-8-2022.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>() <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="tuesday-november-8-2022.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
-<span id="cb23-4"><a href="tuesday-november-8-2022.html#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="tuesday-november-8-2022.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(BF.ppp, </span>
-<span id="cb23-6"><a href="tuesday-november-8-2022.html#cb23-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="st">&#39;.&#39;</span>, </span>
-<span id="cb23-7"><a href="tuesday-november-8-2022.html#cb23-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tuesday-november-8-2022-1.html#cb23-1" aria-hidden="true" tabindex="-1"></a>BF.ppp <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="tuesday-november-8-2022-1.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>() <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="tuesday-november-8-2022-1.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
+<span id="cb23-4"><a href="tuesday-november-8-2022-1.html#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="tuesday-november-8-2022-1.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(BF.ppp, </span>
+<span id="cb23-6"><a href="tuesday-november-8-2022-1.html#cb23-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="st">&#39;.&#39;</span>, </span>
+<span id="cb23-7"><a href="tuesday-november-8-2022-1.html#cb23-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Compute the nearest neighbor function (G) using the <code>Gest()</code> function without correction for borders (see Lesson 18). Make a plot of the estimated values for this function and include the theoretical curve under the null hypothesis of complete spatial randomness. From the plot eyeball an estimate of the percentage of lightning caused wildfires there were within 500 meters of another wildfire. (15)</li>
 </ol>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="tuesday-november-8-2022.html#cb24-1" aria-hidden="true" tabindex="-1"></a>BF.ppp <span class="sc">|&gt;</span></span>
-<span id="cb24-2"><a href="tuesday-november-8-2022.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Gest</span>(<span class="at">correction =</span> <span class="st">&quot;km&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="tuesday-november-8-2022.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>() </span>
-<span id="cb24-4"><a href="tuesday-november-8-2022.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">500</span>, </span>
-<span id="cb24-5"><a href="tuesday-november-8-2022.html#cb24-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb24-6"><a href="tuesday-november-8-2022.html#cb24-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="tuesday-november-8-2022-1.html#cb24-1" aria-hidden="true" tabindex="-1"></a>BF.ppp <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="tuesday-november-8-2022-1.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Gest</span>(<span class="at">correction =</span> <span class="st">&quot;km&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="tuesday-november-8-2022-1.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>() </span>
+<span id="cb24-4"><a href="tuesday-november-8-2022-1.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">500</span>, </span>
+<span id="cb24-5"><a href="tuesday-november-8-2022-1.html#cb24-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb24-6"><a href="tuesday-november-8-2022-1.html#cb24-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 
 </div>
@@ -401,8 +401,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="tuesday-october-25-2022.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="thursday-october-27-2022.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="tuesday-november-8-2022.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

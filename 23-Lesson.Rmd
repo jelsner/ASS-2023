@@ -7,7 +7,7 @@ Today
 - Interpolating to areal units
 - Simulating spatial fields
 - Interpolating multiple variables
-- Machine learning for spatial prediction
+- Machine learning for spatial interpolation
 
 ## Interpolating to areal units (block kriging) {-}
 
@@ -519,6 +519,6 @@ Obtaining a quality statistical spatial interpolation is a nuanced process but w
 
 Kriging is useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
 
-## Machine learning for spatial prediction {-}
+## Machine learning for spatial interpolation {-}
 
 See https://geocompr.robinlovelace.net/spatial-cv.html
