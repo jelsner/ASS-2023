@@ -1,11 +1,11 @@
 # Syllabus {.unnumbered}
 
-Course Title: GIS5122: Applied Spatial Statistics
+## GIS5122: Applied Spatial Statistics {.unnumbered}
 
 ## Contact information {.unnumbered}
 
 -   Instructor Name: Professor James B. Elsner
--   Instructor Location: Bellamy Building, Room 323a
+-   Instructor Location: Bellamy Building, Room 314
 -   Lesson Hours: TR 8:00-9:15 p.m.
 -   Student Hours: TR 9:15-10:30 a.m., 2-3 p.m.
 
@@ -19,9 +19,11 @@ Links to my professional stuff (if you are curious)
 
 ## Course description and expected learning outcomes {.unnumbered}
 
-This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes that students know basic statistics through multiple linear regression. And that students have some prior experience with using R. Students without any knowledge of R should look various online tutorials (see below).
+This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes you know basic statistics through multiple linear regression. And that you have some prior experience with using R. If you have no knowledge of R you should look at various online tutorials (see below).
 
-In this course you will get a survey of the methods used to describe, analyze, and model *spatial* data. Focus will be on applications. Emphasis is on how **statistical** methods are related through the concept of spatial autocorrelation.
+All the course content is available on GitHub <https://github.com/jelsner/ASS-2022>
+
+In this course you will get a survey of the methods used to describe, analyze, and model spatial data. Focus will be on applications. Emphasis is on how statistical methods are related through the concept of spatial autocorrelation.
 
 Expected learning outcomes
 
@@ -33,15 +35,12 @@ The course offers a programming approach to exposing you to spatial statistics. 
 
 But in taking this approach I don't want to give you the false impression that statisticians have the answers. A *working* knowledge of the model fitting process needs to be combined with a good understanding of the context in which you are working.
 
-## Materials and class meetings {.unnumbered}
+Materials and class meetings {.unnumbered}
 
 -   Access to the internet and a computer
-
--   Lesson and assignment files on GitHub
-
+-   All course materials are available through GitHub <https://github.com/jelsner/ASS-2022>
 -   No textbook is required
-
--   Many excellent online resources are available. Here are some of my favorites
+-   Many excellent online resources are also available. Here are some of my favorites
 
     -   Data Science <https://r4ds.had.co.nz/>
     -   Tidyverse <https://dominicroye.github.io/en/2020/a-very-short-introduction-to-tidyverse/>
@@ -50,9 +49,9 @@ But in taking this approach I don't want to give you the false impression that s
 
 Class meetings
 
-During each lesson I will work through and explain the R code and notes contained within an `xx-Lesson.Rmd` file. The notes in the lesson files are comprehensive, so you can work through them on your own if you are unable to make it to class.
+During each lesson I will work through and explain the R code and notes contained within an `xx-Lesson.Rmd` file. Lessons will be held in this classroom (BEL 320). The notes in the lesson files are comprehensive, so you can work through them on your own if you are unable to make it to class.
 
-Notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
+The notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
 
 ## Grades and ethics {.unnumbered}
 
@@ -94,32 +93,32 @@ It is my intent to present notes and data that are respectful of diversity: gend
 5.  Estimating variograms and interpolating spatially (\~ 6 lessons)
 6.  Other topics (\~ 2 lessons)
 
-| No. of Weeks | Dates                   | Topic              |
-|------|-------------------------|--------------------|
-| 2    | August 23, 25           | Syllabus and setup |
-| 2    | August 30, September 1  | Data frames        |
-| 3    | September 6, 8          |                    |
-| 4    | September 13, 15        |                    |
-| 5    | September 20, 22        |                    |
-| 6    | September 27, 29        |                    |
-| 7    | October 4, 6            |                    |
-| 8    | October 11, 13          |                    |
-| 9    | October 18, 20          |                    |
-| 10   | October 25, 27          |                    |
-| 11   | November 1, 3           |                    |
-| 12   | November 8, 10          |                    |
-| 13   | November 15, 17         |                    |
-| 14   | November 29, December 1 |                    |
+| Week | Dates                   | General topics                          |
+|------|-------------------------|-----------------------------------------|
+| 1    | August 23, 25           | Syllabus and setup                      |
+| 2    | August 30, September 1  | Data frames & graphs                    |
+| 3    | September 6, 8          | Spatial data                            |
+| 4    | September 13, 15        | Joins & interpolation                   |
+| 5    | September 20, 22        | Maps                                    |
+| 6    | September 27, 29        | Neighborhoods & spatial autocorrelation |
+| 7    | October 4, 6            | Spatial regression models               |
+| 8    | October 11, 13          | Geographic regression                   |
+| 9    | October 18, 20          | Point pattern data                      |
+| 10   | October 25, 27          | Spatial intensity                       |
+| 11   | November 1, 3           | Spatial point pattern models            |
+| 12   | November 8, 10          | Variography                             |
+| 13   | November 15, 17         | Spatial interpolation                   |
+| 14   | November 29, December 1 | Simulation                              |
 
 28 dates 23 lesson days + 5 lab days
 
-| Lab        | Date            | Lessons   |
-|------------|-----------------|-----------|
-| 1          | Tuesday September 6 |       |
-| 2          | Thursday September 22 |     |
-| 3          | Thursday October 13    |
-| 4          | Tuesday November 8    |
-| 5          | Thursday December 1       |
+| Lab        | Date                  | Lessons covered   |
+|------------|-----------------------|-------------------|
+| 1          | Tuesday September 6   |   1-4             |
+| 2          | Thursday September 22 |   5-8             |
+| 3          | Thursday October 13   |   9-13            |
+| 4          | Tuesday November 8    |  14-19            |
+| 5          | Thursday December 1   |  20-23            |
 
 ## Reference materials {.unnumbered}
 
