@@ -6,7 +6,7 @@
 
 -   Instructor Name: Professor James B. Elsner
 -   Instructor Location: Bellamy Building, Room 314
--   Lesson Hours: TR 8:00-9:15 p.m.
+-   Lesson Hours: TR 8:00-9:15 a.m.
 -   Student Hours: TR 9:15-10:30 a.m., 2-3 p.m.
 
 Email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}
@@ -164,6 +164,7 @@ Spatial data
 -   The Care and Feeding of Spatial Data: <https://docs.google.com/presentation/d/1BHlrSZWmw9tRWfYFVsRLNhAoX6KzhOhsnezTqL-R0sU/edit#slide=id.g6aeb55b281_0_550>
 -   Accessing remotely sensed imagery: <https://twitter.com/mouthofmorrison/status/1212840820019208192/photo/1>
 -   Spatial data sets from Brazil: <https://github.com/ipeaGIT/geobr>
+-   Getting started with R and R-spatial <https://bakaniko.github.io/foss4g2022-getting-started-rspatial/>
 
 Machine learning
 

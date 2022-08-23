@@ -11,7 +11,10 @@ Today
 
 ## Expectations {-}
 
-Lesson Hours: Mon/Wed 9:05 a.m. - 9:55 a.m., Lab Hours: Fri 9:05 a.m. - 9:55 a.m., Student Hours: Mon/Wed 9:55 a.m. - 10:30 a.m. The best way to contact me is through email: <jelsner@fsu.edu>.
+Lesson Hours: TR 8:00-9:15 p.m.  
+Student Hours: TR 9:15-10:30 a.m., 2-3 p.m.
+
+The best way to contact me is through email: <jelsner@fsu.edu>.
 
 This course is a survey of methods to describe, analyze, and model _spatial_ data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.
 
@@ -28,6 +31,9 @@ On the other hand, if this is entirely new don't get discouraged. This class doe
 Today I review how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your installation. They form the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages.
 
 The one exception is that I introduce functions from the {readr} package today that simplify getting data into R. These functions are similar to the corresponding functions in the {base} package.
+
+
+- [Getting started with R and R-spatial](https://bakaniko.github.io/foss4g2022-getting-started-rspatial/)
 
 ## Data science workflow with R markdown {-}
 
