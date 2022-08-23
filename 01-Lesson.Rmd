@@ -30,7 +30,7 @@ Then get RStudio
 -   Download RStudio Desktop
 -   Install and open RStudio
 
-Finally (not required for success in this class), learn git with R
+Finally, learn how to connect to GitHub (optional). See Jennifer Bryan's Happy Git and GitHub for R.
 
 <https://happygitwithr.com/install-git.html>
 
