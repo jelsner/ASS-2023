@@ -57,7 +57,7 @@ The notes are written using the markdown language. Markdown is a way to write co
 
 You are responsible for:
 
-1.  Reading and running the code in the lesson R markdown files (`.Rmd`) files. You can do this during the remote lessons as I talk and run my code or outside of class on your own
+1.  Reading and running the code in the lesson R markdown files (`.Rmd`) files. You can do this during the lessons as I talk and run my code or outside of class on your own
 2.  Completing and returning the lab assignments on time
 
 Grades are determined by how well you do on the assignments using the following standard:
