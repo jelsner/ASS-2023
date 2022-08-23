@@ -108,7 +108,6 @@ You save these 10 integer values in your working directory by typing them into t
 counts <- c(2, 3, 0, 3, 1, 0, 0, 1, 2, 1)
 counts
 ```
-
 You assign the values to an object called `counts`. The assignment operator is an equal sign (`<-` or `=`). Values do not print. They are assigned to an object name. They are printed by typing the object name as we did on the second line. When printed the values are prefaced with a `[1]`. This indicates that the object is a vector and the first entry in the vector has a value of 2 (The number immediately to the right of `[1]`).
 
 Use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.
@@ -118,7 +117,7 @@ Then you apply functions to data stored in an object.
 ```{r}
 sum(counts)
 length(counts)
-sum(counts)/length(counts)
+sum(counts) / length(counts)
 mean(counts)
 ```
 
