@@ -60,7 +60,9 @@ When doing data science you switch between:
 
 To be efficient you write code and comments *together* in the same file. This is where R markdown comes in (files that end with `.Rmd`). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When you `Knit` this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output.
 
-The resulting file is converted into HTML or into a PDF or Word document. Some of the text in a markdown file is for format instructions. The following symbols are used for emphasis *italics*, **bold**, and `code font`. When you create a *new* markdown document in R Studio, it contains a sample example. 
+The resulting file is converted into HTML or into a PDF or Word document. Some of the text in a markdown file is for format instructions. The following symbols are used for emphasis *italics*, **bold**, and `code font`. When you create a *new* markdown document in R Studio, it contains a sample example.
+
+File \> New File \> R Markdown \> My Rmd \> Save to Desktop \> Knit
 
 Lesson notes for this class are written in text using markdown formatting as needed. Text is interspersed with code. The format for code chunks is
 
@@ -123,7 +125,7 @@ mean(counts)
 
 The function `sum()` totals the hurricane counts over all years, `length()` returns the number of elements in the vector. Other functions include `sort()`, `min()`, `max()`, `range()`, `diff()`, and `cumsum()`.
 
-The object `counts` that you create is a vector in the sense that the elements are ordered. There is a first element, a second element, and so on. This is good for several reasons.
+The object `counts` that you created is a vector in the sense that the elements are ordered. There is a first element, a second element, and so on. This is good for several reasons.
 
 The hurricane counts have a chronological order: year 1, year 2, etc and you want that ordered reflected in the data object. Also, you would like to be able to make changes to the data values by element. Also, vectors are math objects so that math operations can be performed on them in a natural way.
 
@@ -164,9 +166,13 @@ d1 - mean(d1)
 
 In this case a single number (the average of the first decade) is subtracted from each element of the vector.
 
-Suppose you are interested in the inter annual variability in the set of landfall counts. The variance is computed as $$
+Suppose you are interested in the inter annual variability in the set of landfall counts. The variance is computed as
+
+$$
 \hbox{var}(x) = \frac{(x_1 - \bar x)^2 + (x_2 - \bar x)^2 + \cdots + (x_n - \bar x)^2}{n-1} = \frac{1}{n-1}\sum_{i=1}^n (x_i - \bar x)^2
 $$
+
+Note: the markdown file recognizes math written in LaTeX. The formula for the variance is written using LaTeX notation gets rendered as a math equation as in a textbook. See <https://www.overleaf.com/learn/latex/Mathematical_expressions>.
 
 Although the `var()` function computes this, here you see how to do this using simple functions. The key is to find the squared differences and then sum.
 
@@ -383,3 +389,5 @@ head(mtcars)
 
 str(mtcars)
 ```
+
+Switch markdown editing mode from Source to Visual.
