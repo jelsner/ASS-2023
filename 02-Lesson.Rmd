@@ -42,25 +42,25 @@ A scientific paper is *advertisement* for a claim about the world. The *proof* i
 
 Computer code is the recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self.
 
-When you use a spreadsheet, it's hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words you use to describe these types of procedures are not standard.
+When you use a spreadsheet to obtain a result, it's hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words used to describe these types of procedures are not standard.
 
-If you've ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code with new data is simple.
+If you've ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code to produce another map with new data is simple.
 
-Code is an efficient way to communicate because all important information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.
+Code is an efficient way to communicate because all the information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.
 
 The person most likely to reproduce our work a few months later is you. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code you write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.
 
-In data science you switch between:
+When doing data science you switch between:
 
 (1) Writing code: Code to get your data into R, code to look at tables and summary statistics, code to make graphs, code to compute spatial statistics, code to model and plot our results.
 
-(2) Looking at output that your code produces: Your code is a set of instructions that produces the output you want: a table, a model, or a figure. It is helpful to be able to see that output.
+(2) Looking at output that your code produced: Your code is a set of instructions that produces the output you want: a table, a model, or a figure. It is helpful to be able to see that output.
 
 (3) Taking notes: You also write text about what you are doing, why you are doing it, and what the results mean.
 
 To be efficient you write code and comments *together* in the same file. This is where R markdown comes in (files that end with `.Rmd`). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When you `Knit` this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output.
 
-The resulting file is converted into a HTML, PDF, or Word document. The text in the markdown file they has simple format instructions. For example, the following symbols are used for emphasis *italics*, **bold**, and `code font`. When you create a *new* markdown document in R Studio, it contains a sample example.
+The resulting file is converted into HTML or into a PDF or Word document. Some of the text in a markdown file is for format instructions. The following symbols are used for emphasis *italics*, **bold**, and `code font`. When you create a *new* markdown document in R Studio, it contains a sample example. 
 
 Lesson notes for this class are written in text using markdown formatting as needed. Text is interspersed with code. The format for code chunks is
 
