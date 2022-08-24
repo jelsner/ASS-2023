@@ -20,6 +20,7 @@ Note: The argument `repos =` in the `install.packages()` function directs where 
 For interactive use you need to specify the repository and when you use the `Knit` button you don't want to install packages that already exist on your computer so you add the conditional `if()` function that says "only install the package IF it is not (`!`) available".
 
 Make a copy of the data frame by assigning it to an object with the name `df` and print the first six rows using the `head()` function.
+
 ```{r}
 df <- studentdata
 head(df)
