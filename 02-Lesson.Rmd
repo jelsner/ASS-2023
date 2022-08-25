@@ -1,3 +1,9 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
 # Thursday, August 25, 2022 {.unnumbered}
 
 **"The trouble with programmers is that you can never tell what a programmer is doing until it's too late."** --- Seymour Cray
@@ -8,13 +14,13 @@ Today
 -   An introduction to using R
 -   Data frames
 
-Student Hours: TR 9:15-10:30 a.m., 2-3 p.m. The best way to contact me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}.
+Student Hours: TR 9:15-10:30 a.m., 2-3 p.m. The best way to get a hold of me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}.
 
-This course is a survey of methods to describe, analyze, and model *spatial* data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.
+This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.
 
-During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own. The notes are written using the markdown language.
+During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own.
 
-Grades are determined by how well you do on the lab assignments. Lab assignments will be done in class on the following dates:
+Grades are determined by how well you do on the lab assignments. Lab assignments will be started in class on the following dates:
 
 | Lab | Date                  | Lessons covered |
 |-----|-----------------------|-----------------|
@@ -24,23 +30,23 @@ Grades are determined by how well you do on the lab assignments. Lab assignments
 | 4   | Tuesday November 8    | 14-19           |
 | 5   | Thursday December 1   | 20-23           |
 
-And are due by 6 p.m. on that day.
+Lab assignments are due by 6 p.m. on that day.
 
-Help with all aspects of R programming is ubiquitous on the web. A list of some of the sites related to spatial analysis and modeling are in the syllabus.
+Help with all aspects of R programming is ubiquitous on the web. A list of some of the sites related to spatial analysis and modeling using R are listed in the syllabus.
 
-A brand new resource on getting started with R and R spatial I came across yesterday. - [Getting started with R and R-spatial](https://bakaniko.github.io/foss4g2022-getting-started-rspatial/)
+A new resource on getting started with R and R spatial I came across my desk yesterday. - [Getting started with R and R-spatial](https://bakaniko.github.io/foss4g2022-getting-started-rspatial/)
+
+Switch markdown editing mode from Source to Visual.
 
 I will spend the first several lessons teaching you how to work with R. This material might be a review. If this is entirely new, don't get discouraged. This class will not involve writing complex code.
 
-Today I review how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your initial installation. The functions form these packages provide the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages.
-
-The one exception is that I introduce functions from the {readr} package today that simplify getting data into R. These functions are similar to the corresponding functions in the {base} package.
+Today I show you how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your initial installation. The functions form these packages provide the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages.
 
 ## Data science workflow with R markdown {.unnumbered}
 
-A scientific paper is *advertisement* for a claim about the world. The *proof* is the procedure that was used to obtain the result that under girds the claim. The computer code is the exact procedure.
+A scientific paper is *advertisement* for a claim about the world. The *proof* is the procedure that was used to obtain the result that under girds the claim. Computer code is typically the exact procedure.
 
-Computer code is the recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self.
+Computer code is a recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self.
 
 When you use a spreadsheet to obtain a result, it's hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words used to describe these types of procedures are not standard.
 
@@ -48,11 +54,11 @@ If you've ever made a map using GIS you know how hard it is to make another (eve
 
 Code is an efficient way to communicate because all the information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.
 
-The person most likely to reproduce our work a few months later is you. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code you write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.
+The person most likely to reproduce your work a few months later is you. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code you write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.
 
 When doing data science you switch between:
 
-(1) Writing code: Code to get your data into R, code to look at tables and summary statistics, code to make graphs, code to compute spatial statistics, code to model and plot our results.
+(1) Writing code: Code to get your data into R, code to look at tables and summary statistics, code to make graphs, code to compute statistics, code to model and plot your results.
 
 (2) Looking at output that your code produced: Your code is a set of instructions that produces the output you want: a table, a model, or a figure. It is helpful to be able to see that output.
 
@@ -67,7 +73,8 @@ File \> New File \> R Markdown \> My Rmd \> Save to Desktop \> Knit
 Lesson notes for this class are written in text using markdown formatting as needed. Text is interspersed with code. The format for code chunks is
 
 ```{r}
-# lines of code here
+z <- "hello world"# lines of code here
+z
 ```
 
 Three back-ticks (on a U.S. keyboard, the character under the escape key) followed by a pair of curly braces containing the name of the computer language you are using. The back-ticks-and-braces part signal that code is about to begin. You write code as needed, and then end the chunk with a new line containing three more back-ticks.
@@ -247,7 +254,7 @@ To repeat each element of the vector use the `each =` argument.
 rep(simpsons, each = 2)
 ```
 
-More complicated patterns can be repeated by specifying pairs of equal length vectors. In this case, each element of the first vector is repeated the corresponding number of times specified by the element in the second vector.
+More complicated patterns can be repeated by specifying pairs of equal length vectors. In this case, each element of the first vector is repeated the corresponding number of times given by the element in the second vector.
 
 ```{r}
 rep(c("long", "short"),  times = c(2, 3))
@@ -335,6 +342,8 @@ The top line of the table is called the header. Each line below the header conta
 
 Each data element is in a cell. To retrieve a data value from a cell, you enter its row and column coordinates in that order in the single square bracket `[]` operator and separated by a column.
 
+df[row, column]
+
 Here is the cell value from the first row, second column of `df`.
 
 ```{r}
@@ -389,5 +398,3 @@ head(mtcars)
 
 str(mtcars)
 ```
-
-Switch markdown editing mode from Source to Visual.
