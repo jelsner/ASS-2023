@@ -208,7 +208,7 @@ Now you compute the correlation between EF rating (`mag`) and path length (`len`
 cor(Torn2.df$mag, Torn2.df$len)
 ```
 
-Path length is recorded in miles and path width in yards and the EF damage rating variable `mag` is numeric. To convert path length to kilometers, path width to meters, and the EF rating to a factor and then adding these changes as new columns, type
+Path length is recorded in miles and path width in yards and the EF damage rating variable `mag` is numeric. Here you convert path length to kilometers, path width to meters, and the EF rating to a factor and include these changes as new columns in the data frame.
 
 ```{r}
 Torn2.df$Length <- Torn2.df$len * 1609.34
@@ -223,7 +223,7 @@ plot(x = Torn2.df$EF,
      y = Torn2.df$Length/1000)
 ```
 
-Hurricane data
+Example: Annual U.S. hurricane counts
 
 Here you import the data directly from the Web by specifying the URL as a character string using the `file =` argument.
 
@@ -254,11 +254,13 @@ table(USHur.df$FL)
 
 There are 93 years without a FL hurricane, 43 years with exactly one hurricane, 24 years with two hurricanes, and so on.
 
-Rainfall data
+Example: Statewide average rainfall in Florida
 
-The data are monthly statewide average rainfall (in inches) for Florida starting in 1895 from <http://www.esrl.noaa.gov/psd/data/timeseries/>. Note: I put values into a text editor and then uploaded the file to the Web at location <http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt>.
+The data are monthly statewide average rainfall (in inches) for Florida starting in 1895. The data were obtained from <http://www.esrl.noaa.gov/psd/data/timeseries/>. 
 
-To import the data you use the `readr::read_table()` function and assign the object the name `FLp.df`. You type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns.
+I put values into a text editor and then uploaded the file to the Web at location <http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt>.
+
+You get the data into R with the `readr::read_table()` function. You assign the data object the name `FLp.df`. You type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns.
 
 ```{r}
 loc <- "http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt"
@@ -270,9 +272,17 @@ The first column is the year and the next 12 columns are the months.
 
 What was the statewide rainfall during June of 1900?
 
+What happens when you check the column (vector) labeled `Year` to see what elements are equal to 1900?
+
 ```{r}
 FLp.df$Year == 1900
+```
 
+Returns a vector with one element equal to `TRUE`.
+
+What happens when we use this vector to select the vector of June rainfall values?
+
+```{r}
 FLp.df$Jun[FLp.df$Year == 1900]
 ```
 
@@ -304,11 +314,11 @@ max(FLp.df[FLp.df$Year == 1965, 2:12])
 
 ## Working with data frames using functions from {dplyr}
 
-The functions in the {dplyr} package simplify working with data frames. The functions work only on data frames.
+The functions in the {dplyr} package (part of the tidyverse set of packages) simplify working with data frames. The functions work only on data frames.
 
-The function names are English language *verbs* so they are easy to remember. The verbs help you translate thought into code.
+Function names are English language *verbs* so they are easier to remember. The verbs help you translate thought into code.
 
-We consider the verbs one at a time using the `airquality` data frame. The data frame contains air quality measurements taken in New York City between May and September 1973. (`?airquality`).
+Here we consider some of verbs using the `airquality` data frame. The data frame contains air quality measurements taken in New York City between May and September 1973 (`?airquality`) at time when pollution levels in the city were at an all time high.
 
 ```{r}
 dim(airquality)
