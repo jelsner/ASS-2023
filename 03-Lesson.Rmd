@@ -65,7 +65,7 @@ Some students left that response blank and therefore the response is coded with 
 
 The variable type depends on the question asked. For example, answers given to the question of student height result in a numeric variable, answers given to the question about drink preference result in a character (or factor) variable.
 
-For integer, character, and factor variables we summarize the set of responses with the `table()` function.
+For integer, character, and factor variables you summarize the set of responses with the `table()` function.
 
 ```{r}
 table(df$Drink)
@@ -84,7 +84,7 @@ Notice that the sum of the responses is `r sum(table(df$Drink))`, which is less 
 Students who left that question blank are ignored in the `table()` function. To include the missing values you add the argument `useNA = "ifany"` to the `table()` function.
 
 ```{r}
-table(df$Drink,
+table(df$Drink, 
       useNA = "ifany")
 ```
 
@@ -159,7 +159,7 @@ Most of the time you will start by getting your data stored in a file into R. Se
 
 For example, consider the regularly updated reports of tornadoes in the United States. The data repository is the Storm Prediction Center (SPC) <https://www.spc.noaa.gov/wcm/index.html#data>.
 
-Here you are interested in the file called `1950-2020_actual_tornadoes.csv`. First you download the file from the site with the `download.file()` function specifying the location (`url =`) and a name you want the file to be called on your computer (`destfile =`).
+Here you are interested in the file called `1950-2021_actual_tornadoes.csv`. First you download the file from the site with the `download.file()` function specifying the location (`url =`) and a name you want the file to be called on your computer (`destfile =`).
 
 ```{r}
 download.file(url = "http://www.spc.noaa.gov/wcm/data/1950-2021_actual_tornadoes.csv",
@@ -531,7 +531,7 @@ Find the highest ozone concentration by month. Include the number of observation
 airquality |>
   dplyr::group_by(Month) |>
   dplyr::summarize(OzoneMax =  max(Ozone, na.rm = TRUE),
-                  NumDays = dplyr::n())
+                   NumDays = dplyr::n())
 ```
 
 Find the average ozone concentration when temperatures are above and below 70 F. Include the number of observations (days) in the two groups.

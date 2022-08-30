@@ -1,2 +1,4 @@
 r-markdown
 including-plots
+getting-data-into-r
+working-with-data-frames-using-functions-from-dplyr
