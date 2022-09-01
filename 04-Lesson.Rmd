@@ -61,7 +61,7 @@ To create a data frame with female penguins that have flippers longer than 220 m
 
 ```{r}
 ( df <- penguins |> 
-          dplyr::filter(flipper_length_mm > 220 & 
+          dplyr::filter(flipper_length_mm > 220 &
                         sex == "female") )
 ```
 
@@ -150,9 +150,9 @@ Here there is a deeper structure. Theoretically, geometric objects (i.e., the th
 For example here you map a new variable to the size aesthetic.
 
 ```{r}
-ggplot(data = df, 
-       mapping = aes(x = foo, y = bar)) +
-  geom_point(mapping = aes(size = zaz))
+ggplot2::ggplot(data = df, 
+                mapping = ggplot2::aes(x = foo, y = bar)) +
+  ggplot2::geom_point(mapping = ggplot2::aes(size = zaz))
 ```
 
 You changed the scatter plot to a bubble chart by mapping a new variable to the size aesthetic. Any visualization can be deconstructed into *geom* specifications and a mapping from data to aesthetic attributes of the geometric objects.
@@ -163,7 +163,7 @@ The principle of layering is also important. To create good visualizations you o
 -   Plot data with additional contextual information contained in other data, or
 -   Plot summaries or statistical transformations from the data
 
-Let's modify the bubble chart by getting additional data and plotting it as a new layer below the bubbles. First get the data from the {ggplot2} package using the `map_data()` function and specifying the name of the map (here `"World"`) and assigning it to a data frame with the name `df2`.
+Let's modify the bubble chart by getting additional data and plotting it as a new layer below the bubbles. First get the data from the {ggplot2} package using the `map_data()` function and specifying the name of the map (here `"world"`) and assigning it to a data frame with the name `df2`.
 
 ```{r}
 df2 <- ggplot2::map_data(map = "world") |>
@@ -174,7 +174,7 @@ Plot the new data as a new layer underneath the bubbles.
 
 ```{r}
 ggplot(data = df, 
-       aes(x = foo, y = bar)) +
+       mapping = aes(x = foo, y = bar)) +
   geom_polygon(data = df2, 
                mapping = aes(x = long, y = lat, group = group)) +
   geom_point(mapping = aes(size = zaz), color = "red")
@@ -200,7 +200,7 @@ p1 <- ggplot(data = df,
         geom_polygon(data = df2, 
                      mapping = aes(x = long, y = lat, 
                                    group = group)) +
-        geom_point(aes(size = zaz), color = "red")
+        geom_point(mapping = aes(size = zaz), color = "red")
 ```
 
 Now modify the axes labels saving the new plot to an object called `p2`.
@@ -248,7 +248,8 @@ Then use the functions from the {ggplot2} package to plot the number of tornadoe
 ```{r}
 ggplot(data = df,
        mapping = aes(x = Year, y = nT)) +
-  geom_line()
+  geom_line() +
+  geom_point()
 ```
 
 Note: In the early production stage of research, I like to break the code into steps as above: (1) Import the data, (2) manipulate the data, and (3) plot the data. It is easier to document but it  introduces the potential for mistakes because of the intermediary objects in the environment (e.g., `Torn.df`, `df`).
@@ -407,7 +408,7 @@ ggplot(mapping = aes(x = Year, y = N100, fill = N100)) +
   geom_text(aes(label = N100), vjust = 1.5, size = 3) +
   scale_x_continuous(breaks = seq(1940, 2020, 10)) +
   labs(title = expression(paste("Number of days in Tallahassee, Florida at or above 100", {}^o, " F")),
-       subtitle = "Last official 100+ day was September 18, 2019",
+       subtitle = "",
        x = "", y = "") +
 #  ylab(expression(paste("Number of days in Tallahassee, FL at or above 100", {}^o, " F"))) +
   theme_minimal() +
