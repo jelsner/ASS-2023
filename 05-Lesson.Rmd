@@ -2,6 +2,8 @@
 
 **"An awful lot of time I spend "coding" is actually spent copying and pasting (And much of the rest is spent googling)."** – Meghan Duffy
 
+Ten simple rules for teaching yourself R <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010372#sec007>
+
 Today
 
 - Working with spatial data
