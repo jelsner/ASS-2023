@@ -1,21 +1,21 @@
-# Thursday September 8, 2022 {-}
+# Thursday September 8, 2022 {.unnumbered}
 
-**"An awful lot of time I spend "coding" is actually spent copying and pasting (And much of the rest is spent googling)."** – Meghan Duffy
+**"An awful lot of time I spend"coding" is actually spent copying and pasting (And much of the rest is spent googling)."** -- Meghan Duffy
 
 Ten simple rules for teaching yourself R <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010372#sec007>
 
 Today
 
-- Working with spatial data
-- Geo-computation on simple features
+-   Working with spatial data
+-   Geo-computation on simple features
 
-## Working with spatial data {-}
+## Working with spatial data {.unnumbered}
 
-The vector model for data (vector data) represents things in the world using points, lines and polygons. These objects have discrete, well-defined borders and a high level of precision. Of course, precision does not imply accurate.
+The vector model for data (vector data) represents things in the world using points, lines and polygons. These objects have discrete, well-defined borders and a high level of precision. Precision does not imply accurate.
 
 The raster model for data (raster data) represents continuous fields (like elevation and rainfall) using a grid of cells (raster). A raster aggregates fields to a given resolution, meaning that they are consistent over space and scale-able. The smallest features within the field are blurred or lost.
 
-The choice of which data model to use depends on the application: Vector data tends to dominate the social sciences because human settlements and boundaries have discrete borders. Raster data (e.g., remotely sensed imagery) tends to dominate the environmental sciences because environmental conditions are typically continuous. Geographers, ecologists, demographers use vector and raster data. 
+The choice of which data model to use depends on the application: Vector data tends to dominate the social sciences because human settlements and boundaries have discrete borders. Raster data (e.g., remotely sensed imagery) tends to dominate the environmental sciences because environmental conditions are typically continuous. Geographers, ecologists, demographers use vector and raster data.
 
 Here we use functions from the {sf} package to work with vector data and functions in the {terra} and {raster} packages to work with raster data sets. We will also look at functions from the new {stars} package that work with both vector and raster data models.
 
@@ -31,9 +31,9 @@ Functions in the {sf} package work with all common vector geometry types: points
 
 The {sf} package incorporates the three main packages of the spatial R ecosystem: {sp} for the class system, {rgdal} for reading and writing data, and {rgeos} for spatial operations done with GEOS.
 
-Simple features are data frames with a special column for storing the spatial information. The spatial column is called `geometry` (or `geom`). The geometry column is referenced like a regular column.
+Simple features are data frames with a column for storing the spatial information. The spatial column is called `geometry` (or `geom`). The geometry column is referenced like a regular column but it has special features.
 
-The difference is that the geometry column is a 'list column' of class `sfc` (simple feature column). And the `sfc` is a set of objects of class `sfg` (simple feature geometries).
+The geometry column is a 'list column' of class `sfc` (simple feature column). And the `sfc` is a set of objects of class `sfg` (simple feature geometries).
 
 ![Simple Feature Anatomy](figures/sf_anatomy.png)
 
@@ -44,7 +44,7 @@ The difference is that the geometry column is a 'list column' of class `sfc` (si
 
 Geometries are the building blocks of simple features. Well-known text (WKT) is the way simple feature geometries are coded. Well-known binaries (WKB) are hexadecimal strings readable by computers. GIS and spatial databases use WKB to transfer and store geometry objects. WKT is a human-readable text description of simple features. The two formats are exchangeable.
 
-See: https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry
+See: <https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry>
 
 In WKT format a point is a coordinate in 2D, 3D or 4D space (see `vignette("sf1")` for more information) such as:
 
@@ -101,12 +101,14 @@ An `sfg` object can be created from three data types:
 -   A list - any other set, e.g. a multi-line string or geometry collection
 
 To create point objects, you use the `st_point()` function from the {sf} package applied to a numeric vector.
+
 ```{r}
 sf::st_point(c(5, 2)) # XY point
 sf::st_point(c(5, 2, 3)) # XYZ point
 ```
 
 To create multi-point objects, you use matrices constructed from the `rbind()` function.
+
 ```{r}
 mp.matrix <- rbind(c(5, 2), c(1, 3), c(3, 4), c(3, 2))
 mp.matrix
@@ -121,6 +123,7 @@ plot(sf::st_linestring(ls.matrix))
 ```
 
 To create a polygon, you use lists.
+
 ```{r}
 poly.list <- list(rbind(c(1, 5), c(2, 2), c(4, 1), c(4, 4), c(1, 5)))
 sf::st_polygon(poly.list)
@@ -139,6 +142,7 @@ Simple feature geometry column
 One `sfg` object contains a single simple feature geometry. A simple feature geometry column (`sfc`) is a list of `sfg` objects together with information about the coordinate reference system.
 
 For example, to combine two simple features into one object with two features, you use the `st_sfc()` function. This is important since `sfg` represents the geometry column in `sf` data frames.
+
 ```{r}
 point1 <- sf::st_point(c(5, 2))
 point2 <- sf::st_point(c(1, 3))
@@ -148,6 +152,7 @@ sf::st_sfc(point1, point2)
 In most cases, a `sfc` object contains objects of the same geometry type. Thus, when you convert `sfg` objects of type `polygon` into a simple feature geometry column, you end up with an `sfc` object of type `polygon`. A geometry column of multiple line strings would result in an `sfc` object of type `multilinestring`.
 
 An example with polygons.
+
 ```{r}
 poly.list1 <- list(rbind(c(1, 5), c(2, 2), c(4, 1), c(4, 4), c(1, 5)))
 polygon1 <- sf::st_polygon(poly.list1)
@@ -159,6 +164,7 @@ plot(sf::st_sfc(polygon1, polygon2))
 ```
 
 An example with line strings.
+
 ```{r}
 mls.list1 <- list(rbind(c(1, 5), c(4, 4), c(4, 1), c(2, 2), c(3, 2)), 
                   rbind(c(1, 2), c(2, 4)))
@@ -172,29 +178,33 @@ plot(sf::st_sfc(mls1, mls2))
 ```
 
 An example with a geometry collection.
+
 ```{r}
 sf::st_sfc(point1, mls1)
 ```
 
 A `sfc` object also stores information on the coordinate reference systems (CRS). To specify a certain CRS, you use the `epsg` or `proj4string` attributes. The default value of `epsg` and `proj4string` is `NA` (Not Available).
+
 ```{r}
 sf::st_sfc(point1, point2)
 ```
 
 All geometries in an `sfc` object must have the same CRS. We add coordinate reference system as a `crs =` argument in `st_sfc()`. The argument accepts an integer with the epsg code (for example, 4326).
+
 ```{r}
 ( sfc1 <- sf::st_sfc(point1, point2, 
                      crs = 4326) )
 ```
 
 The epsg code is translated to a well-known text (WKT) representation of the CRS.
+
 ```{r}
 sf::st_crs(sfc1)
 ```
 
 Here the WKT describes a two-dimensional geographic coordinate reference system (GEOCRS) with a latitude axis first, then a longitude axis. The coordinate system is related to Earth by the WGS84 geodetic datum.
 
-See: https://en.wikipedia.org/wiki/Well-known_text_representation_of_coordinate_reference_systems
+See: <https://en.wikipedia.org/wiki/Well-known_text_representation_of_coordinate_reference_systems>
 
 Simple feature data frames
 
@@ -203,6 +213,7 @@ Features (geometries) typically come with attributes. The attributes might repre
 The simple feature class, `sf`, is a combination of an attribute table (`data.frame`) and a simple feature geometry column (`sfc`). Simple features are created using the `st_sf()` function.
 
 Objects of class `sf` behave like regular data frames.
+
 ```{r}
 methods(class = "sf")
 ```
@@ -218,6 +229,7 @@ The geometry column of {sf} objects is typically called `geometry` but any name 
 Thus `sf` objects take advantage of R's data analysis capabilities to be used on geographic data. It's worth reviewing how to discover basic properties of vector data objects.
 
 For example, we get information about the size and breadth of the `world` simple feature data frame from the {spData} package using `dim()`, `nrow()`, etc.
+
 ```{r}
 library(spData)
 
@@ -229,6 +241,7 @@ ncol(world)
 The data contains ten non-geographic columns (and one geometry column) with 177 rows each one representing a country.
 
 Extracting the attribute data from an `sf` object is the same as dropping its geometry.
+
 ```{r}
 world.df <- world |>
   sf::st_drop_geometry()
@@ -240,18 +253,21 @@ Example: Temperatures at FSU and at the airport
 Suppose you measure a temperature of 25C at FSU and 22C at the airport at 9a on September 6, 2022. Thus, you have specific points in space (the coordinates), the name of the locations (FSU, Airport), temperature values and the date of the measurement. Other attributes might include a urbanity category (campus or city), or a remark if the measurement was made with an automatic station.
 
 Start by creating to `sfg` (simple feature geometry) point objects.
+
 ```{r}
 FSU.point <- sf::st_point(c(-84.29849, 30.44188))
 TLH.point <- sf::st_point(c(-84.34505, 30.39541))
 ```
 
 Then combine the point objects into a `sfc` (simple feature column) object.
+
 ```{r}
 our.geometry <- sf::st_sfc(FSU.point, TLH.point, 
                            crs = 4326)
 ```
 
 Then create a data frame of attributes.
+
 ```{r}
 our.attributes <- data.frame(name = c("FSU", "Airport"),
                              temperature = c(10, 5),
@@ -261,18 +277,21 @@ our.attributes <- data.frame(name = c("FSU", "Airport"),
 ```
 
 Finally create a simple feature data frame.
+
 ```{r}
 sfdf <- sf::st_sf(our.attributes, 
                   geometry = our.geometry)
 ```
 
 The example illustrates the components of `sf` objects. First, you use coordinates to define the geometry of the simple feature geometry (`sfg`). Second, you can combine the geometries into a simple feature geometry column (`sfc`) which also stores the CRS. Third, you store the attribute information on the geometries in a `data.frame`. Fourth, you use the `st_sf()` function to combine the attribute table and the `sfc` object into a `sf` object.
+
 ```{r}
 sfdf
 class(sfdf)
 ```
 
 Given a simple feature data frame you create a non-spatial data frame with a geometry list-column but that is not of class `sf` using the `as.data.frame()` function.
+
 ```{r}
 df <- as.data.frame(sfdf)
 class(df)
@@ -286,11 +305,12 @@ In this case the `geometry` column is
 
 In order to avoid any confusion it might be better to use the `st_drop_geometry()` column instead.
 
-Example: US states 
+Example: US states
 
 The object `us_states` from the {spData} package is a simple feature data frame from the U.S. Census Bureau. The variables include the name, region, area, and population.
 
 Simple feature data frames can be treated as regular data frames. But the geometry is "sticky". For example when we create a new data frame containing only the population information the geometry column is included in the new data frame.
+
 ```{r}
 df1 <- us_states |> 
   dplyr::select(starts_with("total")) 
@@ -300,6 +320,7 @@ head(df1)
 The resulting data frame has the two population columns but also a column labeled `geometry`.
 
 When we use the `summarize()` function, a union of the geometries across rows is made.
+
 ```{r}
 df2 <- us_states |> 
   dplyr::filter(REGION == "Midwest") |> 
@@ -319,6 +340,7 @@ Why use the {sf} package when {sp} is already tried and tested?
 These advantages led to the development of spatial packages (including {tmap}, {mapview} and {tidycensus}) that now support simple feature objects.
 
 It is easy to convert between the two classes. Consider the `world` S3 spatial data frame from the {spData} package. You convert it to a S4 spatial data frame with the `as()` method.
+
 ```{r}
 world.sp <- world |>
   as(Class = "Spatial")
@@ -327,6 +349,7 @@ world.sp <- world |>
 The method coerces simple features to `Spatial*` and `Spatial*DataFrame` objects.
 
 You convert a S4 spatial data frame into a simple feature data frame with the `st_as_sf()` function.
+
 ```{r}
 world.sf <- world.sp |>
   sf::st_as_sf()
@@ -334,13 +357,14 @@ world.sf <- world.sp |>
 
 You can create basic maps from simple feature data frames with the base `plot()` method (`plot.sf()`). The function creates a multi-panel one sub-plot for each variable.
 
-## Geo-computation on simple features {-}
+## Geo-computation on simple features {.unnumbered}
 
 Geo-computation on simple features is done with routines in the geometry engine-open source (GEOS) library that functions in the {sf} package make use of.
 
 As an example, consider the file `police.zip` on my website that contains shapefiles in a folder called `police`. The variables include police expenditures (POLICE), crime (CRIME), income (INC), unemployment (UNEMP) and other socio-economic variables for counties in Mississippi.
 
 Input the data using the `st_read()` function from the {sf} package and then assign a geographic coordinate reference system (CRS) to it using the EPSG number 4326.
+
 ```{r}
 download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/police.zip",
               destfile = here::here("data", "police.zip"))
@@ -355,28 +379,33 @@ sf::st_crs(sfdf) <- 4326
 The geometries are polygons and there are 82 of them, one for each county.
 
 You transform the geographic coordinate system of the polygons to a specific projected CRS as suggested by the function `suggest_crs()` from the {crsuggest} package.
+
 ```{r}
 crsuggest::suggest_crs(sfdf)
 ```
 
 The function for transforming the CRS is `st_transform()` from the {sf} package.
+
 ```{r}
 sfdf <- sfdf |>
     sf::st_transform(crs = 6508)
 ```
 
 The `st_centroid()` function computes the geographic center of each polygon in the spatial data frame.
+
 ```{r}
 countyCenters.sf <- sfdf |>
     sf::st_centroid()
 ```
 
 The warning lets you know that the attributes attached to each polygon might result in misleading information when attached to the new geometry (points). Different geometries can mean different interpretations of the attribute.
+
 ```{r}
 sf::st_geometry(countyCenters.sf)
 ```
 
 To get the centroid location for the state, you first join all the counties using the `st_union()` function, then use the `st_centroid()` function.
+
 ```{r}
 stateCenter.sfc <- sfdf |>
   sf::st_union() |>
@@ -386,6 +415,7 @@ stateCenter.sfc <- sfdf |>
 The result is a simple feature geometry column (`sfc`) with a single row where the geometry contains the centroid location.
 
 Which county contains the geographic center of the state? Here you use the geometric binary predicate `st_contains()`.
+
 ```{r}
 ( Contains <- sfdf |>
     sf::st_contains(stateCenter.sfc,
@@ -395,6 +425,7 @@ Which county contains the geographic center of the state? Here you use the geome
 You include the `sparse = FALSE` argument so the result is a matrix containing `TRUE`s and `FALSE`s. Since there are 82 counties and one centroid the matrix has 82 rows and 1 column. All matrix entries are `FALSE` except the one containing the center.
 
 To map the result you first plot the county polygons, then add the county geometry for the center county and fill it red. Note that you use the matrix you called `Contains` to subset this county. Finally you add the location of the state centroid to the plot.
+
 ```{r}
 library(ggplot2)
 
@@ -406,22 +437,25 @@ ggplot(data = sfdf) +
 ```
 
 The function `st_area()` returns a vector of the geographical area (in sq. units) of each of the spatial objects. Here county boundaries as polygons.
+
 ```{r}
 sfdf |>
   sf::st_area()
 ```
 
-The vector values have units of square meters (m^2), which are derived from the CRS.
+The vector values have units of square meters (m\^2), which are derived from the CRS.
 
 There is an attribute called `AREA` in the data frame but it is better to calculate it from the spatial polygons because then you are sure of the units.
 
 What happens when you apply the area function on the centroid object?
+
 ```{r}
 countyCenters.sf |>
   sf::st_area()
 ```
 
 Compute a 10 km buffer around the state and show the result with a plot. First use `st_union()`, then `st_buffer()`, then pipe the output (a simple feature data frame to `ggplot()`).
+
 ```{r}
 sfdf |>
   sf::st_union() |>
@@ -433,6 +467,7 @@ ggplot() +
 ```
 
 Length of boundary lines for U.S. states. Transform the CRS to 2163 (US National Atlas Equal Area). Note that the geometry is multi-polygons. Convert the polygons to multi-linestrings, then use `st_length()` to get the total length of the lines.
+
 ```{r}
 states <- spData::us_states |>
   sf::st_transform(crs = 2163)
