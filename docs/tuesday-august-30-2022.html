@@ -165,8 +165,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
 <ul>
 <li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-base-r"><i class="fa fa-check"></i>Working with data frames using base R</a></li>
-<li class="chapter" data-level="0.1" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#getting-data-into-r"><i class="fa fa-check"></i><b>0.1</b> Getting data into R</a></li>
-<li class="chapter" data-level="0.2" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i><b>0.2</b> Working with data frames using functions from {dplyr}</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#getting-data-into-r"><i class="fa fa-check"></i>Getting data into R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
 <ul>
@@ -174,7 +174,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#introduction-to-simple-features"><i class="fa fa-check"></i>Introduction to simple features</a></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
@@ -475,11 +475,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb27-6"><a href="tuesday-august-30-2022.html#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
-<div id="getting-data-into-r" class="section level2 hasAnchor" number="0.1">
-<h2><span class="header-section-number">0.1</span> Getting data into R<a href="tuesday-august-30-2022.html#getting-data-into-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="getting-data-into-r" class="section level2 unnumbered hasAnchor">
+<h2>Getting data into R<a href="tuesday-august-30-2022.html#getting-data-into-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Most of the time you will start by getting your data stored in a file into R. Secondary source data should be imported directly from repositories on the Web. When there is no API (application programming interface) to the repository, you need to first download the data.</p>
 <p>For example, consider the regularly updated reports of tornadoes in the United States. The data repository is the Storm Prediction Center (SPC) <a href="https://www.spc.noaa.gov/wcm/index.html#data" class="uri">https://www.spc.noaa.gov/wcm/index.html#data</a>.</p>
-<p>Here you are interested in the file called <code>1950-2020_actual_tornadoes.csv</code>. First you download the file from the site with the <code>download.file()</code> function specifying the location (<code>url =</code>) and a name you want the file to be called on your computer (<code>destfile =</code>).</p>
+<p>Here you are interested in the file called <code>1950-2021_actual_tornadoes.csv</code>. First you download the file from the site with the <code>download.file()</code> function specifying the location (<code>url =</code>) and a name you want the file to be called on your computer (<code>destfile =</code>).</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="tuesday-august-30-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;http://www.spc.noaa.gov/wcm/data/1950-2021_actual_tornadoes.csv&quot;</span>,</span>
 <span id="cb28-2"><a href="tuesday-august-30-2022.html#cb28-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Tornadoes.csv&quot;</span>))</span></code></pre></div>
 <p>A file called <code>Tornadoes.csv</code> should now be located in the directory <code>data</code>. Click on the <em>Files</em> tab in the lower-right panel, then select the <code>data</code> folder.</p>
@@ -666,8 +666,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="tuesday-august-30-2022.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(FLp.df[FLp.df<span class="sc">$</span>Year <span class="sc">==</span> <span class="dv">1965</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
 <pre><code>## [1] 10.032</code></pre>
 </div>
-<div id="working-with-data-frames-using-functions-from-dplyr" class="section level2 hasAnchor" number="0.2">
-<h2><span class="header-section-number">0.2</span> Working with data frames using functions from {dplyr}<a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-dplyr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="working-with-data-frames-using-functions-from-dplyr" class="section level2 unnumbered hasAnchor">
+<h2>Working with data frames using functions from {dplyr}<a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-dplyr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The functions in the {dplyr} package (part of the tidyverse set of packages) simplify working with data frames. The functions work only on data frames.</p>
 <p>Function names are English language <em>verbs</em> so they are easier to remember. The verbs help you translate thought into code.</p>
 <p>Here we consider some of verbs using the <code>airquality</code> data frame. The data frame contains air quality measurements taken in New York City between May and September 1973 (<code>?airquality</code>) at time when pollution levels in the city were at an all time high.</p>
@@ -991,7 +991,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="tuesday-august-30-2022.html#cb116-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
 <span id="cb116-2"><a href="tuesday-august-30-2022.html#cb116-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Month) <span class="sc">|&gt;</span></span>
 <span id="cb116-3"><a href="tuesday-august-30-2022.html#cb116-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneMax =</span>  <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb116-4"><a href="tuesday-august-30-2022.html#cb116-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<span id="cb116-4"><a href="tuesday-august-30-2022.html#cb116-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 5 × 3
 ##   Month OzoneMax NumDays
 ##   &lt;int&gt;    &lt;int&gt;   &lt;int&gt;

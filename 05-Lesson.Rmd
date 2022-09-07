@@ -6,10 +6,10 @@ Ten simple rules for teaching yourself R <https://journals.plos.org/ploscompbiol
 
 Today
 
--   Working with spatial data
+-   Introduction to simple features
 -   Geo-computation on simple features
 
-## Working with spatial data {.unnumbered}
+## Introduction to simple features {.unnumbered}
 
 The vector model for data (vector data) represents things in the world using points, lines and polygons. These objects have discrete, well-defined borders and a high level of precision. Precision does not imply accurate.
 
@@ -294,7 +294,7 @@ Given a simple feature data frame you create a non-spatial data frame with a geo
 
 ```{r}
 sf <- sfdf |>
-  as.data.frame(sfdf)
+  as.data.frame()
 class(df)
 ```
 

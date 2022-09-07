@@ -153,7 +153,7 @@ plot(x = df$ToSleep,
 abline(model)
 ```
 
-## Getting data into R
+## Getting data into R {-}
 
 Most of the time you will start by getting your data stored in a file into R. Secondary source data should be imported directly from repositories on the Web. When there is no API (application programming interface) to the repository, you need to first download the data.
 
@@ -312,7 +312,7 @@ which.max(FLp.df[FLp.df$Year == 1965, 2:12])
 max(FLp.df[FLp.df$Year == 1965, 2:12])
 ```
 
-## Working with data frames using functions from {dplyr}
+## Working with data frames using functions from {dplyr} {-}
 
 The functions in the {dplyr} package (part of the tidyverse set of packages) simplify working with data frames. The functions work only on data frames.
 
