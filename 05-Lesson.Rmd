@@ -19,15 +19,15 @@ The choice of which data model to use depends on the application: Vector data te
 
 Here we use functions from the {sf} package to work with vector data and functions in the {terra} and {raster} packages to work with raster data sets. We will also look at functions from the new {stars} package that work with both vector and raster data models.
 
-R's spatial ecosystem continues to evolve. Most changes build on what has already been done. Occasionally there is a significant change that builds from scratch. The introduction of the {sf} package in about 2018 (Edzer Pebesma) is a significant change.
+R's spatial ecosystem continues to evolve. Most changes build on what has been done. Occasionally there is a significant change that builds from scratch. The introduction of the {sf} package in about 2018 (Edzer Pebesma) is a significant change.
 
-Simple features
+sf for simple features
 
 Simple features is a standard from the Open ('open source') Geospatial Consortium (OGC) to represent geographic information. It condenses geographic forms into a single geometry class.
 
 The standard is used in spatial databases (e.g., PostGIS), commercial GIS (e.g., ESRI) and forms the vector data basis for libraries such as [GDAL](http://www.gdal.org/). A subset of simple features forms the [GeoJSON](http://geojson.org/) standard. The {sf} package supports these classes and includes plotting and other methods.
 
-Functions in the {sf} package work with all common vector geometry types: points, lines, polygons and their respective 'multi' versions (which group together features of the same type into a single feature). These functions also support geometry collections, which contain multiple geometry types in a single object. The `raster` data classes are not supported.
+Functions in the {sf} package work with all common vector geometry types: points, lines, polygons and their respective 'multi' versions (which group together features of the same type into a single feature). The functions also work with geometry collections, which contain multiple geometry types in a single object. The `raster` data classes are not supported.
 
 The {sf} package incorporates the three main packages of the spatial R ecosystem: {sp} for the class system, {rgdal} for reading and writing data, and {rgeos} for spatial operations done with GEOS.
 
@@ -84,7 +84,7 @@ Simple feature geometry (`sfg`)
 
 The `sfg` class represents the simple feature geometry types: point, line string, polygon (and their 'multi' equivalents, such as multi points) or geometry collection.
 
-Usually you don't need to create geometries. Geometries are typically part of the spatial data we import. However, there are a set of functions to create simple feature geometry objects (`sfg`) from scratch, if needed. The names of these functions are simple and consistent, as they all start with the `st_` prefix and end with the name of the geometry type in lowercase letters:
+Usually you don't need to create geometries. Geometries are typically part of the spatial data you import. However, there are a set of functions to create simple feature geometry objects (`sfg`) from scratch, if needed. The names of these functions are simple and consistent, as they all start with the `st_` prefix and end with the name of the geometry type in lowercase letters:
 
 -   A point - `st_point()`
 -   A linestring - `st_linestring()`
@@ -107,7 +107,7 @@ sf::st_point(c(5, 2)) # XY point
 sf::st_point(c(5, 2, 3)) # XYZ point
 ```
 
-To create multi-point objects, you use matrices constructed from the `rbind()` function.
+To create multi-point objects, you use matrices here constructed from the `rbind()` function.
 
 ```{r}
 mp.matrix <- rbind(c(5, 2), c(1, 3), c(3, 4), c(3, 2))
@@ -189,7 +189,7 @@ A `sfc` object also stores information on the coordinate reference systems (CRS)
 sf::st_sfc(point1, point2)
 ```
 
-All geometries in an `sfc` object must have the same CRS. We add coordinate reference system as a `crs =` argument in `st_sfc()`. The argument accepts an integer with the epsg code (for example, 4326).
+All geometries in an `sfc` object must have the same CRS. You add coordinate reference system as a `crs =` argument in `st_sfc()`. The argument accepts an integer with the epsg (European Petroleum Survey Group) code (for example, 4326).
 
 ```{r}
 ( sfc1 <- sf::st_sfc(point1, point2, 
@@ -210,7 +210,7 @@ Simple feature data frames
 
 Features (geometries) typically come with attributes. The attributes might represent the name of the geometry, measured values, groups to which the geometry belongs, etc.
 
-The simple feature class, `sf`, is a combination of an attribute table (`data.frame`) and a simple feature geometry column (`sfc`). Simple features are created using the `st_sf()` function.
+The simple feature class, `sf`, is a combination of an attribute table (`data.frame`) and a simple feature geometry column (`sfc`). Simple feature objects are created using the `st_sf()` function.
 
 Objects of class `sf` behave like regular data frames.
 
@@ -218,9 +218,9 @@ Objects of class `sf` behave like regular data frames.
 methods(class = "sf")
 ```
 
-Simple features have two classes, `sf` and `data.frame`. This is central to the concept of simple features: most of the time a `sf` can be treated as, and behaves like, a `data.frame`. Simple features are, in essence, data frames but with a column containing the geometric information.
+Simple features have two classes, `sf` and `data.frame`. This is central to the concept of simple features: most of the time a `sf` can be treated as, and behaves like, a `data.frame`. Simple features are, in essence, data frames but with a column containing the geometric information (`sfc`)
 
-I refer to simple feature objects redundantly as 'simple feature data frames' to distinguish them from S4 class spatial data frames.
+I refer to simple feature objects as 'simple feature data frames' to distinguish them from S4 class spatial data frames.
 
 Many of these functions were developed for data frames including `rbind()` (for binding rows of data together) and `$` (for creating new columns). The key feature of `sf` objects is that they store spatial and non-spatial data in the same way, as columns in a `data.frame`.
 
@@ -228,7 +228,7 @@ The geometry column of {sf} objects is typically called `geometry` but any name 
 
 Thus `sf` objects take advantage of R's data analysis capabilities to be used on geographic data. It's worth reviewing how to discover basic properties of vector data objects.
 
-For example, we get information about the size and breadth of the `world` simple feature data frame from the {spData} package using `dim()`, `nrow()`, etc.
+For example, you get information about the size and breadth of the `world` simple feature data frame from the {spData} package using `dim()`, `nrow()`, etc.
 
 ```{r}
 library(spData)
@@ -293,7 +293,8 @@ class(sfdf)
 Given a simple feature data frame you create a non-spatial data frame with a geometry list-column but that is not of class `sf` using the `as.data.frame()` function.
 
 ```{r}
-df <- as.data.frame(sfdf)
+sf <- sfdf |>
+  as.data.frame(sfdf)
 class(df)
 ```
 
@@ -304,6 +305,11 @@ In this case the `geometry` column is
 -   lacks all dedicated methods listed above for class `sf`
 
 In order to avoid any confusion it might be better to use the `st_drop_geometry()` column instead.
+
+```{r}
+df <- sfdf |>
+  sf::st_drop_geometry()
+```
 
 Example: US states
 
@@ -319,7 +325,7 @@ head(df1)
 
 The resulting data frame has the two population columns but also a column labeled `geometry`.
 
-When we use the `summarize()` function, a union of the geometries across rows is made.
+When you use the `summarize()` function, a union of the geometries across rows is made.
 
 ```{r}
 df2 <- us_states |> 
@@ -359,7 +365,7 @@ You can create basic maps from simple feature data frames with the base `plot()`
 
 ## Geo-computation on simple features {.unnumbered}
 
-Geo-computation on simple features is done with routines in the geometry engine-open source (GEOS) library that functions in the {sf} package make use of.
+Geo-computation on simple features is done with routines in the geometry engine-open source (GEOS) library that the functions in the {sf} package make use of.
 
 As an example, consider the file `police.zip` on my website that contains shapefiles in a folder called `police`. The variables include police expenditures (POLICE), crime (CRIME), income (INC), unemployment (UNEMP) and other socio-economic variables for counties in Mississippi.
 
@@ -404,7 +410,7 @@ The warning lets you know that the attributes attached to each polygon might res
 sf::st_geometry(countyCenters.sf)
 ```
 
-To get the centroid location for the state, you first join all the counties using the `st_union()` function, then use the `st_centroid()` function.
+To get a geographic center location for the state, you first join all the counties using the `st_union()` function, then use the `st_centroid()` function.
 
 ```{r}
 stateCenter.sfc <- sfdf |>
@@ -412,7 +418,7 @@ stateCenter.sfc <- sfdf |>
   sf::st_centroid()
 ```
 
-The result is a simple feature geometry column (`sfc`) with a single row where the geometry contains the centroid location.
+The result is a simple feature geometry column (`sfc`) with a single row where the geometry contains the center location.
 
 Which county contains the geographic center of the state? Here you use the geometric binary predicate `st_contains()`.
 
@@ -424,7 +430,7 @@ Which county contains the geographic center of the state? Here you use the geome
 
 You include the `sparse = FALSE` argument so the result is a matrix containing `TRUE`s and `FALSE`s. Since there are 82 counties and one centroid the matrix has 82 rows and 1 column. All matrix entries are `FALSE` except the one containing the center.
 
-To map the result you first plot the county polygons, then add the county geometry for the center county and fill it red. Note that you use the matrix you called `Contains` to subset this county. Finally you add the location of the state centroid to the plot.
+To map the result you first plot the county polygons with the `geom_sf()` function (layer), then add the county geometry for the center county and fill it red. You use the matrix that you called `Contains` to subset this county. Finally you add the location of the state centroid to the plot.
 
 ```{r}
 library(ggplot2)
