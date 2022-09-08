@@ -9,7 +9,7 @@ Today
 
 ## Spatial data subsets and joins {.unnumbered}
 
-Variables (stored as columns) in spatial data structures are referred to as 'attributes'.
+Variables (stored as columns) in spatial data objects are referred to as 'attributes'.
 
 With simple feature data frames you can create data subsets using `[`, `subset()` and `$` from the {base} R packages and `select()` and `filter()` from the {dplyr} package.
 
