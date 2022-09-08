@@ -165,8 +165,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
 <ul>
 <li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-base-r"><i class="fa fa-check"></i>Working with data frames using base R</a></li>
-<li class="chapter" data-level="0.1" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#getting-data-into-r"><i class="fa fa-check"></i><b>0.1</b> Getting data into R</a></li>
-<li class="chapter" data-level="0.2" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i><b>0.2</b> Working with data frames using functions from {dplyr}</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#getting-data-into-r"><i class="fa fa-check"></i>Getting data into R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
 <ul>
@@ -318,9 +318,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Introduction to simple features<a href="thursday-september-8-2022.html#introduction-to-simple-features" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The vector model for data (vector data) represents things in the world using points, lines and polygons. These objects have discrete, well-defined borders and a high level of precision. Precision does not imply accurate.</p>
 <p>The raster model for data (raster data) represents continuous fields (like elevation and rainfall) using a grid of cells (raster). A raster aggregates fields to a given resolution, meaning that they are consistent over space and scale-able. The smallest features within the field are blurred or lost.</p>
-<p>The choice of which data model to use depends on the application: Vector data tends to dominate the social sciences because human settlements and boundaries have discrete borders. Raster data (e.g., remotely sensed imagery) tends to dominate the environmental sciences because environmental conditions are typically continuous. Geographers, ecologists, demographers use vector and raster data.</p>
-<p>Here we use functions from the {sf} package to work with vector data and functions in the {terra} and {raster} packages to work with raster data sets. We will also look at functions from the new {stars} package that work with both vector and raster data models.</p>
-<p>R’s spatial ecosystem continues to evolve. Most changes build on what has been done. Occasionally there is a significant change that builds from scratch. The introduction of the {sf} package in about 2018 (Edzer Pebesma) is a significant change.</p>
+<p>The choice data model depends on the application: Vector data dominates the social sciences because human settlements and boundaries have discrete borders. Raster data (e.g., remotely sensed imagery) dominates the environmental sciences because environmental conditions are typically continuous. Geographers, ecologists, demographers use vector and raster data.</p>
+<p>Here we will use functions from the {sf} package to work with vector data and functions in the {terra} and {raster} packages to work with raster data sets. We will also look at functions from the new {stars} package that work with both vector and raster data models.</p>
+<p>R’s spatial ecosystem continues to evolve. Most changes build on previous work. Occasionally there is a significant change that builds from scratch. The introduction of the {sf} package in about 2018 is a significant change.</p>
 <p>sf for simple features</p>
 <p>Simple features is a standard from the Open (‘open source’) Geospatial Consortium (OGC) to represent geographic information. It condenses geographic forms into a single geometry class.</p>
 <p>The standard is used in spatial databases (e.g., PostGIS), commercial GIS (e.g., ESRI) and forms the vector data basis for libraries such as <a href="http://www.gdal.org/">GDAL</a>. A subset of simple features forms the <a href="http://geojson.org/">GeoJSON</a> standard. The {sf} package supports these classes and includes plotting and other methods.</p>
@@ -333,9 +333,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p class="caption">Simple Feature Anatomy</p>
 </div>
 <ul>
-<li>green box is a simple feature: a single record, or <code>data.frame</code> row, consisting of attributes and geometry</li>
+<li>green box is a simple feature: a single record (observation), or <code>data.frame</code> row, consisting of attributes and geometry</li>
 <li>blue box is a single simple feature geometry (an object of class <code>sfg</code>)</li>
-<li>red box a simple feature list-column (an object of class <code>sfc</code>, which is a column in the <code>data.frame</code>)</li>
+<li>red box a simple feature column as a list (an object of class <code>sfc</code>, which is a column in the <code>data.frame</code>)</li>
 <li>the geometries are given in well-known text (WKT) format</li>
 </ul>
 <p>Geometries are the building blocks of simple features. Well-known text (WKT) is the way simple feature geometries are coded. Well-known binaries (WKB) are hexadecimal strings readable by computers. GIS and spatial databases use WKB to transfer and store geometry objects. WKT is a human-readable text description of simple features. The two formats are exchangeable.</p>
@@ -365,14 +365,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Multi-string - <code>MULTILINESTRING ((1 5, 4 4, 4 1, 2 2, 3 2), (1 2, 2 4))</code></li>
 <li>Multi-polygon - <code>MULTIPOLYGON (((1 5, 2 2, 4 1, 4 4, 1 5), (0 2, 1 2, 1 3, 0 3, 0 2)))</code></li>
 </ul>
-<p>The difference (syntax wise) between a polygon with a hole and a multi-polygon is that the vertexes of each polygon are connected in a counterclockwise direction.</p>
+<p>The difference between a multi-point and multi-string is an extra set of parentheses. The difference between a polygon with a hole and a multi-polygon is that the vertexes of each polygon are connected in a counterclockwise direction.</p>
 <p>A collection of these is made:</p>
 <ul>
 <li>Geometry collection - <code>GEOMETRYCOLLECTION (MULTIPOINT (5 2, 1 3, 3 4, 3 2), LINESTRING (1 5, 4 4, 4 1, 2 2, 3 2)))</code></li>
 </ul>
 <p>Simple feature geometry (<code>sfg</code>)</p>
 <p>The <code>sfg</code> class represents the simple feature geometry types: point, line string, polygon (and their ‘multi’ equivalents, such as multi points) or geometry collection.</p>
-<p>Usually you don’t need to create geometries. Geometries are typically part of the spatial data you import. However, there are a set of functions to create simple feature geometry objects (<code>sfg</code>) from scratch, if needed. The names of these functions are simple and consistent, as they all start with the <code>st_</code> prefix and end with the name of the geometry type in lowercase letters:</p>
+<p>Usually you don’t need to create geometries. Geometries are part of the spatial data you import. However, there are a set of functions to create simple feature geometry objects (<code>sfg</code>) from scratch, if needed. The names of these functions are simple and consistent, as they all start with the <code>st_</code> prefix and end with the name of the geometry type in lowercase letters:</p>
 <ul>
 <li>A point - <code>st_point()</code></li>
 <li>A linestring - <code>st_linestring()</code></li>

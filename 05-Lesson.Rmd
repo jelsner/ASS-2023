@@ -15,11 +15,11 @@ The vector model for data (vector data) represents things in the world using poi
 
 The raster model for data (raster data) represents continuous fields (like elevation and rainfall) using a grid of cells (raster). A raster aggregates fields to a given resolution, meaning that they are consistent over space and scale-able. The smallest features within the field are blurred or lost.
 
-The choice of which data model to use depends on the application: Vector data tends to dominate the social sciences because human settlements and boundaries have discrete borders. Raster data (e.g., remotely sensed imagery) tends to dominate the environmental sciences because environmental conditions are typically continuous. Geographers, ecologists, demographers use vector and raster data.
+The choice data model depends on the application: Vector data dominates the social sciences because human settlements and boundaries have discrete borders. Raster data (e.g., remotely sensed imagery) dominates the environmental sciences because environmental conditions are typically continuous. Geographers, ecologists, demographers use vector and raster data.
 
-Here we use functions from the {sf} package to work with vector data and functions in the {terra} and {raster} packages to work with raster data sets. We will also look at functions from the new {stars} package that work with both vector and raster data models.
+Here we will use functions from the {sf} package to work with vector data and functions in the {terra} and {raster} packages to work with raster data sets. We will also look at functions from the new {stars} package that work with both vector and raster data models.
 
-R's spatial ecosystem continues to evolve. Most changes build on what has been done. Occasionally there is a significant change that builds from scratch. The introduction of the {sf} package in about 2018 (Edzer Pebesma) is a significant change.
+R's spatial ecosystem continues to evolve. Most changes build on previous work. Occasionally there is a significant change that builds from scratch. The introduction of the {sf} package in about 2018 is a significant change.
 
 sf for simple features
 
@@ -37,9 +37,9 @@ The geometry column is a 'list column' of class `sfc` (simple feature column). A
 
 ![Simple Feature Anatomy](figures/sf_anatomy.png)
 
--   green box is a simple feature: a single record, or `data.frame` row, consisting of attributes and geometry
+-   green box is a simple feature: a single record (observation), or `data.frame` row, consisting of attributes and geometry
 -   blue box is a single simple feature geometry (an object of class `sfg`)
--   red box a simple feature list-column (an object of class `sfc`, which is a column in the `data.frame`)
+-   red box a simple feature column as a list (an object of class `sfc`, which is a column in the `data.frame`)
 -   the geometries are given in well-known text (WKT) format
 
 Geometries are the building blocks of simple features. Well-known text (WKT) is the way simple feature geometries are coded. Well-known binaries (WKB) are hexadecimal strings readable by computers. GIS and spatial databases use WKB to transfer and store geometry objects. WKT is a human-readable text description of simple features. The two formats are exchangeable.
@@ -74,7 +74,7 @@ Simple features allow multiple geometries (hence the term 'geometry collection')
 -   Multi-string - `MULTILINESTRING ((1 5, 4 4, 4 1, 2 2, 3 2), (1 2, 2 4))`
 -   Multi-polygon - `MULTIPOLYGON (((1 5, 2 2, 4 1, 4 4, 1 5), (0 2, 1 2, 1 3, 0 3, 0 2)))`
 
-The difference (syntax wise) between a polygon with a hole and a multi-polygon is that the vertexes of each polygon are connected in a counterclockwise direction.
+The difference between a multi-point and multi-string is an extra set of parentheses. The difference between a polygon with a hole and a multi-polygon is that the vertexes of each polygon are connected in a counterclockwise direction.
 
 A collection of these is made:
 
@@ -84,7 +84,7 @@ Simple feature geometry (`sfg`)
 
 The `sfg` class represents the simple feature geometry types: point, line string, polygon (and their 'multi' equivalents, such as multi points) or geometry collection.
 
-Usually you don't need to create geometries. Geometries are typically part of the spatial data you import. However, there are a set of functions to create simple feature geometry objects (`sfg`) from scratch, if needed. The names of these functions are simple and consistent, as they all start with the `st_` prefix and end with the name of the geometry type in lowercase letters:
+Usually you don't need to create geometries. Geometries are part of the spatial data you import. However, there are a set of functions to create simple feature geometry objects (`sfg`) from scratch, if needed. The names of these functions are simple and consistent, as they all start with the `st_` prefix and end with the name of the geometry type in lowercase letters:
 
 -   A point - `st_point()`
 -   A linestring - `st_linestring()`
