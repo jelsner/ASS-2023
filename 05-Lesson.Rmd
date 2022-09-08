@@ -270,8 +270,8 @@ Then create a data frame of attributes.
 
 ```{r}
 our.attributes <- data.frame(name = c("FSU", "Airport"),
-                             temperature = c(10, 5),
-                             date = c(as.Date("2021-01-27"), as.Date("2021-01-27")),
+                             temperature = c(25, 22),
+                             date = c(as.Date("2022-09-06"), as.Date("2022-09-06")),
                              category = c("campus", "airport"),
                              automatic = c(TRUE, FALSE))
 ```
@@ -279,8 +279,8 @@ our.attributes <- data.frame(name = c("FSU", "Airport"),
 Finally create a simple feature data frame.
 
 ```{r}
-sfdf <- sf::st_sf(our.attributes, 
-                  geometry = our.geometry)
+( sfdf <- sf::st_sf(our.attributes, 
+                  geometry = our.geometry) )
 ```
 
 The example illustrates the components of `sf` objects. First, you use coordinates to define the geometry of the simple feature geometry (`sfg`). Second, you can combine the geometries into a simple feature geometry column (`sfc`) which also stores the CRS. Third, you store the attribute information on the geometries in a `data.frame`. Fourth, you use the `st_sf()` function to combine the attribute table and the `sfc` object into a `sf` object.
@@ -293,7 +293,7 @@ class(sfdf)
 Given a simple feature data frame you create a non-spatial data frame with a geometry list-column but that is not of class `sf` using the `as.data.frame()` function.
 
 ```{r}
-sf <- sfdf |>
+df <- sfdf |>
   as.data.frame()
 class(df)
 ```
