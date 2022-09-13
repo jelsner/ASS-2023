@@ -9,7 +9,7 @@ Today
 
 ## S4 spatial data objects {.unnumbered}
 
-The {sp} package has methods for working with spatial data as S4 reference classes. A few of the packages we will use this semester for analyzing/modeling spatial data work only with {sp} objects so it is helpful to see how they are structured.
+The {sp} package has methods for working with spatial data as S4 objects (reference classes). A few of the packages we will use this semester for analyzing/modeling spatial data work only with {sp} objects so it is helpful to see how they are structured.
 
 Install and load the package.
 
@@ -24,7 +24,7 @@ Spatial objects from the {sp} package fall into two types:
 -   spatial-only information (the geometry). Geometries include `SpatialPoints`, `SpatialLines`, `SpatialPolygons`, etc, and
 -   extensions to these types where attribute information is available and stored in a data frame. These include `SpatialPointsDataFrame`, `SpatialLinesDataFrame`, etc.
 
-The typical situation is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled.
+The typical situation nowadays is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled.
 
 Consider again the the tornado tracks that you import as a simple feature data frame.
 
