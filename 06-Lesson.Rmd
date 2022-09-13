@@ -45,6 +45,9 @@ The {base} R function `subset()` provides another way to get the same result.
 ```{r}
 small_countries <- subset(world, 
                           area_km2 < 10000)
+
+small_countries <- world |>
+  subset(area_km2 < 10000)
 ```
 
 The {dplyr} verbs work on {sf} spatial data frames. The functions include `dplyr::select()` and `dplyr::filter()`.
