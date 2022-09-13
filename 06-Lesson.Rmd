@@ -9,11 +9,13 @@ Today
 
 ## Spatial data subsets and joins {.unnumbered}
 
-Variables (stored as column vectors) in spatial data frames are referred to as 'attributes'.
+Variables (stored as column vectors) in spatial data frames are referred to as 'attributes'. The simple feature column in a simple feature data frame stores the spatial information as well-known text.
 
 With simple feature data frames you can create data subsets using `[`, `subset()` and `$` from the {base} R packages and `select()` and `filter()` from the {dplyr} package.
 
-The `[` operator subsets rows and columns. Indexes specify the elements you wish to extract from an object, e.g. object[i, j], with i and j typically being numbers representing rows and columns. Leaving i or j empty returns all rows or columns, so `world[1:5, ]` returns the first five rows and all columns of the simple feature data frame `world` (from the {spData} package). Examples
+The `[` operator subsets rows and columns. Indexes specify the elements you wish to extract from an object, e.g. object[i, j], with i and j typically being numbers representing rows and columns. Leaving i or j empty returns all rows or columns, so `world[1:5, ]` returns the first five rows and all columns of the simple feature data frame `world` (from the {spData} package).
+
+Examples:
 
 ```{r}
 world <- spData::world
@@ -22,23 +24,21 @@ world[, 1:3] # subset columns by column position
 world[, c("name_long", "lifeExp")] # subset columns by name
 ```
 
-Here you use logical vectors to create a subset. First create a logical vector `sel_area`.
+Here you create a logical vector (`sel_area`) and then subset selecting only cases from `world` corresponding to the `sel_area` vector elements that are `TRUE`.
 
 ```{r}
 sel_area <- world$area_km2 < 10000
 head(sel_area)
 summary(sel_area)
+
+( small_countries <- world[sel_area, ] )
 ```
 
-Then select only cases from the `world` simple feature data frame where the elements of the `sel_area` vector are `TRUE`.
+Since you used the assignment operator the last line creates a new simple feature data frame, `small_countries`, containing nations whose surface area is smaller than 10,000 square kilometers.
 
-```{r}
-small_countries <- world[sel_area, ]
-```
+Note: the geometry column remains fixed to the resulting data frame. 
 
-This creates a new simple feature data frame, `small_countries`, containing nations whose surface area is smaller than 10,000 square kilometers.
-
-Note: the geometry column remains. An operation on a {sf} data frame only changes the geometry when appropriate (e.g. by dissolving borders between adjacent polygons following aggregation). This means that the speed of operations with attribute data in {sf} data frames is the same as with columns in a data frames.
+An operation on a {sf} data frame only changes the geometry when appropriate (e.g. by dissolving borders between adjacent polygons following aggregation). This means that the speed of operations with attribute data in {sf} data frames is the same as with columns in a data frames.
 
 The {base} R function `subset()` provides another way to get the same result.
 
@@ -101,7 +101,7 @@ The two columns in the resulting table are `Population` and `nCountries`. The fu
 
 The result is a simple feature data frame with a single row representing attributes of the world and the geometry as a single multi-polygon through the geometric *union* operator.
 
-You can chain together functions to find the world's three most populous continents and the number of countries they contain.
+You can chain together functions to find the world's three most populous continents and the number of countries they contain with the `dplyr::top_n()` function.
 
 ```{r}
 world |> 
@@ -143,7 +143,7 @@ ggplot(data = KS.sf) +
 sf::st_crs(KS.sf)
 ```
 
-The polygon geometry includes the border and the area inside the border. The CRS is described by the 4326 EPSG code and implemented using well-known text (WKT).
+The polygon geometry includes the border and the area inside the border. The CRS is described by the 4326 EPSG code and implemented using well-known text.
 
 You use a geometric operation to subset spatial data geographically (rather than on some attribute). For example here you will subset the tornado tracks as line strings, keeping only those line strings that fall within the Kansas border defined by a polygon geometry.
 

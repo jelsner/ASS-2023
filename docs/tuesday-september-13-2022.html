@@ -325,9 +325,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <div id="spatial-data-subsets-and-joins" class="section level2 unnumbered hasAnchor">
 <h2>Spatial data subsets and joins<a href="tuesday-september-13-2022.html#spatial-data-subsets-and-joins" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Variables (stored as column vectors) in spatial data frames are referred to as ‘attributes’.</p>
+<p>Variables (stored as column vectors) in spatial data frames are referred to as ‘attributes’. The simple feature column in a simple feature data frame stores the spatial information as well-known text.</p>
 <p>With simple feature data frames you can create data subsets using <code>[</code>, <code>subset()</code> and <code>$</code> from the {base} R packages and <code>select()</code> and <code>filter()</code> from the {dplyr} package.</p>
-<p>The <code>[</code> operator subsets rows and columns. Indexes specify the elements you wish to extract from an object, e.g. object[i, j], with i and j typically being numbers representing rows and columns. Leaving i or j empty returns all rows or columns, so <code>world[1:5, ]</code> returns the first five rows and all columns of the simple feature data frame <code>world</code> (from the {spData} package). Examples</p>
+<p>The <code>[</code> operator subsets rows and columns. Indexes specify the elements you wish to extract from an object, e.g. object[i, j], with i and j typically being numbers representing rows and columns. Leaving i or j empty returns all rows or columns, so <code>world[1:5, ]</code> returns the first five rows and all columns of the simple feature data frame <code>world</code> (from the {spData} package).</p>
+<p>Examples:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-september-13-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> spData<span class="sc">::</span>world</span>
 <span id="cb1-2"><a href="tuesday-september-13-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a>world[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">9</span>), ] <span class="co"># subset rows by row position</span></span></code></pre></div>
 <pre><code>##   iso_a2     name_long     continent region_un          subregion
@@ -700,33 +701,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 175                              Kosovo 71.09756
 ## 176                 Trinidad and Tobago 70.42600
 ## 177                         South Sudan 55.81700</code></pre>
-<p>Here you use logical vectors to create a subset. First create a logical vector <code>sel_area</code>.</p>
+<p>Here you create a logical vector (<code>sel_area</code>) and then subset selecting only cases from <code>world</code> corresponding to the <code>sel_area</code> vector elements that are <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tuesday-september-13-2022.html#cb7-1" aria-hidden="true" tabindex="-1"></a>sel_area <span class="ot">&lt;-</span> world<span class="sc">$</span>area_km2 <span class="sc">&lt;</span> <span class="dv">10000</span></span>
 <span id="cb7-2"><a href="tuesday-september-13-2022.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sel_area)</span></code></pre></div>
 <pre><code>## [1] FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tuesday-september-13-2022.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sel_area)</span></code></pre></div>
 <pre><code>##    Mode   FALSE    TRUE 
 ## logical     170       7</code></pre>
-<p>Then select only cases from the <code>world</code> simple feature data frame where the elements of the <code>sel_area</code> vector are <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tuesday-september-13-2022.html#cb11-1" aria-hidden="true" tabindex="-1"></a>small_countries <span class="ot">&lt;-</span> world[sel_area, ]</span></code></pre></div>
-<p>This creates a new simple feature data frame, <code>small_countries</code>, containing nations whose surface area is smaller than 10,000 square kilometers.</p>
-<p>Note: the geometry column remains. An operation on a {sf} data frame only changes the geometry when appropriate (e.g. by dissolving borders between adjacent polygons following aggregation). This means that the speed of operations with attribute data in {sf} data frames is the same as with columns in a data frames.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tuesday-september-13-2022.html#cb11-1" aria-hidden="true" tabindex="-1"></a>( small_countries <span class="ot">&lt;-</span> world[sel_area, ] )</span></code></pre></div>
+<pre><code>##     iso_a2           name_long     continent region_un      subregion
+## 46      PR         Puerto Rico North America  Americas      Caribbean
+## 80      PS           Palestine          Asia      Asia   Western Asia
+## 90      VU             Vanuatu       Oceania   Oceania      Melanesia
+## 129     LU          Luxembourg        Europe    Europe Western Europe
+## 161   &lt;NA&gt;     Northern Cyprus          Asia      Asia   Western Asia
+## 162     CY              Cyprus          Asia      Asia   Western Asia
+## 176     TT Trinidad and Tobago North America  Americas      Caribbean
+##                  type area_km2     pop  lifeExp gdpPercap
+## 46         Dependency 9224.663 3534874 79.39012 35066.046
+## 80           Disputed 5037.104 4294682 73.12600  4319.528
+## 90  Sovereign country 7490.040  258850 71.70900  2892.342
+## 129 Sovereign country 2416.870  556319 82.22927 93655.334
+## 161 Sovereign country 3786.365      NA       NA        NA
+## 162 Sovereign country 6207.006 1152309 80.17300 29786.366
+## 176 Sovereign country 7737.810 1354493 70.42600 31181.821
+##                                                                                                                                                                                                                                                                                                                               geom
+## 46                                                                                                                                     -66.28243, -67.10068, -67.24243, -67.18416, -66.59993, -65.84716, -65.59100, -65.77130, -66.28243, 18.51476, 18.52060, 18.37446, 17.94655, 17.98182, 17.97591, 18.22803, 18.42668, 18.51476
+## 80                                                                                                                                              35.39756, 35.54525, 35.54567, 35.18393, 34.97464, 35.22589, 34.97051, 34.92741, 35.39756, 31.48909, 31.78250, 32.39399, 32.53251, 31.86658, 31.75434, 31.61678, 31.35344, 31.48909
+## 90                                                          166.79316, 167.00121, 167.27003, 167.10771, 166.62914, 166.64986, 166.79316, -15.66881, -15.61460, -15.74002, -14.93392, -14.62650, -15.39270, -15.66881, 167.21680, 167.18001, 167.51518, 167.84488, 167.21680, -15.89185, -16.16000, -16.59785, -16.46633, -15.89185
+## 129                                                                                                                                                                              6.043073, 5.782417, 5.674052, 5.897759, 6.186320, 6.242751, 6.043073, 50.128052, 50.090328, 49.529484, 49.442667, 49.463803, 49.902226, 50.128052
+## 161 32.73178, 32.91957, 33.19098, 33.38383, 33.45592, 33.47582, 33.52569, 33.67539, 33.86644, 33.97362, 33.90080, 34.57647, 33.66723, 32.94696, 32.80247, 32.73178, 35.14003, 35.08783, 35.17312, 35.16271, 35.10142, 35.00034, 35.03869, 35.01786, 35.09359, 35.05851, 35.24576, 35.67160, 35.37322, 35.38670, 35.14550, 35.14003
+## 162                     32.73178, 32.25667, 32.49030, 32.97983, 34.00488, 33.97362, 33.86644, 33.67539, 33.52569, 33.47582, 33.45592, 33.38383, 33.19098, 32.91957, 32.73178, 35.14003, 35.10323, 34.70165, 34.57187, 34.97810, 35.05851, 35.09359, 35.01786, 35.03869, 35.00034, 35.10142, 35.16271, 35.17312, 35.08783, 35.14003
+## 176                                                                                                                                                                                         -61.680, -61.660, -61.950, -61.770, -60.935, -60.895, -61.105, -61.680, 10.760, 10.365, 10.090, 10.000, 10.110, 10.855, 10.890, 10.760</code></pre>
+<p>Since you used the assignment operator the last line creates a new simple feature data frame, <code>small_countries</code>, containing nations whose surface area is smaller than 10,000 square kilometers.</p>
+<p>Note: the geometry column remains fixed to the resulting data frame.</p>
+<p>An operation on a {sf} data frame only changes the geometry when appropriate (e.g. by dissolving borders between adjacent polygons following aggregation). This means that the speed of operations with attribute data in {sf} data frames is the same as with columns in a data frames.</p>
 <p>The {base} R function <code>subset()</code> provides another way to get the same result.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="tuesday-september-13-2022.html#cb12-1" aria-hidden="true" tabindex="-1"></a>small_countries <span class="ot">&lt;-</span> <span class="fu">subset</span>(world, </span>
-<span id="cb12-2"><a href="tuesday-september-13-2022.html#cb12-2" aria-hidden="true" tabindex="-1"></a>                          area_km2 <span class="sc">&lt;</span> <span class="dv">10000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="tuesday-september-13-2022.html#cb13-1" aria-hidden="true" tabindex="-1"></a>small_countries <span class="ot">&lt;-</span> <span class="fu">subset</span>(world, </span>
+<span id="cb13-2"><a href="tuesday-september-13-2022.html#cb13-2" aria-hidden="true" tabindex="-1"></a>                          area_km2 <span class="sc">&lt;</span> <span class="dv">10000</span>)</span></code></pre></div>
 <p>The {dplyr} verbs work on {sf} spatial data frames. The functions include <code>dplyr::select()</code> and <code>dplyr::filter()</code>.</p>
 <p>CAUTION! The {dplyr} and {raster} packages have a <code>select()</code> function. When using both packages in the same session, the function in the most recently attached package will be used, ‘masking’ the other function. This will generate error messages containing text like: unable to find an inherited method for function ‘select’ for signature “sf”.</p>
 <p>To avoid this error message, and prevent ambiguity, you should use the long-form function name, prefixed by the package name and two colons <code>dplyr::select()</code>.</p>
 <p>The <code>dplyr::select()</code> function picks the columns by name or position. For example, you can select only two columns, <code>name_long</code> and <code>pop</code>, with the following command.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="tuesday-september-13-2022.html#cb13-1" aria-hidden="true" tabindex="-1"></a>world1 <span class="ot">&lt;-</span> world <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="tuesday-september-13-2022.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, pop)</span>
-<span id="cb13-3"><a href="tuesday-september-13-2022.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(world1)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tuesday-september-13-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a>world1 <span class="ot">&lt;-</span> world <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="tuesday-september-13-2022.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, pop)</span>
+<span id="cb14-3"><a href="tuesday-september-13-2022.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(world1)</span></code></pre></div>
 <pre><code>## [1] &quot;name_long&quot; &quot;pop&quot;</code></pre>
 <p>The result is a simple feature data frame with the geometry column.</p>
 <p>With the <code>dplyr::select()</code> function you can subset and rename columns at the same time. Here you select the columns with names <code>name_long</code> and <code>pop</code> and give the <code>pop</code> column a new name (<code>population</code>).</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="tuesday-september-13-2022.html#cb15-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="tuesday-september-13-2022.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, </span>
-<span id="cb15-3"><a href="tuesday-september-13-2022.html#cb15-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">population =</span> pop)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tuesday-september-13-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="tuesday-september-13-2022.html#cb16-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, </span>
+<span id="cb16-3"><a href="tuesday-september-13-2022.html#cb16-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">population =</span> pop)</span></code></pre></div>
 <pre><code>## # A tibble: 177 × 2
 ##    name_long        population
 ##    &lt;chr&gt;                 &lt;dbl&gt;
@@ -743,8 +768,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 167 more rows
 ## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <p>The <code>dplyr::pull()</code> function returns a single vector without the geometry.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tuesday-september-13-2022.html#cb17-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="tuesday-september-13-2022.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(pop)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="tuesday-september-13-2022.html#cb18-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="tuesday-september-13-2022.html#cb18-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(pop)</span></code></pre></div>
 <pre><code>##   [1]     885806   52234869         NA   35535348  318622525   17288285
 ##   [7]   30757700    7755785  255131116   42981515   17613798   73722860
 ##  [13]   13513125   46024250   37737913   13569438   10572466   10405844
@@ -776,9 +801,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [169]   38833338   11345357    3566002    2077495    7130576     621810
 ## [175]    1821800    1354493   11530971</code></pre>
 <p>The <code>dplyr::filter()</code> function keeps only rows matching given criteria, e.g., only countries with a very high average life expectancy.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tuesday-september-13-2022.html#cb19-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="tuesday-september-13-2022.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="tuesday-september-13-2022.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(lifeExp <span class="sc">&gt;</span> <span class="dv">82</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tuesday-september-13-2022.html#cb20-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="tuesday-september-13-2022.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="tuesday-september-13-2022.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(lifeExp <span class="sc">&gt;</span> <span class="dv">82</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 9 × 10
 ##   iso_a2 name_long  conti…¹ regio…² subre…³ type  area_…⁴    pop lifeExp gdpPe…⁵
 ##   &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
@@ -795,10 +820,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   ⁴​area_km2, ⁵​gdpPercap</code></pre>
 <p>Aggregation summarizes a data frame by a grouping variable. An example of aggregation is to calculate the number of people per continent based on country-level data (one row per country).</p>
 <p>This is done with the <code>dplyr::group_by()</code> and <code>dplyr::summarize()</code> functions.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tuesday-september-13-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="tuesday-september-13-2022.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span></span>
-<span id="cb21-3"><a href="tuesday-september-13-2022.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Population =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb21-4"><a href="tuesday-september-13-2022.html#cb21-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nCountries =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="tuesday-september-13-2022.html#cb22-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="tuesday-september-13-2022.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="tuesday-september-13-2022.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Population =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-4"><a href="tuesday-september-13-2022.html#cb22-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nCountries =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## Simple feature collection with 8 features and 3 fields
 ## Geometry type: GEOMETRY
 ## Dimension:     XY
@@ -817,13 +842,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 8 South America            412060811         13 MULTIPOLYGON (((-66.95992 -54.8…</code></pre>
 <p>The two columns in the resulting table are <code>Population</code> and <code>nCountries</code>. The functions <code>sum()</code> and <code>dplyr::n()</code> were the aggregating functions.</p>
 <p>The result is a simple feature data frame with a single row representing attributes of the world and the geometry as a single multi-polygon through the geometric <em>union</em> operator.</p>
-<p>You can chain together functions to find the world’s three most populous continents and the number of countries they contain.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tuesday-september-13-2022.html#cb23-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span> </span>
-<span id="cb23-2"><a href="tuesday-september-13-2022.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(pop, continent) <span class="sc">|&gt;</span> </span>
-<span id="cb23-3"><a href="tuesday-september-13-2022.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span> </span>
-<span id="cb23-4"><a href="tuesday-september-13-2022.html#cb23-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Population =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb23-5"><a href="tuesday-september-13-2022.html#cb23-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nCountries =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb23-6"><a href="tuesday-september-13-2022.html#cb23-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">3</span>, <span class="at">wt =</span> Population) </span></code></pre></div>
+<p>You can chain together functions to find the world’s three most populous continents and the number of countries they contain with the <code>dplyr::top_n()</code> function.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="tuesday-september-13-2022.html#cb24-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="tuesday-september-13-2022.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(pop, continent) <span class="sc">|&gt;</span> </span>
+<span id="cb24-3"><a href="tuesday-september-13-2022.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span> </span>
+<span id="cb24-4"><a href="tuesday-september-13-2022.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Population =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb24-5"><a href="tuesday-september-13-2022.html#cb24-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nCountries =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb24-6"><a href="tuesday-september-13-2022.html#cb24-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">3</span>, <span class="at">wt =</span> Population) </span></code></pre></div>
 <pre><code>## Simple feature collection with 3 features and 3 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -836,8 +861,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2 Asia      4311408059         47 (((36.14976 35.82153, 35.90502 35.41001, 35.9…
 ## 3 Europe     669036256         39 (((26.29 35.29999, 25.74502 35.18, 25.76921 3…</code></pre>
 <p>If you want to create a new column based on existing columns use <code>dplyr::mutate()</code>. For example, if you want to calculate population density for each country divide the population column, here <code>pop</code>, by an area column, here <code>area_km2</code> with unit area in square kilometers.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="tuesday-september-13-2022.html#cb25-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span> </span>
-<span id="cb25-2"><a href="tuesday-september-13-2022.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Population_Density =</span> pop <span class="sc">/</span> area_km2)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="tuesday-september-13-2022.html#cb26-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="tuesday-september-13-2022.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Population_Density =</span> pop <span class="sc">/</span> area_km2)</span></code></pre></div>
 <pre><code>## Simple feature collection with 177 features and 11 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -860,8 +885,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   Population_Density &lt;dbl&gt;, and abbreviated variable names ¹​name_long,
 ## #   ²​continent, ³​region_un, ⁴​subregion, ⁵​area_km2, ⁶​gdpPercap
 ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="tuesday-september-13-2022.html#cb27-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
-<span id="cb27-2"><a href="tuesday-september-13-2022.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">transmute</span>(<span class="at">Population_Density =</span> pop <span class="sc">/</span> area_km2)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="tuesday-september-13-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="tuesday-september-13-2022.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">transmute</span>(<span class="at">Population_Density =</span> pop <span class="sc">/</span> area_km2)</span></code></pre></div>
 <pre><code>## Simple feature collection with 177 features and 1 field
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -887,14 +912,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The {USAboundaries} package has historical and contemporary boundaries for the United States provided by the U.S. Census Bureau.</p>
 <p>Individual states are extracted using the <code>us_states()</code> function. CAUTION: this function has the same name as the object <code>us_states</code> from the {spData} package.</p>
 <p>Here you use the argument <code>states =</code> to get only the state of Kansas. You then make a plot of the boundary and check the native coordinate reference system (CRS).</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="tuesday-september-13-2022.html#cb29-1" aria-hidden="true" tabindex="-1"></a>KS.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>(<span class="at">states =</span> <span class="st">&quot;Kansas&quot;</span>)</span>
-<span id="cb29-2"><a href="tuesday-september-13-2022.html#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="tuesday-september-13-2022.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb29-4"><a href="tuesday-september-13-2022.html#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-5"><a href="tuesday-september-13-2022.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
-<span id="cb29-6"><a href="tuesday-september-13-2022.html#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="tuesday-september-13-2022.html#cb30-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(KS.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="tuesday-september-13-2022.html#cb30-1" aria-hidden="true" tabindex="-1"></a>KS.sf <span class="ot">&lt;-</span> USAboundaries<span class="sc">::</span><span class="fu">us_states</span>(<span class="at">states =</span> <span class="st">&quot;Kansas&quot;</span>)</span>
+<span id="cb30-2"><a href="tuesday-september-13-2022.html#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="tuesday-september-13-2022.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb30-4"><a href="tuesday-september-13-2022.html#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="tuesday-september-13-2022.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="tuesday-september-13-2022.html#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="tuesday-september-13-2022.html#cb31-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(KS.sf)</span></code></pre></div>
 <pre><code>## Coordinate Reference System:
 ##   User input: EPSG:4326 
 ##   wkt:
@@ -916,21 +941,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##         AREA[&quot;World.&quot;],
 ##         BBOX[-90,-180,90,180]],
 ##     ID[&quot;EPSG&quot;,4326]]</code></pre>
-<p>The polygon geometry includes the border and the area inside the border. The CRS is described by the 4326 EPSG code and implemented using well-known text (WKT).</p>
+<p>The polygon geometry includes the border and the area inside the border. The CRS is described by the 4326 EPSG code and implemented using well-known text.</p>
 <p>You use a geometric operation to subset spatial data geographically (rather than on some attribute). For example here you will subset the tornado tracks as line strings, keeping only those line strings that fall within the Kansas border defined by a polygon geometry.</p>
 <p>First import the tornado data. Note here you check to see if the tornado data file is in your list of files with the <code>if()</code> conditional and the <code>list.files()</code> function. You only download the data file if the file is not (<code>!</code>) in (<code>%in%</code>) the list.</p>
 <p>Consider then TRUE, FALSE, TRUE, TRUE, TRUE.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tuesday-september-13-2022.html#cb32-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-aspath.zip&quot;</span></span>
-<span id="cb32-2"><a href="tuesday-september-13-2022.html#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="tuesday-september-13-2022.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;1950-2020-torn-aspath&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))) {</span>
-<span id="cb32-4"><a href="tuesday-september-13-2022.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> loc,</span>
-<span id="cb32-5"><a href="tuesday-september-13-2022.html#cb32-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath.zip&quot;</span>))</span>
-<span id="cb32-6"><a href="tuesday-september-13-2022.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath.zip&quot;</span>), </span>
-<span id="cb32-7"><a href="tuesday-september-13-2022.html#cb32-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
-<span id="cb32-8"><a href="tuesday-september-13-2022.html#cb32-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb32-9"><a href="tuesday-september-13-2022.html#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-10"><a href="tuesday-september-13-2022.html#cb32-10" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath&quot;</span>), </span>
-<span id="cb32-11"><a href="tuesday-september-13-2022.html#cb32-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;1950-2020-torn-aspath&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="tuesday-september-13-2022.html#cb33-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="st">&quot;http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-aspath.zip&quot;</span></span>
+<span id="cb33-2"><a href="tuesday-september-13-2022.html#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="tuesday-september-13-2022.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;1950-2020-torn-aspath&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))) {</span>
+<span id="cb33-4"><a href="tuesday-september-13-2022.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> loc,</span>
+<span id="cb33-5"><a href="tuesday-september-13-2022.html#cb33-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath.zip&quot;</span>))</span>
+<span id="cb33-6"><a href="tuesday-september-13-2022.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath.zip&quot;</span>), </span>
+<span id="cb33-7"><a href="tuesday-september-13-2022.html#cb33-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
+<span id="cb33-8"><a href="tuesday-september-13-2022.html#cb33-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-9"><a href="tuesday-september-13-2022.html#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="tuesday-september-13-2022.html#cb33-10" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath&quot;</span>), </span>
+<span id="cb33-11"><a href="tuesday-september-13-2022.html#cb33-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;1950-2020-torn-aspath&quot;</span>) </span></code></pre></div>
 <pre><code>## Reading layer `1950-2020-torn-aspath&#39; from data source 
 ##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2022/data/1950-2020-torn-aspath&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -941,27 +966,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Geodetic CRS:  WGS 84</code></pre>
 <p>The geometries are line strings representing the straight-line approximate track of each tornado. The CRS has EPSG code of 4326, same as the Kansas polygon.</p>
 <p>To keep only the tracks that fall within the border of Kansas you use the <code>sf::st_intersection()</code> function. The first argument (<code>x =</code>) is the simple feature data frame that you want to subset and the second argument (<code>y =</code>) defines the geometry over which the subset occurs.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="tuesday-september-13-2022.html#cb34-1" aria-hidden="true" tabindex="-1"></a>KS_Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_intersection</span>(<span class="at">x =</span> Torn.sf, </span>
-<span id="cb34-2"><a href="tuesday-september-13-2022.html#cb34-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">y =</span> KS.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tuesday-september-13-2022.html#cb35-1" aria-hidden="true" tabindex="-1"></a>KS_Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_intersection</span>(<span class="at">x =</span> Torn.sf, </span>
+<span id="cb35-2"><a href="tuesday-september-13-2022.html#cb35-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">y =</span> KS.sf)</span></code></pre></div>
 <pre><code>## Warning: attribute variables are assumed to be spatially constant throughout all
 ## geometries</code></pre>
 <p>You can use the pipe operator (<code>|&gt;</code>) to pass the first argument to the function.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="tuesday-september-13-2022.html#cb36-1" aria-hidden="true" tabindex="-1"></a>KS_Torn.sf <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a href="tuesday-september-13-2022.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersection</span>(<span class="at">y =</span> KS.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="tuesday-september-13-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a>KS_Torn.sf <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="tuesday-september-13-2022.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersection</span>(<span class="at">y =</span> KS.sf)</span></code></pre></div>
 <pre><code>## Warning: attribute variables are assumed to be spatially constant throughout all
 ## geometries</code></pre>
 <p>Make a plot to check if things appear as you expect. Start with the state border as a polygon layer then add the tracks as a line string layer.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="tuesday-september-13-2022.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb38-2"><a href="tuesday-september-13-2022.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
-<span id="cb38-3"><a href="tuesday-september-13-2022.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_Torn.sf)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="tuesday-september-13-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb39-2"><a href="tuesday-september-13-2022.html#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="tuesday-september-13-2022.html#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_Torn.sf)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Note that no tornado track lies outside the state border. Line strings that lie outside the border are clipped at the border. However the attribute values represent the entire track.</p>
 <p>If you want the entire tornado track for all tornadoes that passed into (or through) the state, then you first use the geometric binary predicate function <code>sf::st_intersects()</code>. With the argument <code>sparse = FALSE</code> a matrix with a single column of <code>TRUE</code>s and <code>FALSE</code>s is returned. Here you use the piping operator to implicitly specify the <code>x =</code> argument as the <code>Torn.sf</code> data frame.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="tuesday-september-13-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a>Intersects <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
-<span id="cb39-2"><a href="tuesday-september-13-2022.html#cb39-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersects</span>(<span class="at">y =</span> KS.sf, </span>
-<span id="cb39-3"><a href="tuesday-september-13-2022.html#cb39-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sparse =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb39-4"><a href="tuesday-september-13-2022.html#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="tuesday-september-13-2022.html#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Intersects)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tuesday-september-13-2022.html#cb40-1" aria-hidden="true" tabindex="-1"></a>Intersects <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="tuesday-september-13-2022.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_intersects</span>(<span class="at">y =</span> KS.sf, </span>
+<span id="cb40-3"><a href="tuesday-september-13-2022.html#cb40-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sparse =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb40-4"><a href="tuesday-september-13-2022.html#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="tuesday-september-13-2022.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Intersects)</span></code></pre></div>
 <pre><code>##       [,1]
 ## [1,] FALSE
 ## [2,] FALSE
@@ -969,34 +994,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [4,] FALSE
 ## [5,] FALSE
 ## [6,] FALSE</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="tuesday-september-13-2022.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(Intersects)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="tuesday-september-13-2022.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(Intersects)</span></code></pre></div>
 <pre><code>## [1] 4377</code></pre>
 <p>Next you create a new data frame from the original data frame keeping only observations (rows) where <code>Interects</code> is TRUE.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="tuesday-september-13-2022.html#cb43-1" aria-hidden="true" tabindex="-1"></a>KS_Torn2.sf <span class="ot">&lt;-</span> Torn.sf[Intersects, ]</span>
-<span id="cb43-2"><a href="tuesday-september-13-2022.html#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="tuesday-september-13-2022.html#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb43-4"><a href="tuesday-september-13-2022.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
-<span id="cb43-5"><a href="tuesday-september-13-2022.html#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_Torn2.sf)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="tuesday-september-13-2022.html#cb44-1" aria-hidden="true" tabindex="-1"></a>KS_Torn2.sf <span class="ot">&lt;-</span> Torn.sf[Intersects, ]</span>
+<span id="cb44-2"><a href="tuesday-september-13-2022.html#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="tuesday-september-13-2022.html#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb44-4"><a href="tuesday-september-13-2022.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb44-5"><a href="tuesday-september-13-2022.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_Torn2.sf)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Are tornadoes more common in some parts of Kansas than others? One way to answer this question is to see how far away the center of tornado activity is from the center of the state.</p>
 <p>Start by finding the center of the state using the <code>sf::st_centroid()</code> function.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="tuesday-september-13-2022.html#cb44-1" aria-hidden="true" tabindex="-1"></a>geocenterKS <span class="ot">&lt;-</span> KS.sf <span class="sc">|&gt;</span></span>
-<span id="cb44-2"><a href="tuesday-september-13-2022.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tuesday-september-13-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a>geocenterKS <span class="ot">&lt;-</span> KS.sf <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="tuesday-september-13-2022.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>()</span></code></pre></div>
 <pre><code>## Warning in st_centroid.sf(KS.sf): st_centroid assumes attributes are constant
 ## over geometries of x</code></pre>
 <p>Next combine the line strings representing the tornado tracks into a geometry collection with the <code>sf::st_combine()</code> function and then find the centroid of this collection using the <code>sf::st_centroid()</code> function.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tuesday-september-13-2022.html#cb46-1" aria-hidden="true" tabindex="-1"></a>centerKStornadoes <span class="ot">&lt;-</span> KS_Torn.sf <span class="sc">|&gt;</span></span>
-<span id="cb46-2"><a href="tuesday-september-13-2022.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_combine</span>() <span class="sc">|&gt;</span></span>
-<span id="cb46-3"><a href="tuesday-september-13-2022.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tuesday-september-13-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a>centerKStornadoes <span class="ot">&lt;-</span> KS_Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="tuesday-september-13-2022.html#cb47-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_combine</span>() <span class="sc">|&gt;</span></span>
+<span id="cb47-3"><a href="tuesday-september-13-2022.html#cb47-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>()</span></code></pre></div>
 <p>Draw a map.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tuesday-september-13-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb47-2"><a href="tuesday-september-13-2022.html#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
-<span id="cb47-3"><a href="tuesday-september-13-2022.html#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> geocenterKS, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb47-4"><a href="tuesday-september-13-2022.html#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> centerKStornadoes, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="tuesday-september-13-2022.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb48-2"><a href="tuesday-september-13-2022.html#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS.sf) <span class="sc">+</span></span>
+<span id="cb48-3"><a href="tuesday-september-13-2022.html#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> geocenterKS, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb48-4"><a href="tuesday-september-13-2022.html#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> centerKStornadoes, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Compute the distance between the to geometry points in meters using the <code>sf::st_distance()</code> function</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="tuesday-september-13-2022.html#cb48-1" aria-hidden="true" tabindex="-1"></a>geocenterKS <span class="sc">|&gt;</span></span>
-<span id="cb48-2"><a href="tuesday-september-13-2022.html#cb48-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_distance</span>(centerKStornadoes)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="tuesday-september-13-2022.html#cb49-1" aria-hidden="true" tabindex="-1"></a>geocenterKS <span class="sc">|&gt;</span></span>
+<span id="cb49-2"><a href="tuesday-september-13-2022.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_distance</span>(centerKStornadoes)</span></code></pre></div>
 <pre><code>## Units: [m]
 ##          [,1]
 ## [1,] 2875.099</code></pre>
@@ -1012,8 +1037,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Join functions work the same on data frames and on simple feature data frames. The most common type of attribute join on spatial data takes a simple feature data frame as the first argument and adds columns to it from a data a frame specified as the second argument.</p>
 <p>For example, you combine data on coffee production with the <code>spData::world</code> simple feature data frame. Coffee production by country is in the data frame called <code>spData::coffee_data</code>.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="tuesday-september-13-2022.html#cb50-1" aria-hidden="true" tabindex="-1"></a>spData<span class="sc">::</span>coffee_data <span class="sc">|&gt;</span></span>
-<span id="cb50-2"><a href="tuesday-september-13-2022.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tuesday-september-13-2022.html#cb51-1" aria-hidden="true" tabindex="-1"></a>spData<span class="sc">::</span>coffee_data <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a href="tuesday-september-13-2022.html#cb51-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
 <pre><code>## Rows: 47
 ## Columns: 3
 ## $ name_long              &lt;chr&gt; &quot;Angola&quot;, &quot;Bolivia&quot;, &quot;Brazil&quot;, &quot;Burundi&quot;, &quot;Came…
@@ -1021,8 +1046,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## $ coffee_production_2017 &lt;int&gt; NA, 4, 2786, 38, 6, NA, 12, 1169, 32, 130, NA, …</code></pre>
 <p>It has 3 columns: <code>name_long</code> names of the major coffee-producing nations and <code>coffee_production_2016</code> and <code>coffee_production_2017</code> contain estimated values for coffee production in units of 60-kg bags per year.</p>
 <p>The GDP (per capita) is in the <code>spData::world</code> simple feature data frame.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="tuesday-september-13-2022.html#cb52-1" aria-hidden="true" tabindex="-1"></a>spData<span class="sc">::</span>world <span class="sc">|&gt;</span></span>
-<span id="cb52-2"><a href="tuesday-september-13-2022.html#cb52-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tuesday-september-13-2022.html#cb53-1" aria-hidden="true" tabindex="-1"></a>spData<span class="sc">::</span>world <span class="sc">|&gt;</span></span>
+<span id="cb53-2"><a href="tuesday-september-13-2022.html#cb53-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
 <pre><code>## Rows: 177
 ## Columns: 11
 ## $ iso_a2    &lt;chr&gt; &quot;FJ&quot;, &quot;TZ&quot;, &quot;EH&quot;, &quot;CA&quot;, &quot;US&quot;, &quot;KZ&quot;, &quot;UZ&quot;, &quot;PG&quot;, &quot;ID&quot;, &quot;AR&quot;, …
@@ -1037,8 +1062,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## $ gdpPercap &lt;dbl&gt; 8222.2538, 2402.0994, NA, 43079.1425, 51921.9846, 23587.3375…
 ## $ geom      &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((-180 -16.55..., MULTIPOLYGON ((…</code></pre>
 <p>Select the columns <code>name_long</code> and <code>gdpPercap</code> and assign these columns to a new simple feature data frame called <code>world.sf</code>.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="tuesday-september-13-2022.html#cb54-1" aria-hidden="true" tabindex="-1"></a>( world.sf <span class="ot">&lt;-</span> spData<span class="sc">::</span>world <span class="sc">|&gt;</span></span>
-<span id="cb54-2"><a href="tuesday-september-13-2022.html#cb54-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, gdpPercap) )</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="tuesday-september-13-2022.html#cb55-1" aria-hidden="true" tabindex="-1"></a>( world.sf <span class="ot">&lt;-</span> spData<span class="sc">::</span>world <span class="sc">|&gt;</span></span>
+<span id="cb55-2"><a href="tuesday-september-13-2022.html#cb55-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(name_long, gdpPercap) )</span></code></pre></div>
 <pre><code>## Simple feature collection with 177 features and 2 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -1060,8 +1085,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # … with 167 more rows
 ## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <p>The <code>dplyr::left_join()</code> function takes the data frame named by the argument <code>x =</code> and joins it to the data frame named by the argument <code>y =</code> using a common variable name.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="tuesday-september-13-2022.html#cb56-1" aria-hidden="true" tabindex="-1"></a>( world_coffee.sf <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(<span class="at">x =</span> world.sf, </span>
-<span id="cb56-2"><a href="tuesday-september-13-2022.html#cb56-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">y =</span> spData<span class="sc">::</span>coffee_data) )</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="tuesday-september-13-2022.html#cb57-1" aria-hidden="true" tabindex="-1"></a>( world_coffee.sf <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(<span class="at">x =</span> world.sf, </span>
+<span id="cb57-2"><a href="tuesday-september-13-2022.html#cb57-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">y =</span> spData<span class="sc">::</span>coffee_data) )</span></code></pre></div>
 <pre><code>## Joining, by = &quot;name_long&quot;</code></pre>
 <pre><code>## Simple feature collection with 177 features and 4 fields
 ## Geometry type: MULTIPOLYGON
@@ -1085,15 +1110,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   ²​coffee_production_2017
 ## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <p>Because the two data frames share a common variable name (<code>name_long</code>) the join works without using the <code>by =</code> argument. The result is a simple feature data frame identical to the <code>world.sf</code> object but with two new variables indicating coffee production in 2016 and 2017.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="tuesday-september-13-2022.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(world_coffee.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="tuesday-september-13-2022.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(world_coffee.sf)</span></code></pre></div>
 <pre><code>## [1] &quot;name_long&quot;              &quot;gdpPercap&quot;              &quot;geom&quot;                  
 ## [4] &quot;coffee_production_2016&quot; &quot;coffee_production_2017&quot;</code></pre>
 <p>For a join to work there must be at least one variable name in common.</p>
 <p>Since the object listed in the <code>x =</code> argument is a simple feature data frame, the join function returns a simple feature data frame with the same number of rows (observations).</p>
 <p>Although there are only 47 rows of data in <code>spData::coffee_data</code>, all 177 of the country records in <code>world.sf</code> are kept intact in <code>world_coffee.sf</code>. Rows in the first dataset with no match are assigned <code>NA</code> values for the new coffee production variables.</p>
 <p>If you want to keep only countries that have a match in the key variable then use <code>dplyr::inner_join()</code>. Here you use the piping operator to implicitly specify the <code>x =</code> argument as the <code>world.sf</code> data frame.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="tuesday-september-13-2022.html#cb61-1" aria-hidden="true" tabindex="-1"></a>world.sf <span class="sc">|&gt;</span></span>
-<span id="cb61-2"><a href="tuesday-september-13-2022.html#cb61-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">inner_join</span>(spData<span class="sc">::</span>coffee_data)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="tuesday-september-13-2022.html#cb62-1" aria-hidden="true" tabindex="-1"></a>world.sf <span class="sc">|&gt;</span></span>
+<span id="cb62-2"><a href="tuesday-september-13-2022.html#cb62-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">inner_join</span>(spData<span class="sc">::</span>coffee_data)</span></code></pre></div>
 <pre><code>## Joining, by = &quot;name_long&quot;</code></pre>
 <pre><code>## Simple feature collection with 45 features and 4 fields
 ## Geometry type: MULTIPOLYGON
@@ -1125,8 +1150,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For example, suppose you want demographic information given at the Census tract level to be estimated within the tornado damage path. Damage paths do not align with census tract boundaries so areal weighted interpolation is needed to get demographic estimates at the tornado level.</p>
 <p>The function <code>sf::st_interpolate_aw()</code> performs areal-weighted interpolation of polygon data. As an example, consider the number of births by county in North Carolina in over the period 1970 through 1974 (<code>BIR74</code>).</p>
 <p>The data are available as a shapefile as part of the {sf} package system file. Use the <code>sf::st_read()</code> function together with the <code>system.file()</code> function to import the data.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="tuesday-september-13-2022.html#cb64-1" aria-hidden="true" tabindex="-1"></a>nc.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="fu">system.file</span>(<span class="st">&quot;shape/nc.shp&quot;</span>, </span>
-<span id="cb64-2"><a href="tuesday-september-13-2022.html#cb64-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">package =</span> <span class="st">&quot;sf&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="tuesday-september-13-2022.html#cb65-1" aria-hidden="true" tabindex="-1"></a>nc.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="fu">system.file</span>(<span class="st">&quot;shape/nc.shp&quot;</span>, </span>
+<span id="cb65-2"><a href="tuesday-september-13-2022.html#cb65-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">package =</span> <span class="st">&quot;sf&quot;</span>))</span></code></pre></div>
 <pre><code>## Reading layer `nc&#39; from data source 
 ##   `/Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library/sf/shape/nc.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -1135,100 +1160,100 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Dimension:     XY
 ## Bounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
 ## Geodetic CRS:  NAD27</code></pre>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="tuesday-september-13-2022.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nc.sf<span class="sc">$</span>geometry)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="tuesday-september-13-2022.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nc.sf<span class="sc">$</span>geometry)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>Each polygon is a county. The union of all polygons defines the areal extent of the simple feature column and is retrieved as a <code>bbox</code> (bounding box) object with the <code>sf::st_bbox()</code> function.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="tuesday-september-13-2022.html#cb67-1" aria-hidden="true" tabindex="-1"></a>nc.sf <span class="sc">|&gt;</span></span>
-<span id="cb67-2"><a href="tuesday-september-13-2022.html#cb67-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_bbox</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="tuesday-september-13-2022.html#cb68-1" aria-hidden="true" tabindex="-1"></a>nc.sf <span class="sc">|&gt;</span></span>
+<span id="cb68-2"><a href="tuesday-september-13-2022.html#cb68-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_bbox</span>()</span></code></pre></div>
 <pre><code>##      xmin      ymin      xmax      ymax 
 ## -84.32385  33.88199 -75.45698  36.58965</code></pre>
 <p>The domain extends from 84.32W to 75.46W and from 33.88N to 36.59N.</p>
 <p>Create a map filling the counties by the values in the variable <code>BIR74</code> (number of births in 1974) with the <code>fill =</code> aesthetic.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="tuesday-september-13-2022.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nc.sf) <span class="sc">+</span></span>
-<span id="cb69-2"><a href="tuesday-september-13-2022.html#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74))</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="tuesday-september-13-2022.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nc.sf) <span class="sc">+</span></span>
+<span id="cb70-2"><a href="tuesday-september-13-2022.html#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74))</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>Next construct a 20 by 10 grid of polygons that overlap the state using the <code>sf::st_make_grid()</code> function. The function takes the bounding box from the <code>nc.sf</code> simple feature data frame and constructs a two-dimension grid using the dimensions specified with the <code>n =</code> argument.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="tuesday-september-13-2022.html#cb70-1" aria-hidden="true" tabindex="-1"></a>g.sfc <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_make_grid</span>(nc.sf, </span>
-<span id="cb70-2"><a href="tuesday-september-13-2022.html#cb70-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
-<span id="cb70-3"><a href="tuesday-september-13-2022.html#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-4"><a href="tuesday-september-13-2022.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb70-5"><a href="tuesday-september-13-2022.html#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> g.sfc, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb70-6"><a href="tuesday-september-13-2022.html#cb70-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> nc.sf, <span class="at">fill =</span> <span class="st">&quot;transparent&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="tuesday-september-13-2022.html#cb71-1" aria-hidden="true" tabindex="-1"></a>g.sfc <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_make_grid</span>(nc.sf, </span>
+<span id="cb71-2"><a href="tuesday-september-13-2022.html#cb71-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
+<span id="cb71-3"><a href="tuesday-september-13-2022.html#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-4"><a href="tuesday-september-13-2022.html#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb71-5"><a href="tuesday-september-13-2022.html#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> g.sfc, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb71-6"><a href="tuesday-september-13-2022.html#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> nc.sf, <span class="at">fill =</span> <span class="st">&quot;transparent&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>The result is an overlapping, but incongruent, grid of polygons as a <code>sfc</code> (simple feature column).</p>
 <p>Use the <code>sf::st_interpolate_aw()</code> function with the first argument a simple feature data frame for which you want to aggregate a particular variable and the argument <code>to =</code> to the set of polygons for which you want the variable to be aggregated.</p>
 <p>The name of the variable must be in quotes inside the subset operator <code>[]</code>. The argument <code>extensive =</code> if <code>FALSE</code> (default) assumes the variable is intensive and the mean is preserved.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="tuesday-september-13-2022.html#cb71-1" aria-hidden="true" tabindex="-1"></a>a1.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(nc.sf[<span class="st">&quot;BIR74&quot;</span>], </span>
-<span id="cb71-2"><a href="tuesday-september-13-2022.html#cb71-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">to =</span> g.sfc,</span>
-<span id="cb71-3"><a href="tuesday-september-13-2022.html#cb71-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">extensive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="tuesday-september-13-2022.html#cb72-1" aria-hidden="true" tabindex="-1"></a>a1.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(nc.sf[<span class="st">&quot;BIR74&quot;</span>], </span>
+<span id="cb72-2"><a href="tuesday-september-13-2022.html#cb72-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">to =</span> g.sfc,</span>
+<span id="cb72-3"><a href="tuesday-september-13-2022.html#cb72-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">extensive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## Warning in st_interpolate_aw.sf(nc.sf[&quot;BIR74&quot;], to = g.sfc, extensive = FALSE):
 ## st_interpolate_aw assumes attributes are constant or uniform over areas of x</code></pre>
 <p>The result is a simple feature data frame with the same polygons geometry as the <code>sfc</code> grid and a single variable called (<code>BIR74</code>).</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="tuesday-september-13-2022.html#cb73-1" aria-hidden="true" tabindex="-1"></a>( p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span>  </span>
-<span id="cb73-2"><a href="tuesday-september-13-2022.html#cb73-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> a1.sf, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74)) <span class="sc">+</span></span>
-<span id="cb73-3"><a href="tuesday-september-13-2022.html#cb73-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">18000</span>)) <span class="sc">+</span></span>
-<span id="cb73-4"><a href="tuesday-september-13-2022.html#cb73-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Assuming the variable is intensive&quot;</span>) )</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="tuesday-september-13-2022.html#cb74-1" aria-hidden="true" tabindex="-1"></a>( p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span>  </span>
+<span id="cb74-2"><a href="tuesday-september-13-2022.html#cb74-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> a1.sf, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74)) <span class="sc">+</span></span>
+<span id="cb74-3"><a href="tuesday-september-13-2022.html#cb74-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">18000</span>)) <span class="sc">+</span></span>
+<span id="cb74-4"><a href="tuesday-september-13-2022.html#cb74-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Assuming the variable is intensive&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <p>Note that the average number of births across the state at the county level matches (roughly) the average number of births across the grid of polygons, but the sums do not match.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="tuesday-september-13-2022.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(a1.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">mean</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="tuesday-september-13-2022.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(a1.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">mean</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
 <pre><code>## [1] 1.040669</code></pre>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="tuesday-september-13-2022.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(a1.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">sum</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="tuesday-september-13-2022.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(a1.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">sum</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
 <pre><code>## [1] 1.436123</code></pre>
 <p>An <em>intensive</em> variable is independent of the spatial units (e.g., population density, percentages); a variable that has been normalized in some fashion. An <em>extensive</em> variable depends on the spatial unit (e.g., population totals). Assuming a uniform population density, the number of people will depend on the size of the spatial area.</p>
 <p>Since the number of births in each county is an extensive variable, you change the <code>extensive =</code> argument to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="tuesday-september-13-2022.html#cb78-1" aria-hidden="true" tabindex="-1"></a>a2.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(nc.sf[<span class="st">&quot;BIR74&quot;</span>], </span>
-<span id="cb78-2"><a href="tuesday-september-13-2022.html#cb78-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">to =</span> g.sfc, </span>
-<span id="cb78-3"><a href="tuesday-september-13-2022.html#cb78-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">extensive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="tuesday-september-13-2022.html#cb79-1" aria-hidden="true" tabindex="-1"></a>a2.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(nc.sf[<span class="st">&quot;BIR74&quot;</span>], </span>
+<span id="cb79-2"><a href="tuesday-september-13-2022.html#cb79-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">to =</span> g.sfc, </span>
+<span id="cb79-3"><a href="tuesday-september-13-2022.html#cb79-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">extensive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Warning in st_interpolate_aw.sf(nc.sf[&quot;BIR74&quot;], to = g.sfc, extensive = TRUE):
 ## st_interpolate_aw assumes attributes are constant or uniform over areas of x</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="tuesday-september-13-2022.html#cb80-1" aria-hidden="true" tabindex="-1"></a>( p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(a2.sf) <span class="sc">+</span>  </span>
-<span id="cb80-2"><a href="tuesday-september-13-2022.html#cb80-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74)) <span class="sc">+</span></span>
-<span id="cb80-3"><a href="tuesday-september-13-2022.html#cb80-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">18000</span>)) <span class="sc">+</span></span>
-<span id="cb80-4"><a href="tuesday-september-13-2022.html#cb80-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Assuming the variable is extensive&quot;</span>) )</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="tuesday-september-13-2022.html#cb81-1" aria-hidden="true" tabindex="-1"></a>( p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(a2.sf) <span class="sc">+</span>  </span>
+<span id="cb81-2"><a href="tuesday-september-13-2022.html#cb81-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> BIR74)) <span class="sc">+</span></span>
+<span id="cb81-3"><a href="tuesday-september-13-2022.html#cb81-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">18000</span>)) <span class="sc">+</span></span>
+<span id="cb81-4"><a href="tuesday-september-13-2022.html#cb81-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Assuming the variable is extensive&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <p>In this case you preserve the total number of births across the domain. You verify this ‘mass preservation’ property (pycnophylactic property) by showing that the ratio of the sums is one.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="tuesday-september-13-2022.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(a2.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">sum</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="tuesday-september-13-2022.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(a2.sf<span class="sc">$</span>BIR74) <span class="sc">/</span> <span class="fu">sum</span>(nc.sf<span class="sc">$</span>BIR74)</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>Here you create a plot of both interpolations side-by-side</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="tuesday-september-13-2022.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb83-2"><a href="tuesday-september-13-2022.html#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-3"><a href="tuesday-september-13-2022.html#cb83-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="tuesday-september-13-2022.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb84-2"><a href="tuesday-september-13-2022.html#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-3"><a href="tuesday-september-13-2022.html#cb84-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p>Example: tornado paths and housing units</p>
 <p>Here you are interested in the number of houses (housing units) affected by tornadoes occurring in Florida 2014-2020. You begin by creating a polygon geometry for each tornado record.</p>
 <p>Import the data, filter on <code>yr</code> (year) and <code>st</code> (state) and transform the native CRS to 6439 (Florida Albers).</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="tuesday-september-13-2022.html#cb84-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
-<span id="cb84-2"><a href="tuesday-september-13-2022.html#cb84-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(yr <span class="sc">&gt;=</span> <span class="dv">2014</span>, </span>
-<span id="cb84-3"><a href="tuesday-september-13-2022.html#cb84-3" aria-hidden="true" tabindex="-1"></a>                st <span class="sc">==</span> <span class="st">&quot;FL&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb84-4"><a href="tuesday-september-13-2022.html#cb84-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">6439</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="tuesday-september-13-2022.html#cb85-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb85-2"><a href="tuesday-september-13-2022.html#cb85-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(yr <span class="sc">&gt;=</span> <span class="dv">2014</span>, </span>
+<span id="cb85-3"><a href="tuesday-september-13-2022.html#cb85-3" aria-hidden="true" tabindex="-1"></a>                st <span class="sc">==</span> <span class="st">&quot;FL&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb85-4"><a href="tuesday-september-13-2022.html#cb85-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">6439</span>)</span></code></pre></div>
 <p>Next change the geometries from line strings representing tracks to polygons representing the tornado path (‘damage footprint’ length times width). Damage path width is an attribute variable labeled <code>wid</code>.</p>
 <p>First create new a new variable with the width in units of meters and then use the <code>st_buffer()</code> function with the <code>dist =</code> argument set to 1/2 the width.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="tuesday-september-13-2022.html#cb85-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
-<span id="cb85-2"><a href="tuesday-september-13-2022.html#cb85-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Width =</span> wid <span class="sc">*</span> .<span class="dv">9144</span>)</span>
-<span id="cb85-3"><a href="tuesday-september-13-2022.html#cb85-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-4"><a href="tuesday-september-13-2022.html#cb85-4" aria-hidden="true" tabindex="-1"></a>FL_TornPath.sf <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
-<span id="cb85-5"><a href="tuesday-september-13-2022.html#cb85-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_buffer</span>(<span class="at">dist =</span> FL_Torn.sf<span class="sc">$</span>Width <span class="sc">/</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="tuesday-september-13-2022.html#cb86-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb86-2"><a href="tuesday-september-13-2022.html#cb86-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Width =</span> wid <span class="sc">*</span> .<span class="dv">9144</span>)</span>
+<span id="cb86-3"><a href="tuesday-september-13-2022.html#cb86-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-4"><a href="tuesday-september-13-2022.html#cb86-4" aria-hidden="true" tabindex="-1"></a>FL_TornPath.sf <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb86-5"><a href="tuesday-september-13-2022.html#cb86-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_buffer</span>(<span class="at">dist =</span> FL_Torn.sf<span class="sc">$</span>Width <span class="sc">/</span> <span class="dv">2</span>)</span></code></pre></div>
 <p>To see the change from line string track to a polygon path plot both together for one of the tornadoes.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="tuesday-september-13-2022.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb86-2"><a href="tuesday-september-13-2022.html#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> FL_TornPath.sf[<span class="dv">10</span>, ]) <span class="sc">+</span></span>
-<span id="cb86-3"><a href="tuesday-september-13-2022.html#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> FL_Torn.sf[<span class="dv">10</span>, ], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="tuesday-september-13-2022.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb87-2"><a href="tuesday-september-13-2022.html#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> FL_TornPath.sf[<span class="dv">10</span>, ]) <span class="sc">+</span></span>
+<span id="cb87-3"><a href="tuesday-september-13-2022.html#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> FL_Torn.sf[<span class="dv">10</span>, ], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <p>Now you want the number of houses within this path. The housing units are from the census data. You can access these data with the <code>tidycensus::get_acs()</code> function. The {tidycensus} package is an interface to the decennial US Census and American Community Survey APIs and the US Census Bureau’s geographic boundary files. Functions return Census and ACS data as simple feature data frames for all Census geographies.</p>
 <p>Note: You need to get an API key from U.S. Census. Then</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="tuesday-september-13-2022.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.create</span>(<span class="st">&quot;CensusAPI&quot;</span>) <span class="co"># open then copy/paste your API key</span></span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="tuesday-september-13-2022.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.create</span>(<span class="st">&quot;CensusAPI&quot;</span>) <span class="co"># open then copy/paste your API key</span></span></code></pre></div>
 <p>To ensure the file is only readable by you, not by any other user on the system use the function <code>Sys.chmod()</code> then read the key and install it.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="tuesday-september-13-2022.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.chmod</span>(<span class="st">&quot;CensusAPI&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;0400&quot;</span>)</span>
-<span id="cb88-2"><a href="tuesday-september-13-2022.html#cb88-2" aria-hidden="true" tabindex="-1"></a>key <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_file</span>(<span class="st">&quot;CensusAPI&quot;</span>)</span>
-<span id="cb88-3"><a href="tuesday-september-13-2022.html#cb88-3" aria-hidden="true" tabindex="-1"></a>tidycensus<span class="sc">::</span><span class="fu">census_api_key</span>(key, <span class="at">install =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb88-4"><a href="tuesday-september-13-2022.html#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="fu">readRenviron</span>(<span class="st">&quot;~/.Renviron&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="tuesday-september-13-2022.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.chmod</span>(<span class="st">&quot;CensusAPI&quot;</span>, <span class="at">mode =</span> <span class="st">&quot;0400&quot;</span>)</span>
+<span id="cb89-2"><a href="tuesday-september-13-2022.html#cb89-2" aria-hidden="true" tabindex="-1"></a>key <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_file</span>(<span class="st">&quot;CensusAPI&quot;</span>)</span>
+<span id="cb89-3"><a href="tuesday-september-13-2022.html#cb89-3" aria-hidden="true" tabindex="-1"></a>tidycensus<span class="sc">::</span><span class="fu">census_api_key</span>(key, <span class="at">install =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb89-4"><a href="tuesday-september-13-2022.html#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="fu">readRenviron</span>(<span class="st">&quot;~/.Renviron&quot;</span>)</span></code></pre></div>
 <p>If you are using GitHub, make sure the file is listed in the file <code>.gitignore</code> so it doesn’t get included in your git public repository.</p>
 <p>The geometry is the tract level and the variable is the un-weighted sample housing units (B00002_001). Transform the CRS to that of the tornadoes with the <code>crs =</code> argument.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="tuesday-september-13-2022.html#cb89-1" aria-hidden="true" tabindex="-1"></a>Census.sf <span class="ot">&lt;-</span> tidycensus<span class="sc">::</span><span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">&quot;tract&quot;</span>, </span>
-<span id="cb89-2"><a href="tuesday-september-13-2022.html#cb89-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">variables =</span> <span class="st">&quot;B00002_001&quot;</span>,</span>
-<span id="cb89-3"><a href="tuesday-september-13-2022.html#cb89-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">state =</span> <span class="st">&quot;FL&quot;</span>,</span>
-<span id="cb89-4"><a href="tuesday-september-13-2022.html#cb89-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">year =</span> <span class="dv">2015</span>,</span>
-<span id="cb89-5"><a href="tuesday-september-13-2022.html#cb89-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">geometry =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb89-6"><a href="tuesday-september-13-2022.html#cb89-6" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(FL_TornPath.sf))</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="tuesday-september-13-2022.html#cb90-1" aria-hidden="true" tabindex="-1"></a>Census.sf <span class="ot">&lt;-</span> tidycensus<span class="sc">::</span><span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">&quot;tract&quot;</span>, </span>
+<span id="cb90-2"><a href="tuesday-september-13-2022.html#cb90-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">variables =</span> <span class="st">&quot;B00002_001&quot;</span>,</span>
+<span id="cb90-3"><a href="tuesday-september-13-2022.html#cb90-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">state =</span> <span class="st">&quot;FL&quot;</span>,</span>
+<span id="cb90-4"><a href="tuesday-september-13-2022.html#cb90-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">year =</span> <span class="dv">2015</span>,</span>
+<span id="cb90-5"><a href="tuesday-september-13-2022.html#cb90-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">geometry =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb90-6"><a href="tuesday-september-13-2022.html#cb90-6" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(FL_TornPath.sf))</span></code></pre></div>
 <pre><code>## Getting data from the 2011-2015 5-year ACS</code></pre>
 <pre><code>## Downloading feature geometry from the Census website.  To cache shapefiles for use in future sessions, set `options(tigris_use_cache = TRUE)`.</code></pre>
 <pre><code>## 
@@ -1245,23 +1270,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   |                                                                            
   |===                                                                   |   4%
   |                                                                            
-  |===                                                                   |   5%
-  |                                                                            
   |====                                                                  |   5%
   |                                                                            
   |====                                                                  |   6%
   |                                                                            
   |=====                                                                 |   7%
   |                                                                            
-  |=====                                                                 |   8%
-  |                                                                            
   |======                                                                |   8%
   |                                                                            
   |=======                                                               |  10%
   |                                                                            
-  |=======                                                               |  11%
-  |                                                                            
   |========                                                              |  11%
+  |                                                                            
+  |========                                                              |  12%
   |                                                                            
   |=========                                                             |  12%
   |                                                                            
@@ -1269,25 +1290,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   |                                                                            
   |==========                                                            |  15%
   |                                                                            
-  |===========                                                           |  16%
+  |============                                                          |  17%
   |                                                                            
-  |=============                                                         |  19%
+  |=============                                                         |  18%
   |                                                                            
-  |==============                                                        |  20%
+  |==============                                                        |  19%
+  |                                                                            
+  |===============                                                       |  22%
   |                                                                            
   |================                                                      |  23%
   |                                                                            
-  |=================                                                     |  24%
-  |                                                                            
   |==================                                                    |  26%
-  |                                                                            
-  |===================                                                   |  27%
   |                                                                            
   |====================                                                  |  28%
   |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |======================                                                |  31%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
   |=======================                                               |  33%
   |                                                                            
+  |========================                                              |  34%
+  |                                                                            
   |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |===========================                                           |  38%
   |                                                                            
   |===========================                                           |  39%
   |                                                                            
@@ -1295,48 +1330,118 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   |                                                                            
   |=============================                                         |  41%
   |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |==============================                                        |  42%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
   |===============================                                       |  45%
   |                                                                            
-  |====================================                                  |  51%
+  |================================                                      |  46%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |=================================                                     |  48%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |======================================                                |  54%
   |                                                                            
   |=======================================                               |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |===========================================                           |  61%
   |                                                                            
   |============================================                          |  63%
   |                                                                            
   |=============================================                         |  64%
   |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
   |================================================                      |  68%
+  |                                                                            
+  |=================================================                     |  69%
   |                                                                            
   |=================================================                     |  70%
   |                                                                            
+  |=================================================                     |  71%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
   |===================================================                   |  73%
   |                                                                            
-  |=====================================================                 |  75%
+  |====================================================                  |  75%
+  |                                                                            
+  |======================================================                |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |=======================================================               |  78%
   |                                                                            
   |=======================================================               |  79%
   |                                                                            
-  |========================================================              |  79%
+  |========================================================              |  80%
   |                                                                            
-  |========================================================              |  81%
+  |=========================================================             |  81%
   |                                                                            
-  |=========================================================             |  82%
+  |==========================================================            |  82%
   |                                                                            
-  |==========================================================            |  83%
+  |===========================================================           |  84%
+  |                                                                            
+  |===========================================================           |  85%
   |                                                                            
   |============================================================          |  86%
   |                                                                            
   |=============================================================         |  87%
   |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |==============================================================        |  88%
+  |                                                                            
   |===============================================================       |  90%
   |                                                                            
-  |================================================================      |  92%
+  |================================================================      |  91%
   |                                                                            
-  |====================================================================  |  96%
+  |=================================================================     |  92%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |==================================================================    |  95%
+  |                                                                            
+  |===================================================================   |  96%
   |                                                                            
   |====================================================================  |  97%
   |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
   |======================================================================| 100%</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="tuesday-september-13-2022.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Census.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="tuesday-september-13-2022.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Census.sf)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -1358,12 +1463,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6 MULTIPOLYGON (((246876.1 68...</code></pre>
 <p>The column labeled <code>estimate</code> is the estimate of the number of housing units within the census tract.</p>
 <p>Finally you use the <code>sf::st_interpolate_aw()</code> function to spatially interpolate the housing units to the tornado path.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="tuesday-september-13-2022.html#cb95-1" aria-hidden="true" tabindex="-1"></a>awi.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(Census.sf[<span class="st">&quot;estimate&quot;</span>],</span>
-<span id="cb95-2"><a href="tuesday-september-13-2022.html#cb95-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">to =</span> FL_TornPath.sf, </span>
-<span id="cb95-3"><a href="tuesday-september-13-2022.html#cb95-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">extensive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="tuesday-september-13-2022.html#cb96-1" aria-hidden="true" tabindex="-1"></a>awi.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_interpolate_aw</span>(Census.sf[<span class="st">&quot;estimate&quot;</span>],</span>
+<span id="cb96-2"><a href="tuesday-september-13-2022.html#cb96-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">to =</span> FL_TornPath.sf, </span>
+<span id="cb96-3"><a href="tuesday-september-13-2022.html#cb96-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">extensive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Warning in st_interpolate_aw.sf(Census.sf[&quot;estimate&quot;], to = FL_TornPath.sf, :
 ## st_interpolate_aw assumes attributes are constant or uniform over areas of x</code></pre>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="tuesday-september-13-2022.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(awi.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="tuesday-september-13-2022.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(awi.sf)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 1 field
 ## Attribute-geometry relationship: 0 constant, 1 aggregate, 0 identity
 ## Geometry type: POLYGON
@@ -1377,19 +1482,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 7.429276e-03 POLYGON ((305611.1 671806.4...
 ## 5 2.689190e-05 POLYGON ((312444.4 681744.6...
 ## 6 6.620421e-02 POLYGON ((272197.7 754754.5...</code></pre>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="tuesday-september-13-2022.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(awi.sf<span class="sc">$</span>estimate, </span>
-<span id="cb99-2"><a href="tuesday-september-13-2022.html#cb99-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="tuesday-september-13-2022.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(awi.sf<span class="sc">$</span>estimate, </span>
+<span id="cb100-2"><a href="tuesday-september-13-2022.html#cb100-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1]   0.0000 201.6803</code></pre>
 <p>The tornado that hit the most houses occurred just east of downtown Orlando.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="tuesday-september-13-2022.html#cb101-1" aria-hidden="true" tabindex="-1"></a>awi.sf2 <span class="ot">&lt;-</span> awi.sf <span class="sc">|&gt;</span></span>
-<span id="cb101-2"><a href="tuesday-september-13-2022.html#cb101-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(estimate <span class="sc">&gt;</span> <span class="dv">175</span>)</span>
-<span id="cb101-3"><a href="tuesday-september-13-2022.html#cb101-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-4"><a href="tuesday-september-13-2022.html#cb101-4" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="tuesday-september-13-2022.html#cb102-1" aria-hidden="true" tabindex="-1"></a>awi.sf2 <span class="ot">&lt;-</span> awi.sf <span class="sc">|&gt;</span></span>
+<span id="cb102-2"><a href="tuesday-september-13-2022.html#cb102-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(estimate <span class="sc">&gt;</span> <span class="dv">175</span>)</span>
+<span id="cb102-3"><a href="tuesday-september-13-2022.html#cb102-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-4"><a href="tuesday-september-13-2022.html#cb102-4" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
 <pre><code>## tmap mode set to interactive viewing</code></pre>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="tuesday-september-13-2022.html#cb103-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(awi.sf2) <span class="sc">+</span></span>
-<span id="cb103-2"><a href="tuesday-september-13-2022.html#cb103-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-1e3956b4efb449607c4b" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1e3956b4efb449607c4b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[-81.3659308927062,-81.3659389012192,-81.3659404989808,-81.3659356815925,-81.3659244622396,-81.3659068716545,-81.3658829580337,-81.3658527869051,-81.3658164409487,-81.3657740197706,-81.3657256396298,-81.3656714331197,-81.3656115488051,-81.3655461508145,-81.3654754183913,-81.3653995454016,-81.3653187398036,-81.3652332230773,-81.3651432296176,-81.3650490060918,-81.3649508107637,-81.3648489127851,-81.3647435914586,-81.3646351354718,-81.3645238421059,-81.3644100164206,-81.3642939704181,-81.3641760221876,-81.3640564950332,-81.3639357165878,-81.3638140179148,-81.3636917326003,-81.3635691958389,-81.3634467435143,-81.363324711279,-81.3632034336335,-81.3630832430098,-81.3629644688597,-81.3628474367517,-81.3627324674784,-81.362619876177,-81.3625099714657,-81.3624030545973,-81.3622994186334,-81.3621993476413,-81.362103115915,-81.3620109872233,-81.3619232140872,-81.3618400370871,-81.361761684204,-81.3616883701942,-81.3616202960008,-81.3615576482031,-81.3615005985054,-81.3614493032661,-81.3614039030693,-81.3613645223401,-81.3613312690031,-81.3613042341872,-81.3612834919755,-81.3612690992032,-81.3535706710546,-81.3535626802247,-81.3535610958401,-81.3535659222244,-81.3535771461298,-81.3535947367736,-81.3536186459228,-81.3536488080264,-81.3536851403955,-81.3537275434297,-81.353775900891,-81.3538300802216,-81.3538899329083,-81.3539552948889,-81.3540259870027,-81.3541018154811,-81.354182572479,-81.3542680366447,-81.3543579737264,-81.3544521372141,-81.354550269016,-81.3546521001649,-81.354757351556,-81.3548657347117,-81.3549769525721,-81.3550907003091,-81.3552066661621,-81.3553245322917,-81.3554439756514,-81.3555646688725,-81.3556862811611,-81.3558084792051,-81.3559309280869,-81.3560532922018,-81.3561752361774,-81.3562964257922,-81.3564165288924,-81.3565352163013,-81.3566521627218,-81.3567670476274,-81.3568795561413,-81.3569893798986,-81.3570962178914,-81.3571997772944,-81.3572997742665,-81.3573959347294,-81.3574879951184,-81.3575757031049,-81.3576588182878,-81.3577371128527,-81.3578103721962,-81.3578783955141,-81.3579409963519,-81.3579980031159,-81.3580492595438,-81.3580946251328,-81.3581339755252,-81.3581672028492,-81.3581942160147,-81.3582149409632,-81.3582293208712,-81.3659308927062],"lat":[28.5437117757689,28.5438193119199,28.5439270692854,28.5440347525102,28.5441420664415,28.5442487169375,28.5443544116743,28.5444588609468,28.5445617784628,28.5446628821275,28.5447618948176,28.5448585451398,28.5449525681758,28.5450437062075,28.5451317094244,28.5452163366079,28.5452973557923,28.5453745449014,28.5454476923569,28.545516597658,28.5455810719319,28.5456409384508,28.5456960331171,28.5457462049126,28.5457913163129,28.5458312436645,28.5458658775233,28.5458951229553,28.5459188997962,28.5459371428718,28.5459498021763,28.5459568430093,28.5459582460715,28.5459540075167,28.5459441389634,28.5459286674621,28.5459076354214,28.545881100492,28.5458491354083,28.5458118277892,28.5457692798978,28.545721608361,28.54566894385,28.5456114307217,28.5455492266233,28.5454825020597,28.5454114399268,28.5453362350091,28.5452570934467,28.5451742321696,28.545087878303,28.544998268545,28.5449056485175,28.5448102720931,28.5447124006989,28.5446123025999,28.5445102521641,28.5444065291096,28.5443014177386,28.5441952061577,28.5440881854882,28.4702880566111,28.4701805202646,28.4700727632713,28.4699650809861,28.4698577685579,28.469751120121,28.4696454279891,28.4695409818536,28.4694380679902,28.4693369684738,28.4692379604056,28.4691413151538,28.4690472976096,28.4689561654613,28.4688681684882,28.468783547876,28.4687025355556,28.4686253535678,28.4685522134546,28.4684833156796,28.4684188490786,28.4683589903417,28.4683039035301,28.4682537396252,28.468208636116,28.4681687166215,28.4681340905527,28.4681048528119,28.4680810835333,28.4680628478634,28.4680501957819,28.4680431619654,28.4680417656919,28.4680460107885,28.4680558856201,28.4680713631221,28.4680924008742,28.4681189412166,28.468150911408,28.4681882238252,28.4682307762029,28.4682784519142,28.4683311202899,28.4683886369768,28.4684508443334,28.4685175718616,28.4685886366739,28.4686638439953,28.4687429876959,28.4688258508569,28.4689122063644,28.4690018175319,28.4690944387495,28.469189816156,28.4692876883358,28.4693877870343,28.4694898378937,28.469593561205,28.4696986726741,28.4698048842014,28.4699119046714,28.5437117757689]}]]],"X1","awi.sf2",{"interactive":false,"className":"","pane":"tmap401","stroke":true,"color":"#FF0000","weight":1,"opacity":1,"fill":true,"fillOpacity":0,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"awi.sf2",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[28.4680417656919,28.5459582460715],"lng":[-81.3659404989808,-81.3535610958401]},"fitBounds":[28.4680417656919,-81.3659404989808,28.5459582460715,-81.3535610958401,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="tuesday-september-13-2022.html#cb104-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(awi.sf2) <span class="sc">+</span></span>
+<span id="cb104-2"><a href="tuesday-september-13-2022.html#cb104-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-f12a8f97060883da0cf7" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f12a8f97060883da0cf7">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[-81.3659308927062,-81.3659389012192,-81.3659404989808,-81.3659356815925,-81.3659244622396,-81.3659068716545,-81.3658829580337,-81.3658527869051,-81.3658164409487,-81.3657740197706,-81.3657256396298,-81.3656714331197,-81.3656115488051,-81.3655461508145,-81.3654754183913,-81.3653995454016,-81.3653187398036,-81.3652332230773,-81.3651432296176,-81.3650490060918,-81.3649508107637,-81.3648489127851,-81.3647435914586,-81.3646351354718,-81.3645238421059,-81.3644100164206,-81.3642939704181,-81.3641760221876,-81.3640564950332,-81.3639357165878,-81.3638140179148,-81.3636917326003,-81.3635691958389,-81.3634467435143,-81.363324711279,-81.3632034336335,-81.3630832430098,-81.3629644688597,-81.3628474367517,-81.3627324674784,-81.362619876177,-81.3625099714657,-81.3624030545973,-81.3622994186334,-81.3621993476413,-81.362103115915,-81.3620109872233,-81.3619232140872,-81.3618400370871,-81.361761684204,-81.3616883701942,-81.3616202960008,-81.3615576482031,-81.3615005985054,-81.3614493032661,-81.3614039030693,-81.3613645223401,-81.3613312690031,-81.3613042341872,-81.3612834919755,-81.3612690992032,-81.3535706710546,-81.3535626802247,-81.3535610958401,-81.3535659222244,-81.3535771461298,-81.3535947367736,-81.3536186459228,-81.3536488080264,-81.3536851403955,-81.3537275434297,-81.353775900891,-81.3538300802216,-81.3538899329083,-81.3539552948889,-81.3540259870027,-81.3541018154811,-81.354182572479,-81.3542680366447,-81.3543579737264,-81.3544521372141,-81.354550269016,-81.3546521001649,-81.354757351556,-81.3548657347117,-81.3549769525721,-81.3550907003091,-81.3552066661621,-81.3553245322917,-81.3554439756514,-81.3555646688725,-81.3556862811611,-81.3558084792051,-81.3559309280869,-81.3560532922018,-81.3561752361774,-81.3562964257922,-81.3564165288924,-81.3565352163013,-81.3566521627218,-81.3567670476274,-81.3568795561413,-81.3569893798986,-81.3570962178914,-81.3571997772944,-81.3572997742665,-81.3573959347294,-81.3574879951184,-81.3575757031049,-81.3576588182878,-81.3577371128527,-81.3578103721962,-81.3578783955141,-81.3579409963519,-81.3579980031159,-81.3580492595438,-81.3580946251328,-81.3581339755252,-81.3581672028492,-81.3581942160147,-81.3582149409632,-81.3582293208712,-81.3659308927062],"lat":[28.5437117757689,28.5438193119199,28.5439270692854,28.5440347525102,28.5441420664415,28.5442487169375,28.5443544116743,28.5444588609468,28.5445617784628,28.5446628821275,28.5447618948176,28.5448585451398,28.5449525681758,28.5450437062075,28.5451317094244,28.5452163366079,28.5452973557923,28.5453745449014,28.5454476923569,28.545516597658,28.5455810719319,28.5456409384508,28.5456960331171,28.5457462049126,28.5457913163129,28.5458312436645,28.5458658775233,28.5458951229553,28.5459188997962,28.5459371428718,28.5459498021763,28.5459568430093,28.5459582460715,28.5459540075167,28.5459441389634,28.5459286674621,28.5459076354214,28.545881100492,28.5458491354083,28.5458118277892,28.5457692798978,28.545721608361,28.54566894385,28.5456114307217,28.5455492266233,28.5454825020597,28.5454114399268,28.5453362350091,28.5452570934467,28.5451742321696,28.545087878303,28.544998268545,28.5449056485175,28.5448102720931,28.5447124006989,28.5446123025999,28.5445102521641,28.5444065291096,28.5443014177386,28.5441952061577,28.5440881854882,28.4702880566111,28.4701805202646,28.4700727632713,28.4699650809861,28.4698577685579,28.469751120121,28.4696454279891,28.4695409818536,28.4694380679902,28.4693369684738,28.4692379604056,28.4691413151538,28.4690472976096,28.4689561654613,28.4688681684882,28.468783547876,28.4687025355556,28.4686253535678,28.4685522134546,28.4684833156796,28.4684188490786,28.4683589903417,28.4683039035301,28.4682537396252,28.468208636116,28.4681687166215,28.4681340905527,28.4681048528119,28.4680810835333,28.4680628478634,28.4680501957819,28.4680431619654,28.4680417656919,28.4680460107885,28.4680558856201,28.4680713631221,28.4680924008742,28.4681189412166,28.468150911408,28.4681882238252,28.4682307762029,28.4682784519142,28.4683311202899,28.4683886369768,28.4684508443334,28.4685175718616,28.4685886366739,28.4686638439953,28.4687429876959,28.4688258508569,28.4689122063644,28.4690018175319,28.4690944387495,28.469189816156,28.4692876883358,28.4693877870343,28.4694898378937,28.469593561205,28.4696986726741,28.4698048842014,28.4699119046714,28.5437117757689]}]]],"X1","awi.sf2",{"interactive":false,"className":"","pane":"tmap401","stroke":true,"color":"#FF0000","weight":1,"opacity":1,"fill":true,"fillOpacity":0,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"awi.sf2",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[28.4680417656919,28.5459582460715],"lng":[-81.3659404989808,-81.3535610958401]},"fitBounds":[28.4680417656919,-81.3659404989808,28.5459582460715,-81.3535610958401,[]]},"evals":[],"jsHooks":[]}</script>
 <p>We will learn how to make maps in Lesson 8. In Lesson 7 we are introduced to the S4 spatial data class and how to work with raster data.</p>
 
 </div>
