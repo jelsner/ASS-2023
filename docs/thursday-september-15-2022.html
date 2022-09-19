@@ -61,7 +61,6 @@
 <script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
 <script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
-<script src="libs/Leaflet.Sync-0.0.5/L.Map.Sync.js"></script>
 
 
 <style type="text/css">
@@ -146,12 +145,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Applied Spatial Statistics</a></li>
 
 <li class="divider"></li>
-<li><a href="index.html#section"></a></li>
+<li><a href="index.html#section" id="toc-section"></a></li>
 <li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i>Syllabus</a>
 <ul>
+<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#gis5122-applied-spatial-statistics"><i class="fa fa-check"></i>GIS5122: Applied Spatial Statistics</a></li>
 <li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
 <li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
-<li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#materials-and-class-meetings"><i class="fa fa-check"></i>Materials and class meetings</a></li>
 <li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
 <li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
 <li class="chapter" data-level="" data-path="syllabus.html"><a href="syllabus.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
@@ -169,14 +168,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html"><i class="fa fa-check"></i>Thursday, August 25, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#expectations"><i class="fa fa-check"></i>Expectations</a></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
 <li class="chapter" data-level="" data-path="thursday-august-25-2022.html"><a href="thursday-august-25-2022.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html"><i class="fa fa-check"></i>Tuesday August 30, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames"><i class="fa fa-check"></i>Working with data frames</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-base-r"><i class="fa fa-check"></i>Working with data frames using base R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#getting-data-into-r"><i class="fa fa-check"></i>Getting data into R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-august-30-2022.html"><a href="tuesday-august-30-2022.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-1-2022.html"><a href="thursday-september-1-2022.html"><i class="fa fa-check"></i>Thursday September 1, 2022</a>
 <ul>
@@ -184,7 +184,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html"><i class="fa fa-check"></i>Thursday September 8, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#working-with-spatial-data"><i class="fa fa-check"></i>Working with spatial data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#introduction-to-simple-features"><i class="fa fa-check"></i>Introduction to simple features</a></li>
 <li class="chapter" data-level="" data-path="thursday-september-8-2022.html"><a href="thursday-september-8-2022.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-september-13-2022.html"><a href="tuesday-september-13-2022.html"><i class="fa fa-check"></i>Tuesday September 13, 2022</a>
@@ -196,10 +196,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
 <li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+<li class="chapter" data-level="" data-path="thursday-september-15-2022.html"><a href="thursday-september-15-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html"><i class="fa fa-check"></i>Tuesday September 20, 2022</a>
 <ul>
-<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#working-with-space-time-data-1"><i class="fa fa-check"></i>Working with space-time data</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
@@ -322,50 +323,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>S4 spatial data objects</li>
 <li>Working with raster data</li>
+<li>Working with space-time data</li>
 </ul>
 <div id="s4-spatial-data-objects" class="section level2 unnumbered hasAnchor">
 <h2>S4 spatial data objects<a href="thursday-september-15-2022.html#s4-spatial-data-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The {sp} package has methods for working with spatial data as S4 reference classes. A few of the packages we will use this semester for analyzing/modeling spatial data work only with {sp} objects so it is helpful to see how they are structured.</p>
-<p>Install and load the package.</p>
-<div class="sourceCode" id="cb521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb521-1"><a href="thursday-september-15-2022.html#cb521-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(sp)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;sp&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<p>The {sp} package has methods for working with spatial data as S4 objects (reference classes). A few of the packages we will use this semester for analyzing/modeling spatial data work only with {sp} objects so it is helpful to see how they are structured.</p>
+<p>Load the package (install if needed).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="thursday-september-15-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(sp)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;sp&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
 <pre><code>## Loading required package: sp</code></pre>
-<div class="sourceCode" id="cb523"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb523-1"><a href="thursday-september-15-2022.html#cb523-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="thursday-september-15-2022.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span></code></pre></div>
 <p>Spatial objects from the {sp} package fall into two types:</p>
 <ul>
 <li>spatial-only information (the geometry). Geometries include <code>SpatialPoints</code>, <code>SpatialLines</code>, <code>SpatialPolygons</code>, etc, and</li>
 <li>extensions to these types where attribute information is available and stored in a data frame. These include <code>SpatialPointsDataFrame</code>, <code>SpatialLinesDataFrame</code>, etc.</li>
 </ul>
-<p>The typical situation is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled.</p>
-<p>Consider again the the tornado tracks that you import as a simple feature data frame.</p>
-<div class="sourceCode" id="cb524"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb524-1"><a href="thursday-september-15-2022.html#cb524-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath&quot;</span>), </span>
-<span id="cb524-2"><a href="thursday-september-15-2022.html#cb524-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">layer =</span> <span class="st">&quot;1950-2020-torn-aspath&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb524-3"><a href="thursday-september-15-2022.html#cb524-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(st <span class="sc">==</span> <span class="st">&quot;FL&quot;</span>)</span></code></pre></div>
+<p>The typical situation nowadays is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled.</p>
+<p>Consider again the the tornado tracks that you import as a simple feature data frame. Here you filter on the attribute <code>st</code> keeping only tornadoes that originated in Florida.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="thursday-september-15-2022.html#cb4-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-aspath&quot;</span>), </span>
+<span id="cb4-2"><a href="thursday-september-15-2022.html#cb4-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">layer =</span> <span class="st">&quot;1950-2020-torn-aspath&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="thursday-september-15-2022.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(st <span class="sc">==</span> <span class="st">&quot;FL&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `1950-2020-torn-aspath&#39; from data source 
-##   `/Users/jelsner/Desktop/ClassNotes/ASS-2022/data/1950-2020-torn-aspath&#39; 
+##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2022/data/1950-2020-torn-aspath&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 66244 features and 22 fields
 ## Geometry type: LINESTRING
 ## Dimension:     XY
 ## Bounding box:  xmin: -163.53 ymin: 17.7212 xmax: -64.7151 ymax: 61.02
 ## Geodetic CRS:  WGS 84</code></pre>
-<div class="sourceCode" id="cb526"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb526-1"><a href="thursday-september-15-2022.html#cb526-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="thursday-september-15-2022.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sf)</span></code></pre></div>
 <pre><code>## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
 <p>The object <code>FL_Torn.sf</code> is a simple feature data frame (S3 spatial data object). You convert the simple feature data frame to an S4 spatial data object using the <code>sf::as_Spatial()</code> function.</p>
-<div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb528-1"><a href="thursday-september-15-2022.html#cb528-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
-<span id="cb528-2"><a href="thursday-september-15-2022.html#cb528-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">as_Spatial</span>()</span>
-<span id="cb528-3"><a href="thursday-september-15-2022.html#cb528-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb528-4"><a href="thursday-september-15-2022.html#cb528-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sp)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="thursday-september-15-2022.html#cb8-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="thursday-september-15-2022.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">as_Spatial</span>()</span>
+<span id="cb8-3"><a href="thursday-september-15-2022.html#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="thursday-september-15-2022.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sp)</span></code></pre></div>
 <pre><code>## [1] &quot;SpatialLinesDataFrame&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;sp&quot;</code></pre>
 <p>The file <code>FL_Torn.sp</code> is a spatial object of class <code>SpatialLinesDataFrame</code>.</p>
 <p>Information in S4 spatial objects is stored in slots. Slot names are listed with the <code>slotNames()</code> function.</p>
-<div class="sourceCode" id="cb530"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb530-1"><a href="thursday-september-15-2022.html#cb530-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp <span class="sc">|&gt;</span></span>
-<span id="cb530-2"><a href="thursday-september-15-2022.html#cb530-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slotNames</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="thursday-september-15-2022.html#cb10-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="thursday-september-15-2022.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slotNames</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;data&quot;        &quot;lines&quot;       &quot;bbox&quot;        &quot;proj4string&quot;</code></pre>
 <p>The <code>data</code> slot contains the data frame (attribute table), the <code>lines</code> slot contains the spatial geometries (in this case lines), the <code>bbox</code> slot is the boundary box and the <code>proj4string</code> slot is the CRS.</p>
 <p>The object name followed by the <code>@</code> symbol allows access to information in the slot. The <code>@</code> symbol is similar to the <code>$</code> symbol for regular data frames. For example to see the first three rows of the data frame type</p>
-<div class="sourceCode" id="cb532"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb532-1"><a href="thursday-september-15-2022.html#cb532-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">@</span>data[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="thursday-september-15-2022.html#cb12-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">@</span>data[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div>
 <pre><code>##    om   yr mo dy       date     time tz st stf stn mag inj fat loss closs  slat
 ## 1  29 1950  3 16 1950-03-16 09:15:00  3 FL  12   1   2   0   0    3     0 29.65
 ## 2 105 1950  5 15 1950-05-15 11:00:00  3 FL  12   3   1   0   0    4     0 28.58
@@ -374,19 +376,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 1 -81.22 29.6501 -81.2199 1.5 150  0
 ## 2 -81.37 28.5801 -81.3699 0.1  10  0
 ## 3 -81.37 28.5001 -81.3699 0.1  10  0</code></pre>
-<p>You recognize this as information about the first three tornadoes in the record. In fact, the object name together with the slot name <code>data</code> has class <code>data.frame</code>.</p>
-<div class="sourceCode" id="cb534"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb534-1"><a href="thursday-september-15-2022.html#cb534-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sp<span class="sc">@</span>data)</span></code></pre></div>
+<p>You recognize this as observations from the first three tornadoes in the data set. In fact, the object name together with the slot name <code>data</code> has class <code>data.frame</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="thursday-september-15-2022.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sp<span class="sc">@</span>data)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>When using the <code>$</code> symbol on S4 spatial objects, you access the columns as you would a data frame. For example, to list the EF rating (column labeled <code>mag</code>) of the first 3 tornadoes.</p>
-<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="thursday-september-15-2022.html#cb536-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">$</span>mag[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
+<p>When using the <code>$</code> symbol on S4 spatial objects, you access the columns (attributes) as you would a data frame. For example, to list the EF rating (column labeled <code>mag</code>) of the first 3 tornadoes.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="thursday-september-15-2022.html#cb16-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">$</span>mag[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
 <pre><code>## [1] 2 1 2</code></pre>
 <p>Selecting, retrieving, or replacing attributes in S4 spatial data frames is done with methods in {base} R package. For example <code>[]</code> is used to select rows and/or columns. To select <code>mag</code> of the 7th tornado type</p>
-<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="thursday-september-15-2022.html#cb538-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">$</span>mag[<span class="dv">7</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="thursday-september-15-2022.html#cb18-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">$</span>mag[<span class="dv">7</span>]</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<p>Other methods include: <code>plot()</code>, <code>summary()</code>,<code>dim()</code> and <code>names()</code> (operate on the data slot), <code>as.data.frame()</code>, <code>as.matrix()</code> and <code>image()</code> (for spatial data on a grid), and <code>length()</code> (number of features).</p>
+<p>Other methods include: <code>plot()</code>, <code>summary()</code>,<code>dim()</code> and <code>names()</code> (operate on the data slot), <code>as.data.frame()</code>, <code>as.matrix()</code> and <code>image()</code> (for spatial data on a grid), and <code>length()</code> (number of cases).</p>
 <p>You can’t use the {dplyr} verbs on S4 data frames. To convert from an S4 spatial data frame to a simple feature data frame use <code>sf::st_as_sf()</code>.</p>
 <p>The first spatial geometry is given as the first element of the lines list.</p>
-<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="thursday-september-15-2022.html#cb540-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">@</span>lines[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="thursday-september-15-2022.html#cb20-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">@</span>lines[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## An object of class &quot;Lines&quot;
 ## Slot &quot;Lines&quot;:
@@ -402,26 +404,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Slot &quot;ID&quot;:
 ## [1] &quot;1&quot;</code></pre>
 <p>It is an object of class <code>Lines</code>. The line is identified by a matrix indicating the longitude and latitude of the start point in row one and the longitude and latitude of the end point in row two.</p>
-<p>The <code>bbox</code> slot is an object of class <code>matrix</code> and <code>array</code> and the <code>proj4string</code> slot is of class <code>CRS</code>.</p>
+<p>The <code>bbox</code> slot is an object of class <code>matrix</code> and <code>array</code> and the <code>proj4string</code> slot is of class <code>CRS</code>. The coordinate reference system is specified as a character string.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="thursday-september-15-2022.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(FL_Torn.sp)</span></code></pre></div>
+<pre><code>## Warning in proj4string(FL_Torn.sp): CRS object has comment, which is lost in output; in tests, see
+## https://cran.r-project.org/web/packages/sp/vignettes/CRS_warnings.html</code></pre>
+<pre><code>## [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
 <p>The interface to the geometry engine-open source (GEOS) is through the {rgeos} package.</p>
 </div>
 <div id="working-with-raster-data" class="section level2 unnumbered hasAnchor">
 <h2>Working with raster data<a href="thursday-september-15-2022.html#working-with-raster-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <em>raster data model</em> divides geographic space into a grid of cells of constant size (resolution) and we use classes from the {raster} package to work with raster data.</p>
 <p>A raster is a data structure that divides space into rectangles called ‘cells’ (or ‘pixels’). Each cell has an attribute value.</p>
-<p>The {terra} package has functions for creating, reading, manipulating, and writing raster data as S3 reference class objects <code>SpatRaster</code> and <code>SpatVect</code>.</p>
+<p>The {raster} package has functions for working with raster data using the S4 reference classes.</p>
+<p>The {terra} package has functions for creating, reading, manipulating, and writing raster data using S3 objects <code>SpatRaster</code> and <code>SpatVect</code>.</p>
 <p>To see what methods (functions) for class <code>SpatRaster</code> are available use the <code>methods()</code> function.</p>
-<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="thursday-september-15-2022.html#cb542-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;SpatRaster&quot;</span>)</span></code></pre></div>
-<pre><code>##  [1] [             [[            [[&lt;-          [&lt;-           $            
-##  [6] $&lt;-           Arith         as.data.frame as.list       as.matrix    
-## [11] coerce        Compare       Logic         Math          Math2        
-## [16] merge         plot          show          split         spplot       
-## [21] summary       Summary      
-## see &#39;?methods&#39; for accessing help and source code</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="thursday-september-15-2022.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;SpatRaster&quot;</span>)</span></code></pre></div>
+<pre><code>## no methods found</code></pre>
 <p>The list includes {base} R and {sf} methods.</p>
 <p>The <code>terra::rast()</code> function creates a raster with a geographic (longitude/latitude) CRS and a 1 by 1 degree grid of cells across the globe.</p>
-<div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb544-1"><a href="thursday-september-15-2022.html#cb544-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>()</span>
-<span id="cb544-2"><a href="thursday-september-15-2022.html#cb544-2" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="thursday-september-15-2022.html#cb27-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>()</span>
+<span id="cb27-2"><a href="thursday-september-15-2022.html#cb27-2" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
 <pre><code>## class       : SpatRaster 
 ## dimensions  : 180, 360, 1  (nrow, ncol, nlyr)
 ## resolution  : 1, 1  (x, y)
@@ -430,77 +432,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Arguments including <code>xmin</code>, <code>nrows</code>, <code>ncols</code>, and <code>crs</code> are used to change these default settings.</p>
 <p>The object has class <code>SpatRaster</code> with geographic coordinates spanning the globe at one-degree resolution in the north-south and the east-west directions.</p>
 <p>To create a raster with 36 longitudes -100 and 0 degrees East longitude and 18 latitudes between the equator and 50 degrees N latitude we specify the number of columns, the number of rows and the extent as follows.</p>
-<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="thursday-september-15-2022.html#cb546-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncols =</span> <span class="dv">36</span>, <span class="at">nrows =</span> <span class="dv">18</span>, </span>
-<span id="cb546-2"><a href="thursday-september-15-2022.html#cb546-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xmin =</span> <span class="sc">-</span><span class="dv">100</span>, <span class="at">xmax =</span> <span class="dv">0</span>, </span>
-<span id="cb546-3"><a href="thursday-september-15-2022.html#cb546-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="dv">50</span>)</span>
-<span id="cb546-4"><a href="thursday-september-15-2022.html#cb546-4" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="thursday-september-15-2022.html#cb29-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncols =</span> <span class="dv">36</span>, <span class="at">nrows =</span> <span class="dv">18</span>, </span>
+<span id="cb29-2"><a href="thursday-september-15-2022.html#cb29-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xmin =</span> <span class="sc">-</span><span class="dv">100</span>, <span class="at">xmax =</span> <span class="dv">0</span>, </span>
+<span id="cb29-3"><a href="thursday-september-15-2022.html#cb29-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="dv">50</span>)</span>
+<span id="cb29-4"><a href="thursday-september-15-2022.html#cb29-4" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
 <pre><code>## class       : SpatRaster 
 ## dimensions  : 18, 36, 1  (nrow, ncol, nlyr)
 ## resolution  : 2.777778, 2.777778  (x, y)
 ## extent      : -100, 0, 0, 50  (xmin, xmax, ymin, ymax)
 ## coord. ref. : lon/lat WGS 84</code></pre>
-<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="thursday-september-15-2022.html#cb548-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">res</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="thursday-september-15-2022.html#cb31-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">res</span>(r)</span></code></pre></div>
 <pre><code>## [1] 2.777778 2.777778</code></pre>
 <p>This results in raster with cell resolution of 2.7 degrees of longitude and 2.7 degrees of latitude.</p>
 <p>The structure of the raster can be changed after created. Here you change the resolution to 3 degrees. This induces changes to the number of rows and columns.</p>
-<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="thursday-september-15-2022.html#cb550-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">res</span>(r) <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb550-2"><a href="thursday-september-15-2022.html#cb550-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="thursday-september-15-2022.html#cb33-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">res</span>(r) <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb33-2"><a href="thursday-september-15-2022.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(r)</span></code></pre></div>
 <pre><code>## [1] 33</code></pre>
-<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="thursday-september-15-2022.html#cb552-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="thursday-september-15-2022.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(r)</span></code></pre></div>
 <pre><code>## [1] 17</code></pre>
 <p>The <code>SpatRaster</code> object <code>r</code> is a template with no values assigned to the cells and by default it will have an extent that spans the globe.</p>
-<div class="sourceCode" id="cb554"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb554-1"><a href="thursday-september-15-2022.html#cb554-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncol =</span> <span class="dv">10</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
-<span id="cb554-2"><a href="thursday-september-15-2022.html#cb554-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">ncell</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="thursday-september-15-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncol =</span> <span class="dv">10</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
+<span id="cb37-2"><a href="thursday-september-15-2022.html#cb37-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">ncell</span>(r)</span></code></pre></div>
 <pre><code>## [1] 100</code></pre>
-<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb556-1"><a href="thursday-september-15-2022.html#cb556-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">hasValues</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="thursday-september-15-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">hasValues</span>(r)</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
 <p>Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells.</p>
 <p>The <code>terra::values()</code> function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. First you assign to a vector of length <code>terra::ncell(r)</code> random numbers from a uniform distribution with the <code>runif()</code> function. The default is that the random numbers are between 0 and 1.</p>
-<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="thursday-september-15-2022.html#cb558-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
-<span id="cb558-2"><a href="thursday-september-15-2022.html#cb558-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(v)</span></code></pre></div>
-<pre><code>## [1] 0.35177504 0.16728355 0.93080046 0.38447031 0.61471771 0.02374155</code></pre>
-<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="thursday-september-15-2022.html#cb560-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> v</span>
-<span id="cb560-2"><a href="thursday-september-15-2022.html#cb560-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="thursday-september-15-2022.html#cb41-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
+<span id="cb41-2"><a href="thursday-september-15-2022.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(v)</span></code></pre></div>
+<pre><code>## [1] 0.8510341 0.8490567 0.3227400 0.5166993 0.7173781 0.8544482</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="thursday-september-15-2022.html#cb43-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> v</span>
+<span id="cb43-2"><a href="thursday-september-15-2022.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(r)</span></code></pre></div>
 <pre><code>## class       : SpatRaster 
 ## dimensions  : 6, 10, 1  (nrow, ncol, nlyr)
 ## resolution  : 36, 18  (x, y)
 ## extent      : -180, 180, -18, 90  (xmin, xmax, ymin, ymax)
 ## coord. ref. : lon/lat WGS 84 
 ## source      : memory 
-## name        :        lyr.1 
-## min value   : 0.0008497667 
-## max value   :    0.9960303</code></pre>
+## name        :       lyr.1 
+## min value   : 0.002837882 
+## max value   :   0.9994269</code></pre>
 <p>The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with values from the vector in this order.</p>
 <p>The <code>terra::plot()</code> function creates a choropleth map of the values in cells.</p>
-<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="thursday-september-15-2022.html#cb562-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="thursday-september-15-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>The default CRS is geographic.</p>
-<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb563-1"><a href="thursday-september-15-2022.html#cb563-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">crs</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="thursday-september-15-2022.html#cb46-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">crs</span>(r)</span></code></pre></div>
 <pre><code>## [1] &quot;GEOGCRS[\&quot;WGS 84\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]],\n        ID[\&quot;EPSG\&quot;,6326]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],\n        ID[\&quot;EPSG\&quot;,8901]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;longitude\&quot;,east,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]],\n        AXIS[\&quot;latitude\&quot;,north,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]]]&quot;</code></pre>
 <p>To re-project the raster use the function <code>terra::project()</code>.</p>
 <p>Here you create a new raster with cell numbers as values using the <code>terra::setValues()</code> function to place the numbers in the cells.</p>
-<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb565-1"><a href="thursday-september-15-2022.html#cb565-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">110</span>, <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">90</span>, </span>
-<span id="cb565-2"><a href="thursday-september-15-2022.html#cb565-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ymin =</span> <span class="dv">40</span>, <span class="at">ymax =</span> <span class="dv">60</span>, </span>
-<span id="cb565-3"><a href="thursday-september-15-2022.html#cb565-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ncols =</span> <span class="dv">10</span>, <span class="at">nrows =</span> <span class="dv">10</span>)</span>
-<span id="cb565-4"><a href="thursday-september-15-2022.html#cb565-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">setValues</span>(r, <span class="dv">1</span><span class="sc">:</span>terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
-<span id="cb565-5"><a href="thursday-september-15-2022.html#cb565-5" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-236-1.png" width="672" /></p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="thursday-september-15-2022.html#cb48-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">110</span>, <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">90</span>, </span>
+<span id="cb48-2"><a href="thursday-september-15-2022.html#cb48-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ymin =</span> <span class="dv">40</span>, <span class="at">ymax =</span> <span class="dv">60</span>, </span>
+<span id="cb48-3"><a href="thursday-september-15-2022.html#cb48-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ncols =</span> <span class="dv">10</span>, <span class="at">nrows =</span> <span class="dv">10</span>)</span>
+<span id="cb48-4"><a href="thursday-september-15-2022.html#cb48-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">setValues</span>(r, <span class="dv">1</span><span class="sc">:</span>terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
+<span id="cb48-5"><a href="thursday-september-15-2022.html#cb48-5" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>The values increase starting from top left to bottom right as dictated by the sequence <code>1:terra::ncell(r)</code> and the lexicographic order in which the raster grids are filled.</p>
 <p>The <code>terra::rast()</code> function imports data with functions from the {rgdal} package. Supported formats include <code>GeoTIFF</code>, <code>ESRI</code>, <code>ENVI</code>, and <code>ERDAS</code>. Most formats that can import a raster can also be used to export a raster.</p>
 <p>Consider the <code>Meuse</code> dataset (from the {sp} package), using a file in the native ‘raster- file’ format.</p>
-<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="thursday-september-15-2022.html#cb566-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;external/test.grd&quot;</span>, </span>
-<span id="cb566-2"><a href="thursday-september-15-2022.html#cb566-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">package =</span> <span class="st">&quot;raster&quot;</span>)</span>
-<span id="cb566-3"><a href="thursday-september-15-2022.html#cb566-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(f)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="thursday-september-15-2022.html#cb49-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;external/test.grd&quot;</span>, </span>
+<span id="cb49-2"><a href="thursday-september-15-2022.html#cb49-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">package =</span> <span class="st">&quot;raster&quot;</span>)</span>
+<span id="cb49-3"><a href="thursday-september-15-2022.html#cb49-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(f)</span></code></pre></div>
 <p>Do the cells contain values? Is the raster stored in memory? Create a plot.</p>
-<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb567-1"><a href="thursday-september-15-2022.html#cb567-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">hasValues</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="thursday-september-15-2022.html#cb50-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">hasValues</span>(r)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="thursday-september-15-2022.html#cb569-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">inMemory</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="thursday-september-15-2022.html#cb52-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">inMemory</span>(r)</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb571-1"><a href="thursday-september-15-2022.html#cb571-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r, <span class="at">main =</span> <span class="st">&quot;Raster layer from file&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="thursday-september-15-2022.html#cb54-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r, <span class="at">main =</span> <span class="st">&quot;Raster layer from file&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Note the raster is a set of cells arranged in a rectangular array. Values that are coded as <code>NA</code> are not plotted.</p>
 <p><code>SpatRaster</code> objects can have more than one raster. These are called layers.</p>
-<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="thursday-september-15-2022.html#cb572-1" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="thursday-september-15-2022.html#cb55-1" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
 <pre><code>## class       : SpatRaster 
 ## dimensions  : 115, 80, 1  (nrow, ncol, nlyr)
 ## resolution  : 40, 40  (x, y)
@@ -512,15 +514,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## max value   : 1736.058</code></pre>
 <p>The dimensions are nrow = 115 by ncol = 80 and nlyr = 1.</p>
 <p>You can add layers to the object. Here you create three rasters and assign random values to the cells.</p>
-<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="thursday-september-15-2022.html#cb574-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">10</span>)</span>
-<span id="cb574-2"><a href="thursday-september-15-2022.html#cb574-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r1) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r1))</span>
-<span id="cb574-3"><a href="thursday-september-15-2022.html#cb574-3" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">10</span>)</span>
-<span id="cb574-4"><a href="thursday-september-15-2022.html#cb574-4" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r2) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r2))</span>
-<span id="cb574-5"><a href="thursday-september-15-2022.html#cb574-5" aria-hidden="true" tabindex="-1"></a>r3 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">10</span>)</span>
-<span id="cb574-6"><a href="thursday-september-15-2022.html#cb574-6" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r3) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r3))</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="thursday-september-15-2022.html#cb57-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">10</span>)</span>
+<span id="cb57-2"><a href="thursday-september-15-2022.html#cb57-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r1) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r1))</span>
+<span id="cb57-3"><a href="thursday-september-15-2022.html#cb57-3" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">10</span>)</span>
+<span id="cb57-4"><a href="thursday-september-15-2022.html#cb57-4" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r2) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r2))</span>
+<span id="cb57-5"><a href="thursday-september-15-2022.html#cb57-5" aria-hidden="true" tabindex="-1"></a>r3 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">10</span>)</span>
+<span id="cb57-6"><a href="thursday-september-15-2022.html#cb57-6" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r3) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r3))</span></code></pre></div>
 <p>You combine the rasters into a single <code>SpatRaster</code> object with the concatenate function <code>c()</code>.</p>
-<div class="sourceCode" id="cb575"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb575-1"><a href="thursday-september-15-2022.html#cb575-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(r1, r2, r3)</span>
-<span id="cb575-2"><a href="thursday-september-15-2022.html#cb575-2" aria-hidden="true" tabindex="-1"></a>s</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="thursday-september-15-2022.html#cb58-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(r1, r2, r3)</span>
+<span id="cb58-2"><a href="thursday-september-15-2022.html#cb58-2" aria-hidden="true" tabindex="-1"></a>s</span></code></pre></div>
 <pre><code>## class       : SpatRaster 
 ## dimensions  : 10, 10, 3  (nrow, ncol, nlyr)
 ## resolution  : 36, 18  (x, y)
@@ -530,20 +532,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##               memory  
 ##               memory  
 ## names       :        lyr.1,        lyr.1,        lyr.1 
-## min values  : 0.0059893031, 0.0004921041, 0.0040800548 
-## max values  :    0.9723254,    0.9994648,    0.9924234</code></pre>
-<div class="sourceCode" id="cb577"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb577-1"><a href="thursday-september-15-2022.html#cb577-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(s)</span></code></pre></div>
+## min values  : 0.0081995190, 0.0009091287, 0.0010576122 
+## max values  :    0.9912933,    0.9940503,    0.9959064</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="thursday-september-15-2022.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(s)</span></code></pre></div>
 <pre><code>## [1] 10 10  3</code></pre>
-<div class="sourceCode" id="cb579"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb579-1"><a href="thursday-september-15-2022.html#cb579-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">nlyr</span>(s)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="thursday-september-15-2022.html#cb62-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">nlyr</span>(s)</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb581-1"><a href="thursday-september-15-2022.html#cb581-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(s)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="thursday-september-15-2022.html#cb64-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(s)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>Each raster is a separate layer.</p>
 <p>Here you import a set of raster layers from a file.</p>
-<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb582-1"><a href="thursday-september-15-2022.html#cb582-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;external/rlogo.grd&quot;</span>, </span>
-<span id="cb582-2"><a href="thursday-september-15-2022.html#cb582-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">package =</span> <span class="st">&quot;raster&quot;</span>)</span>
-<span id="cb582-3"><a href="thursday-september-15-2022.html#cb582-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(f)</span>
-<span id="cb582-4"><a href="thursday-september-15-2022.html#cb582-4" aria-hidden="true" tabindex="-1"></a>b</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="thursday-september-15-2022.html#cb65-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;external/rlogo.grd&quot;</span>, </span>
+<span id="cb65-2"><a href="thursday-september-15-2022.html#cb65-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">package =</span> <span class="st">&quot;raster&quot;</span>)</span>
+<span id="cb65-3"><a href="thursday-september-15-2022.html#cb65-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(f)</span>
+<span id="cb65-4"><a href="thursday-september-15-2022.html#cb65-4" aria-hidden="true" tabindex="-1"></a>b</span></code></pre></div>
 <pre><code>## class       : SpatRaster 
 ## dimensions  : 77, 101, 3  (nrow, ncol, nlyr)
 ## resolution  : 1, 1  (x, y)
@@ -554,78 +556,78 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## names       : red, green, blue 
 ## min values  :   0,     0,    0 
 ## max values  : 255,   255,  255</code></pre>
-<div class="sourceCode" id="cb584"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb584-1"><a href="thursday-september-15-2022.html#cb584-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(b)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-242-1.png" width="672" /></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="thursday-september-15-2022.html#cb67-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(b)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Most {base} R functions (<code>+</code>, <code>*</code>, <code>round()</code>, <code>ceiling()</code>, <code>log()</code>, etc) work on raster objects. Operations are done on all cells at once.</p>
 <p>Here you place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root.</p>
-<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="thursday-september-15-2022.html#cb585-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncol =</span> <span class="dv">10</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
-<span id="cb585-2"><a href="thursday-september-15-2022.html#cb585-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>terra<span class="sc">::</span><span class="fu">ncell</span>(r)</span>
-<span id="cb585-3"><a href="thursday-september-15-2022.html#cb585-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">100</span></span>
-<span id="cb585-4"><a href="thursday-september-15-2022.html#cb585-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(s)</span>
-<span id="cb585-5"><a href="thursday-september-15-2022.html#cb585-5" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(s)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="thursday-september-15-2022.html#cb68-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncol =</span> <span class="dv">10</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
+<span id="cb68-2"><a href="thursday-september-15-2022.html#cb68-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>terra<span class="sc">::</span><span class="fu">ncell</span>(r)</span>
+<span id="cb68-3"><a href="thursday-september-15-2022.html#cb68-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">100</span></span>
+<span id="cb68-4"><a href="thursday-september-15-2022.html#cb68-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(s)</span>
+<span id="cb68-5"><a href="thursday-september-15-2022.html#cb68-5" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(s)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Here you replace the cell values with random uniform numbers between 0 and 1. Then round to the nearest integer and add one.</p>
-<div class="sourceCode" id="cb586"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb586-1"><a href="thursday-september-15-2022.html#cb586-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncol =</span> <span class="dv">10</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
-<span id="cb586-2"><a href="thursday-september-15-2022.html#cb586-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
-<span id="cb586-3"><a href="thursday-september-15-2022.html#cb586-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">round</span>(r)</span>
-<span id="cb586-4"><a href="thursday-september-15-2022.html#cb586-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb586-5"><a href="thursday-september-15-2022.html#cb586-5" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="thursday-september-15-2022.html#cb69-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncol =</span> <span class="dv">10</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
+<span id="cb69-2"><a href="thursday-september-15-2022.html#cb69-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">runif</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
+<span id="cb69-3"><a href="thursday-september-15-2022.html#cb69-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">round</span>(r)</span>
+<span id="cb69-4"><a href="thursday-september-15-2022.html#cb69-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb69-5"><a href="thursday-september-15-2022.html#cb69-5" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Replace only certain values with the subset function <code>[]</code>.</p>
-<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="thursday-september-15-2022.html#cb587-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">90</span>, <span class="at">xmax =</span> <span class="dv">90</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">30</span>, <span class="at">ymax =</span> <span class="dv">30</span>)</span>
-<span id="cb587-2"><a href="thursday-september-15-2022.html#cb587-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
-<span id="cb587-3"><a href="thursday-september-15-2022.html#cb587-3" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
-<div class="sourceCode" id="cb588"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb588-1"><a href="thursday-september-15-2022.html#cb588-1" aria-hidden="true" tabindex="-1"></a>r[r <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb588-2"><a href="thursday-september-15-2022.html#cb588-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-245-2.png" width="672" /></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="thursday-september-15-2022.html#cb70-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">90</span>, <span class="at">xmax =</span> <span class="dv">90</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">30</span>, <span class="at">ymax =</span> <span class="dv">30</span>)</span>
+<span id="cb70-2"><a href="thursday-september-15-2022.html#cb70-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(terra<span class="sc">::</span><span class="fu">ncell</span>(r))</span>
+<span id="cb70-3"><a href="thursday-september-15-2022.html#cb70-3" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="thursday-september-15-2022.html#cb71-1" aria-hidden="true" tabindex="-1"></a>r[r <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb71-2"><a href="thursday-september-15-2022.html#cb71-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
 <p>Functions for manipulating a raster</p>
 <p>The <code>terra::crop()</code> function takes a geographic subset of a larger raster object. A raster is cropped by providing an extent object or other spatial object from which an extent can be extracted (objects from classes deriving from raster and from spatial in the {sp} package).</p>
 <p>The <code>terra::trim()</code> function crops a raster layer by removing the outer rows and columns that only contain <code>NA</code> values. The <code>terra::extend()</code> function adds new rows and/or columns with <code>NA</code> values.</p>
 <p>The <code>terra::merge()</code> function combines two or more rasters into a single raster. The input objects must have the same resolution and origin (such that their cells fit into a single larger raster). If this is not the case, first adjust one of the objects with the functions <code>aggregate()</code> or <code>resample()</code>.</p>
 <p>The <code>terra::aggregate()</code> and <code>terra::disagg()</code> functions change the resolution (cell size) of a raster object.</p>
-<p>As a simple example showing some of this functionality here you crop the raster into two pieces and then merge the two pieces into one. The <code>terra::merge()</code> function has an argument that allows you to export to a file (here <code>test.grd</code>).</p>
-<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb589-1"><a href="thursday-september-15-2022.html#cb589-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(r, terra<span class="sc">::</span><span class="fu">ext</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">30</span>)) </span>
-<span id="cb589-2"><a href="thursday-september-15-2022.html#cb589-2" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(r, terra<span class="sc">::</span><span class="fu">ext</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">180</span>, <span class="sc">-</span><span class="dv">20</span>, <span class="dv">10</span>))</span>
-<span id="cb589-3"><a href="thursday-september-15-2022.html#cb589-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">merge</span>(r1, r2, </span>
-<span id="cb589-4"><a href="thursday-september-15-2022.html#cb589-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&#39;outputs&#39;</span>, <span class="st">&#39;test.grd&#39;</span>), </span>
-<span id="cb589-5"><a href="thursday-september-15-2022.html#cb589-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb589-6"><a href="thursday-september-15-2022.html#cb589-6" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(m)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-246-1.png" width="672" /></p>
+<p>As an example here you crop the raster into two pieces and then merge the two pieces into one. The <code>terra::merge()</code> function has the argument <code>filename =</code> that allows you to export to a file (here <code>test.grd</code> in the folder <code>outputs</code>).</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="thursday-september-15-2022.html#cb72-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(r, terra<span class="sc">::</span><span class="fu">ext</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">30</span>)) </span>
+<span id="cb72-2"><a href="thursday-september-15-2022.html#cb72-2" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(r, terra<span class="sc">::</span><span class="fu">ext</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">180</span>, <span class="sc">-</span><span class="dv">20</span>, <span class="dv">10</span>))</span>
+<span id="cb72-3"><a href="thursday-september-15-2022.html#cb72-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">merge</span>(r1, r2, </span>
+<span id="cb72-4"><a href="thursday-september-15-2022.html#cb72-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&#39;outputs&#39;</span>, <span class="st">&#39;test.grd&#39;</span>), </span>
+<span id="cb72-5"><a href="thursday-september-15-2022.html#cb72-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb72-6"><a href="thursday-september-15-2022.html#cb72-6" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(m)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>The <code>terra::flip()</code> function flips the data (reverse order) in the horizontal or vertical direction. The <code>terra::rotate()</code> function rotates a raster that have longitudes from 0 to 360 degrees (often used by climatologists) to the standard -180 to 180 degrees system.</p>
 <p>You extract values from a raster for a set of locations with the <code>terra::extract()</code> function. The locations can be a vector object (points, lines, polygons), a matrix with (x, y) or (longitude, latitude – in that order!) coordinates, or a vector with cell numbers.</p>
-<div class="sourceCode" id="cb590"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb590-1"><a href="thursday-september-15-2022.html#cb590-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncols =</span> <span class="dv">5</span>, <span class="at">nrows =</span> <span class="dv">5</span>, </span>
-<span id="cb590-2"><a href="thursday-september-15-2022.html#cb590-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xmin =</span> <span class="dv">0</span>, <span class="at">xmax =</span> <span class="dv">5</span>, </span>
-<span id="cb590-3"><a href="thursday-september-15-2022.html#cb590-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="dv">5</span>)</span>
-<span id="cb590-4"><a href="thursday-september-15-2022.html#cb590-4" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">25</span></span>
-<span id="cb590-5"><a href="thursday-september-15-2022.html#cb590-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb590-6"><a href="thursday-september-15-2022.html#cb590-6" aria-hidden="true" tabindex="-1"></a>xy <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">5</span>), <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">2.5</span>))</span>
-<span id="cb590-7"><a href="thursday-september-15-2022.html#cb590-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(xy, <span class="at">crs=</span><span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>)</span>
-<span id="cb590-8"><a href="thursday-september-15-2022.html#cb590-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb590-9"><a href="thursday-september-15-2022.html#cb590-9" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">extract</span>(r, xy)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="thursday-september-15-2022.html#cb73-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">ncols =</span> <span class="dv">5</span>, <span class="at">nrows =</span> <span class="dv">5</span>, </span>
+<span id="cb73-2"><a href="thursday-september-15-2022.html#cb73-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xmin =</span> <span class="dv">0</span>, <span class="at">xmax =</span> <span class="dv">5</span>, </span>
+<span id="cb73-3"><a href="thursday-september-15-2022.html#cb73-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="dv">5</span>)</span>
+<span id="cb73-4"><a href="thursday-september-15-2022.html#cb73-4" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">25</span></span>
+<span id="cb73-5"><a href="thursday-september-15-2022.html#cb73-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-6"><a href="thursday-september-15-2022.html#cb73-6" aria-hidden="true" tabindex="-1"></a>xy <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">5</span>), <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">2.5</span>))</span>
+<span id="cb73-7"><a href="thursday-september-15-2022.html#cb73-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(xy, <span class="at">crs=</span><span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>)</span>
+<span id="cb73-8"><a href="thursday-september-15-2022.html#cb73-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-9"><a href="thursday-september-15-2022.html#cb73-9" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">extract</span>(r, xy)</span></code></pre></div>
 <pre><code>##   lyr.1
 ## 1    21
 ## 2    13</code></pre>
-<div class="sourceCode" id="cb592"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb592-1"><a href="thursday-september-15-2022.html#cb592-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">extract</span>(r, p)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="thursday-september-15-2022.html#cb75-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">extract</span>(r, p)</span></code></pre></div>
 <pre><code>##   ID lyr.1
 ## 1  1    21
 ## 2  2    13</code></pre>
 <p>To convert the values of a raster layer to points or polygons we use <code>as.points()</code> and <code>as.polygons()</code>. These functions return a <code>SpatVector</code> object for cells that are not missing value.</p>
 <p>Vector data is converted to a raster with the <code>terra::rasterize()</code> function. Polygon to raster conversion is often done to create a mask (i.e. to set to <code>NA</code> a set of cells of a raster object, or to summarize values on a raster by zone. For example a country polygon is converted to a raster that is used to set all the cells outside that country to <code>NA</code>. Also polygons representing administrative regions such as states can be converted to a raster to summarize values by region. Point to raster conversion is often done to analyze location data (location of a specific species of tree in a forest).</p>
-<p>Example: the number of tornadoes passing through each grid cell</p>
-<p>Here you want a latitude/longitude grid (1/2 degree latitude by 1/2 degree longitude) with each cell in the grid containing the number of tornadoes that went through it since 2003.</p>
+<p>Example: create a raster containing the number of tornadoes passing through each grid cell.</p>
+<p>Here you use a latitude/longitude grid (1/2 degree latitude by 1/2 degree longitude) with each cell in the grid containing the number of tornadoes that went through it since 2003.</p>
 <p>First import the tornado (initial track point) data as a simple feature data frame.</p>
-<div class="sourceCode" id="cb594"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb594-1"><a href="thursday-september-15-2022.html#cb594-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;1950-2020-torn-initpoint&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))) {</span>
-<span id="cb594-2"><a href="thursday-september-15-2022.html#cb594-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-initpoint.zip&quot;</span>,</span>
-<span id="cb594-3"><a href="thursday-september-15-2022.html#cb594-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint.zip&quot;</span>))</span>
-<span id="cb594-4"><a href="thursday-september-15-2022.html#cb594-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint.zip&quot;</span>), </span>
-<span id="cb594-5"><a href="thursday-september-15-2022.html#cb594-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
-<span id="cb594-6"><a href="thursday-september-15-2022.html#cb594-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb594-7"><a href="thursday-september-15-2022.html#cb594-7" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint&quot;</span>), </span>
-<span id="cb594-8"><a href="thursday-september-15-2022.html#cb594-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;1950-2020-torn-initpoint&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb594-9"><a href="thursday-september-15-2022.html#cb594-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(yr <span class="sc">&gt;=</span> <span class="dv">2003</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="thursday-september-15-2022.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">&quot;1950-2020-torn-initpoint&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))) {</span>
+<span id="cb77-2"><a href="thursday-september-15-2022.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-initpoint.zip&quot;</span>,</span>
+<span id="cb77-3"><a href="thursday-september-15-2022.html#cb77-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint.zip&quot;</span>))</span>
+<span id="cb77-4"><a href="thursday-september-15-2022.html#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint.zip&quot;</span>), </span>
+<span id="cb77-5"><a href="thursday-september-15-2022.html#cb77-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
+<span id="cb77-6"><a href="thursday-september-15-2022.html#cb77-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb77-7"><a href="thursday-september-15-2022.html#cb77-7" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint&quot;</span>), </span>
+<span id="cb77-8"><a href="thursday-september-15-2022.html#cb77-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;1950-2020-torn-initpoint&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb77-9"><a href="thursday-september-15-2022.html#cb77-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(yr <span class="sc">&gt;=</span> <span class="dv">2003</span>)</span></code></pre></div>
 <pre><code>## Reading layer `1950-2020-torn-initpoint&#39; from data source 
-##   `/Users/jelsner/Desktop/ClassNotes/ASS-2022/data/1950-2020-torn-initpoint&#39; 
+##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2022/data/1950-2020-torn-initpoint&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 66244 features and 22 fields
 ## Geometry type: POINT
@@ -633,7 +635,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bounding box:  xmin: -163.53 ymin: 17.7212 xmax: -64.7151 ymax: 61.02
 ## Geodetic CRS:  WGS 84</code></pre>
 <p>Note the extent of the bounding box and check the native CRS.</p>
-<div class="sourceCode" id="cb596"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb596-1"><a href="thursday-september-15-2022.html#cb596-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(Torn.sf)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="thursday-september-15-2022.html#cb79-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(Torn.sf)</span></code></pre></div>
 <pre><code>## Coordinate Reference System:
 ##   User input: WGS 84 
 ##   wkt:
@@ -653,28 +655,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##     ID[&quot;EPSG&quot;,4326]]</code></pre>
 <p>The CRS is geographic.</p>
 <p>Next create a raster (called <code>frame</code>) with a domain that covers the area of interest and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the <code>terra::ext()</code> function.</p>
-<div class="sourceCode" id="cb598"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb598-1"><a href="thursday-september-15-2022.html#cb598-1" aria-hidden="true" tabindex="-1"></a>frame <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">106</span>, <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">67</span>, </span>
-<span id="cb598-2"><a href="thursday-september-15-2022.html#cb598-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ymin =</span> <span class="dv">24</span>, <span class="at">ymax =</span> <span class="dv">50</span>)</span>
-<span id="cb598-3"><a href="thursday-september-15-2022.html#cb598-3" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">res</span>(frame) <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb598-4"><a href="thursday-september-15-2022.html#cb598-4" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">ext</span>(frame)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="thursday-september-15-2022.html#cb81-1" aria-hidden="true" tabindex="-1"></a>frame <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">106</span>, <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">67</span>, </span>
+<span id="cb81-2"><a href="thursday-september-15-2022.html#cb81-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ymin =</span> <span class="dv">24</span>, <span class="at">ymax =</span> <span class="dv">50</span>)</span>
+<span id="cb81-3"><a href="thursday-september-15-2022.html#cb81-3" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">res</span>(frame) <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb81-4"><a href="thursday-september-15-2022.html#cb81-4" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">ext</span>(frame)</span></code></pre></div>
 <pre><code>## SpatExtent : -106, -67, 24, 50 (xmin, xmax, ymin, ymax)</code></pre>
 <p>Next use the <code>terra::rasterize()</code> function to count the number of times each raster cell contains a tornado. The first argument is the spatial data frame and the second is the raster without values. The argument <code>field =</code> specifies a column name in the spatial data frame (here just an identifier) and the argument <code>fun =</code> specifies what to do. Here you want a count of the unique instances of the field in each cell and this is done with setting <code>fun = "length"</code>. Raster cells without tornadoes are given a value of 0 based on the <code>background =</code> argument.</p>
-<div class="sourceCode" id="cb600"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb600-1"><a href="thursday-september-15-2022.html#cb600-1" aria-hidden="true" tabindex="-1"></a>Torn.v <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(Torn.sf)</span>
-<span id="cb600-2"><a href="thursday-september-15-2022.html#cb600-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb600-3"><a href="thursday-september-15-2022.html#cb600-3" aria-hidden="true" tabindex="-1"></a>Torn.r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rasterize</span>(<span class="at">x =</span> Torn.v, </span>
-<span id="cb600-4"><a href="thursday-september-15-2022.html#cb600-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y =</span> frame, </span>
-<span id="cb600-5"><a href="thursday-september-15-2022.html#cb600-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">field =</span> <span class="st">&quot;om&quot;</span>, </span>
-<span id="cb600-6"><a href="thursday-september-15-2022.html#cb600-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">fun =</span> <span class="st">&quot;length&quot;</span>,</span>
-<span id="cb600-7"><a href="thursday-september-15-2022.html#cb600-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">background =</span> <span class="dv">0</span>)</span>
-<span id="cb600-8"><a href="thursday-september-15-2022.html#cb600-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Torn.r)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="thursday-september-15-2022.html#cb83-1" aria-hidden="true" tabindex="-1"></a>Torn.v <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(Torn.sf)</span>
+<span id="cb83-2"><a href="thursday-september-15-2022.html#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="thursday-september-15-2022.html#cb83-3" aria-hidden="true" tabindex="-1"></a>Torn.r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rasterize</span>(<span class="at">x =</span> Torn.v, </span>
+<span id="cb83-4"><a href="thursday-september-15-2022.html#cb83-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y =</span> frame, </span>
+<span id="cb83-5"><a href="thursday-september-15-2022.html#cb83-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">field =</span> <span class="st">&quot;om&quot;</span>, </span>
+<span id="cb83-6"><a href="thursday-september-15-2022.html#cb83-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">fun =</span> <span class="st">&quot;length&quot;</span>,</span>
+<span id="cb83-7"><a href="thursday-september-15-2022.html#cb83-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">background =</span> <span class="dv">0</span>)</span>
+<span id="cb83-8"><a href="thursday-september-15-2022.html#cb83-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Torn.r)</span></code></pre></div>
 <pre><code>## [1] &quot;SpatRaster&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;terra&quot;</code></pre>
-<div class="sourceCode" id="cb602"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb602-1"><a href="thursday-september-15-2022.html#cb602-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(Torn.r)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="thursday-september-15-2022.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(Torn.r)</span></code></pre></div>
 <pre><code>## [1] 52 78  1</code></pre>
 <p>The result is a raster layer. The number of tornadoes occurring in each cell are the values.</p>
-<p>We print out the first 200 values (lexicographical order).</p>
-<div class="sourceCode" id="cb604"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb604-1"><a href="thursday-september-15-2022.html#cb604-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(Torn.r)[<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>]</span></code></pre></div>
+<p>Print the first 200 values (lexicographical order).</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="thursday-september-15-2022.html#cb87-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">values</span>(Torn.r)[<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>]</span></code></pre></div>
 <pre><code>##   [1]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
 ##  [26]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
 ##  [51]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
@@ -684,21 +686,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [151]  0  0  0  0  0  0  0  1  1  4  2  3  4  6  5  1  0  4  6 13  8  7 20 18 12
 ## [176]  5  6  5  4  0  1  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</code></pre>
 <p>To visualize the raster use the <code>plot()</code> method.</p>
-<div class="sourceCode" id="cb606"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb606-1"><a href="thursday-september-15-2022.html#cb606-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(Torn.r)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="thursday-september-15-2022.html#cb89-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(Torn.r)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>You can recognize the broad shape of the eastern 2/3rds of the United States. Some cells across the Plains and the South have quite a few tornadoes and very few tornadoes in cells over the Appalachian Mountains.</p>
-<p>Clustering</p>
 <p>Indeed tornado activity appears in distinct clusters (or groups). A statistic that estimates the amount of cluster is called Moran’s I. It is a global measure of clustering with high values indicated by high values nearby to other high values and low values nearby to other low values.</p>
 <p>Values of Moran’s I range from -1 to +1 where positive values indicate clustering and negative values indicate regularity (e.g., chessboard). It is implemented on a raster with the <code>raster::Moran()</code> function.</p>
 <p>The function works only with S4 raster objects. So you need to first convert <code>Torn.r</code> from a <code>SpatRaster</code> to a <code>RasterLayer</code>. You do this with <code>raster()</code> function after loading the {raster} package.</p>
-<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="thursday-september-15-2022.html#cb607-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
-<span id="cb607-2"><a href="thursday-september-15-2022.html#cb607-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb607-3"><a href="thursday-september-15-2022.html#cb607-3" aria-hidden="true" tabindex="-1"></a>Torn.r2 <span class="ot">&lt;-</span> <span class="fu">raster</span>(Torn.r)</span>
-<span id="cb607-4"><a href="thursday-september-15-2022.html#cb607-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Torn.r2)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="thursday-september-15-2022.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb90-2"><a href="thursday-september-15-2022.html#cb90-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-3"><a href="thursday-september-15-2022.html#cb90-3" aria-hidden="true" tabindex="-1"></a>Torn.r2 <span class="ot">&lt;-</span> <span class="fu">raster</span>(Torn.r)</span>
+<span id="cb90-4"><a href="thursday-september-15-2022.html#cb90-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Torn.r2)</span></code></pre></div>
 <pre><code>## [1] &quot;RasterLayer&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;raster&quot;</code></pre>
-<div class="sourceCode" id="cb609"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb609-1"><a href="thursday-september-15-2022.html#cb609-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Torn.r2)</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="thursday-september-15-2022.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Torn.r2)</span></code></pre></div>
 <pre><code>## Formal class &#39;RasterLayer&#39; [package &quot;raster&quot;] with 12 slots
 ##   ..@ file    :Formal class &#39;.RasterFile&#39; [package &quot;raster&quot;] with 13 slots
 ##   .. .. ..@ name        : chr &quot;&quot;
@@ -753,65 +754,65 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   ..@ z       : list()</code></pre>
 <p>The object <code>Torn.r2</code> is a <code>RasterLayer</code> as an S4 data class. Note the use of slots for storing the information.</p>
 <p>You can use the <code>raster::Moran()</code> function on the <code>RasterLayer</code> object.</p>
-<div class="sourceCode" id="cb611"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb611-1"><a href="thursday-september-15-2022.html#cb611-1" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">Moran</span>(Torn.r2)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="thursday-september-15-2022.html#cb94-1" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">Moran</span>(Torn.r2)</span></code></pre></div>
 <pre><code>## [1] 0.7524014</code></pre>
 <p>The value of .75 indicates high level of tornado clustering at this scale.</p>
 <p>Under the null hypothesis of no spatial autocorrelation the expected value for Moran’s I is close to zero [-1/(n-1), where n is the number of cells].</p>
 <p>Clusters at a local level can be found using a local indicator of spatial autocorrelation. One such indicator is local Moran’s I, which is computed at each cell (using the <code>MoranLocal()</code> function) so the result is a raster.</p>
-<div class="sourceCode" id="cb613"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb613-1"><a href="thursday-september-15-2022.html#cb613-1" aria-hidden="true" tabindex="-1"></a>Torn_lmi.r <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">MoranLocal</span>(Torn.r2)</span>
-<span id="cb613-2"><a href="thursday-september-15-2022.html#cb613-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Torn_lmi.r)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-256-1.png" width="672" /></p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="thursday-september-15-2022.html#cb96-1" aria-hidden="true" tabindex="-1"></a>Torn_lmi.r <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">MoranLocal</span>(Torn.r2)</span>
+<span id="cb96-2"><a href="thursday-september-15-2022.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Torn_lmi.r)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <p>This type of plot makes is easy to identify the hot spots of tornadoes over parts of the South and the Central Plains.</p>
 <p>To convert the local Moran raster to a S4 spatial data frame with polygon geometries use the <code>rasterToPolygons()</code> function.</p>
-<div class="sourceCode" id="cb614"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb614-1"><a href="thursday-september-15-2022.html#cb614-1" aria-hidden="true" tabindex="-1"></a>Torn_lmi.sp <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">rasterToPolygons</span>(Torn_lmi.r)</span>
-<span id="cb614-2"><a href="thursday-september-15-2022.html#cb614-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Torn_lmi.sp)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="thursday-september-15-2022.html#cb97-1" aria-hidden="true" tabindex="-1"></a>Torn_lmi.sp <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">rasterToPolygons</span>(Torn_lmi.r)</span>
+<span id="cb97-2"><a href="thursday-september-15-2022.html#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Torn_lmi.sp)</span></code></pre></div>
 <pre><code>## [1] &quot;SpatialPolygonsDataFrame&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;sp&quot;</code></pre>
 <p>Then convert the <code>SpatialPolygonsDataFrame</code> to a simple features data frame and make a plot.</p>
-<div class="sourceCode" id="cb616"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb616-1"><a href="thursday-september-15-2022.html#cb616-1" aria-hidden="true" tabindex="-1"></a>Torn_lmi.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(Torn_lmi.sp)</span>
-<span id="cb616-2"><a href="thursday-september-15-2022.html#cb616-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb616-3"><a href="thursday-september-15-2022.html#cb616-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb616-4"><a href="thursday-september-15-2022.html#cb616-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Torn_lmi.sf) <span class="sc">+</span></span>
-<span id="cb616-5"><a href="thursday-september-15-2022.html#cb616-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> layer, <span class="at">color =</span> layer))</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="thursday-september-15-2022.html#cb99-1" aria-hidden="true" tabindex="-1"></a>Torn_lmi.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(Torn_lmi.sp)</span>
+<span id="cb99-2"><a href="thursday-september-15-2022.html#cb99-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-3"><a href="thursday-september-15-2022.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb99-4"><a href="thursday-september-15-2022.html#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Torn_lmi.sf) <span class="sc">+</span></span>
+<span id="cb99-5"><a href="thursday-september-15-2022.html#cb99-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> layer, <span class="at">color =</span> layer))</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>Or using functions from the {tmap} package you map the raster layer directly.</p>
-<div class="sourceCode" id="cb617"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb617-1"><a href="thursday-september-15-2022.html#cb617-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="thursday-september-15-2022.html#cb100-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
 <pre><code>## tmap mode set to interactive viewing</code></pre>
-<div class="sourceCode" id="cb619"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb619-1"><a href="thursday-september-15-2022.html#cb619-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(Torn_lmi.r) <span class="sc">+</span></span>
-<span id="cb619-2"><a href="thursday-september-15-2022.html#cb619-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_raster</span>(<span class="at">alpha =</span> .<span class="dv">7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="thursday-september-15-2022.html#cb102-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(Torn_lmi.r) <span class="sc">+</span></span>
+<span id="cb102-2"><a href="thursday-september-15-2022.html#cb102-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_raster</span>(<span class="at">alpha =</span> .<span class="dv">7</span>)</span></code></pre></div>
 <pre><code>## Linking to GEOS 3.10.2, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
 <pre><code>## Variable(s) &quot;NA&quot; contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
-<div id="htmlwidget-c118899e2b30c9b7a387" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c118899e2b30c9b7a387">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAAA/CAYAAAC2NAWOAAAEBElEQVR4nO1bvWobQRAeGRcuDLZII4wTFW6MSZEyTbrkFVL5IfIoKfMAqfwKVqcyTQonqFFhJIQaoxhUqAg4RdhjPJqZndm7XevEfRCQT3v78+3MN7OzCkCHDh06dMiK3mpz8/TSk9gl9I8+9w5SXz5Z3sPJ8r7J+ewMRFLogikJj4MhPA6GbNu2I9lS9hkiKcEK8N/0GcY+WYtqKXihFg3ZF2JYUsLiHgfDioxgKdzCgwVpltQmdJrCgCWFRhWLBeyLlQBEQjLnMvu0eAmm6OMlQhLltgixK/pwzyTh5RI7Sah3DZ3QMlBJ4XYWP8NupVkAtbJdt5aDWFKGcxBKhkWAOW2yaFRO4mJ9H9aJJtbFSQdH/F1K37mghmROaFOALcxzsk4tT8TeiRG+RQqeiPSyZ6IeS+A0J8Vi6pY0uujD4Bkp2MfxYZD6vjff8GhPE26Kx+V0LIbeanPzRBcdM18qnlyb+XoK58cX0QnQE7k0pvRO7DuvK4o12iCInoMg3QELIXgsLkphS7WMqZHl0aaopmj1E+lZigtgt9WsRgsEdCM9p3yMKCl11B+AJ2i+nsJ8PXX3y82HSx0sEVTDIZ6o1eRPlvfw6/iv2F7z40BGeJfTM7rjmmVy1qIlhRZ0IZlB1htCbsewRVqiWB03SEEVfSS/x5/xvzrALmcpZHmvVpo4SB6EgbXOzo8vqsVMVgszMbmLSpx1NWFRlabQBeAdDRYyWS3gsn/mGiCFGM9BMAfpW5oi+bknOtEII7Wx9keRs5Ae/dUBHtC7AEt7yQ1prkE/c/NrEuoNoRXz9RRGs7HJQgKwTnHkSOk/zU+yCS2djBV4MZf9M5YMyyS1JNCaxGltvEhO3kazcfUZ7zoFl/LHUgAszqXzFACU5mNYJvDx9Qf3YFwiN1kt4O5hA1/efdoS35eq33ZpPgMzKU3mA2Gng1W8fXUEo9nYZCXa/Jqa45b7SGcQT2VM6wdjvp5WyaAk0k2N5UFlKVpRJ8AzsNYWn6G08G0dr2mNeZbmU3DFZNzOezgczcbw9ectTFYLAPhPSJ3MNhdMGa20E57FjGZj+P77D3z7sYS7h42rj9J3zyah5bJG7+3hZf8Mrq9O4f2bUwDgyZAsr/QVqllopYo6/SwhkHB9BZW40rFiVtO0oErYIoWrcXI1VAxrVKKZr+fXByWtxZ28cYRI1TGPEGt3ODFtaxrqryM5SOeXQAD+Xjvoae7IXYzR8XMiSWgxaHYq7SomK1Z3tWhaTphIkRbAFYFifaS6QEkXYk/JGrgiT66Jloo2FK06JZdyodqk5NxJ6Uo0NzmtshSAMppS6/8QloJH0JtAMiklBbC02LbKfUqFZXdIfimUPAO1hpSSLvQPV+vdYEgFrVUAAAAASUVORK5CYII=",[[51.6570559553756,-106],[23.8021906009813,-66.5563908515316]],0.698039215686274,null,"tmap401","Torn_lmi.r"]},{"method":"addLegend","args":[{"colors":["#FEE08B","#EFF8AA","#D3EC87","#ABDB6D","#7FC865","#4FB15D","#17934D"],"labels":["-5 to 0","0 to 5","5 to 10","10 to 15","15 to 20","20 to 25","25 to 30"],"na_color":null,"na_label":"NA","opacity":0.698039215686274,"position":"topright","type":"unknown","title":"layer","extra":null,"layerId":"legend401","className":"info legend Torn_lmi.r","group":"Torn_lmi.r"}]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"Torn_lmi.r",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[23.8021906009813,51.6570559553756],"lng":[-106,-66.5563908515316]},"fitBounds":[24,-106,50,-67,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5db1edb8ed2c3137301f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5db1edb8ed2c3137301f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAAA/CAYAAAC2NAWOAAAEBElEQVR4nO1bvWobQRAeGRcuDLZII4wTFW6MSZEyTbrkFVL5IfIoKfMAqfwKVqcyTQonqFFhJIQaoxhUqAg4RdhjPJqZndm7XevEfRCQT3v78+3MN7OzCkCHDh06dMiK3mpz8/TSk9gl9I8+9w5SXz5Z3sPJ8r7J+ewMRFLogikJj4MhPA6GbNu2I9lS9hkiKcEK8N/0GcY+WYtqKXihFg3ZF2JYUsLiHgfDioxgKdzCgwVpltQmdJrCgCWFRhWLBeyLlQBEQjLnMvu0eAmm6OMlQhLltgixK/pwzyTh5RI7Sah3DZ3QMlBJ4XYWP8NupVkAtbJdt5aDWFKGcxBKhkWAOW2yaFRO4mJ9H9aJJtbFSQdH/F1K37mghmROaFOALcxzsk4tT8TeiRG+RQqeiPSyZ6IeS+A0J8Vi6pY0uujD4Bkp2MfxYZD6vjff8GhPE26Kx+V0LIbeanPzRBcdM18qnlyb+XoK58cX0QnQE7k0pvRO7DuvK4o12iCInoMg3QELIXgsLkphS7WMqZHl0aaopmj1E+lZigtgt9WsRgsEdCM9p3yMKCl11B+AJ2i+nsJ8PXX3y82HSx0sEVTDIZ6o1eRPlvfw6/iv2F7z40BGeJfTM7rjmmVy1qIlhRZ0IZlB1htCbsewRVqiWB03SEEVfSS/x5/xvzrALmcpZHmvVpo4SB6EgbXOzo8vqsVMVgszMbmLSpx1NWFRlabQBeAdDRYyWS3gsn/mGiCFGM9BMAfpW5oi+bknOtEII7Wx9keRs5Ae/dUBHtC7AEt7yQ1prkE/c/NrEuoNoRXz9RRGs7HJQgKwTnHkSOk/zU+yCS2djBV4MZf9M5YMyyS1JNCaxGltvEhO3kazcfUZ7zoFl/LHUgAszqXzFACU5mNYJvDx9Qf3YFwiN1kt4O5hA1/efdoS35eq33ZpPgMzKU3mA2Gng1W8fXUEo9nYZCXa/Jqa45b7SGcQT2VM6wdjvp5WyaAk0k2N5UFlKVpRJ8AzsNYWn6G08G0dr2mNeZbmU3DFZNzOezgczcbw9ectTFYLAPhPSJ3MNhdMGa20E57FjGZj+P77D3z7sYS7h42rj9J3zyah5bJG7+3hZf8Mrq9O4f2bUwDgyZAsr/QVqllopYo6/SwhkHB9BZW40rFiVtO0oErYIoWrcXI1VAxrVKKZr+fXByWtxZ28cYRI1TGPEGt3ODFtaxrqryM5SOeXQAD+Xjvoae7IXYzR8XMiSWgxaHYq7SomK1Z3tWhaTphIkRbAFYFifaS6QEkXYk/JGrgiT66Jloo2FK06JZdyodqk5NxJ6Uo0NzmtshSAMppS6/8QloJH0JtAMiklBbC02LbKfUqFZXdIfimUPAO1hpSSLvQPV+vdYEgFrVUAAAAASUVORK5CYII=",[[51.6570559553756,-106],[23.8021906009813,-66.5563908515316]],0.698039215686274,null,"tmap401","Torn_lmi.r"]},{"method":"addLegend","args":[{"colors":["#FEE08B","#EFF8AA","#D3EC87","#ABDB6D","#7FC865","#4FB15D","#17934D"],"labels":["-5 to 0","0 to 5","5 to 10","10 to 15","15 to 20","20 to 25","25 to 30"],"na_color":null,"na_label":"NA","opacity":0.698039215686274,"position":"topright","type":"unknown","title":"layer","extra":null,"layerId":"legend401","className":"info legend Torn_lmi.r","group":"Torn_lmi.r"}]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"Torn_lmi.r",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[23.8021906009813,51.6570559553756],"lng":[-106,-66.5563908515316]},"fitBounds":[24,-106,50,-67,[]]},"evals":[],"jsHooks":[]}</script>
 <p>Focal (neighborhood) functions</p>
 <p>The function <code>terra::focal()</code> computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The <code>terra::distance()</code> function computes the shortest distance to cells that are not NA. The <code>terra::direction()</code> function computes the direction towards (or from) the nearest cell that is not <code>NA</code>. The <code>adjacent()</code> function determines which cells are adjacent to other cells.</p>
 <p>Functions from the {raster} package require data objects to be in the S4 reference class. S4 reference classes allow rich data representations at the expense of flexibility. The S3 reference class objects are more flexible, easier to maintain, and allow for new dialects (e.g., {dplyr}, {ggplot2}). Most packages on CRAN use S3 reference class objects.</p>
 <p>Consider a multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a <em>GeoTIFF</em> file labeled <code>L7_ETMs.tif</code>. You import the image as a raster stack.</p>
-<div class="sourceCode" id="cb622"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb622-1"><a href="thursday-september-15-2022.html#cb622-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(stars)) <span class="fu">install.packages</span>(<span class="st">&quot;stars&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="thursday-september-15-2022.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(stars)) <span class="fu">install.packages</span>(<span class="st">&quot;stars&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
 <pre><code>## Loading required package: stars</code></pre>
 <pre><code>## Loading required package: abind</code></pre>
-<div class="sourceCode" id="cb625"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb625-1"><a href="thursday-september-15-2022.html#cb625-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
-<span id="cb625-2"><a href="thursday-september-15-2022.html#cb625-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb625-3"><a href="thursday-september-15-2022.html#cb625-3" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;tif/L7_ETMs.tif&quot;</span>,</span>
-<span id="cb625-4"><a href="thursday-september-15-2022.html#cb625-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&quot;stars&quot;</span>)</span>
-<span id="cb625-5"><a href="thursday-september-15-2022.html#cb625-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb625-6"><a href="thursday-september-15-2022.html#cb625-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
-<span id="cb625-7"><a href="thursday-september-15-2022.html#cb625-7" aria-hidden="true" tabindex="-1"></a>L7.rs <span class="ot">&lt;-</span> <span class="fu">stack</span>(f)</span>
-<span id="cb625-8"><a href="thursday-september-15-2022.html#cb625-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb625-9"><a href="thursday-september-15-2022.html#cb625-9" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(L7.rs)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="thursday-september-15-2022.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
+<span id="cb108-2"><a href="thursday-september-15-2022.html#cb108-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-3"><a href="thursday-september-15-2022.html#cb108-3" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;tif/L7_ETMs.tif&quot;</span>,</span>
+<span id="cb108-4"><a href="thursday-september-15-2022.html#cb108-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&quot;stars&quot;</span>)</span>
+<span id="cb108-5"><a href="thursday-september-15-2022.html#cb108-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-6"><a href="thursday-september-15-2022.html#cb108-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb108-7"><a href="thursday-september-15-2022.html#cb108-7" aria-hidden="true" tabindex="-1"></a>L7.rs <span class="ot">&lt;-</span> <span class="fu">stack</span>(f)</span>
+<span id="cb108-8"><a href="thursday-september-15-2022.html#cb108-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-9"><a href="thursday-september-15-2022.html#cb108-9" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(L7.rs)</span></code></pre></div>
 <pre><code>## [1] &quot;RasterStack&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;raster&quot;</code></pre>
 <p>The data <code>L7.rs</code> is a <code>RasterStack</code> object as a S4 reference class.</p>
 <p>You list the slot names and extract the extent and CRS using the <code>@</code> syntax.</p>
-<div class="sourceCode" id="cb627"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb627-1"><a href="thursday-september-15-2022.html#cb627-1" aria-hidden="true" tabindex="-1"></a>L7.rs<span class="sc">@</span>extent</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="thursday-september-15-2022.html#cb110-1" aria-hidden="true" tabindex="-1"></a>L7.rs<span class="sc">@</span>extent</span></code></pre></div>
 <pre><code>## class      : Extent 
 ## xmin       : 288776.3 
 ## xmax       : 298722.8 
 ## ymin       : 9110729 
 ## ymax       : 9120761</code></pre>
-<div class="sourceCode" id="cb629"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb629-1"><a href="thursday-september-15-2022.html#cb629-1" aria-hidden="true" tabindex="-1"></a>L7.rs<span class="sc">@</span>crs</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="thursday-september-15-2022.html#cb112-1" aria-hidden="true" tabindex="-1"></a>L7.rs<span class="sc">@</span>crs</span></code></pre></div>
 <pre><code>## Coordinate Reference System:
 ## Deprecated Proj.4 representation:
 ##  +proj=utm +zone=25 +south +ellps=GRS80 +units=m +no_defs 
@@ -855,16 +856,118 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##         BBOX[-23.8,-36,4.19,-29.99]],
 ##     ID[&quot;EPSG&quot;,31985]]</code></pre>
 <p>You extract a single band (layer) from the stack with the <code>layer =</code> argument in the <code>raster()</code> function. You then plot the raster values with the <code>plot()</code> method and compute the spatial autocorrelation with the <code>raster::Moran()</code> function.</p>
-<div class="sourceCode" id="cb631"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb631-1"><a href="thursday-september-15-2022.html#cb631-1" aria-hidden="true" tabindex="-1"></a>L7.rB3 <span class="ot">&lt;-</span> <span class="fu">raster</span>(L7.rs, <span class="at">layer =</span> <span class="dv">3</span>)</span>
-<span id="cb631-2"><a href="thursday-september-15-2022.html#cb631-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L7.rB3)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-262-1.png" width="672" /></p>
-<div class="sourceCode" id="cb632"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb632-1"><a href="thursday-september-15-2022.html#cb632-1" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">Moran</span>(L7.rB3)</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="thursday-september-15-2022.html#cb114-1" aria-hidden="true" tabindex="-1"></a>L7.rB3 <span class="ot">&lt;-</span> <span class="fu">raster</span>(L7.rs, <span class="at">layer =</span> <span class="dv">3</span>)</span>
+<span id="cb114-2"><a href="thursday-september-15-2022.html#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L7.rB3)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="thursday-september-15-2022.html#cb115-1" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">Moran</span>(L7.rB3)</span></code></pre></div>
 <pre><code>## [1] 0.8131887</code></pre>
 <p>You convert the raster to an S3 reference class data frame with the <code>as.data.frame()</code> method. Here you do that and then compute the normalized difference vegetation index (NDVI) using columns <code>L7_ETMs.4</code> and <code>L7_ETMs.3</code> and the <code>mutate()</code> function from the {dplyr} package.</p>
 <p>NDVI indicates live green vegetation from satellite images. Higher values indicate more green vegetation, negative values indicate water.</p>
-<div class="sourceCode" id="cb634"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb634-1"><a href="thursday-september-15-2022.html#cb634-1" aria-hidden="true" tabindex="-1"></a>L7.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(L7.rs) <span class="sc">|&gt;</span></span>
-<span id="cb634-2"><a href="thursday-september-15-2022.html#cb634-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">NDVI =</span> (L7_ETMs<span class="fl">.4</span> <span class="sc">-</span> L7_ETMs<span class="fl">.3</span>)<span class="sc">/</span>(L7_ETMs<span class="fl">.4</span> <span class="sc">+</span> L7_ETMs<span class="fl">.3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="thursday-september-15-2022.html#cb117-1" aria-hidden="true" tabindex="-1"></a>L7.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(L7.rs) <span class="sc">|&gt;</span></span>
+<span id="cb117-2"><a href="thursday-september-15-2022.html#cb117-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">NDVI =</span> (L7_ETMs<span class="fl">.4</span> <span class="sc">-</span> L7_ETMs<span class="fl">.3</span>)<span class="sc">/</span>(L7_ETMs<span class="fl">.4</span> <span class="sc">+</span> L7_ETMs<span class="fl">.3</span>))</span></code></pre></div>
 <p>More examples and other functions for working with raster data using functions from the {terra} package are illustrated in <a href="https://geocompr.robinlovelace.net/raster-vector.html" class="uri">https://geocompr.robinlovelace.net/raster-vector.html</a>. I encourage you to take a look.</p>
+</div>
+<div id="working-with-space-time-data" class="section level2 unnumbered hasAnchor">
+<h2>Working with space-time data<a href="thursday-september-15-2022.html#working-with-space-time-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Space-time data arrive in the form of multi-dimensional arrays. Examples include:</p>
+<ul>
+<li>raster images</li>
+<li>socio-economic or demographic data</li>
+<li>environmental variables monitored at fixed stations</li>
+<li>time series of satellite images with multiple spectral bands</li>
+<li>spatial simulations</li>
+<li>climate and weather model output</li>
+</ul>
+<p>The {stars} package provides functions and methods for working with space-time data as multi-dimensional S3 reference class arrays.</p>
+<p>To see what methods (functions) for class <code>stars</code> are available use the <code>methods()</code> function.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="thursday-september-15-2022.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;stars&quot;</span>)</span></code></pre></div>
+<pre><code>##  [1] [                 [[&lt;-              [&lt;-               %in%             
+##  [5] $&lt;-               adrop             aggregate         aperm            
+##  [9] as.data.frame     as.POSIXct        c                 coerce           
+## [13] contour           cut               dim               dimnames         
+## [17] dimnames&lt;-        droplevels        filter            hist             
+## [21] image             initialize        is.na             Math             
+## [25] merge             Ops               plot              predict          
+## [29] print             select            show              slotsFromS3      
+## [33] split             st_apply          st_area           st_as_sf         
+## [37] st_as_sfc         st_as_stars       st_bbox           st_coordinates   
+## [41] st_crop           st_crs            st_crs&lt;-          st_dimensions    
+## [45] st_dimensions&lt;-   st_downsample     st_extract        st_geometry      
+## [49] st_interpolate_aw st_intersects     st_join           st_mosaic        
+## [53] st_normalize      st_redimension    st_sample         st_set_bbox      
+## [57] st_transform_proj st_transform      write_stars      
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+<p>The list includes {base} R and {tidyverse} methods.</p>
+<p>The typical data array is that where two dimensions represent spatial raster dimensions and the third dimensions is a band (or time). <a href="https://raw.githubusercontent.com/r-spatial/stars/master/images/cube1.png">Data array</a></p>
+<p>But arrays can have more dimensions. For example, time, space, spectral band, and sensor type. <a href="https://raw.githubusercontent.com/r-spatial/stars/master/images/cube2.png">Data cube</a></p>
+<p>You import a set of rasters (raster stack) as a {stars} object using the <code>stars::read_stars()</code> function. Consider the multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a <em>GeoTIFF</em> file labeled <code>L7_ETMs.tif</code>.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="thursday-september-15-2022.html#cb120-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;tif/L7_ETMs.tif&quot;</span>,</span>
+<span id="cb120-2"><a href="thursday-september-15-2022.html#cb120-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&quot;stars&quot;</span>)</span>
+<span id="cb120-3"><a href="thursday-september-15-2022.html#cb120-3" aria-hidden="true" tabindex="-1"></a>L7.stars <span class="ot">&lt;-</span> stars<span class="sc">::</span><span class="fu">read_stars</span>(f)</span>
+<span id="cb120-4"><a href="thursday-september-15-2022.html#cb120-4" aria-hidden="true" tabindex="-1"></a>L7.stars</span></code></pre></div>
+<pre><code>## stars object with 3 dimensions and 1 attribute
+## attribute(s):
+##              Min. 1st Qu. Median     Mean 3rd Qu. Max.
+## L7_ETMs.tif     1      54     69 68.91242      86  255
+## dimension(s):
+##      from  to  offset delta                     refsys point values x/y
+## x       1 349  288776  28.5 SIRGAS 2000 / UTM zone 25S FALSE   NULL [x]
+## y       1 352 9120761 -28.5 SIRGAS 2000 / UTM zone 25S FALSE   NULL [y]
+## band    1   6      NA    NA                         NA    NA   NULL</code></pre>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="thursday-september-15-2022.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(L7.stars)</span></code></pre></div>
+<pre><code>##    x    y band 
+##  349  352    6</code></pre>
+<p>There are three dimensions to this {stars} object, two spatial (<code>x</code> and <code>y</code>), and the third across six bands (<code>band</code>). Values across the six bands and space are summarized as a single attribute with name <code>L7_ETMs.tif</code>.</p>
+<p>The data are stored in a four dimensional array. The first index is the attribute, the second and third indexes are the spatial coordinates, and the fourth index is the band.</p>
+<p>Here you plot bands 3 and 4 by sequencing on the fourth index and using the <code>plot()</code> method.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="thursday-september-15-2022.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L7.stars[,,,<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>])</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p>Since the data object is S3 you use functions from the <code>ggplot2()</code> package together with the <code>geom_stars()</code> layer from the {stars} package to plot all 6 bands with a common color scale bar.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="thursday-september-15-2022.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb125-2"><a href="thursday-september-15-2022.html#cb125-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-3"><a href="thursday-september-15-2022.html#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb125-4"><a href="thursday-september-15-2022.html#cb125-4" aria-hidden="true" tabindex="-1"></a>  stars<span class="sc">::</span><span class="fu">geom_stars</span>(<span class="at">data =</span> L7.stars) <span class="sc">+</span></span>
+<span id="cb125-5"><a href="thursday-september-15-2022.html#cb125-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> band)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p>You create a new {stars} object by applying a function to the band values. For example here you compute normalized difference vegetation index (NDVI) through a function applied across the <code>x</code> and <code>y</code> spatial dimensions using the <code>stars::st_apply()</code> method after creating the function <code>NDVI()</code>.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="thursday-september-15-2022.html#cb126-1" aria-hidden="true" tabindex="-1"></a>NDVI <span class="ot">&lt;-</span> <span class="cf">function</span>(z) (z[<span class="dv">4</span>] <span class="sc">-</span> z[<span class="dv">3</span>]) <span class="sc">/</span> (z[<span class="dv">4</span>] <span class="sc">+</span> z[<span class="dv">3</span>])</span>
+<span id="cb126-2"><a href="thursday-september-15-2022.html#cb126-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-3"><a href="thursday-september-15-2022.html#cb126-3" aria-hidden="true" tabindex="-1"></a>( NDVI.stars <span class="ot">&lt;-</span> stars<span class="sc">::</span><span class="fu">st_apply</span>(L7.stars, </span>
+<span id="cb126-4"><a href="thursday-september-15-2022.html#cb126-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">MARGIN =</span> <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>), </span>
+<span id="cb126-5"><a href="thursday-september-15-2022.html#cb126-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">FUN =</span> NDVI) )</span></code></pre></div>
+<pre><code>## stars object with 2 dimensions and 1 attribute
+## attribute(s):
+##             Min.    1st Qu.      Median        Mean   3rd Qu.      Max.
+## NDVI  -0.7534247 -0.2030075 -0.06870229 -0.06432464 0.1866667 0.5866667
+## dimension(s):
+##   from  to  offset delta                     refsys point values x/y
+## x    1 349  288776  28.5 SIRGAS 2000 / UTM zone 25S FALSE   NULL [x]
+## y    1 352 9120761 -28.5 SIRGAS 2000 / UTM zone 25S FALSE   NULL [y]</code></pre>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="thursday-september-15-2022.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb128-2"><a href="thursday-september-15-2022.html#cb128-2" aria-hidden="true" tabindex="-1"></a>  stars<span class="sc">::</span><span class="fu">geom_stars</span>(<span class="at">data =</span> NDVI.stars) </span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p>The stars data frame can also be split, here on the band dimension, to yield a representation as six rasters in the list form.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="thursday-september-15-2022.html#cb129-1" aria-hidden="true" tabindex="-1"></a>( L7split.stars <span class="ot">&lt;-</span> <span class="fu">split</span>(L7.stars, </span>
+<span id="cb129-2"><a href="thursday-september-15-2022.html#cb129-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">f =</span> <span class="st">&quot;band&quot;</span>) )</span></code></pre></div>
+<pre><code>## stars object with 2 dimensions and 6 attributes
+## attribute(s):
+##     Min. 1st Qu. Median     Mean 3rd Qu. Max.
+## X1    47      67     78 79.14772      89  255
+## X2    32      55     66 67.57465      79  255
+## X3    21      49     63 64.35886      77  255
+## X4     9      52     63 59.23541      75  255
+## X5     1      63     89 83.18266     112  255
+## X6     1      32     60 59.97521      88  255
+## dimension(s):
+##   from  to  offset delta                     refsys point values x/y
+## x    1 349  288776  28.5 SIRGAS 2000 / UTM zone 25S FALSE   NULL [x]
+## y    1 352 9120761 -28.5 SIRGAS 2000 / UTM zone 25S FALSE   NULL [y]</code></pre>
+<p>Now the bands are given as columns in the data frame part of the {stars} object and there are only two dimensions (<code>x</code> and <code>y</code>).</p>
+<p>Raster data do not need to be regular or aligned along the cardinal directions. Functions in the {stars} package supports rotated, sheared, rectilinear and curvi-linear grids. <a href="https://raw.githubusercontent.com/r-spatial/stars/master/man/figures/README-plot2-1.png">Grids</a></p>
+<p>Functions in the {stars} package also support the vector data model. Vector data cubes arise when you have a single dimension that points to distinct spatial feature geometry, such as polygons (e.g. denoting administrative regions). <a href="https://raw.githubusercontent.com/r-spatial/stars/master/images/cube3.png">Vector data cube polygons</a></p>
+<p>Or points (e.g., denoting sensor locations). <a href="https://raw.githubusercontent.com/r-spatial/stars/master/images/cube4.png">Vector data cube points</a></p>
+<p>For more see: <a href="https://github.com/r-spatial/stars/tree/master/vignettes" class="uri">https://github.com/r-spatial/stars/tree/master/vignettes</a> and <a href="https://awesomeopensource.com/project/r-spatial/stars" class="uri">https://awesomeopensource.com/project/r-spatial/stars</a></p>
+<p>Also you can check out some rough code that I’ve been working on to take advantage of the {stars} functionality including plotting daily temperatures across the U.S. and creating a vector data cube of COVID19 data in the <code>stars.Rmd</code> file on course GitHub site in the folder <code>Other_Rmds</code>.</p>
 
 </div>
 </div>
@@ -928,20 +1031,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
