@@ -267,7 +267,9 @@ map_nz +
                   bg.color = "lightblue")
 ```
 
-Putting two or more maps with the same scale side by side allows for comparisons and to see how spatial relationships change with respect to another variable. Creating small multiples of the same map with different variables is called 'faceting'.
+Putting two or more maps with the same scale side by side allows for comparisons. You can see how spatial relationships change with respect to another variable. 
+
+Creating small multiples of the same map with different variables is called 'faceting'.
 
 Consider the simple feature data frame `World`. Make the data frame accessible to this session with the `data()` function.
 
