@@ -103,7 +103,7 @@ The interface to the geometry engine-open source (GEOS) is through the {rgeos} p
 
 ## Working with raster data {.unnumbered}
 
-The *raster data model* divides geographic space into a grid of cells of constant size (resolution) and we use classes from the {raster} package to work with raster data.
+The *raster data model* divides geographic space into a grid of cells of constant size (resolution) and we use classes from the {terra} package to work with raster data.
 
 A raster is a data structure that divides space into rectangles called 'cells' (or 'pixels'). Each cell has an attribute value.
 
@@ -114,6 +114,8 @@ The {terra} package has functions for creating, reading, manipulating, and writi
 To see what methods (functions) for class `SpatRaster` are available use the `methods()` function.
 
 ```{r}
+library(terra)
+
 methods(class = "SpatRaster")
 ```
 
@@ -160,7 +162,7 @@ terra::hasValues(r)
 
 Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells.
 
-The `terra::values()` function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. First you assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1.
+The `terra::values()` function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. Here you first assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1.
 
 ```{r}
 v <- runif(terra::ncell(r))
@@ -406,7 +408,7 @@ The function works only with S4 raster objects. So you need to first convert `To
 ```{r}
 library(raster)
 
-Torn.r2 <- raster(Torn.r)
+Torn.r2 <- raster::raster(Torn.r)
 class(Torn.r2)
 str(Torn.r2)
 ```
@@ -445,6 +447,7 @@ Then convert the `SpatialPolygonsDataFrame` to a simple features data frame and 
 Torn_lmi.sf <- sf::st_as_sf(Torn_lmi.sp)
 
 library(ggplot2)
+
 ggplot(data = Torn_lmi.sf) +
   geom_sf(mapping = aes(fill = layer, color = layer))
 ```
@@ -459,7 +462,7 @@ tmap::tm_shape(Torn_lmi.r) +
 
 Focal (neighborhood) functions
 
-The function `terra::focal()` computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The `terra::distance()` function computes the shortest distance to cells that are not NA. The `terra::direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `adjacent()` function determines which cells are adjacent to other cells.
+The function `terra::focal()` computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The `terra::distance()` function computes the shortest distance to cells that are not NA. The `terra::direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `terra::adjacent()` function determines which cells are adjacent to other cells.
 
 Functions from the {raster} package require data objects to be in the S4 reference class. S4 reference classes allow rich data representations at the expense of flexibility. The S3 reference class objects are more flexible, easier to maintain, and allow for new dialects (e.g., {dplyr}, {ggplot2}). Most packages on CRAN use S3 reference class objects.
 
@@ -490,7 +493,7 @@ L7.rs@crs
 You extract a single band (layer) from the stack with the `layer =` argument in the `raster()` function. You then plot the raster values with the `plot()` method and compute the spatial autocorrelation with the `raster::Moran()` function.
 
 ```{r}
-L7.rB3 <- raster(L7.rs, layer = 3)
+L7.rB3 <- raster::raster(L7.rs, layer = 3)
 plot(L7.rB3)
 raster::Moran(L7.rB3)
 ```
