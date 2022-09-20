@@ -8,7 +8,7 @@ Today
 
 ## Mapping using functions from the {ggplot2} package {.unnumbered}
 
-The {ggplot2} package has supports `sf` objects for making maps through the function `geom_sf()`. An initial `ggplot()` function is followed by one or more layers that are added with `+` symbol. The layers begin with `geom_` (or `stat_`.
+The {ggplot2} package has supports `sf` objects for making maps through the function `geom_sf()`. An initial `ggplot()` function is followed by one or more layers that are added with `+` symbol. The layers begin with `geom_` (or `stat_`).
 
 For example, consider the objects `nz` and `nz_height` from the {spData} package, where `nz` is a simple feature data frame from the New Zealand census with information about the area, population, income, and sex ratio (male/female) in the country's 16 administrative regions.
 
@@ -42,7 +42,7 @@ The first use of `geom_sf()` takes the geometry column of the simple feature dat
 
 The `geom_sf()` function automatically plots the graticule (grid of latitude and longitude) with labels. The default ranges for the graticule can be overridden using `scale_x_continuous()`, `scale_y_continuous()` or `coord_sf(datum = NA)`.
 
-The advantage of using functions from {ggplot2} for mapping include a large community of users and many add-on packages.
+A big advantage of using functions from {ggplot2} for mapping include a large community of users and many add-on packages.
 
 Another example: the county land area by state in the U.S. The data is a simple feature data frame available in the {USAboundariesData} package at `ropensci.org` (not on CRAN).
 
@@ -61,6 +61,14 @@ ggplot() +
   geom_sf(data = FLcounties.sf,
           mapping = aes(fill = aland))
 ```
+
+Leaving off the `mapping =` argument will result in a map of the geometry type.
+
+```{r}
+ggplot() +
+  geom_sf(data = FLcounties.sf)
+```
+
 
 Example: Wildfires in the Apalachicola National Forest (ANF). Import the Florida wildfire data as a simple feature data frame called `FL_Fires.sf` and transform the native CRS to a Florida GDL Albers (EPSG 3086).
 
@@ -95,7 +103,7 @@ Continue with a table showing the frequency of fires by size class.
 table(FL_Fires.sf$FIRE_SIZE_)
 ```
 
-Next, use the `USAboundaries::us_counties()` function to get county boundaries in Florida as a simple feature data frame. Transform the CRS to match the CRS of the wildfire simple feature. Then select on the `name` column and filter with `name = "Liberty"` to keep only the boundaries of Bay County assign the result to the simple feature data frame named `Liberty.sf`.
+Next, use the `USAboundaries::us_counties()` function to get county boundaries in Florida as a simple feature data frame. Transform the CRS to match the CRS of the wildfire simple feature. Then select on the `name` column and filter with `name = "Liberty"` to keep only the boundaries of Liberty County assign the result to the simple feature data frame named `Liberty.sf`.
 
 ```{r}
 FL.sf <- USAboundaries::us_counties(states = "FL",
@@ -107,7 +115,7 @@ Liberty.sf <- FL.sf |>
   dplyr::filter(name == "Liberty") 
 ```
 
-Make a map showing the boundaries of Florida and the boundaries of Bay County.
+Make a map showing the boundaries of Florida and the boundaries of Liberty County.
 
 ```{r}
 ggplot() +
@@ -194,7 +202,7 @@ class(map_nz)
 
 The resulting object is of class `tmap`.
 
-Additional spatial data are added to the map object with `+ tm_shape(new_object)`, where `new_object` is another spatial data frame the values of which are used to plot on top of the preceding layers.
+Additional spatial data are added to the map object with `+ tmap::tm_shape(new_object)`, where `new_object` is another spatial data frame the values of which are used to plot on top of the preceding layers.
 
 When a new spatial data frame is added in this way, all subsequent aesthetic functions refer to it, until another spatial data frame is added.
 
@@ -324,7 +332,7 @@ For example here you map the happiness index (`HPI`) on one map and gross domest
 
 ```{r}
 tmap::tm_shape(World) +
-    tmap::tm_polygons(c("HPI", "gdp_cap_est"), 
+    tmap::tm_polygons(col = c("HPI", "gdp_cap_est"), 
                       style = c("pretty", "kmeans"),
                       palette = list("RdYlGn", "Purples"),
                       title = c("Happy Planet Index", "GDP per capita")) 
@@ -338,18 +346,18 @@ Multiple map objects can also be arranged in a single plot with the `tmap::tmap_
 
 ```{r}
 map1 <- tmap::tm_shape(World) +
-           tmap::tm_polygons("HPI", 
+           tmap::tm_polygons(col = "HPI", 
                              style = "pretty",
                              palette = "RdYlGn",
                              title = "Happy Planet Index") 
 
 map2 <- tmap::tm_shape(World) +
-           tmap::tm_polygons("gdp_cap_est", 
+           tmap::tm_polygons(col = "gdp_cap_est", 
                              style = "kmeans",
                              palette = "Purples",
                              title = "GDP per capita") 
 
-tmap_arrange(map1, map2)
+tmap::tmap_arrange(map1, map2)
 ```
 
 Example: COVID19 vaccinations by state on Saturday February 6, 2021. Get the data.
@@ -405,9 +413,9 @@ tmap::tm_shape(FLcounties.sf) +
 
 The county borders from your spatial data frame are overlaid on zoomable Leaflet tiles.
 
-You can change the underlying layers byto OpenStreetMap by clicking on the layering symbol.
+You can change the underlying layers by to OpenStreetMap by clicking on the layering symbol.
 
-With the interactive mode turned on, all maps produced with {tmap} launch as zoom-able HTML. This feature includes the ability to specify the base map with `tmap::tm_basemap()` (or `tmap::tmap_options()`) as demonstrated here.
+With the interactive ("view") mode turned on, all maps produced with {tmap} launch as zoom-able HTML. This feature includes the ability to specify the base map with `tmap::tm_basemap()` (or `tmap::tmap_options()`) as demonstrated here.
 
 ```{r, eval=FALSE}
 tmap::tm_basemap(server = "OpenTopoMap") +
@@ -431,7 +439,7 @@ tmap::tm_shape(world_coffee) +
 Change the view mode back to a static plot.
 
 ```{r}
-tmap_mode("plot")
+tmap::tmap_mode("plot")
 ```
 
 ## Adding an inset map {.unnumbered}
