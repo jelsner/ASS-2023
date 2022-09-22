@@ -2,6 +2,8 @@
 
 **"You haven't mastered a tool until you understand when it should not be used."** -- Kelsey Hightower
 
+I'm looking for a masters-level geographer to assist with disease mapping and basic spatial analysis as applied to livestock disease.  This individual will mostly support non-spatial scientists (virologists, field epidemiologists) and postdocs (some with spatial analysis expertise) in the mapping and visualizing of disease occurrence data from across the US.  Although the hired individual will not be assigned sole responsibility for any novel analytic work, they will be encouraged to develop an independent project that leads to a pub.  There may also be flexibility in physical work location; remote work may be an option, especially if the candidate is moving on to a PhD program at a university.  This is a great opportunity to help support a PhD program or to serve as a jumping-off point for federal employment.  Here's the link: https://www.zintellect.com/Opportunity/Details/USDA-ARS-2022-0343 
+
 Today
 
 -   Defining spatial neighborhoods and spatial weights
