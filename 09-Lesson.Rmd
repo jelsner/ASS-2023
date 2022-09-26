@@ -2,17 +2,24 @@
 
 **"You haven't mastered a tool until you understand when it should not be used."** -- Kelsey Hightower
 
-I'm looking for a masters-level geographer to assist with disease mapping and basic spatial analysis as applied to livestock disease.  This individual will mostly support non-spatial scientists (virologists, field epidemiologists) and postdocs (some with spatial analysis expertise) in the mapping and visualizing of disease occurrence data from across the US.  Although the hired individual will not be assigned sole responsibility for any novel analytic work, they will be encouraged to develop an independent project that leads to a pub.  There may also be flexibility in physical work location; remote work may be an option, especially if the candidate is moving on to a PhD program at a university.  This is a great opportunity to help support a PhD program or to serve as a jumping-off point for federal employment.  Here's the link: https://www.zintellect.com/Opportunity/Details/USDA-ARS-2022-0343 
+A former PhD student from this department, who I had the pleasure to supervise, is looking for a masters-level geographer to assist with disease mapping and basic spatial analysis as applied to livestock disease.
+
+To support non-spatial scientists (virologists, field epidemiologists) and post-docs (some with spatial analysis expertise) in the mapping and visualizing of disease occurrence data from across the US and encouraged to develop independent projects leading to publication. Flexible work location especially if working toward a PhD.
+
+Here's the link: <https://www.zintellect.com/Opportunity/Details/USDA-ARS-2022-0343>
 
 Today
 
 -   Defining spatial neighborhoods and spatial weights
 -   Computing spatial autocorrelation
 -   Spatial lag and its relation to autocorrelation
+-   Other neighbor definitions
 
 ## Defining spatial neighborhoods and spatial weights {.unnumbered}
 
-Autocorrelation plays a central role in spatial statistics. It measures the degree to which things tend to cluster. Things include attribute values aggregated to polygons (or raster cells) as well as locations. How autocorrelation gets estimated depends on the geometry of the spatial data.
+Autocorrelation plays a central role in spatial statistics. It quantifies the degree to which things nearby tend to cluster.
+
+Things include values of variables (attributes) aggregated to polygons (or raster cells) as well as the spatial locations of objects. How autocorrelation gets estimated depends on the geometry of the spatial data.
 
 Things tend to cluster because of:
 
@@ -22,11 +29,13 @@ Things tend to cluster because of:
 
 -   Interaction: the movement of people, goods or information creates relationships between areas. COVID spreads through areas through the movement of people.
 
-Spatial statistics quantify, and condition on, autocorrelation but they are silent about physical causes. Understanding the reason for autocorrelation in your data is important for inference because the causal mechanism might be confounded by its. The divorce rate is high in southern states, but so is the number of Waffle Houses. Understanding causation requires domain specific knowledge.
+Spatial statistics focuses on quantifying, and conditioning on, autocorrelation but it is silent about physical causes. Understanding the reason for autocorrelation in your data is important for inference because the causal mechanism might be confounded by its presence. Divorce rates tend to cluster high in southern states, but so does the number of Waffle Houses. Understanding causation requires domain specific knowledge.
 
 When a variable's values are aggregated (summed or averaged) to regions, autocorrelation is quantified by calculating how similar a value in region $i$ is to the value in region $j$ and weighting this similarity by how 'close' region $i$ is to region $j$. Closer regions are given greater weight.
 
-High similarities with high weight (similar values close together) yield high values of spatial autocorrelation. Low similarities with high weight (dissimilar values close together) yield low values of spatial autocorrelation. Let $\hbox{sim}_{ij}$ denote the similarity between values $Y_i$ and $Y_j$, and let $w_{ij}$ denote a set of weights describing the 'distance' between regions $i$ and $j$, for $i$, $j$ = 1, ..., $N$.
+High similarities with high weight (similar values close together) yield high values of spatial autocorrelation. Low similarities with high weight (dissimilar values close together) yield low values of spatial autocorrelation.
+
+Let $\hbox{sim}_{ij}$ denote the similarity between values $Y_i$ and $Y_j$, and let $w_{ij}$ denote a set of weights describing the 'distance' between regions $i$ and $j$, for $i$, $j$ = 1, ..., $N$.
 
 A general spatial autocorrelation index (SAI) is given by $$
 \hbox{SAI} = \frac{\sum_{i,j=1}^N w_{ij}\hbox{sim}_{ij}}{\sum_{i,j=1}^N w_{ij}}
@@ -34,11 +43,11 @@ $$ which represents the weighted similarity between regions. The set of weights 
 
 For cells in a raster under the rook-contiguity criterion, $w_{ij}$ = 1 if cell $i$ and $j$ share a boundary, and 0 if they don't share a boundary. In this case $w_{ij}$ = $w_{ji}$. Also, a cell is not a neighbor of itself so $w_{ii}$ = 0.
 
-Alternatively you can define center locations from a set of polygon regions and let $w_{ij}$ = 1 if the center of region $i$ is near the center of region $j$ and 0 otherwise. Here you need to decide on the number of nearest neighbors.
+Alternatively you can define center locations from a set of polygon regions and let $w_{ij}$ = 1 if the center of region $i$ is near the center of region $j$ and 0 otherwise. In this case you need to decide on the number of nearest neighbors.
 
 You can also define neighbors by distance. For example, if $d_{ij}$ is the distance between centers $i$ and $j$, you can let $w_{ij}$ = 1 if $d_{ij}$ \< $\delta$ and 0 otherwise.
 
-Consider crime data at the tract level in the city of Columbus, Ohio. The tract polygons are projected with arbitrary spatial coordinates.
+Consider crime data at the tract level in the city of Columbus, Ohio. The tract polygons are planar projected with arbitrary spatial coordinates.
 
 ```{r}
 if(!"columbus" %in% list.files("data")) {
@@ -64,7 +73,7 @@ tmap::tm_shape(CC.sf) +
 
 Note that the variable name CRIME must be in quotes.
 
-Alternatively we create a choropleth map of the crime rates using `geom_sf()`. Here the variable name CRIME is without quotes.
+Alternatively you create a choropleth map of the crime rates using `geom_sf()`. Here the variable name CRIME is without quotes.
 
 ```{r}
 library(ggplot2)
@@ -75,11 +84,13 @@ ggplot(data = CC.sf) +
   theme_void()
 ```
 
-High crime areas tend to be clustered.
+High (and low) crime areas tend to be clustered.
 
 Autocorrelation quantifies the amount of clustering. To compute the autocorrelation you first need to define the neighbors for each polygon.
 
-You create a list of neighbors using the spdep::`poly2nb()` function from the {spdep} package. The 'nb' in the function names stands for neighbor list object. The function builds the list from geometries based on contiguity. Neighbors must share at least one geographic location. By default the contiguity is defined as having at least one location in common. This is changed by using the argument `queen = FALSE`. Functions in the {spdep} package support S3 and S4 spatial data objects.
+You create a list of neighbors using the `spdep::poly2nb()` function from the {spdep} package. Functions in the {spdep} package support S3 and S4 spatial data objects.
+
+The 'nb' in the function names stands for neighbor (list) object. The function builds the list from geometries based on contiguity. Neighbors must share a border. By default contiguity is defined as having at least one location along a border common. This is changed by using the argument `queen = FALSE`.
 
 ```{r}
 if(!require(spdep)) install.packages("spdep", repos = "http://cran.us.r-project.org")
@@ -87,11 +98,11 @@ if(!require(spdep)) install.packages("spdep", repos = "http://cran.us.r-project.
 ( nbs <- spdep::poly2nb(CC.sf) )
 ```
 
-Note that this only works for spatial data frames.
-
 The output tells you there are 49 tracts (polygons). Each tract is bordered by at least one other tract. The average number of neighbors is 4.8. The total number of neighbors over all tracts is 236. This represents 9.8% of all possible connections (if every tract is a neighbor of itself and every other tract 49 \* 49).
 
-A graph of the neighbor links is obtained with the `plot()` method. The arguments include the neighbor list object (`nbs`) and the location of the polygon centers, which are extracted from the simple feature data frame using the sf::`st_centroid()`.
+Note that this only works for spatial data frames. It will not work for a regular data frame where the spatial coordinates are defined as variables.
+
+A graph of the tracts as nodes and neighbors as links is obtained with the `plot()` method. The arguments include the neighbor list object (here you assigned it the name `nbs`) and the location of the polygon centers, which are extracted from the simple feature data frame using the sf::`st_centroid()`.
 
 ```{r}
 plot(CC.sf$geometry)
@@ -100,12 +111,13 @@ plot(nbs,
      add = TRUE)
 ```
 
-The graph is a network showing the contiguity pattern (adjacency neighbor structure). Tracts close to the center of the city have more neighboring tracts and thus more links in the network.
+The graph is a network showing the contiguity pattern (adjacency or neighbor structure). Tracts close to the center of the city have more neighboring tracts and thus more links in the network.
 
 The number of links per tract (node)--link distribution--is obtained with the `summary()` method.
 
 ```{r}
-summary(nbs)
+nbs |>
+  summary()
 ```
 
 The list of neighboring tracts for the first two tracts.
@@ -115,7 +127,7 @@ nbs[[1]]
 nbs[[2]]
 ```
 
-The first tract has two neighbors that include tracts 2 and 3. The neighbor numbers are stored as an integer vector within the `nb` object. Tract 2 has three neighbors that include tracts 1, 3, and 4. Tract 5 has 8 neighbors and so on. The function spdep::`card()` tallies the number of neighbors by tract.
+The first tract has two neighbors that include tracts 2 and 3. The neighbor numbers are stored as an integer vector within the `nb` object. Tract 2 has three neighbors that include tracts 1, 3, and 4. Tract 5 has 8 neighbors and so on. The function `spdep::card()` tallies the number of neighbors by tract.
 
 ```{r}
 spdep::card(nbs)
@@ -123,7 +135,7 @@ spdep::card(nbs)
 
 Tract 5 has 8 neighbors and so on.
 
-The next step is to include weights to the neighbor list object indicate how close each neighbor is. The function spdep::`nb2listw()` turns the neighbor list object into a spatial weights object. By default the weighting scheme gives each link the same weight equal to the multiplicative inverse of the number of neighbors.
+The next step is to include weights to the neighbor list object indicating how 'close' each neighbor is. The function `spdep::nb2listw()` turns the neighbor list object into a spatial weights object. By default the weighting scheme gives each link the same weight equal to the multiplicative inverse of the number of neighbors.
 
 ```{r}
 wts <- nbs |>
@@ -135,7 +147,8 @@ class(wts)
 This `wts` object is a list with two elements. The first element (`listw`) is the weights matrix and the second element (`nb`) is the neighbor list object.
 
 ```{r}
-summary(wts)
+wts |>
+  summary()
 ```
 
 The network statistics are given along with information about the weights. The default weighting scheme assigns a weight to each neighbor equal to the inverse of the number of neighbors (`style = "W"`). For a tract with 5 neighbors each neighbor gets a weight of 1/5. The sum over all weights (`S0`) is the number of tracts.
@@ -146,7 +159,7 @@ To see the weights for the first two tracts type
 wts$weights[1:2]
 ```
 
-The object `weights` represents the weights matrix as a list. The full matrix has dimensions 49 x 49 but most of the entries are zero.
+The object `weights` represents the weights matrix as a list. The full matrix has dimensions 49 x 49 but most of the entries are zero since for a given tract most tracts are not neighbors.
 
 ```{r}
 nbs |>
@@ -164,7 +177,7 @@ Tract 1 has two neighbors (tract 2 & 3) so each are given a weight of 1/2. Tract
 
 With the weights matrix saved as an object you are ready to compute a metric of spatial autocorrelation.
 
-Caution: Neighbors defined by contiguity can leave some areas without any. Islands for example. By default the `spdep::nb2listw()` function assumes each area has at least one neighbor. If this is not the case you need to specify how areas without neighbors are handled using the argument `zero.policy = TRUE`. This permits the weights list to be formed with zero-length weights vectors.
+Caution: Neighbors defined by contiguity can leave some areas without any neighbors. Islands for example. By default the `spdep::nb2listw()` function assumes each area has at least one neighbor. If this is not the case you need to specify how areas without neighbors are handled using the argument `zero.policy = TRUE`. This permits the weights list to be formed with zero-length weight vectors.
 
 For example, consider the districts in the country of Scotland.
 
@@ -175,6 +188,7 @@ download.file("http://myweb.fsu.edu/jelsner/temp/data/scotlip.zip",
 unzip(here::here("data", "scotlip.zip"),
       exdir = here::here("data"))
 }
+
 SL.sf <- sf::st_read(dsn = here::here("data", "scotlip"), 
                      layer = "scotlip")
 plot(SL.sf$geometry)
@@ -182,16 +196,16 @@ plot(SL.sf$geometry)
 
 Three of the districts are islands. These districts have no bordering districts.
 
-Create a list of neighbors.
+Create a list of neighbors based on contiguity (default).
 
 ```{r}
 ( nbs2 <- SL.sf |>
     spdep::poly2nb() )
 ```
 
-Three regions with no links.
+Three regions have no neighbors and thus no links.
 
-Use the `spdep::nb2listw()` function with the argument `zero.policy = TRUE`. Otherwise we get an error saying the empty neighbor sets are found.
+Use the `spdep::nb2listw()` function with the argument `zero.policy = TRUE`. Otherwise you get an error saying the empty neighbor sets are found.
 
 ```{r}
 wts2 <- nbs2 |>
@@ -199,13 +213,23 @@ wts2 <- nbs2 |>
 head(wts2$weights)
 ```
 
+The sixth region has no neighbors and so the 6th element of the list is set to `NULL`.
+
+Once you have a weights matrix defining neighbors and the associated strength of the neighbor relationship, you are ready to compute various statistics of spatial autocorrelation.
+
 ## Computing autocorrelation {.unnumbered}
 
-A common autocorrelation statistic is Moran's I. Moran's I follows the basic form of autocorrelation indexes where the similarity between regions $i$ and $j$ is proportional to the product of the deviations from the mean $$
-\hbox{sim}_{ij} \propto (Y_i - \bar Y) (Y_j - \bar Y)
-$$ where $i$ indexes the region and $j$ indexes the neighbors of $i$. The value of $\hbox{sim}_{ij}$ is large when the $Y$ values in the product are on the same side of their respective means (both above or below) and small when they are on opposite sides of their respective means (one above and one below or vice versa).
+A commonly used spatial autocorrelation statistic is Moran's I. Moran's I follows the basic form of autocorrelation indexes where the similarity between regions $i$ and $j$ is proportional to the product of the deviations from the mean
 
-The formula for I is $$
+$$
+\hbox{sim}_{ij} \propto (Y_i - \bar Y) (Y_j - \bar Y)
+$$
+
+where $i$ indexes the region and $j$ indexes the neighbors of $i$. The value of $\hbox{sim}_{ij}$ is large when the $Y$ values in the product are on the same side of their respective means (both above or below) and small when they are on opposite sides of their respective means (one above and one below or vice versa).
+
+The formula for I is
+
+$$
 \hbox{I} = \frac{N} {W} \frac {\sum_{i,j} w_{ij}(Y_i-\bar Y) (Y_j-\bar Y)} {\sum_{i} (Y_i-\bar Y)^2}
 $$ where $N$ is the number regions, $w_{ij}$ is the matrix of weights, and $W$ is the sum over all weights.
 
@@ -221,7 +245,7 @@ Y <- ppp(runif(200, 0, 1),
 plot(quadratcount(Y), main = "")
 ```
 
-The formula for results in one value of I representing the magnitude of the autocorrelation (amount of clustering) over the entire area.
+The formula for Moran's I results in one value representing the magnitude of the autocorrelation (amount of clustering) over the entire area (global Moran's I).
 
 First consider a single cell in the area ($N$ = 1). Start with the middle cell (row 3, column 3). Let $i$ = 3 in the above formula and let $j$ index the cells touching the center cell in reading order starting with cell (2, 2), then cell (2, 3), etc.
 
@@ -245,7 +269,7 @@ Inum_i/Iden_i
 
 The I value of -3.5 indicates that the center cell, which has a value below the average over all 25 cells, is mostly surrounded by cells having values above the average.
 
-Repeat this calculation for every cell and then take the sum.
+Now repeat this calculation for every cell and then take the sum over all the 25 I values.
 
 This is what the function `spdep::moran()` from the {spdep} package does. The first argument is the vector containing the values for which you are interested in determining the magnitude of the spatial autocorrelation and the second argument is the `listw` object.
 
@@ -254,54 +278,54 @@ Further, you need to specify the number of regions and the sum of the weights `S
 Returning to the Columbus crime data here let `m` be the number of census tracts and `s` be the sum of the weights. You then apply the `spdep::moran()` function on the variable `CRIME`.
 
 ```{r}
-m <- length(CC.sf$CRIME)
-s <- spdep::Szero(wts)
+( m <- CC.sf$CRIME |>
+  length() )
+( s <- wts |>
+  spdep::Szero() )
 
-spdep::moran(CC.sf$CRIME, 
-             listw = wts, 
-             n = m, 
-             S0 = s)
+CC.sf$CRIME |>
+  spdep::moran(listw = wts, 
+               n = m, 
+               S0 = s)
 ```
 
-The function returns the Moran's I statistic and the kurtosis (K) of the distribution of crime values. Moran's I ranges from -1 to +1.
+The function returns the value of Moran's I and the kurtosis (K) of the distribution of crime values. Moran's I ranges from -1 to +1.
 
 The value of .5 for the crime rates indicates a high level of spatial autocorrelation. This is expected based on the clustering of crime in the central city.
 
-Positive values of Moran's I indicate clustering and negative values indicate inhibition. Inhibition is a process leading to nearby values having attribute values that are opposite in magnitude as those at each location (like a checkerboard pattern)
+Positive values of Moran's I indicate clustering and negative values indicate inhibition. Inhibition is a process leading to nearby values having attribute values that are opposite in magnitude to those at each location (like a checkerboard pattern)
 
 Kurtosis is a statistic that indicates how peaked the distribution of the attribute values is. A normal distribution has a kurtosis of 3. If the kurtosis is too large (or small) relative to a normal distribution then any statistical inference we make with Moran's I will be suspect.
 
-[Wikipedia Moran's I](https://en.wikipedia.org/wiki/Moran%27s_I)
+Read more about Moran's I here [Wikipedia Moran's I](https://en.wikipedia.org/wiki/Moran%27s_I)
 
-Another statistic that indicates the amount of spatial autocorrelation is Geary's C. The equation is 
+Another statistic that indicates the amount of spatial autocorrelation is Geary's C. The equation is
+
 $$
 \hbox{C} = \frac{(N-1) \sum_{i,j} w_{ij} (Y_i-Y_j)^2}{2 W \sum_{i}(Y_i-\bar Y)^2} 
-$$ 
-where $W$ is the sum over all weights ($w_{ij}$) and $N$ is the number of areas.
+$$ where $W$ is the sum over all weights ($w_{ij}$) and $N$ is the number of areas.
 
-The syntax of the `spdep::geary()` function is similar that of `spdep::moran()` except you also specify `n1` to be one minus the number of areas.
+The syntax of the `spdep::geary()` function is similar that of `spdep::moran()` except you also need to specify `n1` as one minus the number of areas.
 
 ```{r}
-spdep::geary(CC.sf$CRIME, 
-             listw = wts,
-             n = m, 
-             S0 = s, 
-             n1 = m - 1)
+CC.sf$CRIME |>
+  spdep::geary(listw = wts,
+               n = m, 
+               S0 = s, 
+               n1 = m - 1)
 ```
 
 Values for Geary's C range from 0 to 2 with 1 indicating no autocorrelation. Values less than 1 indicate positive autocorrelation. Both I and C are global measures of autocorrelation, but C is more sensitive to local variations in autocorrelation.
 
 Rule of thumb: If the interpretation of Geary's C is much different than the interpretation of Moran's I then consider computing local measures of autocorrelation.
 
-[Wikipedia Geary's C](https://en.wikipedia.org/wiki/Geary%27s_C)
+More information on Geary's C statistic here [Wikipedia Geary's C](https://en.wikipedia.org/wiki/Geary%27s_C)
 
 ## Spatial lag and its relation to autocorrelation {.unnumbered}
 
-The interpretation of Moran's I is simplified by the fact that the value of Moran's I is the slope coefficient from a regression of the weighted average of the neighborhood values onto the observed values.
+Understanding Moran's I is simplified by noted that it is the slope coefficient resulting from a regression of the average neighborhood values onto the observed values. An average of neighborhood values is called the spatial lag variable.
 
-The weighted average of neighborhood values is called the spatial lag.
-
-Let `crime` be the set of crime values in each region as a data vector. You create a spatial lag variable using the `spdep::lag.listw()` function. The first argument is the `listw` object and the second is the vector of crime values.
+To see this, let `crime` be the set of crime values (from the Columbus data) in each region as a data vector. You create a spatial lag variable using the `spdep::lag.listw()` function. The first argument is the `listw` object and the second is the vector of crime values.
 
 ```{r}
 crime <- CC.sf$CRIME
@@ -311,13 +335,15 @@ Wcrime <- spdep::lag.listw(wts,
 
 For each value in the vector `crime` there is a corresponding value in the vector `Wcrime` representing the average crime over the neighboring regions.
 
-Recall tract 1 had tract 2 and 3 as its only neighbors. So the following should return a `TRUE`.
+To verify, recall tract 1 had tract 2 and 3 as its two neighbors. So the following code should return a `TRUE`.
 
 ```{r}
-Wcrime[1] == (crime[2] + crime[3])/2
+(crime[2] + crime[3])/2 == Wcrime[1] 
 ```
 
-A scatter plot of the neighborhood average crime rates versus the individual polygon crime rates in each shows there is a relationship.
+The lagged value of crime in tract 1 is equal to the average of the crime in the two neighboring tracts.
+
+Make a scatter plot showing individual observed crime rates on the horizontal axis and the corresponding neighborhood average crime rates on the vertical axis.
 
 ```{r}
 data.frame(crime, Wcrime) |>
@@ -331,11 +357,11 @@ ggplot(mapping = aes(x = crime, y = Wcrime)) +
   theme_minimal()
 ```
 
-The vertical axis contains the neighborhood average crime rate. The range of neighborhood averages is smaller than the range of individual polygon crime rates.
+The range of neighborhood average crime rates is smaller than the range of observed crime rates since the mean of a set of observations will always have less variance (dispersion) than the observations.
 
-Tracts with low values of crime tend to be surrounded by tracts with low values of crime on average and tracts with high values of crime tend be surrounded by tracts with high values of crime. The slope is upward (positive).
+The scatter plot shows that tracts with low values of crime tend to be surrounded by tracts with low values of crime on average and tracts with high values of crime tend be surrounded by tracts with high values of crime. The slope on the regression line is upward (positive).
 
-The magnitude of the slope is the Moran's I value. To check this use the `lm()` function from the base set of packages. The function is used to fit linear regression models.
+The magnitude of the slope is Moran's I. To check this use the `lm()` function from the base set of packages. The function is used to fit linear regression models.
 
 ```{r}
 lm(Wcrime ~ crime)
@@ -380,7 +406,7 @@ plot(nbs,
      sf::st_centroid(st_geometry(SIDS.sf)))
 ```
 
-Next compute Moran's I on the SIDS rates over the period 1974--1979.
+Next compute Moran's I on the SIDS rates using the variable `SIDR79` (1974-1979).
 
 ```{r}
 m <- length(SIDS.sf$SIDR79)
@@ -430,7 +456,7 @@ A scatter plot of the neighborhood average SIDS rate versus the actual SIDS rate
 
 ```{r}
 data.frame(sids, Wsids) |>
-ggplot(aes(x = sids, y = Wsids)) + 
+ggplot(mapping = aes(x = sids, y = Wsids)) + 
   geom_point() + 
   geom_smooth(method = lm) +
   scale_x_continuous(limits = c(0, 7)) +
@@ -439,8 +465,147 @@ ggplot(aes(x = sids, y = Wsids)) +
   theme_minimal()
 ```
 
-The regression line slopes upward indicating positive spatial autocorrelation. The value of the slope is I. To check this type
+The regression line slopes upward indicating positive spatial autocorrelation. The value of the slope is Moran's I. To check this type
 
 ```{r}
 lm(Wsids ~ sids)
 ```
+
+## Other neighbor definitions {.unnumbered}
+
+Other neighbor definitions are possible and the choice will influence the value of any statistic of spatial autocorrelation.
+
+Let's consider the historical demographic data in Mississippi counties. Import the data as a simple feature data frame and assign the geometry a geographic CRS.
+
+```{r}
+if(!"police" %in% list.files(here::here("data"))) {
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/police.zip",
+              destfile = here::here("data", "police.zip"))
+unzip(here::here("data", "police.zip"),
+      exdir = here::here("data"))
+}
+
+( PE.sf <- sf::st_read(dsn = here::here("data", "police"), 
+                 layer = "police") |>
+  sf::st_set_crs(4326) )
+```
+
+Variables in the simple feature data frame include police expenditures (`POLICE`), crime (`CRIME`), income (`INC`), unemployment (`UNEMP`) and other socio-economic characteristics across Mississippi at the county level. Police expenditures are per person 1982 (dollars per person). Personal income is per person in 1982 (dollars per person). Crime is the number of serious crimes per 100,000 person in 1981. Unemployment is percent of people looking for work in 1980.
+
+The geometries are polygons that define the county borders.
+
+```{r}
+library(ggplot2)
+
+ggplot(data = PE.sf) +
+  geom_sf()
+```
+
+To estimate autocorrelation for any variable in the data frame, you need to first assign the neighbors and weights for each region.
+
+The default options in the `spdep::poly2nb()` and `spdep::nb2listw()` result in neighbors defined by 'queen' contiguity (polygon intersections can include a single point) and weights defined by row standardization (the sum of the weights equals the number of regions).
+
+```{r}
+nbs <- spdep::poly2nb(PE.sf)
+wts <- spdep::nb2listw(nbs)
+```
+
+Alternatively you can specify the number of neighbors and then assign neighbors based on proximity (closeness). Here you first extract the coordinates of the polygon centroids as a matrix.
+
+```{r}
+coords <- PE.sf |>
+  sf::st_centroid() |>
+  sf::st_coordinates()
+head(coords)
+```
+
+Then use the `spdep::knearneigh()` function on the coordinate matrix and specify the number of neighbors with the `k =` argument. Here you set it to six. That is, allow each county to have 6 closest neighbors.
+
+Since the CRS is geographic you need to include the `longlat = TRUE` argument so distances are calculated using great circles.
+
+```{r}
+knn <- spdep::knearneigh(coords, 
+                         k = 6, 
+                         longlat = TRUE)
+names(knn)
+head(knn$nn)
+```
+
+The output is a list of five elements with the first element a matrix with the row dimension the number of counties and the column dimension the number of neighbors.
+
+Note that by using distance to define neighbors the matrix is not symmetric. For example, county 3 is a neighbor of county 2, but county 2 is not a neighbor of county 3.
+
+Certain spatial regression models require the neighbor matrix to be symmetric. That is if region X is a neighbor of region Y then region Y must be a neighbor of region X.
+
+You turn this matrix into a neighbor object (class `nb`) with the `spdep::knn2nb()` function.
+
+```{r}
+nbs2 <- spdep::knn2nb(knn)
+summary(nbs2)
+```
+
+If you include the argument `sym = TRUE` in the `knn2nb()` function then it forces the neighbor matrix to be symmetric.
+
+```{r}
+nbs3 <- spdep::knn2nb(knn,
+                      sym = TRUE)
+summary(nbs3)
+```
+
+The result shows that six is now the minimum number of nearest neighbors with some counties having has many as 10 neighbors to guarantee symmetry.
+
+Compare the default adjacency neighborhoods with the nearest-neighbor neighborhoods.
+
+```{r}
+plot(sf::st_geometry(PE.sf), border = "grey")
+plot(nbs, coords, add = TRUE)
+
+plot(sf::st_geometry(PE.sf), border = "grey")
+plot(nbs2, coords, add = TRUE)
+```
+
+A difference between the two neighborhoods is the number of links on counties along the borders. The nearest-neighbor defined neighborhoods have more links. Note: when neighbors are defined by proximity counties can share a border but they still may not be neighbors.
+
+Your choice of neighbors is based on domain specific knowledge. If the process you are interested in can be described by a dispersal mechanism then proximity definition might be the right choice for defining neighbors. If the process can be described by a border diffusion mechanism then contiguity might be the right choice.
+
+Create weight matrices for these alternative neighborhoods using the same `spdep::nb2listw()` function.
+
+```{r}
+wts2 <- spdep::nb2listw(nbs2)
+wts3 <- spdep::nb2listw(nbs3)
+```
+
+You compute Moran's I for the percentage of white people variable (`WHITE`) with the `moran()` function separately for the three different weight matrices.
+
+```{r}
+spdep::moran(PE.sf$WHITE,
+             listw = wts,
+             n = length(nbs),
+             S0 = spdep::Szero(wts))
+
+spdep::moran(PE.sf$WHITE,
+             listw = wts2,
+             n = length(nbs2),
+             S0 = spdep::Szero(wts2))
+
+spdep::moran(PE.sf$WHITE,
+             listw = wts3,
+             n = length(nbs3),
+             S0 = spdep::Szero(wts3))
+```
+
+Values of Moran's I are constrained between -1 and +1. In this case the neighborhood definition has little or no impact on inferences made about spatial autocorrelation. The kurtosis is between 2 and 4 consistent with a set of values from a normal distribution.
+
+In a similar way you compute the Geary's C statistic.
+
+```{r}
+spdep::geary(PE.sf$WHITE, 
+             listw = wts,
+             n = length(nbs), 
+             S0 = spdep::Szero(wts), 
+             n1 = length(nbs) - 1)
+```
+
+Values of Geary's C range between 0 and 2 with values less than one indicating positive autocorrelation.
+
+If the values of Moran's I and Geary's C result in different interpretations about the amount of clustering then it is a good idea to examine *local* variations in autocorrelation.
