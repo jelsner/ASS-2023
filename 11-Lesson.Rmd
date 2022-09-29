@@ -111,7 +111,9 @@ ggplot() +
 
 Here the map shows five regions but the regions are not contiguous.
 
-More information: https://www.tandfonline.com/doi/abs/10.1080/13658810600665111
+More information: <https://www.tandfonline.com/doi/abs/10.1080/13658810600665111>
+
+Also the {motif} package implements and extends ideas of the pattern-based spatial analysis. It describes spatial patterns of categorical raster data for any defined regular and irregular areas. Patterns are represented quantitatively using built-in signatures based on co-occurrence matrices but also allows for any user-defined functions. It enables spatial analysis such as search, change detection, and clustering to be performed on spatial patterns. <https://jakubnowosad.com/motif/>
 
 ## Estimating spatial autocorrelation in model residuals {.unnumbered}
 
