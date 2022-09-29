@@ -1,4 +1,4 @@
-# Tuesday October 4, 2022 {.unnumbered}
+# Tuesday October 11, 2022 {.unnumbered}
 
 **"The most important single aspect of software development is to be clear about what you are trying to build."** – Bjarne Stroustrup
 
