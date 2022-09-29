@@ -10,6 +10,10 @@ Here's the link: <https://www.zintellect.com/Opportunity/Details/USDA-ARS-2022-0
 
 My answers to Lab 2 are on Canvas.
 
+Making maps with {rdeck} <https://www.mrworthington.com/articles/rstats/mapping-in-r/>
+Excellent resource on data visualization <https://clauswilke.com/dataviz/>
+
+
 Today
 
 -   Defining spatial neighborhoods and spatial weights
