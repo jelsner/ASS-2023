@@ -10,9 +10,7 @@ Here's the link: <https://www.zintellect.com/Opportunity/Details/USDA-ARS-2022-0
 
 My answers to Lab 2 are on Canvas.
 
-Making maps with {rdeck} <https://www.mrworthington.com/articles/rstats/mapping-in-r/>
-Excellent resource on data visualization <https://clauswilke.com/dataviz/>
-
+Making maps with {rdeck} <https://www.mrworthington.com/articles/rstats/mapping-in-r/> Excellent resource on data visualization <https://clauswilke.com/dataviz/>
 
 Today
 
@@ -20,6 +18,8 @@ Today
 -   Computing spatial autocorrelation
 -   Spatial lag and its relation to autocorrelation
 -   Other neighbor definitions
+
+This lesson marks a departure. You will continue to learn how to code in R, but you will do it in the context of statistical thinking, analysis, and modeling. I find statistics to be a natural extension to how I think about the world, but I realize this comes with experience and may not be natural to you.
 
 ## Defining spatial neighborhoods and spatial weights {.unnumbered}
 
@@ -43,9 +43,11 @@ High similarities with high weight (similar values close together) yield high va
 
 Let $\hbox{sim}_{ij}$ denote the similarity between values $Y_i$ and $Y_j$, and let $w_{ij}$ denote a set of weights describing the 'distance' between regions $i$ and $j$, for $i$, $j$ = 1, ..., $N$.
 
-A general spatial autocorrelation index (SAI) is given by $$
+A general spatial autocorrelation index (SAI) is given by 
+$$
 \hbox{SAI} = \frac{\sum_{i,j=1}^N w_{ij}\hbox{sim}_{ij}}{\sum_{i,j=1}^N w_{ij}}
-$$ which represents the weighted similarity between regions. The set of weights ($w_{ij}$) is called a spatial weights matrix. The spatial weights matrix defines the neighbors for each region and defines the strength of each association.
+$$ 
+which represents the weighted similarity between regions. The set of weights ($w_{ij}$) is called a spatial weights matrix. The spatial weights matrix defines the neighbors for each region and defines the strength of each association.
 
 For cells in a raster under the rook-contiguity criterion, $w_{ij}$ = 1 if cell $i$ and $j$ share a boundary, and 0 if they don't share a boundary. In this case $w_{ij}$ = $w_{ji}$. Also, a cell is not a neighbor of itself so $w_{ii}$ = 0.
 
@@ -108,7 +110,7 @@ The output tells you there are 49 tracts (polygons). Each tract is bordered by a
 
 Note that this only works for spatial data frames. It will not work for a regular data frame where the spatial coordinates are defined as variables.
 
-A graph of the tracts as nodes and neighbors as links is obtained with the `plot()` method. The arguments include the neighbor list object (here you assigned it the name `nbs`) and the location of the polygon centers, which are extracted from the simple feature data frame using the sf::`st_centroid()`.
+A graph of the tracts as nodes and neighbors as links is obtained with the `plot()` method. The arguments include the neighbor list object (here you assigned it the name `nbs`) and the location of the polygon centers, which are extracted from the simple feature data frame using the `sf::st_centroid()`.
 
 ```{r}
 plot(CC.sf$geometry)
@@ -237,7 +239,8 @@ The formula for I is
 
 $$
 \hbox{I} = \frac{N} {W} \frac {\sum_{i,j} w_{ij}(Y_i-\bar Y) (Y_j-\bar Y)} {\sum_{i} (Y_i-\bar Y)^2}
-$$ where $N$ is the number regions, $w_{ij}$ is the matrix of weights, and $W$ is the sum over all weights.
+$$ 
+where $N$ is the number regions, $w_{ij}$ is the matrix of weights, and $W$ is the sum over all weights.
 
 Consider the following grid of cells containing attribute values.
 
@@ -309,7 +312,8 @@ Another statistic that indicates the amount of spatial autocorrelation is Geary'
 
 $$
 \hbox{C} = \frac{(N-1) \sum_{i,j} w_{ij} (Y_i-Y_j)^2}{2 W \sum_{i}(Y_i-\bar Y)^2} 
-$$ where $W$ is the sum over all weights ($w_{ij}$) and $N$ is the number of areas.
+$$ 
+where $W$ is the sum over all weights ($w_{ij}$) and $N$ is the number of areas.
 
 The syntax of the `spdep::geary()` function is similar that of `spdep::moran()` except you also need to specify `n1` as one minus the number of areas.
 
