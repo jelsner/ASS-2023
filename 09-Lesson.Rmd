@@ -363,7 +363,7 @@ ggplot(mapping = aes(x = crime, y = Wcrime)) +
   scale_x_continuous(limits = c(0, 70)) +
   scale_y_continuous(limits = c(0, 70)) +
   xlab("Crime") + 
-  ylab("Average Crime in the Neighborhood") +
+  ylab("Average crime in the neighborhood") +
   theme_minimal()
 ```
 
