@@ -413,7 +413,7 @@ nbs <- spdep::poly2nb(SIDS.sf)
 wts <- spdep::nb2listw(nbs)
 
 plot(nbs, 
-     sf::st_centroid(st_geometry(SIDS.sf)))
+     sf::st_centroid(sf::st_geometry(SIDS.sf)))
 ```
 
 Next compute Moran's I on the SIDS rates using the variable `SIDR79` (1974-1979).
