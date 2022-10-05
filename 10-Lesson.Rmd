@@ -2,7 +2,7 @@
 
 **"Be curious. Read widely. Try new things. I think a lot of what people call intelligence boils down to curiosity."** - Aaron Swartz
 
-Lab 3 next Thursday.
+Lab 3 will be next Thursday.
 
 Today
 
@@ -13,28 +13,21 @@ Today
 
 ## Assessing the statistical significance of autocorrelation {-}
 
-Attribute values randomly placed across a spatial domain will result in some autocorrelation. Statistical tests provide a way to guard against being fooled by this randomness. For example, claiming a 'hot spot' when none exists. In statistical parlance, is the value of Moran's I significant with respect to the null hypothesis of no autocorrelation? 
+Moran's I and Geary's C measure the amount of autocorrelation in spatial data. But it is important to understand that attribute values placed arbitrarily across a spatial domain will result in some amount of autocorrelation just by chance. Statistical tests provide a way to guard against being fooled by this chance autocorrelation. So you ask, is the value of Moran's I significant with respect to the null hypothesis of no autocorrelation?
 
-One way to answer this question is to draw an uncertainty band on the regression line in a Moran scatter plot. If a horizontal line can be placed entirely within the band then the slope (Moran's I) is not significant against the null hypothesis of no autocorrelation.
+One way to answer this question is to draw an uncertainty band on the regression line in a Moran scatter plot. If a horizontal line can be placed entirely within the band then the slope, which is equivalent to Moran's I, is not significant against this null hypothesis of no autocorrelation.
 
 Consider again the historical demographic data in Mississippi counties. Import the data as a simple feature data frame and assign the geometry a geographic CRS.
 
 ```{r}
-if(!"police" %in% list.files(here::here("data"))) {
-download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/police.zip",
-              destfile = here::here("data", "police.zip"))
-unzip(here::here("data", "police.zip"),
-      exdir = here::here("data"))
-}
-
 ( PE.sf <- sf::st_read(dsn = here::here("data", "police"), 
-                 layer = "police") |>
+                       layer = "police") |>
   sf::st_set_crs(4326) )
 ```
 
-Variables in the simple feature data frame include police expenditures (`POLICE`), crime (`CRIME`), income (`INC`), unemployment (`UNEMP`) and other socio-economic characteristics across Mississippi at the county level. Police expenditures are per person 1982 (dollars per person). Personal income is per person in 1982 (dollars per person). Crime is the number of serious crimes per 100,000 person in 1981. Unemployment is percent of people looking for work in 1980. The geometries are polygons that define the county borders.
+Variables include police expenditures (`POLICE`), crime (`CRIME`), income (`INC`), unemployment (`UNEMP`) and other socio-economic characteristics across Mississippi at the county level. Police expenditures are per person 1982 (dollars per person). Personal income is per person in 1982 (dollars per person). Crime is the number of serious crimes per 100,000 person in 1981. Unemployment is percent of people looking for work in 1980. The geometries are polygons that define the county borders.
 
-First assign the neighbors and weights for each region.
+First assign neighbors and attach weights to each county.
 
 ```{r}
 nbs <- PE.sf |>
@@ -44,7 +37,7 @@ wts <- nbs |>
   spdep::nb2listw()
 ```
 
-Next compute the spatial lagged variable for the unemployment variable (`UNEMP`).
+Next compute a spatially-lagged unemployment variable.
 
 ```{r}
 unemp <- PE.sf$UNEMP
@@ -55,29 +48,33 @@ Wunemp <- spdep::lag.listw(wts,
 Finally make a Moran's scatter plot.
 
 ```{r}
+library(ggplot2)
+
 data.frame(unemp, Wunemp) |>
 ggplot(mapping = aes(x = unemp, y = Wunemp)) + 
   geom_point() + 
   geom_smooth(method = lm) +
   xlab("Unemployment") + 
-  ylab("Average unemployment in the Neighborhood") +
+  ylab("Average neighborhood unemployment") +
   theme_minimal()
 ```
 
-Since a horizontal line can not be placed entirely within the gray band then the slope (Moran's I) is not significant against the null hypothesis of no autocorrelation.
+Since a horizontal line can not be placed entirely within the gray band, the slope (Moran's I) is significant against the null hypothesis of no autocorrelation.
 
-More formally the question of significant spatial autocorrelation is answered by comparing the standard deviate ($z$ value) of the I statistic to the appropriate value from a standard normal distribution. This is done using the `spdep::moran.test()` function, where the $z$ value is the difference between I and the expected value of I divided by the square root of the variance of I.
+More formally the question of whether Moran's I is statistically significant is answered by comparing the standard deviate ($z$ value) of Moran's I to the appropriate value from a standard normal distribution. This is done using the `spdep::moran.test()` function, where the $z$ value is the difference between I and the expected value of I divided by the square root of the variance of I.
 
 The function takes a variable name or numeric vector and a spatial weights list object in that order. The argument `randomisation = FALSE` means the variance of I is computed under the assumption of normally distributed unemployment (`UNEMP`) rates.
+
 ```{r}
 ( mt <- spdep::moran.test(PE.sf$UNEMP, 
                           listw = wts,
                           randomisation = FALSE) )
 ```
 
-Moran's I is .218 with a variance of .0045. The $z$ value for I is 3.41 giving a $p$-value of .0003 under the null hypothesis of no autocorrelation. Thus you reject the null hypothesis and conclude there is weak but significant autocorrelation in unemployment rates across Mississippi at the county level.
+Moran's I is .218 with a variance of .0045. The $z$ value for I is 3.41 giving a $p$-value of .0003 under the null hypothesis of no autocorrelation. Thus you reject the null hypothesis and conclude there is weak but statistically significant autocorrelation in unemployment rates across Mississippi at the county level.
 
 Outputs from the `spdep::moran.test()` function are in the form of a list.
+
 ```{r}
 str(mt)
 ```
@@ -85,11 +82,12 @@ str(mt)
 The list element called `estimate` is a vector of length three containing Moran's I, the expected value of Moran's I under the assumption of no autocorrelation, and the variance of Moran's I. 
 
 The $z$ value is the difference between I and it's expected value divided by the square root of the variance.
+
 ```{r}
 ( mt$estimate[1] - mt$estimate[2] ) / sqrt(mt$estimate[3])
 ```
 
-The $p$-value is the area under a standard normal distribution curve to the right (`lower.tail = FALSE`) of 3.4102 (`mt$statistic`).
+The $p$-value is the area under a standard normal distribution curve to the right (`lower.tail = FALSE`) of 3.4102 (`mt$statistic`), the red vertical line in the plot below.
 
 ```{r}
 pnorm(mt$statistic, 
@@ -103,15 +101,15 @@ So about .03% of the area lies to the right of the red line.
 
 The $p$-value summarizes the evidence in support of the null hypothesis. The smaller the $p$-value, the less evidence there is in support of the null hypothesis. 
 
-In this case it is the probability that the county unemployment rates could have been arranged at random across the state if the null hypothesis were true. The small $p$-value tells you that the spatial arrangement of the data is unusual with respect to the null hypothesis.
+The small $p$-value tells you that the spatial arrangement of the data is unusual with respect to the null hypothesis.
 
-The interpretation of the $p$-value is stated as evidence AGAINST the null hypothesis. This is because interest lies in the null hypothesis being untenable. A $p$-value less than .01 is said to provide convincing evidence against the null, a $p$-value between .01 and .05 is said to provide moderate evidence against the null, and a $p$-value between .05 and .15 is said to be suggestive, but inconclusive in providing evidence against the null. A $p$-value greater than .15 is said to provide no evidence against the null. 
+The interpretation of the $p$-value is stated as evidence AGAINST the null hypothesis. This is because interest lies in the null hypothesis being untenable. A $p$-value less than .01 is said to provide _convincing_ evidence against the null, a $p$-value between .01 and .05 is said to provide _moderate_ evidence against the null, and a $p$-value between .05 and .15 is said to provide _suggestive, but inconclusive_ evidence against the null. A $p$-value greater than .15 is said to provide _no_ evidence against the null. 
 
-Note you do not interpret "no evidence" as "no effect (no autocorrelation)".
+Note you do not interpret _no_ evidence as _no_ autocorrelation.
 
 Under the assumption of normal distributed and uncorrelated data, the expected value for Moran's I is -1/(n-1) where n is the number of regions. 
 
-A check on the distribution of unemployment rates indicates that normality is somewhat suspect. A good way to check the normality assumption is to use the `sm.density()` function from the {sm} package.
+A check on the distribution of unemployment rates indicates that normality is somewhat suspect. A good way to check the normality assumption is to use the `sm::sm.density()` function from the {sm} package.
 ```{r}
 if(!require(sm)) install.packages("sm", repos = "http://cran.us.r-project.org")
 
@@ -120,7 +118,7 @@ sm::sm.density(PE.sf$UNEMP,
                xlab = "Unemployment Rates")
 ```
 
-The unemployment rates are less "peaked" (lower kurtosis) than a normal distribution. In this case it is better to use the default `randomisation = TRUE` argument.
+The unemployment rates are less "peaked" (lower kurtosis) than a normal distribution. In this case it is better to use the default `randomisation = TRUE` argument in the `spdep::moran.test()` function.
 
 Further, the assumptions underlying Moran's test are sensitive to the form of the graph of neighbor relationships and other factors so results should be checked against a test that involves permutations.
 
@@ -128,9 +126,10 @@ A random sampling approach to inference is made with the `spdep::moran.mc()` fun
 
 The name of the data vector and the weights list object (`listw`) are required as is the number of permutations (`nsim`). Each permutation is a random rearrangement of the unemployment rates across the counties. This removes the spatial autocorrelation but keeps the non-spatial distribution of the unemployment rates. The neighbor topology and weights remain the same.
 
-For each permutation (random shuffle of the data values), I is computed and saved. The $p$-value is obtained as the ratio of the number of permuted I values greater or exceeding the observed I over the number of permutation plus one. In the case where there are 5 permuted I values greater or equal to the observed value based on 99 simulations, the $p$-value is 5/(99 + 1) = .05.
+For each permutation (random shuffle of the data values), I is computed and saved. The $p$-value is obtained as the ratio of the number of permuted I values equal to or exceeding the observed I over the number of permutation plus one. In the case where there are 5 permuted I values greater or equal to the observed value based on 99 simulations, the $p$-value is 5/(99 + 1) = .05.
 
 For example, if you want inference on I using 9999 permutations type
+
 ```{r}
 set.seed(40453)
 
@@ -150,6 +149,7 @@ tail(mP$res)
 ```
 
 The last value in the vector is I computed using the data in the correct counties. The $p$-value as evidence in support of the null hypothesis that I is zero is given as
+
 ```{r}
 sum(mP$res > mP$res[10000])/9999
 ```
@@ -157,6 +157,7 @@ sum(mP$res > mP$res[10000])/9999
 A density graph displays the distribution of permuted I's.
 ```{r}
 df <- data.frame(mp = mP$res[-10000])
+
 ggplot(data = df,
        mapping = aes(mp)) + 
   geom_density() + 
@@ -168,25 +169,28 @@ ggplot(data = df,
 
 The density curve is centered just to the left of zero consistent with the theoretical expectation (mean).
 
-What to do with the knowledge that the unemployment rates have significant autocorrelation? By itself, not much, but it can provide notice that something might be going on in certain regions (hot spot analysis).
+What do you do with the knowledge that the unemployment rates have significant autocorrelation? By itself, not much, but it can provide notice that something might be going on in certain regions (hot spot analysis).
 
-The knowledge is useful after other factors are considered. In the language of statistics, knowledge of significant autocorrelation in the model residuals can help you build a better model.
+The knowledge is more useful after other factors are considered. In the language of statistics, knowledge of significant autocorrelation in the model residuals can help you build a better model.
 
 ## Bivariate spatial autocorrelation {-}
 
 The idea of spatial autocorrelation can be extended to two variables. It is motivated by the fact that aspatial bi-variate association measures, like Pearson's correlation, do not recognize the spatial arrangement of the regions.
 
 Consider the correlation between police expenditure (`POLICE`) and the amount of crime (`CRIME`) in the police expenditure data set.
+
 ```{r}
 police <- PE.sf$POLICE
 crime <- PE.sf$CRIME
 
-cor.test(police, crime, method = "pearson")
+cor.test(police, crime, 
+         method = "pearson")
 ```
 
-You note a significant (direct) correlation ($p$-value < .01) exists between these two variables. 
+You note a significant (direct) correlation ($p$-value << .01) exists between these two variables. 
 
 But you also note some significant spatial autocorrelation in each of the variables separately.
+
 ```{r}
 spdep::moran.test(police, 
                   listw = wts)
@@ -201,22 +205,25 @@ L(x,y) = \frac{n}{\sum_{i=1}^{n}(\sum_{j=1}^{n}w_{ij})^2}
 $$
 
 The formula is implemented in the `spdep::lee()` function where the first two arguments are the variables of interest and you need to include the weights matrix and the number of regions. The output from this function is a list of two with the first being the value of Lee's statistic (`L`).
+
 ```{r}
 spdep::lee(crime, police, 
            listw = wts, 
            n = length(nbs))$L
 ```
 
-Values of L range between -1 and +1 with the value here of .13 indicating relatively weak bi-variate spatial autocorrelation between crime and police expenditures. Statistically you infer that crime in a county has some influence on police expenditure in that county and in the neighboring counties, but not much.
+Values of L range between -1 and +1 with the value here of .13 indicating relatively weak bi-variate spatial autocorrelation between crime and police expenditures. You interpret this to mean that crime in a county has some influence on police expenditure in that county AND some influence on police expenditure in the neighboring counties, but not much.
 
-The `crime` and `police` variables are not adequately described by a normal distribution.
+The `crime` and `police` variables can not be adequately described with a normal distribution.
+
 ```{r}
 par(mfrow = c(2, 1))
 sm::sm.density(crime, model = "normal")
 sm::sm.density(police, model = "normal")
 ```
 
-Thus you perform a non-parametric test on the bi-variate spatial autocorrelation with the `spdep::lee.mc()` function. The crime and police expenditure values are randomly permuted and values of `L` are computed for each permutation.
+Thus you perform a non-parametric test on the bi-variate spatial autocorrelation with the `spdep::lee.mc()` function. The crime and police expenditure values are randomly permuted and values of Lee's statistic (`L`) are computed for each permutation.
+
 ```{r}
 spdep::lee.mc(crime, police, 
               listw = wts, 
@@ -234,6 +241,7 @@ Earlier you saw the `raster::MoranLocal()` function from the {raster} package re
 Local I is a deconstruction of global I where geographic proximity is used in two ways. (1) to define and weight neighbors and (2) to determine the spatial scale over which I is computed.
 
 Using queen's contiguity you determine the neighborhood topology and the weights for the police expenditure data from Mississippi. Here you print them in the full matrix form with the `spdep::list2mat()` function.
+
 ```{r}
 round(spdep::listw2mat(wts)[1:5, 1:10], 2)
 ```
@@ -241,64 +249,73 @@ round(spdep::listw2mat(wts)[1:5, 1:10], 2)
 The matrix shows that the first county has three neighbors 2, 3, and 9 and each get a weight of 1/3. The third county has four neighbors 1, 4, 9 and 10 and each gets a weight of 1/4.
 
 Compute local Moran's I on the percentage of white people using the `spdep::localmoran()` function. Two arguments are needed (1) the attribute variable for which you want to compute local correlation and (2) the weights matrix as a list object.
+
 ```{r}
 Ii_stats <- spdep::localmoran(PE.sf$WHITE, 
                               listw = wts)
 str(Ii_stats)
 ```
 
-The local I is stored in the first column of a matrix where the rows are the counties. The other columns are the expected value for I, the variance of I, the $z$ value and the $p$-value. For example, the local I statistics from the first county are given by typing
+The local I values are stored in the first column of a matrix where the rows are the counties. The other columns are the expected values for I, the variances of I, the $z$ values and the $p$-values. For example, the local I statistics from the first six counties are given by typing
+
 ```{r}
 head(Ii_stats)
 ```
 
-Because these local values must average to the global value (when using row standardized weights), they can take on values outside the range between -1 and 1. A `summary()` method on the first column of the `Li`  object gives statistics from the non-spatial distribution of I's.
+Because the local I values must average to the global value (when using row standardized weights), they can take on values outside the range between -1 and 1. A `summary()` method on the first column of the `Li`  object gives statistics from the non-spatial distribution of I's.
 ```{r}
 summary(Ii_stats[, 1])
 ```
 
-You map the values by first attaching the matrix columns of interest to the simple feature data frame. Here you attach `Ii`, `Var`, and `Pi`.
+To make a map of the values, you start by attaching the matrix columns of interest to the simple feature data frame. Here you attach `Ii` (local Moran's), `Vi` (variance), and `Pi` ($p$-value).
+
 ```{r}
 PE.sf$Ii <- Ii_stats[, 1]
 PE.sf$Vi <- Ii_stats[, 3]
 PE.sf$Pi <- Ii_stats[, 5]
 ```
 
-Then using the {ggplot2} syntax.
+Then you use {ggplot2} together with the `geom_sf()` function to make a thematic map.
+
 ```{r}
 ( g1 <- ggplot(data = PE.sf) +
-  geom_sf(aes(fill = Ii)) +
+  geom_sf(mapping = aes(fill = Ii)) +
   scale_fill_gradient2(low = "green",
                        high = "blue") )
 ```
 
-You also map out the variances.
+You also map the variances.
+
 ```{r}
 ggplot(data = PE.sf) +
-  geom_sf(aes(fill = Vi)) +
+  geom_sf(mapping = aes(fill = Vi)) +
   scale_fill_gradient()
 ```
 
-Variances are larger for counties near the boundaries as the sample sizes are smaller.
+Variances are larger for counties near the boundaries because the sample sizes are smaller.
 
 Compare the map of local autocorrelation with a map of percent white. 
 ```{r}
 ( g2 <- ggplot(data = PE.sf) +
-  geom_sf(aes(fill = WHITE)) +
+  geom_sf(mapping = aes(fill = WHITE)) +
   scale_fill_gradient(low = "black",
                       high = "white") )
 ```
 
 Plot them together.
+
 ```{r}
 library(patchwork)
 
 g1 + g2
 ```
 
-Areas where percent white is high over the northeast are areas with the largest spatial correlation. Other areas of high spatial correlation include the Mississippi Valley and in the south. Note the county with the most negative spatial correlation is the county in the northwest with a fairly high percentage of whites neighbored by counties with much lower percentages of whites.
+Areas where percent white is high over the northeast are also areas with the largest spatial correlation. Other areas of high spatial correlation include the Mississippi Valley and in the south. Note the county with the most negative spatial correlation is the county in the northwest with a fairly high percentage of whites neighbored by counties with much lower percentages of whites.
 
 Local values of Lee's bi-variate spatial autocorrelation are available from the `spdep::lee()` function.
+
+Here you compute the local Lee statistic for each county, attach the values to the simple feature data frame, then make a thematic map with functions from the {tmap} package.
+
 ```{r}
 lee_stat <- spdep::lee(crime, police, 
                        listw = wts, 
@@ -318,7 +335,7 @@ Areas in dark green indicate where the correlation between crime and policing is
 
 Population and tornado reports
 
-Is the frequency of tornado reports correlated with the number of people in a region? Might this correlation extend to the number of people in neighboring region?
+Is the frequency of tornado reports correlated with the number of people in a region? Might this correlation extend to the number of people in neighboring regions?
 
 To answer these questions you quantify the non-spatial correlation and the bi-variate spatial autocorrelation between tornado occurrences and population. To keep this manageable you focus on one state (Iowa).
 
@@ -330,6 +347,7 @@ tidycensus::census_api_key("YOUR API KEY GOES HERE")
 ```
 
 The `get_decennial()` function grants access to the 1990, 2000, and 2010 decennial US Census data and the `get_acs()` function grants access to the 5-year American Community Survey data. For example, here is how you get county-level population for Iowa.
+
 ```{r}
 Counties.sf <- tidycensus::get_acs(geography = "county", 
                                    variables = "B02001_001E", 
@@ -337,14 +355,15 @@ Counties.sf <- tidycensus::get_acs(geography = "county",
                                    geometry = TRUE)
 ```
 
-The code returns a simple feature data frame with county borders as multi-polygons. The variable `B02001_001E` is the 2015-2019 population estimate in each county within the state.
+The code returns a simple feature data frame with county borders as multi-polygons. The variable `B02001_001E` is the 2016-2020 population estimate in each county within the state.
 
 Next get the tornado data and count the number of tracks by county. A single track can intersect more than one county.
+
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-aspath"), 
                        layer = "1950-2020-torn-aspath") |>
   sf::st_transform(crs = sf::st_crs(Counties.sf)) |>
-  dplyr::filter(yr >= 2015)
+  dplyr::filter(yr >= 2016)
 
 ( TorCounts.df <- Torn.sf |>
   sf::st_intersection(Counties.sf) |>
@@ -353,20 +372,22 @@ Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-aspath"),
   dplyr::summarize(nT = dplyr::n()) )
 ```
 
-Next join the counts to the simple feature data frame.
+Next join the counts to the simple feature data frame by the common column name `GEOID`.
+
 ```{r}
 Counties.sf <- Counties.sf |>
   dplyr::left_join(TorCounts.df,
                    by = "GEOID") |>
   dplyr::mutate(nT = tidyr::replace_na(nT, 0)) |>
   dplyr::mutate(Area = sf::st_area(Counties.sf),
-                rate = nT/Area/(2020 - 2015 + 1) * 10^10,
+                rate = nT/Area/(2020 - 2016 + 1) * 10^10,
                 lpop = log10(estimate))
 ```
 
-Note that some counties have no tornadoes and the `dplyr::left_join()` returns a value of `NA` for those. You use `dplyr::mutate()` with `tidyr::replace_na()` to turn those counts to a value of 0.
+Note that some counties had no tornadoes and the `dplyr::left_join()` returns a value of `NA` for those. You use `dplyr::mutate()` with `tidyr::replace_na()` to turn those counts to a value of 0.
 
 Make a two-panel map displaying the log of the population and the tornado rates.
+
 ```{r}
 map1 <- tmap::tm_shape(Counties.sf) +
   tmap::tm_borders(col = "gray70") +
@@ -386,6 +407,7 @@ tmap::tmap_arrange(map1, map2)
 ```
 
 There appears some relationship. The non-spatial correlation between the two variables is obtained with the `cor.test()` function.
+
 ```{r}
 lpop <- Counties.sf$lpop
 rate <- as.numeric(Counties.sf$rate)
@@ -394,6 +416,7 @@ cor.test(lpop, rate)
 ```
 
 The bi-variate spatial autocorrelation is assessed using the Lee statistic. A formal non-parametric test under the null hypothesis of no bi-variate spatial autocorrelation is done using a Monte Carlo simulation.
+
 ```{r}
 nbs <- spdep::poly2nb(Counties.sf)
 wts <- spdep::nb2listw(nbs)
@@ -407,6 +430,7 @@ spdep::lee.mc(lpop, rate, listw = wts, nsim = 9999)
 ```
 
 Finally you map out the local variation in the bi-variate spatial autocorrelation.
+
 ```{r}
 Counties.sf$localL <- lee_stat$localL
 
@@ -417,9 +441,12 @@ tmap::tm_shape(Counties.sf) +
   tmap::tm_layout(legend.outside = TRUE)
 ```
 
-What might cause this? Compare with Kansas.
+What might cause this? Cedar County (dark green) lies between the cities of Cedar Rapids (to the northwest), Iowa City (to the west) and the Quad Cities (to the east). Commuters from neighboring counties into cities like Cedar Rapids provide an ad hoc spotter network for all kinds of phenomenon including severe weather and tornadoes.
+
+Repeat this analysis for the state of Kansas and compare/contrast the results and interpretation.
 
 Also, compare local Lee with local Moran.
+
 ```{r}
 Ii_stats <- spdep::localmoran(rate, 
                               listw = wts)
@@ -432,20 +459,22 @@ tmap::tm_shape(Counties.sf) +
                 palette = "Purples") +
   tmap::tm_layout(legend.outside = "TRUE")
 ```
+The clustering of tornado occurrences coincides with the largest population corridor in the state.
 
 ## Constraining group membership based on spatial autocorrelation {.unnumbered}
 
-As a spatial data analyst you likely will face the situation in which there are many variables and you need to group them in a way that minimizes inter-group variation but maximizes between-group variation. If you know the number of groups a priori then a common grouping (or clustering) method is called K-means.
+As a spatial data analyst you likely will face the situation in which there are many variables and you need to group them in a way that minimizes inter-group variation but maximizes between-group variation. If you know the number of groups before hand then a common grouping (or clustering) method is called K-means.
 
-If your data is spatial you will want the additional constraint that the resulting groups be geographically linked. In fact there are many situations that require separating geographies into discrete but contiguous regions (regionalization) such as designing communities, planning areas, amenity zones, logistical units, or even for the purpose of setting up experiments with real world geographic constraints.
+If your data is spatial you may want the additional constraint that the resulting groups be geographically linked. There are many situations that require separating geographies into discrete but contiguous regions ("regionalization") such as designing communities, planning areas, amenity zones, logistical units, or for setting up experiments with real world geographic constraints.
 
-There are many situations where the optimal grouping using traditional cluster metrics is sub-optimal in practice because of these geographic constraints.
+Optimal grouping using only traditional cluster metrics is generally sub-optimal in practice for regionalization because the metrics do not consider geographic contiguity.
 
-Unconstrained grouping on data with spatial characteristics may result in contiguous regions because of autocorrelation, but if you want to ensure that all groups are spatially-contiguous you need a method specifically designed for the task. The 'skater' algorithm available in the {spdep} package is well-implemented and well-documented.
+Unconstrained grouping on data with spatial characteristics may result in contiguous regions because of autocorrelation, but if you want to _ensure_ that all groups are spatially-contiguous you need a method specifically designed for the task. The 'skater' algorithm available in the {spdep} package is well-implemented and well-documented.
 
 The 'skater' algorithm (spatial 'k'luster analysis by tree edge removal) builds a connectivity graph to represent spatial relationships between neighboring areas, where each area is represented by a node and edges represent connections between areas. Edge costs are calculated by evaluating the dissimilarity in attribute space between neighboring areas. The connectivity graph is reduced by pruning edges with higher dissimilarity.
 
 Consider again the crime data at the tract level in the city of Columbus, Ohio. The tract polygons are projected with arbitrary spatial coordinates.
+
 ```{r}
 ( CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
                        layer = "columbus") )
@@ -459,17 +488,19 @@ tmap::tm_shape(CC.sf) +
 
 The maps show distinct regional patterns. Housing values and income are clustered toward the southeast and crime is clustered in the center. But although housing values are also high in the north you don't necessarily want to group that tract with those in the southeast because they are geographically distinct.
 
-To group these patterns under the constraint of spatial contiguity you first scale the attribute values and center them using the `scale()` function. Scaling and centering variables should be done with any clustering approaches.
+To group these patterns under the constraint of spatial contiguity you first scale the attribute values and center them using the `scale()` function. Scaling and centering variables should be done before any type of clustering procedure.
+
 ```{r}
 ( CCs.df <- CC.sf |> 
-    dplyr::mutate(HOVAL = scale(HOVAL),
-                  INC = scale(INC),
-                  CRIME = scale(CRIME)) |>
-    dplyr::select(HOVAL, INC, CRIME) |>
+    dplyr::mutate(HOVALs = scale(HOVAL),
+                  INCs = scale(INC),
+                  CRIMEs = scale(CRIME)) |>
+    dplyr::select(HOVALs, INCs, CRIMEs) |>
     sf::st_drop_geometry() )
 ```
 
 Next create adjacency neighbors using queen contiguity.
+
 ```{r}
 nbs <- spdep::poly2nb(CC.sf, 
                       queen = TRUE)
@@ -480,16 +511,18 @@ plot(nbs,
      add = TRUE)
 ```
 
-Next combine the contiguity graph with your scaled attribute data to calculate edge costs based on the distance between each node. The function `spdep::nbcosts()` provides distance methods for Euclidean, Manhattan, Canberra, binary, Minkowski, and Mahalanobis, and defaults to Euclidean if not specified.
+Next combine the contiguity graph with your scaled attribute data to calculate edge costs based on distances between each node. The function `spdep::nbcosts()` provides distance methods for Euclidean, Manhattan, Canberra, binary, Minkowski, and Mahalanobis, and defaults to Euclidean if not specified like here. Save the object of class `nbdist` with name `edge_costs`.
+
 ```{r}
-costs <- spdep::nbcosts(nbs, 
-                        data = CCs.df)
+edge_costs <- spdep::nbcosts(nbs, 
+                             data = CCs.df)
 ```
 
 Next transform the edge costs into spatial weights using the `spdep::nb2listw()` function before constructing the minimum spanning tree with the weights list.
+
 ```{r}
 wts <- spdep::nb2listw(nbs,
-                       glist = costs,
+                       glist = edge_costs,
                        style = "B")
 mst <- spdep::mstree(wts)
 
@@ -498,21 +531,22 @@ head(mst)
 
 Edges with higher dissimilarity are removed leaving a set of nodes and edges that take the minimum sum of dissimilarities across all edges of the tree (a minimum spanning tree).
 
-The edge connecting node (tract) 33 with node (tract) 35 has a dissimilarity of .56 units. The edge connecting tract 35 with tract 43 has a dissimilarity of .19 units.
+The edge connecting node (tract) 12 with node (tract) 16 has a dissimilarity of .44 units. The edge connecting tract 16 with tract 25 has a dissimilarity of .42 units.
 
 Finally, the `spdep::skater()` function partitions the graph by identifying which edges to remove based on dissimilarity while maximizing the between-group variation. The `ncuts =` argument specifies the number of partitions to make, resulting in `ncuts` + 1 groups.
+
 ```{r}
-clus5 <- spdep::skater(edges = mst[,1:2], 
+clus5 <- spdep::skater(edges = mst[, 1:2], 
                        data = CCs.df, 
                        ncuts = 4)
 ```
 
 Where are these groups located?
+
 ```{r}
 CC.sf <- CC.sf |>
   dplyr::mutate(Group = clus5$groups)
 
-library(ggplot2)
 ggplot() +
   geom_sf(data = CC.sf,
           mapping = aes(fill = factor(Group)))
@@ -520,12 +554,16 @@ ggplot() +
 
 The map shows five distinct regions based on the three variables of income, housing value, and crime. Importantly the regions are contiguous.
 
+Region 1 encompasses most tracts in the urban core where housing values and income are low and crime rates are highest. Regions 2 and 3 in the east and west are where housing values and income are moderately high and crime rates are lower. Region 4 is where income and housing values are highest and crime is the lowest.
+
 As a comparison, here is the result of grouping the same three variables using hierarchical clustering using the method of minimum variance (Ward) and without regard to spatial contiguity.
+
 ```{r}
 dd <- dist(CCs.df)
 hc <- hclust(dd, 
              method = "ward.D")
 hcGroup <- cutree(hc, k = 5)
+
 CC.sf <- CC.sf |>
   dplyr::mutate(hcGroup = hcGroup)
 
@@ -538,4 +576,6 @@ Here the map shows five regions but the regions are not contiguous.
 
 More information: <https://www.tandfonline.com/doi/abs/10.1080/13658810600665111>
 
-Also the {motif} package implements and extends ideas of the pattern-based spatial analysis. It describes spatial patterns of categorical raster data for any defined regular and irregular areas. Patterns are represented quantitatively using built-in signatures based on co-occurrence matrices but also allows for any user-defined functions. It enables spatial analysis such as search, change detection, and clustering to be performed on spatial patterns. <https://jakubnowosad.com/motif/>
+Also the {motif} package has functions that implement and extend ideas of the pattern-based spatial analysis. They can be used to describe spatial patterns of categorical raster data for any defined regular and irregular areas.
+
+Patterns are represented quantitatively using built-in signatures based on co-occurrence matrices but the functions are flexible to allow for user-defined functions. Functions enable spatial analysis such as search, change detection, and clustering to be performed on spatial patterns. <https://jakubnowosad.com/motif/>
