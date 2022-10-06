@@ -1,16 +1,23 @@
-# Thursday October 13, 2022 {.unnumbered}
+# Tuesday October 18, 2022 {.unnumbered}
 
-**"Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!"** --- Vanessa Hurst
+**"We build our computer systems the way we build or cities; over time, without plan, on top of ruins."** – Ellen Ullman
 
 Today
 
--   Fitting and interpreting a spatially-lagged Y model
--   Fitting and interpreting a spatially-lagged X model
--   Fitting and interpreting spatial Durban models
+- Fitting and interpreting geographic regressions
+- Mapping incidence and risk with spatial regression models
 
-Ordinary least-squares regression models fit to spatial data can lead to improper inference because observations are not independent. This might lead to poor policy decisions. Thus it's necessary to check the residuals from an aspatial model for autocorrelation. If the residuals are strongly correlated the model is not specified properly.
+## Fitting and interpreting geographic regressions {-}
 
-## Fitting and interpreting a spatially-lagged Y model {-}
+Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit a separate regression model at each geographic location. 
+
+The analogy is a local measure of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). It is called geographically weighted regression (GWR) or simply geographic regression. GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs.
+
+Since GWR fits a separate regression model using data focused at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different from the spatial regression such as the spatially-lagged Y model, which are single models with spatial terms.
+
+Observations across the entire domain contribute to the model fit at a particular location, but the observations are weighted inversely by their distance to the particular location. At short distances, observations are given the largest weights based on a Gaussian function and a bandwidth. The bandwidth is specified as a single parameter or it is determined through a cross-validation procedure. The bandwidth can also be a function of location.
+
+Said another way, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variables. Geographic regressions show how this dependency varies by location. GWR is used as an exploratory technique for determining where local regression coefficients are different from corresponding global values.
 
 Continuing with the Columbus crime data.
 
@@ -19,341 +26,334 @@ Continuing with the Columbus crime data.
                        layer = "columbus") )
 ```
 
-Recall interest with these data centers on crime as a response variable and income and housing value as explanatory variables. You set the formula as a string and refit a OLS regression model.
+Start by fitting a 'global' ordinarly least squares (OLS) linear regression to the crime rates using income and housing values, exactly as you did earlier.
 
 ```{r}
 f <- CRIME ~ INC + HOVAL
-
-( model.ols <- lm(f, data = CC.sf) )
+( model.ols <- lm(formula = f,
+                  data = CC.sf) )
 ```
 
-The marginal effect of income on crime is -1.6 and the marginal effect of housing value on crime is -.27.
+The coefficients on the two explanatory variables indicate that crime decreases in areas of higher income and higher housing values.
 
-A nice way to visualize the relative significance of the explanatory variables is to make a plot. Here you use the `broom::tidy()` method and then `ggplot()` as follows.
+You compare this result to results from geographic regressions. The functions are in the {spgwr} package.
 
 ```{r}
-if(!require(broom)) install.packages(pkgs = "broom", repos = "http://cran.us.r-project.org")
-library(broom)
+if(!require(spgwr)) install.packages(pkgs = "spgwr", repos = "http://cran.us.r-project.org")
+```
 
-( d <- broom::tidy(model.ols, 
-                   conf.int = TRUE) )
+The `sp` part of the package name indicates that the functions were developed to work with S4 spatial objects. 
+
+The functions allow you to use S3 simple features by specifying the locations as a matrix. Here you extract the centroid from each census tract as a matrix.
+
+```{r}
+Locations <- sf::st_coordinates(sf::st_centroid(CC.sf))
+
+head(Locations)
+```
+
+These are the X and Y coordinate values specifying the centroid for the first six tracts (out of 49).
+
+To determine the optimal bandwidth for the Gaussian kernel (weighting function) you use the `spgwr::gwr.sel()` function. You need to specify the arguments, model formula (`formula =`), the data frame (`data =`), and the coordinates (`coords =`) as part of the function call. The argument `coords =` is the matrix of coordinates of points representing the spatial locations of the observations. It can be omitted if the data is an S4 spatial data frame from the {sp} package.
+
+```{r}
+( bw <- spgwr::gwr.sel(formula = f, 
+                       data = CC.sf,
+                       coords = Locations) )
+```
+
+The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (guassian by default) and that bandwidth (distance).
+
+The output shows that the first bandwidth chosen was 2.22 in arbitrary distance units. The resulting prediction skill from fitting 49 regression models with that bandwidth is 7474 units. The resulting CV score is based on cross validation whereby skill is computed at each location when data from that location is not used to fit the regression models.
+
+The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score from refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs. 
+
+The output shows that no additional improvement in skill occurs at a bandwidth distance of .404 units, and this single value is assigned to the object you called `bw`.
+
+Once the bandwidth distance is determined you use the `spgwr::gwr()` function to fit the regressions using that bandwidth. The arguments are the same as before but includes the `bandwidth =` argument where you specify the object `bw`.
+
+```{r}
+model.gwr <- gwr(formula = f, 
+                 data = CC.sf, 
+                 coords = Locations,
+                 bandwidth = bw)
+```
+
+The model and observed data are assigned to a list object with element names listed using the `names()` function.
+
+```{r}
+names(model.gwr)
+```
+
+The first element is `SDF` containing the model output as a S4 spatial data frame.
+
+```{r}
+class(model.gwr$SDF)
+```
+
+See Lesson 7 where S4 spatial data objects were covered.
+
+The structure of the spatial data frame is obtained with the `str()` function and by setting the `max.level` argument to 2. 
+
+```{r}
+str(model.gwr$SDF, max.level = 2)
+```
+
+Here there are five slots with the first slot labeled `@data` indicating that it is a data frame. The number of rows and columns in the data frame are listed with the `dim()` function.
+
+```{r}
+dim(model.gwr$SDF)
+```
+
+There are 49 rows and 7 columns. Each row corresponds to a tract and information about the regressions localized to the tract is given in the columns. Column names are listed with the `names()` function.
+
+```{r}
+names(model.gwr$SDF)
+```
+
+They include the sum of the weights `sum.w` (the larger the sum the more often the tract is included in the local regressions--favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the  explanatory variables (`INC` and `HOVAL`) and an intercept term, the residual (`gwr.e`), the predicted value (`pred`) and the local goodness-of-fit (`localR2`).
+
+You create a map displaying where income has the most and least influence on crime by first adding the income coefficient from the data frame (column labeled `INC`) to the simple feature data frame since the order of the rows in the `SDF` matches the order in the simple feature data frame and then using functions from the {ggplot2} package.
+```{r}
+CC.sf$INCcoef <- model.gwr$SDF$INC
 
 library(ggplot2)
 
-ggplot(d[-1,], aes(x = estimate,  # we do not plot the intercept term
-                   y = term, 
-                   xmin = conf.low, 
-                   xmax = conf.high, 
-                   height = 0)) +
-  geom_point(size = 2) +
-  geom_vline(xintercept = 0, lty = 4) +
-  geom_errorbarh()
+ggplot(CC.sf) +
+  geom_sf(aes(fill = INCcoef)) +
+  scale_fill_viridis_c()
 ```
 
-The maximum likelihood estimate is shown as a point and the confidence interval around the estimate is shown as a horizontal error bar. The default confidence level is 95% (`conf.level = .95`). The effects are statistically significant as the confidence intervals do not intersect the zero line (dashed-dotted).
+Most tracts have coefficients with values less than zero. Recall the global coefficient is less than zero. But areas in yellow show where the coefficient values are greater than zero indicating a direct relationship between crime and income.
 
-Then check for spatial autocorrelation in the residuals. This is done by first defining the weights matrix and then applying Moran's I test as follows.
+How about the coefficients on housing values?
 
 ```{r}
-nbs <- spdep::poly2nb(CC.sf, 
-                      queen = TRUE)
-wts <- spdep::nb2listw(nbs)
+CC.sf$HOVALcoef <- model.gwr$SDF$HOVAL
 
-spdep::lm.morantest(model.ols, 
-                    listw = wts)
+ggplot(CC.sf) +
+  geom_sf(aes(fill = HOVALcoef)) +
+  scale_fill_viridis_c()
 ```
 
-The results show that the model residuals have significant spatial autocorrelation so reporting the marginal effects with an OLS regression model would not be correct.
+While the global coefficient is negative indicating crime rates tend to be lower in areas with higher housing values, the opposite is the case over much of city especially on the south side.
 
-You then fit a spatially-lagged Y model using the `lagsarlm()` function from the {spatialreg} package. The model is 
-
-$$
-y = \rho W y + X \beta + \varepsilon
-$$ 
-where $Wy$ is the weighted average of the neighborhood response values (spatial lag variable) with $W$ the spatial weights matrix, and $\rho$ is the autoregression coefficient.
-
-The `spatialreg::lagsarlm()` function first determines a value for $\rho$ ( with the internal `optimize()` function) and then the $\beta$'s are obtained using generalized least squares (GLS). The model formula `f` is the same as what you used to fit the OLS regression above. You save the model object as `model.slym`.
+You put the vector of GWR predictions into the `CC.sf` simple feature data frame giving it the column name `predGWR` and then map the predictions using functions from the {tmap} package.
 
 ```{r}
-if(!require(spatialreg)) install.packages(pkgs = "spatialreg", repos = "http://cran.us.r-project.org")
-
-model.slym <- spatialreg::lagsarlm(formula = f, 
-                                   data = CC.sf, 
-                                   listw = wts)
-
-summary(model.slym)
-```
-
-The first batch of output concerns the model residuals and the coefficients on the explanatory variables. The model residuals are the observed crime rates minus the predicted crime rates.
-
-The coefficients on income and housing have the same sign (negative) and they remain statistically significant (-1.05 for income and -.27 for housing value). But you can't interpret these coefficients as the marginal effects.
-
-The next set of output is about the coefficient of spatial autocorrelation ($\rho$). The value is .423 and a likelihood ratio test gives a value of 9.41 which translates to a $p$-value of .002. The null hypothesis is the autocorrelation is zero, so you confidently reject it. This is consistent with the significant Moran's I value that you found in the linear model residuals.
-
-Two other tests are performed on the value of $\rho$ including a z-test (t-test) using the asymptotic standard error and a Wald test. Both tests confirm that the lag term should be included in the model from crime involving income and housing values.
-
-In spatial models that contain a lagged response term, the coefficients are not marginal effects. The spatial lag model allows for 'spillover'. That is a change in an explanatory variable anywhere in the study domain will affect the value of the response variable *everywhere*. Spillover occurs even when the neighborhood weights matrix represents local contiguity. The spillover makes interpreting the coefficients more complicated.
-
-With a spatially-lagged Y model a change in the value of an explanatory variable results in both *direct* and *indirect* effects on the response variable.
-
-For example, the direct effect gives the impact a change in income has on crime averaged over all tracts. It takes into account the effects that occur from a change in the $i$th tract's income on crime across neighboring tracts.
-
-The indirect effect gives the impact of a change in income has on crime averaged over all *other* tracts. The indirect effect represent spillovers. The influences on the dependent variable $y$ in a region rendered by change in $x$ in some *other* region. For example, if all tracts $i \ne j$ (i not equal to j) increase their income, what will be the impact on crime in region $i$?
-
-The total effect (TE) is the sum of the direct and indirect effects. It measures the total cumulative impact on crime arising from one tract $j$ increasing its income over all other tracts (on average). It is given by 
-
-$$
-\hbox{TE} = \left(\frac{\beta_k}{1-\rho^2}\right)\left(1 + \rho\right)
-$$ 
-where $\beta_k$ is the marginal effect of variable $k$ and $\rho$ is the spatial autocorrelation coefficient. With $\rho = 0$ TE is $\beta_k$.
-
-Here $\beta_{INC}$ is -1.0487 and $\rho$ is .4233, so the total effect is
-
-```{r}
-( TE_INC <- -1.0487 / (1 - .4233^2) * (1 + .4233) )
-```
-
-The direct, indirect, and total effects are shown using the `spatialreg::impacts()` function.
-
-```{r}
-spatialreg::impacts(model.slym, 
-                    listw = wts)
-```
-
-The direct effects are the changes in the response variable of a particular region arising from a one unit increase in an explanatory variable in that region.
-
-The indirect effects are the changes in the response variable of a particular region arising from a one unit increase in an explanatory variable in another region. For example, due to spatial autocorrelation, a one-unit change in the income variable in region 1 affects the crime rate in regions 2 and 3.
-
-The next set of output concerns the overall model fit. It includes the log likelihood value and the AIC (Akaike Information Criterion). The AIC value for the linear model is included. Here it is clear that the spatial lag model is an improvement (smaller AIC) over the aspatial model.
-
-The larger the likelihood, the better the model and two times the difference in log likelihoods from two competing models divided by the number of observations gives a scale for how much improvement.
-
-```{r}
-x <- 2 * (logLik(model.slym) - logLik(model.ols))/49
-x[1]
-```
-
-Improvement table
-
-| Likelihood difference | Qualitative improvement |
-|-----------------------|-------------------------|
-| 1                     | huge                    |
-| .1                    | large                   |
-| .01                   | good                    |
-| .001                  | okay                    |
-
-The final bit of output is a Lagrange multiplier test for remaining autocorrelation. The null hypothesis is there is no remaining autocorrelation since we have a lag term in the model. The result is a high $p$-value so you are satisfied that the lag term takes care of the autocorrelation.
-
-Compare the spatial lag model to a spatial error model. Here you use the `spatialreg::errorsarlm()` function.
-
-```{r}
-model.sem <- spatialreg::errorsarlm(formula = f, 
-                                    data = CC.sf, 
-                                    listw = wts)
-summary(model.sem)
-```
-
-You find the coefficient of spatial autocorrelation ($\lambda$) is significant, but the log likelihood value from the model is smaller (-183.7) and the AIC value is larger (377.5) compared with corresponding values from the lag model. This is consistent with the lagrange multiplier (LM) tests indicating the spatial lag model is more appropriate.
-
-Also you can compare the log likelihoods from the two spatial regression models that you fit.
-
-```{r}
-x <- 2 * (logLik(model.slym) - logLik(model.sem))/49
-x[1]
-```
-
-With a value of .04 you conclude that there is good improvement of the lag model over the error model. Again, this is consistent with your decision above to use the lag model.
-
-With the spatial error model the coefficients can be interpreted as marginal effects like with the OLS model.
-
-If there are large differences (e.g., different signs) between the coefficient estimate from SEM and OLS, this suggests that neither model is yielding parameters estimates matching the underlying parameters of the data generating process.
-
-You test whether there is a significant difference in coefficient estimates with the Hausman test under the hypothesis of no difference.
-
-```{r}
-spatialreg::Hausman.test(model.sem)
-```
-
-The $p$-value gives inconclusive evidence that the coefficients are different and that maybe the SEM is not the right way to proceed with these data.
-
-The `predict()` method implements the `predict.sarlm()` function to calculate predictions from the spatial regression model. The prediction on a spatial lag Y model is decomposed into a "trend" term (explanatory variable effect) and a "signal" term (spatial smoother). The predicted fit is the sum of the trend and the signal terms when using the spatial lag model.
-
-You make predictions with the `predict()` method under the assumption that the mean response is known. You examine the structure of the corresponding predict object.
-
-```{r}
-( predictedValues <- predict(model.slym) )
-```
-
-The predicted values are in the column labeled `fit`. The predicted values are a sum of the trend term ($X\beta$) and the signal term ($\rho W y$). The signal term is called the spatial smoother.
-
-As a first-order check if things are what you think they are, compare the first five predicted values with the corresponding observed values.
-
-```{r}
-predictedValues[1:5]
-CC.sf$CRIME[1:5]
-```
-
-Some predicted values are lower than the corresponding observed values and some are higher.
-
-The predicted values along with the values for the trend and signal are added to the simple features data frame.
-
-```{r}
-CC.sf$fit <- as.numeric(predictedValues)
-CC.sf$trend <- attr(predictedValues, "trend")
-CC.sf$signal <- attr(predictedValues, "signal")
-```
-
-The components of the predictions are mapped and placed on the same plot.
-
-```{r}
-library(ggplot2)
-
-( g1 <- ggplot() +
-    geom_sf(data = CC.sf, aes(fill = fit)) +
-    scale_fill_viridis_c() +
-    ggtitle("Predicted Crime") )
-
-( g2 <- ggplot() +
-    geom_sf(data = CC.sf, aes(fill = trend)) +
-    scale_fill_viridis_c() +
-    ggtitle("Trend (Explanatory Variables)") )
-
-( g3 <- ggplot() +
-    geom_sf(data = CC.sf, aes(fill = signal)) +
-    scale_fill_viridis_c() +
-    ggtitle("Signal") )
-
-library(patchwork)
-g1 + g2 + g3
-```
-
-The trend term and the spatial smoother have similar ranges indicating nearly equal contributions to the predictions. The largest difference between the two terms occurs in the city's east side.
-
-A map of the difference makes this clear.
-
-```{r}
-CC.sf <- CC.sf |>
-  dplyr::mutate(CovMinusSmooth = trend - signal)
+CC.sf$predGWR <- model.gwr$SDF$pred
 
 tmap::tm_shape(CC.sf) +
-  tmap::tm_fill(col = "CovMinusSmooth")
+  tmap::tm_fill("predGWR", title = "Predicted crimes\nper 1000") +
+  tmap::tm_layout(legend.outside = TRUE)
 ```
 
-How many tracts have a smaller residual with the lag model versus the OLS model?
+The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also a smoother than with a global OLS regression.
+
+Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models.
 
 ```{r}
-CC.sf |>
-  dplyr::mutate(residualsL = CRIME - fit,
-                lagWins = abs(residuals(model.ols)) > abs(residualsL),
-                CovMinusSmooth = trend - signal) |>
-  sf::st_drop_geometry() |>
-  dplyr::summarize(N = sum(lagWins))
+CC.sf$localR2 <- model.gwr$SDF$localR2
+
+ggplot(CC.sf) +
+  geom_sf(aes(fill = localR2)) +
+  scale_fill_viridis_c()
 ```
 
-In 32 out of the 49 tracts the residuals from the spatial model are smaller than the residuals from the OLS model.
+Although crime rates are highest in the center, the relationship between crime and income and housing values is largest in tracts across the eastern part of the city.
 
-## Fitting and interpreting a spatially-lagged X model {-}
+This type of nuanced exploratory analysis is made possible with GWR.
 
-Another spatial regression option is to modify the linear model to include spatially-lagged explanatory variables. This is called the spatially-lagged X model. $$
-y = X \beta + WX \theta + \varepsilon
+Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables 'provoke' the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals. One way to check the assumption of a stationary process is to use geographic regression.
+
+## Mapping incidence and risk with spatial regression models {-}
+
+Spatial regression models are used in disease mapping where it is common to use a standardized incidence ratio (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Small areas can give extreme SIRs due to low population sizes or small samples. Extreme values of SIRs can be misleading and unreliable for reporting.
+
+Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. Spatial regression models incorporate information from neighboring areas and explanatory information. The result is a smoothing (shrinking) of extreme values.
+
+Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object `pennLC` with element name `spatial.polygon`. Change the native spatial polygons S4 object to an S3 simple feature data frame using the `sf::st_as_sf()` function and display a map of the county borders.
+
+```{r}
+if(!require(SpatialEpi)) install.packages("SpatialEpi", repos = "http://cran.us.r-project.org")
+
+LC.sp <- SpatialEpi::pennLC$spatial.polygon
+LC.sf <- sf::st_as_sf(LC.sp)
+
+ggplot(LC.sf) +
+  geom_sf()
+```
+
+For each region (county) $i$, $i = 1, \ldots, n$ the SIR is defined as the ratio of observed counts ($Y_i$) to the expected counts ($E_i$).
+
+$$
+\hbox{SIR}_i = Y_i/E_i.
 $$
 
-In this case the weights matrix is (post) multiplied by the matrix of X variables where $W$ is again the weights matrix and $\theta$ is a vector of coefficients for each lagged explanatory variable.
+The expected count $E_i$ is the total number of cases expected if the population of area $i$ behaves the way the standard population behaves. If you ignore differences in rates for different stratum (e.g., age groups, race, etc) then you compute the expected counts as
 
-Here you fit the spatially-lagged X model using the `spatialreg::lmSLX()` function and save the model object as `model.slxm`.
+$$
+E_i = r^{(s)} n^{(i)},
+$$
+where $r^{(s)}$ is the rate in the standard population (total number of cases divided by the total population across all regions), and $n^{(i)}$ is the population of region $i$.
 
+Then $\hbox{SIR}_i$ indicates whether region $i$ has higher ($\hbox{SIR}_i > 1$), equal ($\hbox{SIR}_i = 1$) or lower ($\hbox{SIR}_i < 1$) risk than expected relative to the standard population.
+
+When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR).
+
+The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+). 
+
+You compute the number of cases for all the strata together in each county by aggregating the rows of the data frame by county and adding up the number of cases.
 ```{r}
-( model.slxm <- spatialreg::lmSLX(formula = f, 
-                                  data = CC.sf, 
-                                  listw = wts) )
+( County.df <- SpatialEpi::pennLC$data |>
+  dplyr::group_by(county) |>
+  dplyr::summarize(Y = sum(cases)) )
 ```
 
-With this model, beside the direct marginal effects of income and housing value on crime, you also have the spatially-lagged indirect effects.
+You then calculate the expected number of cases in each county using indirect standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves. You do this by using the `SpatialEpi::expected()` function. The function has three arguments including `population` (vector of population counts for each strata in each area), `cases` (vector with the number of cases for each strata in each area), and `n.strata` (number of strata).
 
-The total effect of income on crime is the sum of the direct effect and indirect effect. And again, using the `spatialreg::impacts()` function you see this.
-
-```{r}
-spatialreg::impacts(model.slxm, listw = wts)
-```
-
-You get the impact measures and their standard errors, z-values and $p$-values with the `summary()` method applied to the output of the `impacts()` function.
+The vectors `population` and `cases` need to be sorted by area first and then, within each area, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the `dplyr::arrange()` function.
 
 ```{r}
-summary(spatialreg::impacts(model.slxm, listw = wts))
+Strata.df <- SpatialEpi::pennLC$data |>
+  dplyr::arrange(county, race, gender, age)
+head(Strata.df)
 ```
 
-Results show that income has a significant direct *and* indirect effect on crime rates, but housing values only show a significant direct effect and not a significant indirect effect.
-
-Again you visualize the relative significance of the effects.
-```{r}
-model.slxm |>
-  broom::tidy(conf.int = TRUE) |>
-  dplyr::slice(-1) |>
-ggplot(aes(x = estimate,
-                   y = term, 
-                   xmin = conf.low, 
-                   xmax = conf.high, 
-                   height = 0)) +
-  geom_point(size = 2) +
-  geom_vline(xintercept = 0, lty = 4) +
-  geom_errorbarh()
-```
-
-Compare R squared values between the OLS model and the spatially-lagged X model.
+Then you get the expected counts (E) in each county by calling the `SpatialEpi::expected()` function, where you set population equal to `Strata.df$population` and cases equal to `Strata.df$cases`. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16.
 
 ```{r}
-summary(model.ols)$r.squared
-summary(model.slxm)$r.squared
+( E <- SpatialEpi::expected(population = Strata.df$population,
+                            cases = Strata.df$cases, 
+                            n.strata = 16) )
 ```
 
-The spatially lagged model has an R squared value that is higher than the R squared value from the linear regression.
+Now you add the observed count `Y`, the expected count `E` the computed SIR to the simple feature data frame `LC.sf` and make a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.
+```{r}
+LC.sf <- LC.sf |>
+  dplyr::mutate(Y = County.df$Y,
+                E = E,
+                SIR = Y/E)
 
-## Fitting and interpreting spatial Durbin models {-}
+ggplot(LC.sf) + 
+  geom_sf(aes(fill = SIR)) +
+  scale_fill_gradient2(midpoint = 1, 
+                       low = "blue", 
+                       mid = "white", 
+                       high = "red") +
+  theme_minimal()
+```
 
-A workflow for finding the correct spatial model is to consider both the spatial Durbin error model and the spatial Durbin model.
+In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. In counties with SIR > 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR < 1 (blue) have fewer cancer cases observed than expected.
 
-The spatial Durban error model (SDEM) is a spatial error model with a spatially-lagged X term added. To fit a SDEM use the `spatialreg::errorsarlm()` function but include the argument `etype = "emixed"` to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (`"W"`).
+In regions with few people the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring areas, and incorporate explanatory information. This results in smoothing (shrinkage) of extreme values.
+
+Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept that models the overall disease risk level, and random effects to account for local variability.
+
+The relative risk quantifies whether an area has a higher ($\theta > 1$) or lower ($\theta < 1$) risk than the average risk in the population. For example if $\theta_i = 2$, then the risk in area $i$ is twice the average risk in the population.
+
+The model is expressed as
+
+$$
+Y \sim \hbox{Poisson}(E\theta) \\
+\log(\theta) = \alpha + u + v
+$$
+
+The parameter $\alpha$ is the overall risk in the region of study, $u$ is the spatially structured random effect representing the dependency in risk across neighboring areas, and $v$ is the uncorrelated random noise modeled as $v \sim N(0, \sigma_v^2)$.
+
+It is common to include explanatory variables to quantify risk factors (e.g., distance to nearest coal plant). Thus the log($\theta$) is expressed as
+
+$$
+\log(\theta) = \alpha + X\beta + u + v
+$$
+
+where $X$ are the explanatory variables and $\beta$ are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor $\exp(\beta)$, holding the other variables constant.
+
+A popular form for the combined spatially structured random effect and the uncorrelated random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregression distribution to $u$ as
+
+$$
+u | u_{j \ne i} \sim N(\bar u_{\delta}, \frac{\sigma_u^2}{n_{\delta}})
+$$
+
+where $\bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}$ and where $\delta_i$ is the set of neighbors of area $i$ and $n_{\delta_i}$ is the number of neighbors of area $i$.
+
+In words, the logarithm of the disease incidence rate in area $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution.
+
+The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk. This is done with functions in the {INLA} package. You get the package (it is not on CRAN) as follows.
+
+```{r eval=FALSE}
+options(timeout = 120)
+
+install.packages("INLA", repos=c(getOption("repos"), INLA = "https://inla.r-inla-download.org/R/stable"), dep = TRUE)
+```
+
+The syntax for the BYM model using functions from the {INLA} package is given as
+```{r}
+f <- Y ~ 
+  f(IDu, model = "besag", graph = g, scale.model = TRUE) +
+  f(IDv, model = "iid")
+```
+
+The formula includes the response in the left-hand side, and the fixed and random effects on the right-hand side. By default, the formula includes an intercept. 
+
+The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `IDu` and equal to c(1, 2, ..., I), where I is the number of regions (here the number of counties) and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
+
+The formula also includes an uncorrelated random effect with index variable with name `IDv` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but need to be specified as two different objects since INLA does not allow to include two effects with `f()` that use the same index variable.
+
+The BYM model can also be specified with the model "bym" which defines both the spatially structured random effect and the uncorrelated random effect ($u$ and $v$).
+
+You include these two vectors (call them `idu` and `idv`) in the data frame. 
+```{r}
+LC.sf <- LC.sf |>
+  dplyr::mutate(IDu = 1:nrow(LC.sf),
+                IDv = 1:nrow(LC.sf))
+LC.sf
+```
+
+Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function.
 
 ```{r}
-( model.sdem <- spatialreg::errorsarlm(formula = f, 
-                                       data = CC.sf, 
-                                       listw = wts,
-                                       etype = "emixed") )
+nb <- spdep::poly2nb(LC.sf)
+spdep::nb2INLA(file = here::here("data", "map.adj"), nb)
+g <- INLA::inla.read.graph(filename = here::here("data", "map.adj"))
+class(g)
 ```
 
-The spatial Durban model (SDM) is a spatially-lagged Y model with a spatially-lagged X term added to it. To fit a SDM use the `lagsarlm()` function but include the argument `type = "mixed"` to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (`"W"`).
+You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions.
 
 ```{r}
-( model.sdm <- spatialreg::lagsarlm(formula = f, 
-                                    data = CC.sf, 
-                                    listw = wts,
-                                    type = "mixed") )
+model.inla <- INLA::inla(formula = f, 
+                         family = "poisson",
+                         data = LC.sf,
+                         E = E,
+                         control.predictor = list(compute = TRUE))
 ```
 
-How to do you choose between these two models? Is the relationship between crime and income and housing values a global or local effect? Is there any reason to think that if something happens in one tract it will spillover across the entire city? If crime happens in one tract does it influence crime across the entire city? If so, then it is a global relationship. Or should it be a more local effect? If there is more crime in one tract then maybe that influences crime in the neighboring tract but not tracts farther away. If so, then it is a local relationship.
+The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object `model.inla$summary.fitted.values`. Column `mean` is the mean posterior and `0.025quant` and `0.975quant` are the 2.5 and 97.5 percentiles, respectively.
 
-If you think it is a local relationship, start with the spatial Durbin error model and look at the $p$-values on the direct and indirect effects.
+You add these to the spatial data frame and then make a map of the posterior mean relative risk.
 
 ```{r}
-summary(spatialreg::impacts(model.sdem, 
-                            listw = wts, 
-                            R = 500), zstats = TRUE)
+LC.sf$RR <- model.inla$summary.fitted.values[, "mean"]
+LC.sf$LL <- model.inla$summary.fitted.values[, "0.025quant"]
+LC.sf$UL <- model.inla$summary.fitted.values[, "0.975quant"]
+
+ggplot(LC.sf) + 
+  geom_sf(aes(fill = RR)) +
+  scale_fill_gradient2(midpoint = 1, 
+                       low = "blue", 
+                       mid = "white", 
+                       high = "red") +
+  theme_minimal()
 ```
 
-You see that income has a statistically significant direct and indirect effect on crime. This means that tracts with higher income have lower crime and tracts whose *neighboring tracts* have higher income also have lower crime.
+These relative risk values are smoother and muted in absolute magnitude compared with the empirical SIR estimates. 
 
-On the other hand, housing values have only a statistically significant direct effect on crime. Tracts with more expensive houses have lower crime but tracts whose neighboring tracts have more expensive houses do not imply lower crime. And the total effect of housing values on crime across the city is not significant. So if housing values go up in tracts citywide, there is no statistical evidence that crime will go down (or up).
+More on this topic is available from
 
-Try a likelihood ratio test with the null hypothesis being that you should restrict the model.
+- https://www.paulamoraga.com/book-geospatial/index.html
+- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895
 
-```{r}
-spatialreg::LR.Sarlm(model.sdem, 
-                     model.slxm)
-```
+The second source is a paper we published addressing long and short term views of tornado risk across the eastern half of the United States.
 
-The relatively small $p$-value suggests you shouldn't restrict the spatial Durbin model to just the spatially-lagged X model although the evidence is not overwhelming.
-
-More information
-
--   <https://youtu.be/b3HtV2Mhmvk>
--   <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2420725>
+An online book on Bayesian statistics using R is available here https://www.bayesrulesbook.com/

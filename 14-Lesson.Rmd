@@ -1,422 +1,422 @@
-# Tuesday October 18, 2022 {.unnumbered}
+# Thursday October 20, 2022 {.unnumbered}
 
-**"Give someone a program, you frustrate them for a day; teach them how to program, you frustrate them for a lifetime."** - David Leinweber
+**"So much complexity in software comes from trying to make one thing do two things."** - Ryan Singer
 
 Today
 
-- Spatial data as point patterns
-- Working with point pattern objects using functions from the {spatstat} package
-- Quantifying event intensity
+-   Creating `ppp` and `owin` objects from simple feature data frames
+-   Estimating spatial intensity as a function of distance
+-   Intensity trend as a possible confounding factor
 
-## Spatial data as point patterns {-}
+Last time the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced. Focus is typically on natural occurring systems where the spatial location of events is examined through the lens of statistics in an attempt to understand physical processes.
 
-We now turn our attention to analyzing and modeling point pattern data. Starting with some theory, then how to work with functions from the {spatstat} package before focusing on spatial intensity.
+The {spatstat} package is a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`.
 
-We naturally seek to find patterns in a collection of events. The pattern that tends to catch our attention quickly is the grouping of events across space. Stars in the night sky as constellations.  A collection of events in a particular region begs for an explanation. Why do events occur more often in this particular region and not somewhere else?
+The typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object.
 
-Consider tornado reports over the past several years in the state of Kansas. Let the start position of a tornado be an _event location_. And let the damage rating (EF scale) provide a _mark_ on the event. Here you consider only events since 2007 with marks of 1, 2, 3, 4, and 5. More about the damage rating scale is available here https://en.wikipedia.org/wiki/Enhanced_Fujita_scale
+## Creating `ppp` and `owin` objects from simple feature data frames {.unnumbered}
 
-Import and filter the data accordingly.
+Consider again Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating) since 1950 whose initial location occurred within Kansas.
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
-  dplyr::filter(st == "KS", 
-                yr >= 2007,
-                mag > 0) 
+  sf::st_transform(crs = 6922) |>
+  dplyr::filter(st == "KS", mag >= 0) |>
+  dplyr::mutate(EF = factor(mag)) |>
+  dplyr::select(EF)
+
+Torn.sf |>
+  head()
 ```
 
-Create a map of the event locations using functions from the {tmap} package. The state border is obtained as a simple feature data frame. The polygon geometry is plotted first with `tm_borders()` then the event locations are plotted with the `tm_bubbles()` and `size = "mag"`.
+The length unit is meters. This can be seen by printing the CRS.
 
 ```{r}
-KS.sf <- USAboundaries::us_states(states = "Kansas")
-
-tmap::tm_shape(KS.sf) +
-   tmap::tm_borders(col = "grey70") +
-tmap::tm_shape(Torn.sf) +
-   tmap::tm_bubbles(size = "mag", 
-                    col = "red",
-                    alpha = .4,
-                    title.size = "EF Rating") +
-tmap::tm_layout(legend.position = c("left", "top"),
-                legend.outside = TRUE)
+sf::st_crs(Torn.sf)
 ```
 
-Based on this display of tornado genesis locations we ask: (1) Are certain areas of the state more (or less) likely to get a tornado? (2) Do tornadoes tend to cluster? (3) Are there places in the state that are safe from tornadoes?
-
-These questions are similar but they are not identical. We will explore these canonical questions about point pattern data in the next few lessons.
-
-To begin it is helpful to have some definitions. 
-
-* Event: An occurrence of interest (e.g., tornado, accident, wildfire). 
-* Event location: Location of event (e.g., latitude/longitude).
-* Point: Any location in the study area where an event _could_ occur. Note: Event location is a particular point where an event _did_ occur. In a forest with a lake, the lake is a place where an event could not occur.
-* Point pattern data: A collection of observed (or simulated) event locations together with a domain of interest.
-* Domain: Study area that is often defined by data availability (e.g., state or county boundary) or by the extent of the events.
-* Complete spatial randomness: Or CSR (not to be confused with CRS--coordinate reference system) defines the situation where an event has an equal chance of occurring at any point in the domain regardless of other nearby events. In this case we say they event locations have a uniform probability distribution (uniformly distributed) across space. Note: uniform chance does not mean that the events have an ordered pattern (e.g., trees in an orchard).
-
-Consider a set of event locations that are randomly distributed within the unit plane. First create two vectors containing the x and y coordinates, then create a data frame that includes the name of the sample, and finally graph the locations using `ggplot()`.
-
-```{r} 
-library(ggplot2)
-
-x <- runif(n = 50, min = 0, max = 1)
-y <- runif(n = 50, min = 0, max = 1)
-df1 <- data.frame(x, y, name = "Point Pattern 1")
-ggplot(data = df1, 
-       mapping = aes(x, y)) +
-  geom_point(size = 2)
-```
-
-The plot shows a sample from a spatial point pattern process. A _spatial point process_ is a mechanism for producing a set of event locations across space. The pattern of locations produced by the point process is described as CSR. There are groups of event locations and some gaps. 
-
-Let's repeat this process to create three additional samples. First you combine them into a single data frame with the `rbind()` function and then plot a four-panel figure using the `facet_wrap()` function.
+Further you note that some tornadoes are incorrectly coded as Kansas tornadoes by plotting the event locations.
 
 ```{r}
-df2 <- data.frame(x = runif(n = 30, min = 0, max = 1),
-                  y = runif(n = 30, min = 0, max = 1),
-                  name = "Point Pattern 2")
-df3 <- data.frame(x = runif(n = 30, min = 0, max = 1),
-                  y = runif(n = 30, min = 0, max = 1),
-                  name = "Point Pattern 3")
-df4 <- data.frame(x = runif(n = 30, min = 0, max = 1),
-                  y = runif(n = 30, min = 0, max = 1),
-                  name = "Point Pattern 4")
-df <- rbind(df1, df2, df3, df4)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  geom_point() +
-  facet_wrap(~ name)
+plot(Torn.sf$geometry)
 ```
 
-Groups of nearby events illustrate that a certain degree of _clustering_ occurs by chance (without cause) making visual assessment of causal clustering difficult.
+You recognize the large number of events within the near-rectangle shape of the Kansas border but you also see a few events clearly outside.
 
-Complete spatial randomness sits on a spectrum between regularity and clustered. To illustrate this idea here you generate point pattern data that have more regularity than CSR and point pattern data that are more clustered than CSR. You do this using the `rMaternI()` and `rMaternClust()` functions from the {spatstat} package.
+Instead of filtering by column name (`st == "KS"`) you can subset by geometry using the `sf::st_intersection()` function. Here, since we are using the functions in the {spatstat} package, you do this by defining the state border as an `owin` object.
+
+You get the Kansas border as a simple feature data frame from the {USAboundaries} package transforming the CRS to that of the tornadoes.
+
 ```{r}
-m1 <- spatstat.random::rMaternI(kappa = 100, r = .02)
-df1 <- data.frame(x = m1$x, y = m1$y, name = "Regular Pattern 1")
-m2 <- spatstat.random::rMaternI(kappa = 100, r = .02)
-df2 <- data.frame(x = m2$x, y = m2$y, name = "Regular Pattern 2")
-m3 <- spatstat.random::rMatClust(kappa = 30, r = .15, mu = 4)
-df3 <- data.frame(x = m3$x, y = m3$y, name = "Cluster Pattern 1")
-m4 <- spatstat.random::rMatClust(kappa = 30, r = .15, mu = 4)
-df4 <- data.frame(x = m4$x, y = m4$y, name = "Cluster Pattern 2")
-df <- rbind(df1, df2, df3, df4)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  geom_point() +
-  facet_wrap(~ name)
+KS.sf <- USAboundaries::us_states(states = "Kansas") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf))
 ```
 
-The difference in the arrangement of event locations between a regular and a cluster process is clear. But the difference in the arrangement of event locations between a CSR and regular process and the difference in the arrangement of event locations between a CSR and cluster process is not.
+You then create an `owin` object from the simple feature data frame using the `as.owin()` function.
 
-And spatial scale matters. A set of event locations can be regular on a small scale but clustered on a larger scale.
-
-Probability models for spatial patterns motivate methods for detecting event clustering. A probability model generates a point pattern process. For example, we can think of crime as a point pattern process defined by location and influenced by environmental factors. The probability of a crime occurring at a particular location is the random variable and we can estimate the probability of a crime event at any location given factors that influence crime. 
-
-More formally, a spatial point pattern process is a _stochastic_ (statistical) process where event location is the random variable. A sample of the process is a collection of events generated under the probability model.
-
-A spatial point process is said to be _stationary_ if the statistical properties of the events are invariant to translation. This means that the relationship between two events depends only on the relative event locations (not on where the events occur in the domain). Relative location (or spatial lag) refers to distance and orientation of the events relative to one another. 
-
-In the case where the statistical properties are independent of the orientation of event pairs, the process is said to be _isotropic_. 
-
-The properties of stationarity and isotropy allow for replication within a data set. Under the assumption of a stationary process, two event pairs that are separated by the same distance should have the same relatedness. This is analogous to the assumption we make when we define our weights matrix for spatially aggregated data. The assumptions of stationarity and isotropy are starting points for modeling point pattern data. 
-
-The Poisson distribution defines a model for complete spatial randomness (CSR). A point process is said to be 'homogeneous Poisson' under the following two criteria: 
-
-1. The number of events, N, occurring within a finite domain A is a random variable described by a Poisson distribution with mean $\lambda$|A| for some positive constant $\lambda$, with |A| denoting the area of the domain, and 
-2. The locations of the N events represent a random sample where each point in A is _equally likely_ to be chosen as an event location.
-
-The first criteria of a Poisson distribution refers to a probability model describing the number of events. It expresses the probability of a given number of events occurring in a fixed interval of space when the events occur with a known constant rate.
-
-The Poisson parameter defines the _intensity_ of the point process. Given a set of events, an estimate for the mean (rate) parameter of the Poisson distribution is given by the number of events divided by the domain area. 
-
-The second criteria ensures the events are scattered about the domain without clustering or regularity.
-
-The procedure to create a homogeneous Poisson point process follows directly from its definition. Step 1: Sample the total number of events from a Poisson distribution with a mean that is proportional to the domain area. Step 2: Place each event within the domain with coordinates given by a _uniform distribution_.
-
-For example, let area |A| = 1, and the rate of occurrence $\lambda$ = 20, then
-```{r}
-lambda <- 20
-N <- rpois(1, lambda)
-x <- runif(N)
-y <- runif(N)
-df <- data.frame(x, y)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  geom_point(size = 2) 
-```
-
-The set of events represents a sample from a homogeneous Poisson point process. The intensity of the events is specified first then the locations are placed uniformly inside the domain. The domain need not be regular. The actual number of events varies from one realization to the next. On average the number of events is 20 but it could vary between 10 and 35 or more.
-
-This point pattern is CSR by construction. However, you are typically in the opposite position. You observe a set of events and you want to know if the events are regular or clustered. The null hypothesis is CSR and you need a test statistic that will summarize the evidence against this hypothesis. The null models are simple so you can use Monte Carlo methods to generate many samples and compare summary statistics from those samples with your observed data.
-
-In some cases the homogeneous Poisson model is not restrictive enough. This means that you can easily reject the null hypothesis but not learn anything interesting about your data. For example, with health events (locations of people with heart disease) CSR is not an appropriate model because a null hypothesis that incidences are equally likely does not consider that people cluster (locations at risk are not uniform).
-
-Each person has the same risk of heart disease regardless of location, and you expect more cases in areas with more people at risk. Clusters of cases in high population areas violate the CSR but not necessarily the constant risk hypothesis. The constant risk hypothesis requires the intensity of the spatial process be defined as a spatially varying function. That is, you define the intensity as $\lambda(s)$, where $s$ denotes location.
-
-The intensity (density) function is a first-order property of the random process. If intensity varies (significantly) across the domain the data-generating process is said to be heterogeneous. The intensity function describes the expected number of events at any location. Events might be independent of one another, but groups of events appear because of the changing intensity.
-
-## Working with point pattern objects using functions from the {spatstat} package {-}
-
-The {spatstat} package contains many functions to analyze and model point pattern data. Point pattern data are defined in {spatstat} by an object of class `ppp` (for planar point pattern) which contains the coordinates of the events (event locations), optional values attached to the events (called 'marks'), and a description of the domain or 'window' over which the events are observed. See `?ppp.object()` for details.
-
-Spatial statistics computed on a `ppp` object will be somewhat sensitive to the choice of the window (domain), so some thought should go into deciding what window should be used.
-
-As an example, the data `swedishpines` is available in the package as a `ppp` object.
 ```{r}
 suppressMessages(library(spatstat))
 
-class(swedishpines)
-swedishpines
+KS.win <- KS.sf |>
+  as.owin()
 ```
 
-The data is a planar point pattern object with 71 events. 
-
-Note: The events in a `ppp` object are called 'points' rather than events. This is in contrast to the theory that defines a point as represented by a _potential_ event not an _observed_ event.
-
-All the events are contained within a rectangle window of size 9.6 by 10 meters.
-
-There is a `plot()` method for `ppp` objects that provides a quick view the data and the domain window.
+Next you convert the simple feature data frame of tornado reports to a `ppp` object with the EF damage rating as the marks using the `as.ppp()` function.
 
 ```{r}
-plot(swedishpines)
+T.ppp <- Torn.sf |>
+  as.ppp()
+
+plot(T.ppp)
 ```
 
-Events are plotted as open circles inside a box. The plot is labeled with the name of the `ppp` object.
+Finally you subset the event locations in the `ppp` object by the Kansas border using the subset operator (`[]`).
 
-The function `convexhull()` from the {spatstat} package creates a convex hull around the events. A convex hull defines the minimum-area convex polygon that contains all the events. 
-
-Here you compute the hull and add it to the plot.
 ```{r}
-plot(swedishpines)
-plot(convexhull(swedishpines), 
-     add = TRUE)
+T.ppp <- T.ppp[KS.win]
+plot(T.ppp)
 ```
 
-The domain (window) for analysis and modeling should be somewhat larger than the convex hull. The function `ripras()` computes a spatial domain based on the event locations alone assuming the locations are independent and identically distributed.
+With the `T.ppp` object you are ready to analyze the tornado locations as spatial point pattern data.
 
-Here you also overlay this polygon on the plot.
+The `summary()` method summarizes information in the `ppp` object.
+
 ```{r}
-plot(swedishpines)
-plot(convexhull(swedishpines), 
-     add = TRUE)
-plot(ripras(swedishpines), 
-     add = TRUE, lty = "dotted")
+summary(T.ppp)
 ```
 
-The window can have an arbitrary shape. A rectangle, a polygon, a collection of polygons including holes, or a binary image (mask). A window can be stored as a separate object of class `owin`. See `?owin.object()` for details.
+The output tells you that there are 4281 events (tornado reports) with an average spatial intensity of .0000000201 (2.008277e-08) events per unit area.
 
-Each event may carry information called a 'mark'. A mark can be continuous (e.g. tree height) or discrete (tree species).
+The distance unit is meter since that is the length unit in the simple feature data frame (see `sf::st_crs(Torn.sf)` LENGTHUNIT["metre",1]) from which the `ppp` object was derived. So the area is in square meters making the spatial intensity (number of tornado reports per square meter) quite small.
 
-A multitype point pattern is one in which the events are marked using a factor (e.g., tree species). The mark values are given in a vector of the same length as the vector of locations. That is, `marks[i]` is the mark attached to the location (`x[i]`, `y[i]`).
-
-Consider the `ppp` object `demopat` from the {spatstat} package.
+To make it easier to interpret the intensity convert the length unit from meters to kilometers within the `ppp` object with the `rescale()` function from the {spatstat} package (spatstat.geom). The scaling factor argument is `s =` and the conversion is 1000 m = 1 km so the argument is set to 1000. You then set the unit name to `km` with the `unitname =` argument.
 
 ```{r}
-plot(demopat)
-marks(demopat)
+T.ppp <- T.ppp |>
+  spatstat.geom::rescale(s = 1000, 
+                         unitname = "km")
+summary(T.ppp)
 ```
 
-Here the domain is defined as an irregular concave polygon with a hole. The distinction between inside and outside is important for spatial statistics computed using the events.
+Caution here as you are recycling the object name `T.ppp`. If you rerun the above code chunk the scale will change again by a factor of 1000 while the unit name will stay the same.
 
-For a multitype pattern (where the marks are factors) you can use the `split()` function to separate the point pattern objects by mark type. Consider the Lansing Woods data set (`lansing`) with marks corresponding to tree species.
+There are 4281 tornado reports with an average intensity of .02 tornadoes per square km over this time period. Nearly 60% of all Kansas tornadoes are EF0. Less than 1% of them are categorized as 'violent' (EF4 or EF5). The area of the state is 213,168 square kilometers (km).
+
+Plot the events separated by the marks using the `plot()` method together with the `split()` function.
 
 ```{r}
-data(lansing)
-LW <- lansing
-
-plot(split(LW))
+T.ppp |>
+  split() |>
+plot()
 ```
 
-## Quantifying event intensity {-}
+Relative to the less damaging tornadoes there are far fewer EF4 and EF5 events.
 
-The average intensity of events is defined as the number of events per unit area of the domain. The `summary()` method applied to a `ppp` object gives the average intensity.
+Can the spatial distribution of Kansas tornadoes be described by complete spatial randomness?
+
+The number of tornadoes varies across the state (EF4 tornadoes are rare in the far western part of the state for example) but it's difficult to say whether this is due to sampling variation. To illustrate this here you compare the EF1 tornado locations with a sample of events generated under the null hypothesis of CSR.
+
+First create `Y` as an unmarked `ppp` object containing only the EF1 tornadoes. You do this by keeping only the events with marks equal to one with the `subset()` function. Since the marks are a factor you remove the levels with the `unmark()` function.
 
 ```{r}
-summary(swedishpines)
+( Y <- T.ppp |>
+  subset(marks == 1) |>
+  unmark() )
 ```
 
-There are 71 events over a window area (spatial domain) of 9600 square units giving an average intensity of 71/9600 = .0074.
+There were 1062 reported EF1 tornadoes originating within the state over the period 1950 through 2020.
 
-The average intensity might not represent the intensity of events locally. We need a way to describe the expected number of events at any location of the region. 
-
-Counting the number of events in equal areas is one way. The quadrat method divides the domain into a grid of rectangular cells and the number of events in each cell is counted. Quadrat counting is done with the `quadratcount()` function.
+The average intensity of the EF1 tornado events is obtained with the `intensity()` function.
 
 ```{r}
-quadratcount(swedishpines)
+intensity(Y)
 ```
 
-By default the function divides the data into a 5 x 5 grid of cells. The event count in each cell is produced. To change the default number of cells in x and y directions you use the `nx =` and `ny =` arguments.
+On average there has been .005 EF1 tornadoes per square km or 50 per 100 square km.
+
+Make a map to check if things look right.
 
 ```{r}
-quadratcount(swedishpines, 
-             nx = 2, 
-             ny = 3)
+plot(Y)
 ```
 
-The plot method applied to the results of the `quadratcount()` functions adds the counts to a plot. Here you add the counts and include the event locations.
+EF1 tornado reports are found throughout the state and they appear to be distributed randomly.
+
+Formally: Is the spatial distribution of EF1 tornado reports consistent with a set of event locations that are described as complete spatial randomness?
+
+To help answer this question you construct `X` to be a set of events generated from a homogeneous Poisson process (a model for CSR) where the intensity of the events is equal to the average intensity of the EF1 tornado reports.
+
+You assign the average intensity to an object called `lambdaEF1` and then use `rpoispp()` (random Poisson point pattern) with lambda set to that intensity and the domain specified with the `win =` argument.
 
 ```{r}
-plot(quadratcount(swedishpines))
-plot(swedishpines, pty = 19, col = "red", 
-     add = TRUE, main = "")
+( lambdaEF1 <- intensity(Y) )
+
+( X <- rpoispp(lambda = lambdaEF1, 
+               win = window(Y)) )
 ```
 
-Grid cell areas will not be all equal when the domain boundaries are irregular like with the `demopat` ppp object.
+The average intensity of `X` matches (closely) the average intensity of `Y` by design and the `plot()` method reveals a similar looking pattern of event locations.
 
 ```{r}
-plot(quadratcount(demopat))
+intensity(X)
+
+plot(X)
 ```
 
-Areas near the borders are smaller than areas completely within the domain.
+While the pattern is similar, there does appear to be a difference. Can you describe the difference?
 
-When the number of events is large, hexagon grid cells provide a useful alternative to rectangular grid cells. 
-
-The process is: (1) tessellate the domain by a regular grid of hexagons, (2) count the number of events in each hexagon, and (3) use a color ramp to display the events per hexagon.
-
-As an example here you generate 20K random values from the standard normal distribution for the x coordinate and the same number of random values for the y coordinate. You then use the `hexbin()` function from the {hexbin} package and specify 10 bins in the x direction to count the number of events in each hexagon and assign the result to the object `hbin`.
-```{r}
-if(!require(hexbin)) install.packages(pkgs = "hexbin", repos = "http://cran.us.r-project.org")
-
-x <- rnorm(20000)
-y <- rnorm(20000)
-hbin <- hexbin::hexbin(x, y, xbins = 10) 
-str(hbin)
-```
-
-The {hexbin} package uses S4 data classes so the output is stored in slots. Use the `plot()` method to make a graph.
-```{r}
-plot(hbin)
-```
-
-Hexagons have symmetric nearest neighbors (there is only rook contiguity). They have the most sides of any polygon that can tessellate the plane. They are generally more efficient than rectangles at covering the events. In other words it takes fewer of them to cover the same number of events. They are visually less biased for displaying local event intensity compared to squares/rectangles.
-
-Here you generate a large number of random events in the two-dimensional plane. Use a normal distribution in the x-direction and a student t-distribution in the y-direction.
-```{r}
-set.seed(131)
-x <- rnorm(7777)
-y <- rt(7777, df = 3)
-hbin2 <- hexbin::hexbin(x, y, xbins = 25)
-plot(hbin2)
-```
-
-The {ggplot2} package has the `stat_binhex()` function so that also can be used for display.
-```{r}
-df <- data.frame(x, y)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  stat_binhex()
-```
-
-Another way to quantify the spatial intensity is with kernel density estimation (KDE). Let $s_i$ for $i$ = 1...$n$ be event locations, then an estimate for the intensity of the events at any location $s$ is given by
-
-$$
-\hat \lambda (s) = \frac{1}{nh}\sum_{i=1}^nK\Big(\frac{s - s_i}{h}\Big)
-$$
-where $K()$ is the kernel function and $h > 0$ is a smoothing parameter called the bandwidth. Typically the kernel function is a Gaussian probability density function.
-
-To help visualize KDE you generate 25 event locations (`el`) uniformly on the real number line representing a one-dimensional spatial domain between 0 and 1 and then use kernel density estimation to get a continuous intensity function. The density estimation is is done using the function `density()` and here you compare the intensity function for increasing bandwidths specified with the `bw =` argument.
-```{r}
-el <- runif(25)
-dd1 <- density(el, bw = .025)
-dd2 <- density(el, bw = .05)
-dd3 <- density(el, bw = .1)
-df <- data.frame(x = c(dd1$x, dd2$x, dd3$x), 
-                 y = c(dd1$y, dd2$y, dd3$y),
-                bw = c(rep("h = .025", 512), 
-                       rep("h = .05", 512),
-                       rep("h = .1", 512)))
-df2 <- data.frame(x = el, y = 0)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  geom_line() +
-  facet_wrap(~ bw, nrow = 3) +
-  geom_point(mapping = aes(x, y), 
-             data = df2, 
-             color = "red")
-```
-
-As the bandwidth increases the curve (black line) representing the local intensity becomes smoother. The intensity is estimated at every location, not just at the location of the event. 
-
-The density is a summation of the kernels with one kernel centered on top of each event location. Event locations are marked with a point along the x-axis and the kernel is a Gaussian probability density function. The kernel is placed on each event and the bandwidth specifies the distance between the inflection points of the kernel. The one-dimensional KDE extends to two (or more) dimensions.
-
-Example: The distribution of trees in a tropical forest
-
-The object `bei` is a planar point pattern object from the {spatstat} package containing the locations of trees in a tropical rain forest.
+To make comparisons between the two point pattern data (one observed events and the other simulated) easier you use the `superimpose()` function to create a single `ppp` object and assign to `Z` marks `Y` and `X`. Then plot the two intensity rasters split by mark type.
 
 ```{r}
-summary(bei)
-```
+Z <- superimpose(Y = Y, 
+                 X = X)
 
-There are 3604 events (trees) over an area of 500,000 square meters giving an average intensity of .0073 trees per unit area.
-
-The distribution of trees is not uniform (heterogeneous) as can be seen with a plot
-```{r}
-plot(bei)
-```
-
-The plot shows clusters of trees and large areas with few if any trees.
-
-Elevation and elevation slope are factors associated with tree occurrence.
-
-The point pattern data is accompanied by data (`bei.extra`) on elevation (`elev`) and slope of elevation (`grad`) across the region.
-
-```{r}
-plot(bei.extra)
-```
-
-These data are stored as `im` (image) objects. 
-```{r}
-class(bei.extra$elev)
-```
-
-The image object contains a list with 10 elements including the matrix of values (`v`).
-```{r}
-str(bei.extra$elev)
-```
-
-Specifying a spatial domain (window) allows focuses the analysis on a particular region. Suppose you want to model locations of a certain tree type, but only for trees located at elevations above 145 meters. The `levelset()` function creates a window from an image object using `thresh =` and `compare =` arguments.
-```{r}
-W <- levelset(bei.extra$elev, 
-              thresh = 145, 
-              compare = ">")
-class(W)
-```
-
-The result is an object of class `owin`. The plot method displays the window as a mask, which is the region in black.
-```{r}
-plot(W)
-```
-
-You subset the `ppp` object by the window using the bracket operator (`[]`). Here you assign the reduced `ppp` object to `beiW` and then make a plot.
-```{r}
-beiW <- bei[W]
-plot(beiW)
-```
-
-Now the analysis window is white and the event locations are plotted on top.
-
-As another example you create a window where altitude is lower than 145 m and slope exceeds .1 degrees. In this case you use the `solutionset()` function. 
-```{r}
-V <- solutionset(bei.extra$elev <= 145 & 
-                 bei.extra$grad > .1)
-beiV <- bei[V]
-plot(beiV)
-```
-
-You compute the spatial intensity function over the domain with the `density()` method using the default Gaussian kernel and fixed bandwidth determined by the window size.
-```{r}
-beiV |>
+Z |>
+  split() |>
   density() |>
   plot()
 ```
 
-The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid ($v$) and are returned as a pixel image.
+The range of local intensity variations is similar. So we don't have much evidence against the null model of CSR as defined by a homogeneous Poisson process.
 
-There are over 16K of the cells that have a value of `NA` as a result of the masking by elevation and slope.
+## Estimating spatial intensity as a function of distance {.unnumbered}
+
+Are tornado reports more common in the vicinity of towns?
+
+Based on domain specific knowledge of how these data were collected you suspect that tornado reports will cluster near cities and towns. This is especially true in the earlier years of the record.
+
+This understanding is available from the literature on tornadoes (not from the data) and it is a well-known artifact of the data set, but it had never been quantified until 2013 in a paper we wrote. <http://myweb.fsu.edu/jelsner/PDF/Research/ElsnerMichaelsScheitlinElsner2013.pdf>.
+
+How was this done? You estimate of the spatial intensity of the observed tornado reports as a function of distance from nearest town and compare that estimate with an estimate of the spatial intensity as a function of distance using randomly placed events across the state.
+
+First get the city locations from the `us_cities()` function in the {USAboundaries} package. Exclude towns with fewer than 1000 people and transform the geometry to that of the tornado locations.
+
 ```{r}
-den <- beiV |>
-  density()
-
-sum(is.na(den$v))
+C.sf <- USAboundaries::us_cities() |>
+  dplyr::filter(population >= 1000) |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf))
 ```
+
+Create a `ppp` object of events from the city/town locations in the simple feature data frame. Remove the marks and include only events inside the window object (`KS.own`). Convert the distance unit from meters to kilometers.
+
+```{r}
+C.ppp <- C.sf |>
+  as.ppp() |>
+  unmark()
+
+C.ppp <- C.ppp[KS.win] |>
+  spatstat.geom::rescale(s = 1000,
+                         unitname = "km")
+plot(C.ppp)
+```
+
+Next compute a 'distance map'. A distance map for a spatial domain A is a function $f(s)$ whose value is defined for any point $s$ as the shortest distance from $s$ to any event location in A.
+
+This is done with the `distmap()` function and the points are the intersections of a 128 x 128 rectangular grid.
+
+```{r}
+Zc <- distmap(C.ppp)
+plot(Zc)
+```
+
+The result is an object of class `im` (image raster). Distances are in kilometers. Most points in Kansas are less than 50 km from the nearest town (reds and blues) but some points are more than 80 km away (yellow).
+
+Other distance functions include `pairdist()`, which is the pairwise distance between all event pairs and `crossdist()`, which is the distance between events from two point patterns. The `nndist()` computes the distance between an event and its nearest neighbor event.
+
+The distance map (distance from any point in Kansas to the nearest town) is used to quantify the population bias in the tornado records.
+
+This is done with `rhohat()` which estimates the smoothed spatial intensity as a function of some explanatory variable. The relationship between spatial intensity and an explanatory variable is sometimes called a 'resource selection' function (if the events are organisms and the variable is a descriptor of habitat) or a 'prospectivity index' (if the events are mineral deposits and the variable is a geological variable).
+
+The method assumes the events are a realization from a Poisson process with intensity function $\lambda(u)$ of the form
+
+$$
+\lambda(u) = \rho[Z(u)]
+$$
+
+where $Z$ is the spatial explanatory variable (covariate) function (with continuous values) and $\rho(z)$ is a function to be estimated.
+
+The function does not assume a particular form for the relationship between the point pattern and the variable (thus it is said to be 'non-parametric').
+
+Here you use `rhohat()` to estimate tornado report intensity as a function of distance to nearest city.
+
+The first argument in `rhohat()` is the `ppp` object for which you want the intensity estimate and the `covariate =` argument is the spatial variable, here as object of class `im`. By default kernel smoothing is done using a fixed bandwidth. With `method = "transform"` a variable bandwidth is used.
+
+```{r}
+rhat <- rhohat(Y, 
+               covariate = Zc,
+               method = "transform")
+
+class(rhat)
+```
+
+The resulting object (`rhat`) has three classes including a data frame. The data frame contains the explanatory variable as a single vector (`Zc`), an estimate of the intensity at the distances (`rho`), the variance (`var`) and upper (`hi`) and lower (`lo`) uncertainty values (point-wise).
+
+```{r}
+rhat |>
+  data.frame() |>
+  head()
+```
+
+Here you put these values into a new data frame (`df`) multiplying the intensities by 10,000 (so areal units are 100 sq. km) then use `ggplot()` method with a `geom_ribbon()` layer to overlay the uncertainty band.
+
+```{r}
+df <- data.frame(dist = rhat$Zc, 
+                 rho = rhat$rho * 10000, 
+                 hi = rhat$hi * 10000, 
+                 lo = rhat$lo * 10000)
+
+library(ggplot2)
+
+ggplot(data = df) +
+  geom_ribbon(mapping = aes(x = dist, ymin = lo , ymax = hi), alpha = .3) +
+  geom_line(mapping = aes(x = dist, y = rho), color = "red") +  
+  geom_hline(yintercept = intensity(Y) * 10000, color = "blue") +
+  scale_y_continuous(limits = c(0, 100)) +
+  ylab("Tornado reports (EF1) per 100 sq. km") +
+  xlab("Distance from nearest town center (km)") +
+  theme_minimal()
+```
+
+The vertical axis on the plot is the tornado report intensity in units of number of reports per 100 square kilometers. The horizontal axis is the distance to nearest town in km. The red line is the average spatial intensity as a function of distance from nearest town. The 95% uncertainty band about this estimate is shown in gray.
+
+At points close to the town center tornado reports are high relative to at points far from town. The blue line is the average intensity across the state computed with the `intensity()` function and scaled appropriately. At points within about 15 km the tornado report intensity is above the statewide average intensity. At points greater than about 60 km the report intensity is below the statewide average.
+
+At zero distance from a town, this number is more than 1.7 times higher (85 tornadoes per 100 sq. km). The spatial scale is about 15 km (distance along the spatial axis where the red line falls below the blue line).
+
+At this point in the analysis you need to think that although the plot look reasonable based on your expectations of a population bias in the tornado reports (more reports near cities/towns), could this result be an artifact of the smoothing algorithm?
+
+You need to know how to apply statistical tools to accomplish specific tasks. But you also need to be a bit skeptical of the tool's outcome. The skepticism provides a critical check against being fooled by randomness.
+
+As an example, the method of computing the spatial intensity as a function of a covariate should give you a different answer if events are randomly distributed. If the events are randomly distributed, what would you expect to find on a plot such as this?
+
+You already generated a set of events from a homogeneous Poisson model so you can check simply by applying the `rhohat()` function to these events using the same set of city/town locations.
+
+```{r}
+rhat0 <- rhohat(X, 
+                covariate = Zc,
+                method = "transform")
+df <- data.frame(dist = rhat0$Zc, 
+                 rho = rhat0$rho * 10000, 
+                 hi = rhat0$hi * 10000, 
+                 lo = rhat0$lo * 10000)
+ggplot(df) +
+  geom_ribbon(aes(x = dist, ymin = lo , ymax = hi), alpha = .3) +
+  geom_line(aes(x = dist, y = rho), color = "red") +  
+  geom_hline(yintercept = intensity(Y) * 10000, color = "blue") +
+  scale_y_continuous(limits = c(0, 100)) +
+  ylab("Random events per 100 sq. km") +
+  xlab("Distance from nearest town center (km)") +
+  theme_minimal()
+```
+
+As expected, the number of random events near cities/towns is not higher than the number of random events at greater distances. The difference between the two point pattern data sets can be explained by the clustering of actual tornado reports in the vicinity of towns.
+
+## Intensity trend as a possible confounding factor {.unnumbered}
+
+Quantifying the report bias with the spatial intensity function works well for Kansas where there is no trend in the local intensity. Local tornado intensity is largely uniform across Kansas.
+
+Things are different in Texas where a significant intensity trend makes it more difficult to estimate the report bias.
+
+Convert the tornado reports (EF1 or worse) occurring over Texas as a `ppp` object. Use a Texas-centric Lambert conic conformal projection.
+
+```{r}
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
+  sf::st_transform(crs = 3082) |>
+  dplyr::filter(mag >= 0)
+
+T.ppp <- Torn.sf |>
+  as.ppp()
+
+W <- USAboundaries::us_states(states = "Texas") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)) |>
+  as.owin()
+
+( T.ppp <- T.ppp[W] |>
+    spatstat.geom::rescale(s = 1000, 
+                           unitname = "km") )
+intensity(T.ppp)
+```
+
+There are 8,932 tornado reports. The distance unit is kilometer. The average intensity is .013 events per square kilometer over this 71-year period (1950-2020).
+
+Next plot the local intensity using a kernel smoother.
+
+```{r}
+T.ppp |>
+  density() |>
+  plot()
+```
+
+There is a clear trend of tornado reports from a low number of reports in the southwest part of the state along the Rio Grande to a high number of reports in the northeast part of the state. The statewide average intensity of .013 tornado reports per square km is too high in southwest and too low in the northern.
+
+Next compute and plot the spatial intensity as a smoothed function of distance to nearest town or city. Start by removing the marks on the tornado events assigning the unmarked `ppp` object to `Tum.ppp`. Then create a `ppp` object from the city/town locations and subset the tornado events by the window.
+
+```{r}
+Tum.ppp <- T.ppp |>
+  unmark()
+
+C.ppp <- C.sf |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)) |>
+  as.ppp() |>
+  unmark()
+
+C.ppp <- C.ppp[W] |>
+  spatstat.geom::rescale(s = 1000,
+                         unitname = "km")
+```
+
+Next create a distance map of the city/town locations using the `distmap()` function.
+
+```{r}
+Zc <- distmap(C.ppp)
+plot(Zc)
+```
+
+Finally, compute the intensity of tornadoes as a smoothed function of distance to nearest town/city with the `rhohat()` function. Prepare the output and make a plot.
+
+```{r}
+rhat <- rhohat(Tum.ppp, 
+               covariate = Zc,
+               method = "transform")
+
+data.frame(dist = rhat$Zc, 
+           rho = rhat$rho, 
+           hi = rhat$hi, 
+           lo = rhat$lo) |>
+ggplot() +
+  geom_ribbon(aes(x = dist, ymin = lo , ymax = hi), alpha = .3) +
+  geom_line(aes(x = dist, y = rho), color = "red") +  
+  scale_y_continuous(limits = c(0, NA)) +
+  geom_hline(yintercept = intensity(Tum.ppp), color = "blue") +
+  ylab("Tornado reports per sq. km") +
+  xlab("Distance from nearest town center (km)") +
+  theme_minimal()
+```
+
+The plot shows that the intensity of the tornado reports is much higher than the average intensity in the vicinity of towns and cities. Yet caution needs to exercised in the interpretation because the trend of increasing tornado reports moving from southwest to northeast across the state is mirrored by the trend in the occurrence of cities/towns. There are many fewer towns in the southwestern part of Texas compared to the northern and eastern part of the state.
+
+You can quantify this effect by specifying a function in the `covariate =` argument. Here you specify a planar surface with `x,y` as arguments and `x + y` inside the function. Here you use the `plot()` method on the output (instead of creating a data frame and using `ggplot()`).
+
+```{r}
+plot(rhohat(Tum.ppp, 
+            covariate = function(x,y){x + y},
+            method = "transform"),
+     main = "Spatial intensity trend of tornadoes")
+```
+
+Local intensity increases along the axis labeled `X` starting at a value of 7,400. At value of `X` equal to about 8,200 the spatial intensity stops increasing.
+
+Units along the horizontal axis are kilometers but the reference (intercept) distance is at the far left. So you interpret the increase in spatial intensity going from southwest to northeast as a change across about 800 km (8200 - 7400).
+
+The local intensity of cities has the same property (increasing from southwest to northeast then leveling off). Here you substitute `C.ppp` for `Tum.ppp` in the `rhohat()` function.
+
+```{r}
+plot(rhohat(C.ppp, 
+            covariate = function(x,y){x + y},
+            method = "transform"),
+     main = "Spatial intensity trend of cities")
+```
+
+So the population bias towards more reports near towns/cities is potentially confounded by the fact that there tends to be more cities and towns in areas that have conditions more favorable for tornadoes.
+
+Thus you can only get so far by examining intensity estimates. If your interest lies in inferring the causes of spatial variation in the intensity you will need to look at second order (clustering) properties of the events.
