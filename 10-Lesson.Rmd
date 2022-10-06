@@ -110,6 +110,7 @@ Note you do not interpret _no_ evidence as _no_ autocorrelation.
 Under the assumption of normal distributed and uncorrelated data, the expected value for Moran's I is -1/(n-1) where n is the number of regions. 
 
 A check on the distribution of unemployment rates indicates that normality is somewhat suspect. A good way to check the normality assumption is to use the `sm::sm.density()` function from the {sm} package.
+
 ```{r}
 if(!require(sm)) install.packages("sm", repos = "http://cran.us.r-project.org")
 
