@@ -41,7 +41,7 @@ The model statistically explains 55% of the variation in crime as is seen by loo
 
 Looking at the coefficients (values under the `Estimate` column), you see that _higher_ incomes are associated with _lower_ values of crime (negative coefficient) and _higher_ housing values are associated with _lower_ crime. For every one unit increase in income, crime values decrease by 1.6 units.
 
-Use the `residuals()` method to extract the vector of residuals from the model.
+Use the `residuals()` method to extract the vector of residuals from the model object.
 
 ```{r}
 ( res <- residuals(model.ols) )
@@ -116,7 +116,7 @@ The equation for a regression model in vector notation is
 $$
 y = X \beta + \varepsilon
 $$
-where $y$ is a $n$ by 1 vector of response variable values, $X$ is a $n$ by $p+1$ matrix containing the explanatory variables and augmented by a column of ones for the intercept term, $\beta$ is a $p+1$ $\times$ 1 vector of model coefficients and $\varepsilon$ is a $n$ by 1 vector of residuals (iid).
+where $y$ is a $n$ by 1 vector of response variable values, $X$ is a $n$ by $p+1$ matrix containing the explanatory variables and augmented by a column of ones for the intercept term, $\beta$ is a $p+1$ $\times$ 1 vector of model coefficients and $\varepsilon$ is a $n$ by 1 vector of residuals (iid: independent and identically distributed).
 
 A couple options exist if the elements of the vector $\varepsilon$ are correlated. One is to include a spatial lag term so the model becomes
 
@@ -307,7 +307,7 @@ $$
 \hbox{TE} = \left(\frac{\beta_k}{1-\rho^2}\right)\left(1 + \rho\right)
 $$ 
 
-where $\beta_k$ is the marginal effect of variable $k$ and $\rho$ is the spatial autocorrelation coefficient. With $\rho = 0$ TE is $\beta_k$.
+where $\beta_k$ is the effect of variable $k$ and $\rho$ is the spatial autocorrelation coefficient. With $\rho = 0$ TE is $\beta_k$.
 
 Here $\beta_{INC}$ is -1.0487 and $\rho$ is .4233, so the total effect is
 
@@ -469,7 +469,7 @@ In 32 out of the 49 tracts the residuals from the spatial model are smaller than
 Another spatial regression option is to modify the linear model to include spatially-lagged explanatory variables. This is called the spatially-lagged X model. 
 
 $$
-y = X \beta + WX \theta + \varepsilon
+y = X \beta + XW \theta + \varepsilon
 $$
 
 In this case the weights matrix is (post) multiplied by the matrix of X variables where $W$ is again the weights matrix and $\theta$ is a vector of coefficients for each lagged explanatory variable.
