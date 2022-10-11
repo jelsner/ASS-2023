@@ -12,16 +12,22 @@ Today
 
 ## Estimating spatial autocorrelation in model residuals {.unnumbered}
 
-A spatial regression model should be entertained for your data whenever the residuals from an ordinary-least-squares (OLS) regression model exhibit significant spatial autocorrelation. First fit an OLS regression model regressing the response variable onto the explanatory variables and then check for autocorrelation in the residuals. If there is significant spatial autocorrelation in the residuals then a spatial regression model should be considered.
+A spatial regression model should be entertained for your data whenever the residuals from an ordinary-least-squares (OLS) regression model exhibit significant spatial autocorrelation. 
 
-Consider again the crime data at the tract level in the city of Columbus, Ohio. The tract polygons are projected with arbitrary spatial coordinates.
+So you first fit an OLS regression model regressing the response variable onto the explanatory variables and then check for autocorrelation in the residuals. If there is significant spatial autocorrelation in the residuals then you should consider some type of spatial regression model.
+
+Consider again the crime data at the tract level in the city of Columbus, Ohio.
 
 ```{r}
 CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
                      layer = "columbus")
 ```
 
-Fit an OLS regression model with `CRIME` as the response variable and `INC` and `HOVAL` as the explanatory variables. At the level of tracts, how well does income and house prices statistically explain the amount of crime?
+`CRIME` is the response variable and `INC` and `HOVAL` as the explanatory variables. How well do these two explanatory variables statistically explain the amount of crime at the tract level?
+
+An answer to this question is obtained by regressing crime onto income and housing values. Here you use the `lm()` function and save the results to the object `model.ols`.
+
+Set the formula, then use the formula as the first argument in the `lm()` function. Summarize the results with the `summary()` method.
 
 ```{r}
 f <- CRIME ~ INC + HOVAL
@@ -31,14 +37,17 @@ model.ols <- lm(f,
 summary(model.ols)
 ```
 
-The model statistically explains 55% of the variation in crime as can be seen by the multiple R-squared value. Looking at the coefficients (values under the `Estimate` column), you see that _higher_ incomes are associated with _lower_ values of crime (negative coefficient) and _higher_ housing values are associated with _lower_ crime. For every one unit increase in income, crime values decrease by 1.6 units.
+The model statistically explains 55% of the variation in crime as is seen by looking at the multiple R-squared value. 
+
+Looking at the coefficients (values under the `Estimate` column), you see that _higher_ incomes are associated with _lower_ values of crime (negative coefficient) and _higher_ housing values are associated with _lower_ crime. For every one unit increase in income, crime values decrease by 1.6 units.
 
 Use the `residuals()` method to extract the vector of residuals from the model.
+
 ```{r}
 ( res <- residuals(model.ols) )
 ```
 
-There are 49 residuals one for each tract. The residuals are the difference between the observed crime rates and the predicted crime rates (observed - predicted). A residual that has a value greater than 0 indicates that the model _under_ predicts the observed crime rate in that tract and a residual that has a value less than 0 indicates that the model _over_ predicts the observed crime rate.
+There are 49 residuals, one for each tract. The residuals are the difference between the observed crime rates and the predicted crime rates (observed - predicted). A residual that has a value greater than 0 indicates that the model _under_ predicts the observed crime rate in that tract and a residual that has a value less than 0 indicates that the model _over_ predicts the observed crime rate.
 
 A normal distribution should be a good approximation to the distribution of the residuals. You check this with the `sm::sm.density()` function with the first argument the vector of residuals (`res`) and the argument `model =` set to "Normal".
 
