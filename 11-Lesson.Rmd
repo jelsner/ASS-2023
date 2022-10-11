@@ -524,9 +524,11 @@ summary(model.slxm)$r.squared
 
 The spatially lagged model has an R squared value that is higher than the R squared value from the linear regression.
 
-A workflow for finding the correct spatial model is to consider both the spatial Durbin error model and the spatial Durbin model.
+Another way to find the correct spatial model is to consider both the spatial Durbin error model and the spatial Durbin model.
 
-The spatial Durban error model (SDEM) is a spatial error model with a spatially-lagged X term added. To fit a SDEM use the `spatialreg::errorsarlm()` function but include the argument `etype = "emixed"` to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (`"W"`).
+The spatial Durban error model (SDEM) is a spatial error model with a spatially-lagged X term added. 
+
+To fit a SDEM use the `spatialreg::errorsarlm()` function but include the argument `etype = "emixed"` to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (`"W"`).
 
 ```{r}
 ( model.sdem <- spatialreg::errorsarlm(formula = f, 
@@ -535,7 +537,9 @@ The spatial Durban error model (SDEM) is a spatial error model with a spatially-
                                        etype = "emixed") )
 ```
 
-The spatial Durban model (SDM) is a spatially-lagged Y model with a spatially-lagged X term added to it. To fit a SDM use the `lagsarlm()` function but include the argument `type = "mixed"` to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (`"W"`).
+The spatial Durban model (SDM) is a spatially-lagged Y model with a spatially-lagged X term added to it. 
+
+To fit a SDM use the `lagsarlm()` function but include the argument `type = "mixed"` to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (`"W"`).
 
 ```{r}
 ( model.sdm <- spatialreg::lagsarlm(formula = f, 
