@@ -173,9 +173,9 @@ So a way to check the assumption of a stationary process is to use geographic re
 
 ## Mapping incidence and risk with a spatial regression model {-}
 
-Note: This material is advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate a Bayesian spatial regression framework. I do not expect you to understand all the details.
+Note: This material is quite advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate the spatial regression framework from a Bayesian perspective. I do not expect you to understand all the details nor will I ask you to reproduce any of this as a lab exercise.
 
-Spatial regression models are used in disease mapping where it is common to use a standardized incidence ratio (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Small areas can give extreme SIRs due to low population sizes or small samples. Extreme values of SIRs can be misleading and unreliable for reporting.
+Spatial regression models are used in disease mapping where it is common to compute standardized incidence ratios (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Some areas can give extreme SIRs due to low population sizes or small sample sizes. Extreme values of SIRs can be misleading and unreliable for reporting. This is a big issue in demography.
 
 Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. Spatial regression models incorporate information from neighboring areas and explanatory information resulting in a smoothing of extreme values.
 
