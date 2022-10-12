@@ -4,18 +4,20 @@
 
 Today
 
-- Fitting and interpreting geographic regressions
-- Mapping incidence and risk with spatial regression models
+- Fitting and interpreting geographic regression
+- Mapping incidence and risk with a spatial regression model
 
-## Fitting and interpreting geographic regressions {-}
+## Fitting and interpreting geographic regression {-}
 
-Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit a separate regression model at each geographic location. 
+Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit separate regression models at each geographic location. 
 
-The analogy is a local measure of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). It is called geographically weighted regression (GWR) or simply geographic regression. GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs.
+The analogy is a local measure of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). 
 
-Since GWR fits a separate regression model using data focused at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different from the spatial regression such as the spatially-lagged Y model, which are single models with spatial terms.
+It is called geographically weighted regression (GWR) or simply geographic regression. GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs.
 
-Observations across the entire domain contribute to the model fit at a particular location, but the observations are weighted inversely by their distance to the particular location. At short distances, observations are given the largest weights based on a Gaussian function and a bandwidth. The bandwidth is specified as a single parameter or it is determined through a cross-validation procedure. The bandwidth can also be a function of location.
+Since GWR fits a separate regression model at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different from the spatial regression such as the spatially-lagged Y model, which are single models with spatial terms.
+
+Observations across the entire domain contribute to the model fit at a particular location, but nearby observations are given higher weights than observations farther away. The weighting is based on a Gaussian function (kernel) and a bandwidth. The bandwidth is specified as a single parameter or it is determined through a cross-validation procedure. The bandwidth can also be a function of location.
 
 Said another way, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variables. Geographic regressions show how this dependency varies by location. GWR is used as an exploratory technique for determining where local regression coefficients are different from corresponding global values.
 
@@ -26,7 +28,7 @@ Continuing with the Columbus crime data.
                        layer = "columbus") )
 ```
 
-Start by fitting a 'global' ordinarly least squares (OLS) linear regression to the crime rates using income and housing values, exactly as you did earlier.
+Start by fitting a 'global' ordinary-least-squares (OLS) linear regression to the crime rates using income and housing values, as you did earlier.
 
 ```{r}
 f <- CRIME ~ INC + HOVAL
@@ -62,21 +64,21 @@ To determine the optimal bandwidth for the Gaussian kernel (weighting function) 
                        coords = Locations) )
 ```
 
-The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (guassian by default) and that bandwidth (distance).
+The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (Gaussian by default) and that bandwidth (distance).
 
 The output shows that the first bandwidth chosen was 2.22 in arbitrary distance units. The resulting prediction skill from fitting 49 regression models with that bandwidth is 7474 units. The resulting CV score is based on cross validation whereby skill is computed at each location when data from that location is not used to fit the regression models.
 
-The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score from refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs. 
+The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score after refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs. 
 
 The output shows that no additional improvement in skill occurs at a bandwidth distance of .404 units, and this single value is assigned to the object you called `bw`.
 
 Once the bandwidth distance is determined you use the `spgwr::gwr()` function to fit the regressions using that bandwidth. The arguments are the same as before but includes the `bandwidth =` argument where you specify the object `bw`.
 
 ```{r}
-model.gwr <- gwr(formula = f, 
-                 data = CC.sf, 
-                 coords = Locations,
-                 bandwidth = bw)
+model.gwr <- spgwr::gwr(formula = f, 
+                        data = CC.sf, 
+                        coords = Locations,
+                        bandwidth = bw)
 ```
 
 The model and observed data are assigned to a list object with element names listed using the `names()` function.
@@ -91,12 +93,11 @@ The first element is `SDF` containing the model output as a S4 spatial data fram
 class(model.gwr$SDF)
 ```
 
-See Lesson 7 where S4 spatial data objects were covered.
-
 The structure of the spatial data frame is obtained with the `str()` function and by setting the `max.level` argument to 2. 
 
 ```{r}
-str(model.gwr$SDF, max.level = 2)
+str(model.gwr$SDF, 
+    max.level = 2)
 ```
 
 Here there are five slots with the first slot labeled `@data` indicating that it is a data frame. The number of rows and columns in the data frame are listed with the `dim()` function.
@@ -114,6 +115,7 @@ names(model.gwr$SDF)
 They include the sum of the weights `sum.w` (the larger the sum the more often the tract is included in the local regressions--favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the  explanatory variables (`INC` and `HOVAL`) and an intercept term, the residual (`gwr.e`), the predicted value (`pred`) and the local goodness-of-fit (`localR2`).
 
 You create a map displaying where income has the most and least influence on crime by first adding the income coefficient from the data frame (column labeled `INC`) to the simple feature data frame since the order of the rows in the `SDF` matches the order in the simple feature data frame and then using functions from the {ggplot2} package.
+
 ```{r}
 CC.sf$INCcoef <- model.gwr$SDF$INC
 
@@ -144,11 +146,12 @@ You put the vector of GWR predictions into the `CC.sf` simple feature data frame
 CC.sf$predGWR <- model.gwr$SDF$pred
 
 tmap::tm_shape(CC.sf) +
-  tmap::tm_fill("predGWR", title = "Predicted crimes\nper 1000") +
+  tmap::tm_fill("predGWR",
+                title = "Predicted crimes\nper 1000") +
   tmap::tm_layout(legend.outside = TRUE)
 ```
 
-The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also a smoother than with a global OLS regression.
+The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also smoother than with a global OLS regression.
 
 Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models.
 
@@ -164,9 +167,11 @@ Although crime rates are highest in the center, the relationship between crime a
 
 This type of nuanced exploratory analysis is made possible with GWR.
 
-Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables 'provoke' the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals. One way to check the assumption of a stationary process is to use geographic regression.
+Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables 'provoke' the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals. 
 
-## Mapping incidence and risk with spatial regression models {-}
+So a way to check the assumption of a stationary process is to use geographic regression. If the coefficients from the geographic regressions match closely the global coefficients then you can assume a stationary process.
+
+## Mapping incidence and risk with a spatial regression model {-}
 
 Spatial regression models are used in disease mapping where it is common to use a standardized incidence ratio (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Small areas can give extreme SIRs due to low population sizes or small samples. Extreme values of SIRs can be misleading and unreliable for reporting.
 
@@ -203,7 +208,8 @@ When applied to mortality data, the ratio is known as the standardized mortality
 
 The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+). 
 
-You compute the number of cases for all the strata together in each county by aggregating the rows of the data frame by county and adding up the number of cases.
+You compute the number of cases for all the strata (groups) together in each county by aggregating the rows of the data frame by county and adding up the number of cases.
+
 ```{r}
 ( County.df <- SpatialEpi::pennLC$data |>
   dplyr::group_by(county) |>
@@ -228,7 +234,7 @@ Then you get the expected counts (E) in each county by calling the `SpatialEpi::
                             n.strata = 16) )
 ```
 
-Now you add the observed count `Y`, the expected count `E` the computed SIR to the simple feature data frame `LC.sf` and make a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.
+Now you include the observed count `Y`, the expected count `E`, and the computed SIR into the simple feature data frame `LC.sf` before making a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.
 ```{r}
 LC.sf <- LC.sf |>
   dplyr::mutate(Y = County.df$Y,
@@ -246,7 +252,7 @@ ggplot(LC.sf) +
 
 In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. In counties with SIR > 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR < 1 (blue) have fewer cancer cases observed than expected.
 
-In regions with few people the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring areas, and incorporate explanatory information. This results in smoothing (shrinkage) of extreme values.
+In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring areas and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values.
 
 Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept that models the overall disease risk level, and random effects to account for local variability.
 
@@ -259,7 +265,13 @@ Y \sim \hbox{Poisson}(E\theta) \\
 \log(\theta) = \alpha + u + v
 $$
 
-The parameter $\alpha$ is the overall risk in the region of study, $u$ is the spatially structured random effect representing the dependency in risk across neighboring areas, and $v$ is the uncorrelated random noise modeled as $v \sim N(0, \sigma_v^2)$.
+The parameter $\alpha$ is the overall risk in the region of study, $u$ is the spatially structured random effect representing the spatial autocorrelation in risk across neighboring areas, and $v$ is the uncorrelated random noise modeled as 
+
+$$
+v \sim N(0, \sigma_v^2)
+$$
+
+Note: here the approach is to assume spatial autocorrelation.
 
 It is common to include explanatory variables to quantify risk factors (e.g., distance to nearest coal plant). Thus the log($\theta$) is expressed as
 
@@ -314,9 +326,14 @@ Create a graph object from a neighbor list object. Write the neighbor list objec
 
 ```{r}
 nb <- spdep::poly2nb(LC.sf)
+
 spdep::nb2INLA(file = here::here("data", "map.adj"), nb)
+
 g <- INLA::inla.read.graph(filename = here::here("data", "map.adj"))
+
 class(g)
+
+str(g)
 ```
 
 You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions.
@@ -352,8 +369,13 @@ These relative risk values are smoother and muted in absolute magnitude compared
 More on this topic is available from
 
 - https://www.paulamoraga.com/book-geospatial/index.html
+
+Paula Moraga's book is an excellent resource for fitting spatial data models using R.
+
 - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895
 
-The second source is a paper we published addressing long and short term views of tornado risk across the eastern half of the United States.
+An application of the CAR model to estimate tornado risk across the United States.
 
-An online book on Bayesian statistics using R is available here https://www.bayesrulesbook.com/
+https://www.bayesrulesbook.com/
+
+An online book on Bayesian statistics using R.
