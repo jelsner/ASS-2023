@@ -173,11 +173,15 @@ So a way to check the assumption of a stationary process is to use geographic re
 
 ## Mapping incidence and risk with a spatial regression model {-}
 
+Note: This material is advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate a Bayesian spatial regression framework. I do not expect you to understand all the details.
+
 Spatial regression models are used in disease mapping where it is common to use a standardized incidence ratio (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Small areas can give extreme SIRs due to low population sizes or small samples. Extreme values of SIRs can be misleading and unreliable for reporting.
 
-Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. Spatial regression models incorporate information from neighboring areas and explanatory information. The result is a smoothing (shrinking) of extreme values.
+Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. Spatial regression models incorporate information from neighboring areas and explanatory information resulting in a smoothing of extreme values.
 
-Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object `pennLC` with element name `spatial.polygon`. Change the native spatial polygons S4 object to an S3 simple feature data frame using the `sf::st_as_sf()` function and display a map of the county borders.
+Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object `pennLC` with element name `spatial.polygon`. 
+
+First change the native spatial polygons S4 object to an S3 simple feature data frame using the `sf::st_as_sf()` function and display a map of the county borders.
 
 ```{r}
 if(!require(SpatialEpi)) install.packages("SpatialEpi", repos = "http://cran.us.r-project.org")
@@ -216,7 +220,9 @@ You compute the number of cases for all the strata (groups) together in each cou
   dplyr::summarize(Y = sum(cases)) )
 ```
 
-You then calculate the expected number of cases in each county using indirect standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves. You do this by using the `SpatialEpi::expected()` function. The function has three arguments including `population` (vector of population counts for each strata in each area), `cases` (vector with the number of cases for each strata in each area), and `n.strata` (number of strata).
+You then calculate the expected number of cases in each county using indirect standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves. 
+
+You do this by using the `SpatialEpi::expected()` function. The function has three arguments including `population` (vector of population counts for each strata in each area), `cases` (vector with the number of cases for each strata in each area), and `n.strata` (number of strata).
 
 The vectors `population` and `cases` need to be sorted by area first and then, within each area, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the `dplyr::arrange()` function.
 
@@ -235,6 +241,7 @@ Then you get the expected counts (E) in each county by calling the `SpatialEpi::
 ```
 
 Now you include the observed count `Y`, the expected count `E`, and the computed SIR into the simple feature data frame `LC.sf` before making a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.
+
 ```{r}
 LC.sf <- LC.sf |>
   dplyr::mutate(Y = County.df$Y,
@@ -254,7 +261,7 @@ In counties with SIR = 1 (white) the number of cancer cases observed is the same
 
 In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring areas and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values.
 
-Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept that models the overall disease risk level, and random effects to account for local variability.
+Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept (that accounts for the overall disease risk level) and random effects (that account for local variability).
 
 The relative risk quantifies whether an area has a higher ($\theta > 1$) or lower ($\theta < 1$) risk than the average risk in the population. For example if $\theta_i = 2$, then the risk in area $i$ is twice the average risk in the population.
 
@@ -271,7 +278,7 @@ $$
 v \sim N(0, \sigma_v^2)
 $$
 
-Note: here the approach is to assume spatial autocorrelation.
+Note: here the approach is to _assume_ spatial autocorrelation.
 
 It is common to include explanatory variables to quantify risk factors (e.g., distance to nearest coal plant). Thus the log($\theta$) is expressed as
 
@@ -281,17 +288,23 @@ $$
 
 where $X$ are the explanatory variables and $\beta$ are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor $\exp(\beta)$, holding the other variables constant.
 
-A popular form for the combined spatially structured random effect and the uncorrelated random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregression distribution to $u$ as
+A popular form for the spatially structured random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregression distribution to $u$ as
 
 $$
 u | u_{j \ne i} \sim N(\bar u_{\delta}, \frac{\sigma_u^2}{n_{\delta}})
 $$
 
-where $\bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}$ and where $\delta_i$ is the set of neighbors of area $i$ and $n_{\delta_i}$ is the number of neighbors of area $i$.
+where 
+$$
+\bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}
+$$ 
+and where $\delta_i$ is the set of $n_{\delta_i}$ neighbors of area $i$.
 
 In words, the logarithm of the disease incidence rate in area $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution.
 
-The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk. This is done with functions in the {INLA} package. You get the package (it is not on CRAN) as follows.
+The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk. 
+
+This is done with functions from the {INLA} package. You get the package (it is not on CRAN) as follows.
 
 ```{r eval=FALSE}
 options(timeout = 120)
@@ -310,11 +323,12 @@ The formula includes the response in the left-hand side, and the fixed and rando
 
 The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `IDu` and equal to c(1, 2, ..., I), where I is the number of regions (here the number of counties) and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
 
-The formula also includes an uncorrelated random effect with index variable with name `IDv` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but need to be specified as two different objects since INLA does not allow to include two effects with `f()` that use the same index variable.
+The formula also includes an uncorrelated random effect with index variable with name `IDv` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but both need to be specified separately since INLA does not allow to include two effects with `f()` that use the same index variable.
 
 The BYM model can also be specified with the model "bym" which defines both the spatially structured random effect and the uncorrelated random effect ($u$ and $v$).
 
-You include these two vectors (call them `idu` and `idv`) in the data frame. 
+You include these two vectors (call them `idu` and `idv`) in the data frame.
+
 ```{r}
 LC.sf <- LC.sf |>
   dplyr::mutate(IDu = 1:nrow(LC.sf),
