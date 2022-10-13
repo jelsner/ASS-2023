@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
 # Thursday October 13, 2022 {.unnumbered}
 
 **"We build our computer systems the way we build or cities; over time, without plan, on top of ruins."** – Ellen Ullman
@@ -11,7 +16,7 @@ Today
 
 Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit separate regression models at each geographic location. 
 
-The analogy is a local measure of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). 
+The analogy is local measures of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). 
 
 It is called geographically weighted regression (GWR) or simply geographic regression. GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs.
 
@@ -49,7 +54,11 @@ The `sp` part of the package name indicates that the functions were developed to
 The functions allow you to use S3 simple features by specifying the locations as a matrix. Here you extract the centroid from each census tract as a matrix.
 
 ```{r}
-Locations <- sf::st_coordinates(sf::st_centroid(CC.sf))
+Locations <- CC.sf |>
+  sf::st_centroid() |>
+  sf::st_coordinates()
+
+#Locations <- sf::st_coordinates(sf::st_centroid(CC.sf))
 
 head(Locations)
 ```
@@ -75,49 +84,49 @@ The output shows that no additional improvement in skill occurs at a bandwidth d
 Once the bandwidth distance is determined you use the `spgwr::gwr()` function to fit the regressions using that bandwidth. The arguments are the same as before but includes the `bandwidth =` argument where you specify the object `bw`.
 
 ```{r}
-model.gwr <- spgwr::gwr(formula = f, 
-                        data = CC.sf, 
-                        coords = Locations,
-                        bandwidth = bw)
+models.gwr <- spgwr::gwr(formula = f, 
+                         data = CC.sf, 
+                         coords = Locations,
+                         bandwidth = bw)
 ```
 
 The model and observed data are assigned to a list object with element names listed using the `names()` function.
 
 ```{r}
-names(model.gwr)
+names(models.gwr)
 ```
 
 The first element is `SDF` containing the model output as a S4 spatial data frame.
 
 ```{r}
-class(model.gwr$SDF)
+class(models.gwr$SDF)
 ```
 
 The structure of the spatial data frame is obtained with the `str()` function and by setting the `max.level` argument to 2. 
 
 ```{r}
-str(model.gwr$SDF, 
+str(models.gwr$SDF, 
     max.level = 2)
 ```
 
 Here there are five slots with the first slot labeled `@data` indicating that it is a data frame. The number of rows and columns in the data frame are listed with the `dim()` function.
 
 ```{r}
-dim(model.gwr$SDF)
+dim(models.gwr$SDF)
 ```
 
 There are 49 rows and 7 columns. Each row corresponds to a tract and information about the regressions localized to the tract is given in the columns. Column names are listed with the `names()` function.
 
 ```{r}
-names(model.gwr$SDF)
+names(models.gwr$SDF)
 ```
 
 They include the sum of the weights `sum.w` (the larger the sum the more often the tract is included in the local regressions--favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the  explanatory variables (`INC` and `HOVAL`) and an intercept term, the residual (`gwr.e`), the predicted value (`pred`) and the local goodness-of-fit (`localR2`).
 
-You create a map displaying where income has the most and least influence on crime by first adding the income coefficient from the data frame (column labeled `INC`) to the simple feature data frame since the order of the rows in the `SDF` matches the order in the simple feature data frame and then using functions from the {ggplot2} package.
+You create a map displaying where income has the most and least influence on crime by first attaching the income coefficient from the data frame (column labeled `INC`) to the simple feature data frame since the order of the rows in the `SDF` matches the order in the simple feature data frame and then using functions from the {ggplot2} package.
 
 ```{r}
-CC.sf$INCcoef <- model.gwr$SDF$INC
+CC.sf$INCcoef <- models.gwr$SDF$INC
 
 library(ggplot2)
 
@@ -131,7 +140,7 @@ Most tracts have coefficients with values less than zero. Recall the global coef
 How about the coefficients on housing values?
 
 ```{r}
-CC.sf$HOVALcoef <- model.gwr$SDF$HOVAL
+CC.sf$HOVALcoef <- models.gwr$SDF$HOVAL
 
 ggplot(CC.sf) +
   geom_sf(aes(fill = HOVALcoef)) +
@@ -143,7 +152,7 @@ While the global coefficient is negative indicating crime rates tend to be lower
 You put the vector of GWR predictions into the `CC.sf` simple feature data frame giving it the column name `predGWR` and then map the predictions using functions from the {tmap} package.
 
 ```{r}
-CC.sf$predGWR <- model.gwr$SDF$pred
+CC.sf$predGWR <- models.gwr$SDF$pred
 
 tmap::tm_shape(CC.sf) +
   tmap::tm_fill("predGWR",
@@ -156,7 +165,7 @@ The geographic regressions capture the spatial pattern of crimes across the city
 Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models.
 
 ```{r}
-CC.sf$localR2 <- model.gwr$SDF$localR2
+CC.sf$localR2 <- models.gwr$SDF$localR2
 
 ggplot(CC.sf) +
   geom_sf(aes(fill = localR2)) +
