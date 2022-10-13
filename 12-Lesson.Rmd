@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: inline
----
 # Thursday October 13, 2022 {.unnumbered}
 
 **"We build our computer systems the way we build or cities; over time, without plan, on top of ruins."** – Ellen Ullman
@@ -336,7 +331,7 @@ The formula also includes an uncorrelated random effect with index variable with
 
 The BYM model can also be specified with the model "bym" which defines both the spatially structured random effect and the uncorrelated random effect ($u$ and $v$).
 
-You include these two vectors (call them `idu` and `idv`) in the data frame.
+You include these two vectors (call them `IDu` and `IDv`) in the data frame.
 
 ```{r}
 LC.sf <- LC.sf |>
