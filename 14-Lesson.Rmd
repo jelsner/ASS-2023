@@ -187,7 +187,7 @@ Based on domain specific knowledge of how these data were collected you suspect 
 
 This understanding is available from the literature on tornadoes (not from the data) and it is a well-known artifact of the data set, but it had never been quantified until 2013 in a paper we wrote. <http://myweb.fsu.edu/jelsner/PDF/Research/ElsnerMichaelsScheitlinElsner2013.pdf>.
 
-How was this done? You estimate of the spatial intensity of the observed tornado reports as a function of distance from nearest town and compare that estimate with an estimate of the spatial intensity as a function of distance using randomly placed events across the state.
+How was this done? You estimate the spatial intensity of the observed tornado reports as a function of distance from nearest town and compare that estimate with an estimate of the spatial intensity as a function of distance using randomly placed events across the state.
 
 First get the city locations from the `us_cities()` function in the {USAboundaries} package. Exclude towns with fewer than 1000 people and transform the geometry to that of the tornado locations.
 

@@ -12,7 +12,9 @@ Today
 
 We now turn our attention to analyzing and modeling point pattern data. Starting with some theory, then how to work with functions from the {spatstat} package before focusing on spatial intensity.
 
-We naturally seek to find patterns in a collection of events. The pattern that tends to catch our attention quickly is the grouping of events across space. Stars in the night sky as constellations.  A collection of events in a particular region begs for an explanation. Why do events occur more often in this particular region and not somewhere else?
+As humans we naturally seek patterns in any collection of events. The pattern that tends to quickly catch our attention is the grouping of events across space. Stars in the night sky as constellations. 
+
+A collection of events occurring in a particular region begs for an explanation. Why do events occur more often in this region and not somewhere else?
 
 Consider tornado reports over the past several years in the state of Kansas. Let the start position of a tornado be an _event location_. And let the damage rating (EF scale) provide a _mark_ on the event. Here you consider only events since 2007 with marks of 1, 2, 3, 4, and 5. More about the damage rating scale is available here https://en.wikipedia.org/wiki/Enhanced_Fujita_scale
 
@@ -41,18 +43,25 @@ tmap::tm_layout(legend.position = c("left", "top"),
                 legend.outside = TRUE)
 ```
 
-Based on this display of tornado genesis locations we ask: (1) Are certain areas of the state more (or less) likely to get a tornado? (2) Do tornadoes tend to cluster? (3) Are there places in the state that are safe from tornadoes?
+Based on this map you ask: (1) Are certain areas of the state more (or less) likely to get a tornado? (2) Do tornadoes tend to cluster? (3) Are there places in the state that are safe from tornadoes?
 
-These questions are similar but they are not identical. We will explore these canonical questions about point pattern data in the next few lessons.
+These questions are similar but they are not identical. You will explore these questions about point pattern data in the next few lessons.
 
 To begin it is helpful to have some definitions. 
 
 * Event: An occurrence of interest (e.g., tornado, accident, wildfire). 
+
 * Event location: Location of event (e.g., latitude/longitude).
-* Point: Any location in the study area where an event _could_ occur. Note: Event location is a particular point where an event _did_ occur. In a forest with a lake, the lake is a place where an event could not occur.
+
+* Point: Any location in the study area where an event _could_ occur.
+
+Note: Event location is a particular point where an event _did_ occur. In a forest with a lake, the lake is a place where an event could not occur.
+
 * Point pattern data: A collection of observed (or simulated) event locations together with a domain of interest.
+
 * Domain: Study area that is often defined by data availability (e.g., state or county boundary) or by the extent of the events.
-* Complete spatial randomness: Or CSR (not to be confused with CRS--coordinate reference system) defines the situation where an event has an equal chance of occurring at any point in the domain regardless of other nearby events. In this case we say they event locations have a uniform probability distribution (uniformly distributed) across space. Note: uniform chance does not mean that the events have an ordered pattern (e.g., trees in an orchard).
+
+* Complete spatial randomness: Or CSR (not to be confused with CRS--coordinate reference system) defines the situation where an event has an equal chance of occurring at any point in the domain regardless of other nearby events. In this case you say they event locations have a uniform probability distribution (uniformly distributed) across space. Note: uniform chance does not mean that the events have an ordered pattern (e.g., trees in an orchard).
 
 Consider a set of event locations that are randomly distributed within the unit plane. First create two vectors containing the x and y coordinates, then create a data frame that includes the name of the sample, and finally graph the locations using `ggplot()`.
 
@@ -67,7 +76,7 @@ ggplot(data = df1,
   geom_point(size = 2)
 ```
 
-The plot shows a sample from a spatial point pattern process. A _spatial point process_ is a mechanism for producing a set of event locations across space. The pattern of locations produced by the point process is described as CSR. There are groups of event locations and some gaps. 
+The plot shows a sample from a spatial point pattern process. A _spatial point process_ is a mechanism (physical or synthetic) for producing a set of event locations across space. The pattern of locations produced by the point process is described as CSR. There are groups of event locations and some gaps. 
 
 Let's repeat this process to create three additional samples. First you combine them into a single data frame with the `rbind()` function and then plot a four-panel figure using the `facet_wrap()` function.
 
@@ -91,6 +100,7 @@ ggplot(data = df,
 Groups of nearby events illustrate that a certain degree of _clustering_ occurs by chance (without cause) making visual assessment of causal clustering difficult.
 
 Complete spatial randomness sits on a spectrum between regularity and clustered. To illustrate this idea here you generate point pattern data that have more regularity than CSR and point pattern data that are more clustered than CSR. You do this using the `rMaternI()` and `rMaternClust()` functions from the {spatstat} package.
+
 ```{r}
 m1 <- spatstat.random::rMaternI(kappa = 100, r = .02)
 df1 <- data.frame(x = m1$x, y = m1$y, name = "Regular Pattern 1")
@@ -111,7 +121,7 @@ The difference in the arrangement of event locations between a regular and a clu
 
 And spatial scale matters. A set of event locations can be regular on a small scale but clustered on a larger scale.
 
-Probability models for spatial patterns motivate methods for detecting event clustering. A probability model generates a point pattern process. For example, we can think of crime as a point pattern process defined by location and influenced by environmental factors. The probability of a crime occurring at a particular location is the random variable and we can estimate the probability of a crime event at any location given factors that influence crime. 
+Probability models for spatial patterns motivate methods for detecting event clustering. A probability model generates a point pattern process. For example, you can think of crime as a point pattern process defined by location and influenced by environmental factors. The probability of a crime occurring at a particular location is the random variable and we can estimate the probability of a crime event at any location given factors that influence crime. 
 
 More formally, a spatial point pattern process is a _stochastic_ (statistical) process where event location is the random variable. A sample of the process is a collection of events generated under the probability model.
 
@@ -119,14 +129,17 @@ A spatial point process is said to be _stationary_ if the statistical properties
 
 In the case where the statistical properties are independent of the orientation of event pairs, the process is said to be _isotropic_. 
 
-The properties of stationarity and isotropy allow for replication within a data set. Under the assumption of a stationary process, two event pairs that are separated by the same distance should have the same relatedness. This is analogous to the assumption we make when we define our weights matrix for spatially aggregated data. The assumptions of stationarity and isotropy are starting points for modeling point pattern data. 
+The properties of stationarity and isotropy allow for replication within a data set. Under the assumption of a stationary process, two event pairs that are separated by the same distance should have the same relatedness.
+
+This is analogous to the assumption you make when you define the weights matrix for spatially aggregated data. The assumptions of stationarity and isotropy are starting points for modeling point pattern data. 
 
 The Poisson distribution defines a model for complete spatial randomness (CSR). A point process is said to be 'homogeneous Poisson' under the following two criteria: 
 
-1. The number of events, N, occurring within a finite domain A is a random variable described by a Poisson distribution with mean $\lambda$|A| for some positive constant $\lambda$, with |A| denoting the area of the domain, and 
+1. The number of events, N, occurring within a finite domain A is a random variable described by a Poisson distribution with mean $\lambda$|A| for some positive constant $\lambda$, with |A| denoting the area of the domain, and
+
 2. The locations of the N events represent a random sample where each point in A is _equally likely_ to be chosen as an event location.
 
-The first criteria of a Poisson distribution refers to a probability model describing the number of events. It expresses the probability of a given number of events occurring in a fixed interval of space when the events occur with a known constant rate.
+The first criteria of a Poisson distribution refers to a probability model describing the number of events. It expresses the probability of a given number of events occurring in a fixed interval of space (and time) when the events occur with a known constant rate.
 
 The Poisson parameter defines the _intensity_ of the point process. Given a set of events, an estimate for the mean (rate) parameter of the Poisson distribution is given by the number of events divided by the domain area. 
 
@@ -134,7 +147,8 @@ The second criteria ensures the events are scattered about the domain without cl
 
 The procedure to create a homogeneous Poisson point process follows directly from its definition. Step 1: Sample the total number of events from a Poisson distribution with a mean that is proportional to the domain area. Step 2: Place each event within the domain with coordinates given by a _uniform distribution_.
 
-For example, let area |A| = 1, and the rate of occurrence $\lambda$ = 20, then
+For example, let area |A| = 1, and the rate of occurrence $\lambda$ = 20, then the code below generates a CSR set of events.
+
 ```{r}
 lambda <- 20
 N <- rpois(1, lambda)
@@ -148,54 +162,66 @@ ggplot(data = df,
 
 The set of events represents a sample from a homogeneous Poisson point process. The intensity of the events is specified first then the locations are placed uniformly inside the domain. The domain need not be regular. The actual number of events varies from one realization to the next. On average the number of events is 20 but it could vary between 10 and 35 or more.
 
-This point pattern is CSR by construction. However, you are typically in the opposite position. You observe a set of events and you want to know if the events are regular or clustered. The null hypothesis is CSR and you need a test statistic that will summarize the evidence against this hypothesis. The null models are simple so you can use Monte Carlo methods to generate many samples and compare summary statistics from those samples with your observed data.
+This point pattern is CSR by construction. However, you are typically in the opposite position. You _observe_ a set of events (e.g., tornadoes on the Plains) and you want to know if the events are regular or clustered.
+
+The null hypothesis is CSR and you need a test statistic that will summarize the evidence against this hypothesis. The null models are simple so you can use Monte Carlo methods to generate samples and compare summary statistics from those samples with your observed data.
 
 In some cases the homogeneous Poisson model is not restrictive enough. This means that you can easily reject the null hypothesis but not learn anything interesting about your data. For example, with health events (locations of people with heart disease) CSR is not an appropriate model because a null hypothesis that incidences are equally likely does not consider that people cluster (locations at risk are not uniform).
 
 Each person has the same risk of heart disease regardless of location, and you expect more cases in areas with more people at risk. Clusters of cases in high population areas violate the CSR but not necessarily the constant risk hypothesis. The constant risk hypothesis requires the intensity of the spatial process be defined as a spatially varying function. That is, you define the intensity as $\lambda(s)$, where $s$ denotes location.
 
-The intensity (density) function is a first-order property of the random process. If intensity varies (significantly) across the domain the data-generating process is said to be heterogeneous. The intensity function describes the expected number of events at any location. Events might be independent of one another, but groups of events appear because of the changing intensity.
+The intensity (density) function is a first-order property of the random process. If intensity varies (significantly) across the domain, the data-generating process is said to be heterogeneous. The intensity function describes the expected number of events at any location. Events might be independent of one another, but groups of events appear because of the changing intensity.
 
 ## Working with point pattern objects using functions from the {spatstat} package {-}
 
-The {spatstat} package contains many functions to analyze and model point pattern data. Point pattern data are defined in {spatstat} by an object of class `ppp` (for planar point pattern) which contains the coordinates of the events (event locations), optional values attached to the events (called 'marks'), and a description of the domain or 'window' over which the events are observed. See `?ppp.object()` for details.
+The {spatstat} package contains functions to analyze and model point pattern data. The package is actually a family of packages with different namespace names so it is best to load the package with the `library()` function before beginning.
 
-Spatial statistics computed on a `ppp` object will be somewhat sensitive to the choice of the window (domain), so some thought should go into deciding what window should be used.
+```{r}
+library(spatstat)
+```
+
+Point pattern data are defined in {spatstat} by an object of class `ppp` (for planar point pattern) which contains the coordinates of the events (event locations), optional values attached to the events (called 'marks'), and a description of the domain or 'window' over which the events are observed. See `?ppp.object()` for details.
+
+Spatial statistics computed on a `ppp` object will be somewhat sensitive to the choice of the window (domain), so some thought should go into the choice of your domain.
 
 As an example, the data `swedishpines` is available in the package as a `ppp` object.
-```{r}
-suppressMessages(library(spatstat))
 
+```{r}
 class(swedishpines)
 swedishpines
 ```
 
 The data is a planar point pattern object with 71 events. 
 
-Note: The events in a `ppp` object are called 'points' rather than events. This is in contrast to the theory that defines a point as represented by a _potential_ event not an _observed_ event.
+Note: The events in a `ppp` object are called 'points' rather than events. This is in contrast to the terminology used by the theoreticians who define a point as a _potential_ event not an _observed_ event.
 
 All the events are contained within a rectangle window of size 9.6 by 10 meters.
 
 There is a `plot()` method for `ppp` objects that provides a quick view the data and the domain window.
 
 ```{r}
-plot(swedishpines)
+swedishpines |>
+  plot()
 ```
 
 Events are plotted as open circles inside a box. The plot is labeled with the name of the `ppp` object.
 
-The function `convexhull()` from the {spatstat} package creates a convex hull around the events. A convex hull defines the minimum-area convex polygon that contains all the events. 
+The function `convexhull()` from the {spatstat.geom} package as part of the {spatstat} family of packages creates a convex hull around the events. A convex hull defines the minimum-area convex polygon that contains all the events. 
 
 Here you compute the hull and add it to the plot.
+
 ```{r}
-plot(swedishpines)
-plot(convexhull(swedishpines), 
-     add = TRUE)
+swedishpines |>
+  plot()
+swedishpines |>
+  convexhull() |>
+  plot(add = TRUE)
 ```
 
 The domain (window) for analysis and modeling should be somewhat larger than the convex hull. The function `ripras()` computes a spatial domain based on the event locations alone assuming the locations are independent and identically distributed.
 
 Here you also overlay this polygon on the plot.
+
 ```{r}
 plot(swedishpines)
 plot(convexhull(swedishpines), 
@@ -208,7 +234,7 @@ The window can have an arbitrary shape. A rectangle, a polygon, a collection of 
 
 Each event may carry information called a 'mark'. A mark can be continuous (e.g. tree height) or discrete (tree species).
 
-A multitype point pattern is one in which the events are marked using a factor (e.g., tree species). The mark values are given in a vector of the same length as the vector of locations. That is, `marks[i]` is the mark attached to the location (`x[i]`, `y[i]`).
+Multitype point patterns are point patterns in which the events have a discrete mark (e.g., tree species). The mark values are given in a vector of the same length as the vector of locations. That is, `marks[i]` is the mark attached to the location (`x[i]`, `y[i]`).
 
 Consider the `ppp` object `demopat` from the {spatstat} package.
 
@@ -225,7 +251,9 @@ For a multitype pattern (where the marks are factors) you can use the `split()` 
 data(lansing)
 LW <- lansing
 
-plot(split(LW))
+LW |>
+  split() |>
+  plot()
 ```
 
 ## Quantifying event intensity {-}
@@ -233,7 +261,8 @@ plot(split(LW))
 The average intensity of events is defined as the number of events per unit area of the domain. The `summary()` method applied to a `ppp` object gives the average intensity.
 
 ```{r}
-summary(swedishpines)
+swedishpines |>
+  summary()
 ```
 
 There are 71 events over a window area (spatial domain) of 9600 square units giving an average intensity of 71/9600 = .0074.
@@ -243,29 +272,35 @@ The average intensity might not represent the intensity of events locally. We ne
 Counting the number of events in equal areas is one way. The quadrat method divides the domain into a grid of rectangular cells and the number of events in each cell is counted. Quadrat counting is done with the `quadratcount()` function.
 
 ```{r}
-quadratcount(swedishpines)
+swedishpines |>
+  quadratcount()
 ```
 
 By default the function divides the data into a 5 x 5 grid of cells. The event count in each cell is produced. To change the default number of cells in x and y directions you use the `nx =` and `ny =` arguments.
 
 ```{r}
-quadratcount(swedishpines, 
-             nx = 2, 
-             ny = 3)
+swedishpines |>
+  quadratcount(nx = 2, 
+               ny = 3)
 ```
 
 The plot method applied to the results of the `quadratcount()` functions adds the counts to a plot. Here you add the counts and include the event locations.
 
 ```{r}
-plot(quadratcount(swedishpines))
-plot(swedishpines, pty = 19, col = "red", 
-     add = TRUE, main = "")
+swedishpines |>
+  quadratcount() |>
+  plot()
+swedishpines |>
+  plot(pty = 19, col = "red", 
+       add = TRUE, main = "")
 ```
 
 Grid cell areas will not be all equal when the domain boundaries are irregular like with the `demopat` ppp object.
 
 ```{r}
-plot(quadratcount(demopat))
+demopat |>
+  quadratcount() |>
+  plot()
 ```
 
 Areas near the borders are smaller than areas completely within the domain.
@@ -285,22 +320,30 @@ str(hbin)
 ```
 
 The {hexbin} package uses S4 data classes so the output is stored in slots. Use the `plot()` method to make a graph.
+
 ```{r}
-plot(hbin)
+hbin |>
+  plot()
 ```
 
-Hexagons have symmetric nearest neighbors (there is only rook contiguity). They have the most sides of any polygon that can tessellate the plane. They are generally more efficient than rectangles at covering the events. In other words it takes fewer of them to cover the same number of events. They are visually less biased for displaying local event intensity compared to squares/rectangles.
+Hexagons have symmetric nearest neighbors (there is only rook contiguity). They have the most sides of any polygon that can tessellate the plane. 
+
+They are generally more efficient than rectangles at covering the events. In other words it takes fewer of them to cover the same number of events.
+
+They are visually less biased for displaying local event intensity compared to squares/rectangles.
 
 Here you generate a large number of random events in the two-dimensional plane. Use a normal distribution in the x-direction and a student t-distribution in the y-direction.
+
 ```{r}
 set.seed(131)
 x <- rnorm(7777)
 y <- rt(7777, df = 3)
-hbin2 <- hexbin::hexbin(x, y, xbins = 25)
-plot(hbin2)
+hexbin::hexbin(x, y, xbins = 25) |>
+  plot()
 ```
 
 The {ggplot2} package has the `stat_binhex()` function so that also can be used for display.
+
 ```{r}
 df <- data.frame(x, y)
 ggplot(data = df, 
@@ -313,9 +356,11 @@ Another way to quantify the spatial intensity is with kernel density estimation 
 $$
 \hat \lambda (s) = \frac{1}{nh}\sum_{i=1}^nK\Big(\frac{s - s_i}{h}\Big)
 $$
+
 where $K()$ is the kernel function and $h > 0$ is a smoothing parameter called the bandwidth. Typically the kernel function is a Gaussian probability density function.
 
 To help visualize KDE you generate 25 event locations (`el`) uniformly on the real number line representing a one-dimensional spatial domain between 0 and 1 and then use kernel density estimation to get a continuous intensity function. The density estimation is is done using the function `density()` and here you compare the intensity function for increasing bandwidths specified with the `bw =` argument.
+
 ```{r}
 el <- runif(25)
 dd1 <- density(el, bw = .025)
@@ -345,14 +390,16 @@ Example: The distribution of trees in a tropical forest
 The object `bei` is a planar point pattern object from the {spatstat} package containing the locations of trees in a tropical rain forest.
 
 ```{r}
-summary(bei)
+bei |>
+  summary()
 ```
 
 There are 3604 events (trees) over an area of 500,000 square meters giving an average intensity of .0073 trees per unit area.
 
 The distribution of trees is not uniform (heterogeneous) as can be seen with a plot
 ```{r}
-plot(bei)
+bei |>
+  plot()
 ```
 
 The plot shows clusters of trees and large areas with few if any trees.
@@ -362,33 +409,40 @@ Elevation and elevation slope are factors associated with tree occurrence.
 The point pattern data is accompanied by data (`bei.extra`) on elevation (`elev`) and slope of elevation (`grad`) across the region.
 
 ```{r}
-plot(bei.extra)
+bei.extra |>
+  plot()
 ```
 
 These data are stored as `im` (image) objects. 
+
 ```{r}
 class(bei.extra$elev)
 ```
 
 The image object contains a list with 10 elements including the matrix of values (`v`).
+
 ```{r}
 str(bei.extra$elev)
 ```
 
 Specifying a spatial domain (window) allows focuses the analysis on a particular region. Suppose you want to model locations of a certain tree type, but only for trees located at elevations above 145 meters. The `levelset()` function creates a window from an image object using `thresh =` and `compare =` arguments.
+
 ```{r}
-W <- levelset(bei.extra$elev, 
+W <- levelset(bei.extra$elev,
               thresh = 145, 
               compare = ">")
 class(W)
 ```
 
 The result is an object of class `owin`. The plot method displays the window as a mask, which is the region in black.
+
 ```{r}
-plot(W)
+W |>
+  plot()
 ```
 
 You subset the `ppp` object by the window using the bracket operator (`[]`). Here you assign the reduced `ppp` object to `beiW` and then make a plot.
+
 ```{r}
 beiW <- bei[W]
 plot(beiW)
@@ -405,6 +459,7 @@ plot(beiV)
 ```
 
 You compute the spatial intensity function over the domain with the `density()` method using the default Gaussian kernel and fixed bandwidth determined by the window size.
+
 ```{r}
 beiV |>
   density() |>
@@ -413,10 +468,19 @@ beiV |>
 
 The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid ($v$) and are returned as a pixel image.
 
-There are over 16K of the cells that have a value of `NA` as a result of the masking by elevation and slope.
+There are over 16K cells that have a value of `NA` as a result of the masking by elevation and slope.
+
 ```{r}
 den <- beiV |>
   density()
 
 sum(is.na(den$v))
 ```
+
+Summary: Here the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced. Focus is typically on natural occurring systems where the spatial location of events is examined through the lens of statistics in an attempt to understand physical processes.
+
+The {spatstat} package is a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`.
+
+The typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object.
+
+The first-order property of spatial point pattern data is spatial intensity. How many events per unit area of the domain. The spatial intensity can vary across the domain. A kernel density estimate is used to quantify the spatial varying intensity.
