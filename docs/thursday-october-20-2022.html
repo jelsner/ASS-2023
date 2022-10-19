@@ -193,6 +193,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="0.1" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#hillshape-and-colors-with-tidyterra"><i class="fa fa-check"></i><b>0.1</b> Hillshape and colors with tidyterra</a></li>
 <li class="chapter" data-level="" data-path="tuesday-september-20-2022.html"><a href="tuesday-september-20-2022.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-october-4-2022.html"><a href="tuesday-october-4-2022.html"><i class="fa fa-check"></i>Tuesday October 4, 2022</a>
@@ -223,8 +224,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html"><i class="fa fa-check"></i>Thursday October 20, 2022</a>
 <ul>
 <li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern objects using functions from the {spatstat} package</a></li>
-<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#quantifying-event-intensity"><i class="fa fa-check"></i>Quantifying event intensity</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#theoretical-framework-for-analyzingmodeling-point-pattern-data"><i class="fa fa-check"></i>Theoretical framework for analyzing/modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#working-with-point-pattern-data-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern data using functions from the spatstat package</a></li>
+<li class="chapter" data-level="" data-path="thursday-october-20-2022.html"><a href="thursday-october-20-2022.html#quantifying-the-spatial-intensity-of-events"><i class="fa fa-check"></i>Quantifying the spatial intensity of events</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thursday-october-20-2022-1.html"><a href="thursday-october-20-2022-1.html"><i class="fa fa-check"></i>Thursday October 20, 2022</a>
 <ul>
@@ -306,15 +308,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Today</p>
 <ul>
 <li>Spatial data as point patterns</li>
-<li>Working with point pattern objects using functions from the {spatstat} package</li>
-<li>Quantifying event intensity</li>
+<li>Theoretical framework for analyzing/modeling point pattern data</li>
+<li>Working with point pattern data using functions from the {spatstat} package</li>
+<li>Quantifying the spatial intensity of events</li>
 </ul>
 <div id="spatial-data-as-point-patterns" class="section level2 unnumbered hasAnchor">
 <h2>Spatial data as point patterns<a href="thursday-october-20-2022.html#spatial-data-as-point-patterns" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We now turn our attention to analyzing and modeling point pattern data. Starting with some theory, then how to work with functions from the {spatstat} package before focusing on spatial intensity.</p>
-<p>As humans we naturally seek patterns in any collection of events. The pattern that tends to quickly catch our attention is the grouping of events across space. Stars in the night sky as constellations.</p>
-<p>A collection of events occurring in a particular region begs for an explanation. Why do events occur more often in this region and not somewhere else?</p>
-<p>Consider tornado reports over the past several years in the state of Kansas. Let the start position of a tornado be an <em>event location</em>. And let the damage rating (EF scale) provide a <em>mark</em> on the event. Here you consider only events since 2007 with marks of 1, 2, 3, 4, and 5. More about the damage rating scale is available here <a href="https://en.wikipedia.org/wiki/Enhanced_Fujita_scale" class="uri">https://en.wikipedia.org/wiki/Enhanced_Fujita_scale</a></p>
+<p>We now turn our attention to analyzing and modeling point pattern data. We start with some theory, then learn how to work with functions from the {spatstat} package before focusing on estimating spatial intensity.</p>
+<p>As humans we naturally seek patterns within a collection of events. A pattern that quickly catches our attention is clustering. Clusters of stars in the night sky were defined by the ancients as a constellation.</p>
+<p>A cluster of events in a particular region begs for an explanation. Why do events occur more often in one region rather than another region?</p>
+<p>Consider tornado reports in the state of Kansas. Let the start position of a tornado be an <em>event location</em>. And let the damage rating (EF scale) provide a <em>mark</em> on the event.</p>
+<p>Here you consider only events since 2007 with marks of 1, 2, 3, 4, and 5. More about the damage rating scale is available here <a href="https://en.wikipedia.org/wiki/Enhanced_Fujita_scale" class="uri">https://en.wikipedia.org/wiki/Enhanced_Fujita_scale</a></p>
 <p>Import and filter the data accordingly.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="thursday-october-20-2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2020-torn-initpoint&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb1-2"><a href="thursday-october-20-2022.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(st <span class="sc">==</span> <span class="st">&quot;KS&quot;</span>, </span>
@@ -341,21 +345,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-10"><a href="thursday-october-20-2022.html#cb3-10" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>),</span>
 <span id="cb3-11"><a href="thursday-october-20-2022.html#cb3-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Based on this map you ask: (1) Are certain areas of the state more (or less) likely to get a tornado? (2) Do tornadoes tend to cluster? (3) Are there places in the state that are safe from tornadoes?</p>
-<p>These questions are similar but they are not identical. You will explore these questions about point pattern data in the next few lessons.</p>
-<p>To begin it is helpful to have some definitions.</p>
+<p>Based on this map you ask: (1) Are certain areas of the state more likely to get a tornado? (2) Do tornadoes tend to cluster? (3) Are there places in the state that are safe from tornadoes?</p>
+<p>These questions are similar but they are not identical. We will explore these questions about point pattern data.</p>
+<p>To make things more precise, it is helpful to begin with some definitions.</p>
 <ul>
 <li><p>Event: An occurrence of interest (e.g., tornado, accident, wildfire).</p></li>
 <li><p>Event location: Location of event (e.g., latitude/longitude).</p></li>
-<li><p>Point: Any location in the study area where an event <em>could</em> occur.</p></li>
+<li><p>Point: Any location in the study area where an event <em>could</em> occur. Across the state of Kansas a tornado can occur anywhere. However, in a forest with a lake, the lake is a place where a tree can not occur.</p></li>
 </ul>
-<p>Note: Event location is a particular point where an event <em>did</em> occur. In a forest with a lake, the lake is a place where an event could not occur.</p>
+<p>Note: Event location is a particular point where an event <em>did</em> occur.</p>
 <ul>
-<li><p>Point pattern data: A collection of observed (or simulated) event locations together with a domain of interest.</p></li>
+<li><p>Point pattern data: A collection of observed (or simulated) event locations together with a domain of interest. The event locations may contain additional information about the event. For example, the age of a tree.</p></li>
 <li><p>Domain: Study area that is often defined by data availability (e.g., state or county boundary) or by the extent of the events.</p></li>
-<li><p>Complete spatial randomness: Or CSR (not to be confused with CRS–coordinate reference system) defines the situation where an event has an equal chance of occurring at any point in the domain regardless of other nearby events. In this case you say they event locations have a uniform probability distribution (uniformly distributed) across space. Note: uniform chance does not mean that the events have an ordered pattern (e.g., trees in an orchard).</p></li>
+<li><p>Complete spatial randomness: Or CSR (not to be confused with CRS–coordinate reference system) defines the situation where an event has an equal chance of occurring at any point in the domain regardless of other nearby events.</p></li>
 </ul>
-<p>Consider a set of event locations that are randomly distributed within the unit plane. First create two vectors containing the x and y coordinates, then create a data frame that includes the name of the sample, and finally graph the locations using <code>ggplot()</code>.</p>
+<p>Under the situation of CSR you say the event locations have a uniform probability distribution across space. Note: uniform chance does not mean that the events have an ordered pattern (e.g., trees in an orchard).</p>
+<p>Consider a set of event locations that are randomly distributed within the unit plane. First create two vectors containing the x and y coordinates, then create a data frame that includes the name of the sample, and then graph the locations using <code>ggplot()</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="thursday-october-20-2022.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb4-2"><a href="thursday-october-20-2022.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="thursday-october-20-2022.html#cb4-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">50</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
@@ -365,8 +370,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-7"><a href="thursday-october-20-2022.html#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
 <span id="cb4-8"><a href="thursday-october-20-2022.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>The plot shows a sample from a spatial point pattern process. A <em>spatial point process</em> is a mechanism (physical or synthetic) for producing a set of event locations across space. The pattern of locations produced by the point process is described as CSR. There are groups of event locations and some gaps.</p>
-<p>Let’s repeat this process to create three additional samples. First you combine them into a single data frame with the <code>rbind()</code> function and then plot a four-panel figure using the <code>facet_wrap()</code> function.</p>
+<p>The plot shows a sample from a spatial point pattern process. A <em>spatial point process</em> is a mechanism (physical or synthetic) for producing a set of event locations. The pattern of locations produced by the point process is described as CSR. There are areas with relatively few events and areas with relative many events.</p>
+<p>Let’s repeat this procedure to create three more samples. First combine them into a single data frame with the <code>rbind()</code> function and then plot a four-panel figure using the <code>facet_wrap()</code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="thursday-october-20-2022.html#cb5-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">30</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>),</span>
 <span id="cb5-2"><a href="thursday-october-20-2022.html#cb5-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">30</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>),</span>
 <span id="cb5-3"><a href="thursday-october-20-2022.html#cb5-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">name =</span> <span class="st">&quot;Point Pattern 2&quot;</span>)</span>
@@ -382,39 +387,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-13"><a href="thursday-october-20-2022.html#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb5-14"><a href="thursday-october-20-2022.html#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> name)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>Groups of nearby events illustrate that a certain degree of <em>clustering</em> occurs by chance (without cause) making visual assessment of causal clustering difficult.</p>
-<p>Complete spatial randomness sits on a spectrum between regularity and clustered. To illustrate this idea here you generate point pattern data that have more regularity than CSR and point pattern data that are more clustered than CSR. You do this using the <code>rMaternI()</code> and <code>rMaternClust()</code> functions from the {spatstat} package.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="thursday-october-20-2022.html#cb6-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> spatstat.random<span class="sc">::</span><span class="fu">rMaternI</span>(<span class="at">kappa =</span> <span class="dv">100</span>, <span class="at">r =</span> .<span class="dv">02</span>)</span>
-<span id="cb6-2"><a href="thursday-october-20-2022.html#cb6-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m1<span class="sc">$</span>x, <span class="at">y =</span> m1<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Regular Pattern 1&quot;</span>)</span>
-<span id="cb6-3"><a href="thursday-october-20-2022.html#cb6-3" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> spatstat.random<span class="sc">::</span><span class="fu">rMaternI</span>(<span class="at">kappa =</span> <span class="dv">100</span>, <span class="at">r =</span> .<span class="dv">02</span>)</span>
-<span id="cb6-4"><a href="thursday-october-20-2022.html#cb6-4" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m2<span class="sc">$</span>x, <span class="at">y =</span> m2<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Regular Pattern 2&quot;</span>)</span>
+<p>Groups of nearby events illustrate the fact that a certain amount of <em>clustering</em> will occur simply by chance (without cause). This chance cluster confounds visual attempts to assess whether clustering is causal or not.</p>
+<p>Complete spatial randomness sits on a spectrum between regularity and clustered.</p>
+<p>To illustrate this here you generate point pattern data that have <em>more</em> regularity than CSR and point pattern data that are <em>more</em> clustered than CSR. You do this using the <code>rMaternI()</code> and <code>rMaternClust()</code> functions from the {spatstat} package.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="thursday-october-20-2022.html#cb6-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> spatstat.random<span class="sc">::</span><span class="fu">rMaternI</span>(<span class="at">kappa =</span> <span class="dv">200</span>, <span class="at">r =</span> .<span class="dv">04</span>)</span>
+<span id="cb6-2"><a href="thursday-october-20-2022.html#cb6-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m1<span class="sc">$</span>x, <span class="at">y =</span> m1<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Regularity Pattern 1&quot;</span>)</span>
+<span id="cb6-3"><a href="thursday-october-20-2022.html#cb6-3" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> spatstat.random<span class="sc">::</span><span class="fu">rMaternI</span>(<span class="at">kappa =</span> <span class="dv">200</span>, <span class="at">r =</span> .<span class="dv">04</span>)</span>
+<span id="cb6-4"><a href="thursday-october-20-2022.html#cb6-4" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m2<span class="sc">$</span>x, <span class="at">y =</span> m2<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Regularity Pattern 2&quot;</span>)</span>
 <span id="cb6-5"><a href="thursday-october-20-2022.html#cb6-5" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> spatstat.random<span class="sc">::</span><span class="fu">rMatClust</span>(<span class="at">kappa =</span> <span class="dv">30</span>, <span class="at">r =</span> .<span class="dv">15</span>, <span class="at">mu =</span> <span class="dv">4</span>)</span>
-<span id="cb6-6"><a href="thursday-october-20-2022.html#cb6-6" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m3<span class="sc">$</span>x, <span class="at">y =</span> m3<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Cluster Pattern 1&quot;</span>)</span>
+<span id="cb6-6"><a href="thursday-october-20-2022.html#cb6-6" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m3<span class="sc">$</span>x, <span class="at">y =</span> m3<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Clustered Pattern 1&quot;</span>)</span>
 <span id="cb6-7"><a href="thursday-october-20-2022.html#cb6-7" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> spatstat.random<span class="sc">::</span><span class="fu">rMatClust</span>(<span class="at">kappa =</span> <span class="dv">30</span>, <span class="at">r =</span> .<span class="dv">15</span>, <span class="at">mu =</span> <span class="dv">4</span>)</span>
-<span id="cb6-8"><a href="thursday-october-20-2022.html#cb6-8" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m4<span class="sc">$</span>x, <span class="at">y =</span> m4<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Cluster Pattern 2&quot;</span>)</span>
+<span id="cb6-8"><a href="thursday-october-20-2022.html#cb6-8" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> m4<span class="sc">$</span>x, <span class="at">y =</span> m4<span class="sc">$</span>y, <span class="at">name =</span> <span class="st">&quot;Clustered Pattern 2&quot;</span>)</span>
 <span id="cb6-9"><a href="thursday-october-20-2022.html#cb6-9" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df1, df2, df3, df4)</span>
 <span id="cb6-10"><a href="thursday-october-20-2022.html#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
 <span id="cb6-11"><a href="thursday-october-20-2022.html#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
 <span id="cb6-12"><a href="thursday-october-20-2022.html#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb6-13"><a href="thursday-october-20-2022.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> name)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>The difference in the arrangement of event locations between a regular and a cluster process is clear. But the difference in the arrangement of event locations between a CSR and regular process and the difference in the arrangement of event locations between a CSR and cluster process is not.</p>
+<p>The difference in the arrangement of events between the two pattern types (clustered in the top two panels) can be visually detected. For example, given an event in a regularity pattern, there appears to always be more distance to the nearest neighbor event.</p>
+<p>But the difference in the arrangement of events between a CSR and regular process and the difference in the arrangement of events between a CSR and cluster process is not.</p>
 <p>And spatial scale matters. A set of event locations can be regular on a small scale but clustered on a larger scale.</p>
-<p>Probability models for spatial patterns motivate methods for detecting event clustering. A probability model generates a point pattern process. For example, you can think of crime as a point pattern process defined by location and influenced by environmental factors. The probability of a crime occurring at a particular location is the random variable and we can estimate the probability of a crime event at any location given factors that influence crime.</p>
+<p>Probability models for spatial patterns motivate methods for detecting event clustering. A probability model generates a point pattern process. For example, you can think of crime as a point pattern process defined by location and influenced by environmental factors. The probability of a crime occurring at a particular location is the random variable and you can estimate the probability of a crime event at any location given factors that influence crime.</p>
+</div>
+<div id="theoretical-framework-for-analyzingmodeling-point-pattern-data" class="section level2 unnumbered hasAnchor">
+<h2>Theoretical framework for analyzing/modeling point pattern data<a href="thursday-october-20-2022.html#theoretical-framework-for-analyzingmodeling-point-pattern-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>More formally, a spatial point pattern process is a <em>stochastic</em> (statistical) process where event location is the random variable. A sample of the process is a collection of events generated under the probability model.</p>
-<p>A spatial point process is said to be <em>stationary</em> if the statistical properties of the events are invariant to translation. This means that the relationship between two events depends only on the relative event locations (not on where the events occur in the domain). Relative location (or spatial lag) refers to distance and orientation of the events relative to one another.</p>
-<p>In the case where the statistical properties are independent of the orientation of event pairs, the process is said to be <em>isotropic</em>.</p>
-<p>The properties of stationarity and isotropy allow for replication within a data set. Under the assumption of a stationary process, two event pairs that are separated by the same distance should have the same relatedness.</p>
-<p>This is analogous to the assumption you make when you define the weights matrix for spatially aggregated data. The assumptions of stationarity and isotropy are starting points for modeling point pattern data.</p>
-<p>The Poisson distribution defines a model for complete spatial randomness (CSR). A point process is said to be ‘homogeneous Poisson’ under the following two criteria:</p>
+<p>A spatial point process is said to be <em>stationary</em> if the statistical properties of the resulting events are invariant to translation. This means that the relationship between two events depends on (1) how much distance separates them and on (2) their relative orientation to each other but not on where the two events are located in the domain.</p>
+<p>A spatial point process is said to be <em>isotropic</em> if the statistical properties of the resulting events are invariant to rotation. This means that the relationship between two events depends only on how much distance separates them. The inter-event distance between events is called the <em>spatial lag</em>.</p>
+<p>The properties of <em>stationarity</em> and <em>isotropy</em> allow you to treat each region within the domain as <em>independent</em>. Assuming a stationary and isotropic point process, two event pairs that are separated by the same distance will have the same relatedness regardless of where the event pairs are located in the domain.</p>
+<p>This is analogous to the assumption you make when you define a weights matrix for spatially aggregated data. The assumptions of stationarity and isotropy are starting points for modeling point pattern data.</p>
+<p>The Poisson distribution defines a model for complete spatial randomness (CSR). A point process is said to be <em>homogeneous Poisson</em> under the following two criteria:</p>
 <ol style="list-style-type: decimal">
-<li><p>The number of events, N, occurring within a finite domain A is a random variable described by a Poisson distribution with mean <span class="math inline">\(\lambda\)</span>|A| for some positive constant <span class="math inline">\(\lambda\)</span>, with |A| denoting the area of the domain, and</p></li>
-<li><p>The locations of the N events represent a random sample where each point in A is <em>equally likely</em> to be chosen as an event location.</p></li>
+<li><p>The number of events (N) occurring within a finite domain A is a random variable described by a Poisson distribution with mean <span class="math inline">\(\lambda\)</span> times |A| for some positive constant <span class="math inline">\(\lambda\)</span>, with |A| denoting the area of the domain, and</p></li>
+<li><p>The locations of the N events represent a sample where each point in A is <em>equally likely</em> to be chosen as an event location.</p></li>
 </ol>
 <p>The first criteria of a Poisson distribution refers to a probability model describing the number of events. It expresses the probability of a given number of events occurring in a fixed interval of space (and time) when the events occur with a known constant rate.</p>
-<p>The Poisson parameter defines the <em>intensity</em> of the point process. Given a set of events, an estimate for the mean (rate) parameter of the Poisson distribution is given by the number of events divided by the domain area.</p>
-<p>The second criteria ensures the events are scattered about the domain without clustering or regularity.</p>
-<p>The procedure to create a homogeneous Poisson point process follows directly from its definition. Step 1: Sample the total number of events from a Poisson distribution with a mean that is proportional to the domain area. Step 2: Place each event within the domain with coordinates given by a <em>uniform distribution</em>.</p>
+<p>The Poisson parameter (lambda) defines the <em>intensity</em> of the point process. Given a set of events, an estimate for the mean (rate) parameter of the Poisson distribution is given by the number of events divided by the domain area. The second criteria ensures the events are scattered about the domain without clustering or regularity.</p>
+<p>A procedure to create a homogeneous Poisson point process follows from its definition. Step 1: Choose the number of events from a Poisson distribution with a mean that is proportional to the domain area. Step 2: Place each event within the domain with coordinates given by a <em>uniform distribution</em>.</p>
 <p>For example, let area |A| = 1, and the rate of occurrence <span class="math inline">\(\lambda\)</span> = 20, then the code below generates a CSR set of events.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="thursday-october-20-2022.html#cb7-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">20</span></span>
 <span id="cb7-2"><a href="thursday-october-20-2022.html#cb7-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">1</span>, lambda)</span>
@@ -426,15 +435,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-8"><a href="thursday-october-20-2022.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) </span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>The set of events represents a sample from a homogeneous Poisson point process. The intensity of the events is specified first then the locations are placed uniformly inside the domain. The domain need not be regular. The actual number of events varies from one realization to the next. On average the number of events is 20 but it could vary between 10 and 35 or more.</p>
-<p>This point pattern is CSR by construction. However, you are typically in the opposite position. You <em>observe</em> a set of events (e.g., tornadoes on the Plains) and you want to know if the events are regular or clustered.</p>
+<p>This point pattern exhibits CSR by construction. However, you are typically in the opposite position. You <em>observe</em> a set of events (e.g., tornadoes on the Plains) and you want to know if the events are regular, clustered, or random.</p>
 <p>The null hypothesis is CSR and you need a test statistic that will summarize the evidence against this hypothesis. The null models are simple so you can use Monte Carlo methods to generate samples and compare summary statistics from those samples with your observed data.</p>
 <p>In some cases the homogeneous Poisson model is not restrictive enough. This means that you can easily reject the null hypothesis but not learn anything interesting about your data. For example, with health events (locations of people with heart disease) CSR is not an appropriate model because a null hypothesis that incidences are equally likely does not consider that people cluster (locations at risk are not uniform).</p>
-<p>Each person has the same risk of heart disease regardless of location, and you expect more cases in areas with more people at risk. Clusters of cases in high population areas violate the CSR but not necessarily the constant risk hypothesis. The constant risk hypothesis requires the intensity of the spatial process be defined as a spatially varying function. That is, you define the intensity as <span class="math inline">\(\lambda(s)\)</span>, where <span class="math inline">\(s\)</span> denotes location.</p>
-<p>The intensity (density) function is a first-order property of the random process. If intensity varies (significantly) across the domain, the data-generating process is said to be heterogeneous. The intensity function describes the expected number of events at any location. Events might be independent of one another, but groups of events appear because of the changing intensity.</p>
+<p>Each person may have the same risk of heart disease, for instance, regardless of location. But you expect more cases in areas with more people at risk. Clusters of cases in high population areas violate the CSR but not necessarily the constant risk hypothesis. The constant risk hypothesis requires the intensity of the spatial process be defined as a spatially varying function. That is, you define the intensity as <span class="math inline">\(\lambda(s)\)</span>, where <span class="math inline">\(s\)</span> denotes location.</p>
+<p>The intensity (density) function is a first-order property of point pattern data. If intensity varies (significantly) across the domain, the process generating the data is said to be heterogeneous. The intensity function describes the expected number of events at any location. Events might be independent of one another, but groups of events appear because of the changing intensity.</p>
+<p>It helps to visualize these concepts. We do that with functions from the {spatstat} package.</p>
 </div>
-<div id="working-with-point-pattern-objects-using-functions-from-the-spatstat-package" class="section level2 unnumbered hasAnchor">
-<h2>Working with point pattern objects using functions from the {spatstat} package<a href="thursday-october-20-2022.html#working-with-point-pattern-objects-using-functions-from-the-spatstat-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The {spatstat} package contains functions to analyze and model point pattern data. The package is actually a family of packages with different namespace names so it is best to load the package with the <code>library()</code> function before beginning.</p>
+<div id="working-with-point-pattern-data-using-functions-from-the-spatstat-package" class="section level2 unnumbered hasAnchor">
+<h2>Working with point pattern data using functions from the spatstat package<a href="thursday-october-20-2022.html#working-with-point-pattern-data-using-functions-from-the-spatstat-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The {spatstat} family of packages contain functions to analyze and model point pattern data. The individual packages have different namespace names beginning with <code>spatstat</code> so it is best to load the family of packages with the <code>library()</code> function before beginning.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="thursday-october-20-2022.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span></code></pre></div>
 <pre><code>## Loading required package: spatstat.data</code></pre>
 <pre><code>## Loading required package: spatstat.geom</code></pre>
@@ -450,8 +460,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## 
 ## spatstat 2.3-4       (nickname: &#39;Watch this space&#39;) 
 ## For an introduction to spatstat, type &#39;beginner&#39;</code></pre>
-<p>Point pattern data are defined in {spatstat} by an object of class <code>ppp</code> (for planar point pattern) which contains the coordinates of the events (event locations), optional values attached to the events (called ‘marks’), and a description of the domain or ‘window’ over which the events are observed. See <code>?ppp.object()</code> for details.</p>
-<p>Spatial statistics computed on a <code>ppp</code> object will be somewhat sensitive to the choice of the window (domain), so some thought should go into the choice of your domain.</p>
+<p>Point pattern data are defined in {spatstat} by an object of class <code>ppp</code> (for planar point pattern) which contains the spatial coordinates of the events (event locations), optional values attached to the events (called ‘marks’), and a description of the domain or ‘window’ over which the events are observed. See <code>?ppp.object()</code> for details.</p>
+<p>Spatial statistics computed on a <code>ppp</code> object will be sensitive to the choice of the window (domain), so some thought should go into the choice of the domain.</p>
 <p>As an example, the data <code>swedishpines</code> is available in the package as a <code>ppp</code> object.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="thursday-october-20-2022.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(swedishpines)</span></code></pre></div>
 <pre><code>## [1] &quot;ppp&quot;</code></pre>
@@ -459,15 +469,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Planar point pattern: 71 points
 ## window: rectangle = [0, 96] x [0, 100] units (one unit = 0.1 metres)</code></pre>
 <p>The data is a planar point pattern object with 71 events.</p>
-<p>Note: The events in a <code>ppp</code> object are called ‘points’ rather than events. This is in contrast to the terminology used by the theoreticians who define a point as a <em>potential</em> event not an <em>observed</em> event.</p>
+<p>Note: Unfortunately events in a <code>ppp</code> object are called ‘points’ rather than events. This is in contrast to the terminology used by the theoreticians who define a point as a <em>potential</em> event not an <em>observed</em> event.</p>
 <p>All the events are contained within a rectangle window of size 9.6 by 10 meters.</p>
-<p>There is a <code>plot()</code> method for <code>ppp</code> objects that provides a quick view the data and the domain window.</p>
+<p>There is a <code>plot()</code> method for <code>ppp</code> objects that provides a quick view of the data and the domain window.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="thursday-october-20-2022.html#cb25-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
 <span id="cb25-2"><a href="thursday-october-20-2022.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Events are plotted as open circles inside a box. The plot is labeled with the name of the <code>ppp</code> object.</p>
+<p>Events are plotted as open circles inside a bounding box. The plot is labeled with the name of the <code>ppp</code> object.</p>
 <p>The function <code>convexhull()</code> from the {spatstat.geom} package as part of the {spatstat} family of packages creates a convex hull around the events. A convex hull defines the minimum-area convex polygon that contains all the events.</p>
-<p>Here you compute the hull and add it to the plot.</p>
+<p>Here you create the hull and add it to the plot.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="thursday-october-20-2022.html#cb26-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
 <span id="cb26-2"><a href="thursday-october-20-2022.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
 <span id="cb26-3"><a href="thursday-october-20-2022.html#cb26-3" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
@@ -476,25 +486,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>The domain (window) for analysis and modeling should be somewhat larger than the convex hull. The function <code>ripras()</code> computes a spatial domain based on the event locations alone assuming the locations are independent and identically distributed.</p>
 <p>Here you also overlay this polygon on the plot.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="thursday-october-20-2022.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(swedishpines)</span>
-<span id="cb27-2"><a href="thursday-october-20-2022.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">convexhull</span>(swedishpines), </span>
-<span id="cb27-3"><a href="thursday-october-20-2022.html#cb27-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb27-4"><a href="thursday-october-20-2022.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ripras</span>(swedishpines), </span>
-<span id="cb27-5"><a href="thursday-october-20-2022.html#cb27-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="thursday-october-20-2022.html#cb27-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href="thursday-october-20-2022.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
+<span id="cb27-3"><a href="thursday-october-20-2022.html#cb27-3" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb27-4"><a href="thursday-october-20-2022.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">convexhull</span>() <span class="sc">|&gt;</span></span>
+<span id="cb27-5"><a href="thursday-october-20-2022.html#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-6"><a href="thursday-october-20-2022.html#cb27-6" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb27-7"><a href="thursday-october-20-2022.html#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ripras</span>() <span class="sc">|&gt;</span></span>
+<span id="cb27-8"><a href="thursday-october-20-2022.html#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>The window can have an arbitrary shape. A rectangle, a polygon, a collection of polygons including holes, or a binary image (mask). A window can be stored as a separate object of class <code>owin</code>. See <code>?owin.object()</code> for details.</p>
 <p>Each event may carry information called a ‘mark’. A mark can be continuous (e.g. tree height) or discrete (tree species).</p>
 <p>Multitype point patterns are point patterns in which the events have a discrete mark (e.g., tree species). The mark values are given in a vector of the same length as the vector of locations. That is, <code>marks[i]</code> is the mark attached to the location (<code>x[i]</code>, <code>y[i]</code>).</p>
 <p>Consider the <code>ppp</code> object <code>demopat</code> from the {spatstat} package.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="thursday-october-20-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demopat)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="thursday-october-20-2022.html#cb28-1" aria-hidden="true" tabindex="-1"></a>demopat <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="thursday-october-20-2022.html#cb28-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">plot</span>()</span></code></pre></div>
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="thursday-october-20-2022.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(demopat)</span></code></pre></div>
+<p>Here the domain is defined as an irregular concave polygon with a hole. The distinction between inside and outside is important for spatial statistics computed using the events.</p>
+<p>You print the marks with the <code>marks()</code> function.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="thursday-october-20-2022.html#cb29-1" aria-hidden="true" tabindex="-1"></a>demopat <span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a href="thursday-october-20-2022.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">marks</span>()</span></code></pre></div>
 <pre><code>##   [1] A B B A B B B A A A B A A B B A A A B B A A A A B B B A A B B B B B A A B
 ##  [38] A A B B A A B B B B A B B B B B B B A A A B A B A B B B B B A B B A A B B
 ##  [75] B B B A B B A A B A B B B A B A B B B B B A A B A B B B B B A A A B A B B
 ## [112] A
 ## Levels: A B</code></pre>
-<p>Here the domain is defined as an irregular concave polygon with a hole. The distinction between inside and outside is important for spatial statistics computed using the events.</p>
 <p>For a multitype pattern (where the marks are factors) you can use the <code>split()</code> function to separate the point pattern objects by mark type. Consider the Lansing Woods data set (<code>lansing</code>) with marks corresponding to tree species.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="thursday-october-20-2022.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(lansing)</span>
 <span id="cb31-2"><a href="thursday-october-20-2022.html#cb31-2" aria-hidden="true" tabindex="-1"></a>LW <span class="ot">&lt;-</span> lansing</span>
@@ -502,10 +518,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb31-4"><a href="thursday-october-20-2022.html#cb31-4" aria-hidden="true" tabindex="-1"></a>LW <span class="sc">|&gt;</span></span>
 <span id="cb31-5"><a href="thursday-october-20-2022.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">split</span>() <span class="sc">|&gt;</span></span>
 <span id="cb31-6"><a href="thursday-october-20-2022.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
-<div id="quantifying-event-intensity" class="section level2 unnumbered hasAnchor">
-<h2>Quantifying event intensity<a href="thursday-october-20-2022.html#quantifying-event-intensity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="quantifying-the-spatial-intensity-of-events" class="section level2 unnumbered hasAnchor">
+<h2>Quantifying the spatial intensity of events<a href="thursday-october-20-2022.html#quantifying-the-spatial-intensity-of-events" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The average intensity of events is defined as the number of events per unit area of the domain. The <code>summary()</code> method applied to a <code>ppp</code> object gives the average intensity.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="thursday-october-20-2022.html#cb32-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
 <span id="cb32-2"><a href="thursday-october-20-2022.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
@@ -519,10 +535,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Window area = 9600 square units
 ## Unit of length: 0.1 metres</code></pre>
 <p>There are 71 events over a window area (spatial domain) of 9600 square units giving an average intensity of 71/9600 = .0074.</p>
+<p>Average intensity depends on the number of events and on the domain area defined by the <code>owin</code> object.</p>
+<p>The <code>owin</code> object is the first element labeled <code>window</code> in a <code>ppp</code> object.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="thursday-october-20-2022.html#cb34-1" aria-hidden="true" tabindex="-1"></a>W0 <span class="ot">&lt;-</span> swedishpines<span class="sc">$</span>window</span>
+<span id="cb34-2"><a href="thursday-october-20-2022.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(W0)</span></code></pre></div>
+<pre><code>## [1] &quot;owin&quot;</code></pre>
+<p>The default window is a rectangle.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="thursday-october-20-2022.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(W0)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Here you change the window to that defined by the event locations using the method of Ripley-Rasson (<code>ripras()</code> function) and then make that the window for the Swedish pines by using the subset operator <code>[</code>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="thursday-october-20-2022.html#cb37-1" aria-hidden="true" tabindex="-1"></a>W1 <span class="ot">&lt;-</span> swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="thursday-october-20-2022.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ripras</span>()</span>
+<span id="cb37-3"><a href="thursday-october-20-2022.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="thursday-october-20-2022.html#cb37-4" aria-hidden="true" tabindex="-1"></a>SP2 <span class="ot">&lt;-</span> swedishpines[W1]</span></code></pre></div>
+<p>Since the new window area is slightly larger than the default window the summary method shows that the spatial intensity is lower.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="thursday-october-20-2022.html#cb38-1" aria-hidden="true" tabindex="-1"></a>SP2 <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="thursday-october-20-2022.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## Planar point pattern:  71 points
+## Average intensity 0.007096614 points per square unit (one unit = 0.1 metres)
+## 
+## Coordinates are integers
+## i.e. rounded to the nearest unit (one unit = 0.1 metres)
+## 
+## Window: polygonal boundary
+## single connected closed polygon with 14 vertices
+## enclosing rectangle: [-4.5486, 100.36205] x [-3.73614, 104.52272] units
+##                      (104.9 x 108.3 units)
+## Window area = 10004.8 square units
+## Unit of length: 0.1 metres
+## Fraction of frame area: 0.881</code></pre>
 <p>The average intensity might not represent the intensity of events locally. We need a way to describe the expected number of events at any location of the region.</p>
 <p>Counting the number of events in equal areas is one way. The quadrat method divides the domain into a grid of rectangular cells and the number of events in each cell is counted. Quadrat counting is done with the <code>quadratcount()</code> function.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="thursday-october-20-2022.html#cb34-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
-<span id="cb34-2"><a href="thursday-october-20-2022.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="thursday-october-20-2022.html#cb40-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="thursday-october-20-2022.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>()</span></code></pre></div>
 <pre><code>##           x
 ## y          [0,19.2) [19.2,38.4) [38.4,57.6) [57.6,76.8) [76.8,96]
 ##   [80,100]        3           1           2           3         3
@@ -531,104 +576,104 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   [20,40)         1           1           2           3         3
 ##   [0,20)          1           2           2           4         5</code></pre>
 <p>By default the function divides the data into a 5 x 5 grid of cells. The event count in each cell is produced. To change the default number of cells in x and y directions you use the <code>nx =</code> and <code>ny =</code> arguments.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="thursday-october-20-2022.html#cb36-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a href="thursday-october-20-2022.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>(<span class="at">nx =</span> <span class="dv">2</span>, </span>
-<span id="cb36-3"><a href="thursday-october-20-2022.html#cb36-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ny =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="thursday-october-20-2022.html#cb42-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="thursday-october-20-2022.html#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>(<span class="at">nx =</span> <span class="dv">2</span>, </span>
+<span id="cb42-3"><a href="thursday-october-20-2022.html#cb42-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ny =</span> <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##              x
 ## y             [0,48) [48,96]
 ##   [66.7,100]      10      11
 ##   [33.3,66.7)     14      14
 ##   [0,33.3)         7      15</code></pre>
 <p>The plot method applied to the results of the <code>quadratcount()</code> functions adds the counts to a plot. Here you add the counts and include the event locations.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="thursday-october-20-2022.html#cb38-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
-<span id="cb38-2"><a href="thursday-october-20-2022.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>() <span class="sc">|&gt;</span></span>
-<span id="cb38-3"><a href="thursday-october-20-2022.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
-<span id="cb38-4"><a href="thursday-october-20-2022.html#cb38-4" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
-<span id="cb38-5"><a href="thursday-october-20-2022.html#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">pty =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, </span>
-<span id="cb38-6"><a href="thursday-october-20-2022.html#cb38-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="thursday-october-20-2022.html#cb44-1" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="thursday-october-20-2022.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>() <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="thursday-october-20-2022.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
+<span id="cb44-4"><a href="thursday-october-20-2022.html#cb44-4" aria-hidden="true" tabindex="-1"></a>swedishpines <span class="sc">|&gt;</span></span>
+<span id="cb44-5"><a href="thursday-october-20-2022.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">pty =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, </span>
+<span id="cb44-6"><a href="thursday-october-20-2022.html#cb44-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Grid cell areas will not be all equal when the domain boundaries are irregular like with the <code>demopat</code> ppp object.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="thursday-october-20-2022.html#cb39-1" aria-hidden="true" tabindex="-1"></a>demopat <span class="sc">|&gt;</span></span>
-<span id="cb39-2"><a href="thursday-october-20-2022.html#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>() <span class="sc">|&gt;</span></span>
-<span id="cb39-3"><a href="thursday-october-20-2022.html#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="thursday-october-20-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a>demopat <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="thursday-october-20-2022.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quadratcount</span>() <span class="sc">|&gt;</span></span>
+<span id="cb45-3"><a href="thursday-october-20-2022.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Areas near the borders are smaller than areas completely within the domain.</p>
 <p>When the number of events is large, hexagon grid cells provide a useful alternative to rectangular grid cells.</p>
 <p>The process is: (1) tessellate the domain by a regular grid of hexagons, (2) count the number of events in each hexagon, and (3) use a color ramp to display the events per hexagon.</p>
-<p>As an example here you generate 20K random values from the standard normal distribution for the x coordinate and the same number of random values for the y coordinate. You then use the <code>hexbin()</code> function from the {hexbin} package and specify 10 bins in the x direction to count the number of events in each hexagon and assign the result to the object <code>hbin</code>.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="thursday-october-20-2022.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(hexbin)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;hexbin&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<p>As an example here you generate 20K values from the standard normal distribution for the x coordinate and the same number of values for the y coordinate. You then use the <code>hexbin()</code> function from the {hexbin} package and specify 10 bins in the x direction to count the number of events in each hexagon and assign the result to the object <code>hbin</code>.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="thursday-october-20-2022.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(hexbin)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;hexbin&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
 <pre><code>## Loading required package: hexbin</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="thursday-october-20-2022.html#cb42-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20000</span>)</span>
-<span id="cb42-2"><a href="thursday-october-20-2022.html#cb42-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20000</span>)</span>
-<span id="cb42-3"><a href="thursday-october-20-2022.html#cb42-3" aria-hidden="true" tabindex="-1"></a>hbin <span class="ot">&lt;-</span> hexbin<span class="sc">::</span><span class="fu">hexbin</span>(x, y, <span class="at">xbins =</span> <span class="dv">10</span>) </span>
-<span id="cb42-4"><a href="thursday-october-20-2022.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hbin)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="thursday-october-20-2022.html#cb48-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20000</span>)</span>
+<span id="cb48-2"><a href="thursday-october-20-2022.html#cb48-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20000</span>)</span>
+<span id="cb48-3"><a href="thursday-october-20-2022.html#cb48-3" aria-hidden="true" tabindex="-1"></a>hbin <span class="ot">&lt;-</span> hexbin<span class="sc">::</span><span class="fu">hexbin</span>(x, y, <span class="at">xbins =</span> <span class="dv">10</span>) </span>
+<span id="cb48-4"><a href="thursday-october-20-2022.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hbin)</span></code></pre></div>
 <pre><code>## Formal class &#39;hexbin&#39; [package &quot;hexbin&quot;] with 16 slots
-##   ..@ cell  : int [1:108] 4 5 6 8 13 14 15 16 17 18 ...
-##   ..@ count : int [1:108] 1 5 2 1 1 5 11 13 15 8 ...
-##   ..@ xcm   : num [1:108] -1.274 -0.504 -0.126 1.554 -2.108 ...
-##   ..@ ycm   : num [1:108] -3.69 -3.43 -3.58 -3.66 -2.89 ...
+##   ..@ cell  : int [1:93] 5 6 7 8 16 17 18 19 26 27 ...
+##   ..@ count : int [1:93] 1 4 2 1 19 12 6 6 15 50 ...
+##   ..@ xcm   : num [1:93] -0.9428 -0.0714 0.5745 1.6911 -0.618 ...
+##   ..@ ycm   : num [1:93] -3.75 -3.63 -3.63 -3.8 -3.11 ...
 ##   ..@ xbins : num 10
 ##   ..@ shape : num 1
-##   ..@ xbnds : num [1:2] -3.57 3.91
-##   ..@ ybnds : num [1:2] -3.69 3.54
+##   ..@ xbnds : num [1:2] -4.57 4.09
+##   ..@ ybnds : num [1:2] -3.8 3.62
 ##   ..@ dimen : num [1:2] 14 11
 ##   ..@ n     : int 20000
-##   ..@ ncells: int 108
+##   ..@ ncells: int 93
 ##   ..@ call  : language hexbin::hexbin(x = x, y = y, xbins = 10)
 ##   ..@ xlab  : chr &quot;x&quot;
 ##   ..@ ylab  : chr &quot;y&quot;
 ##   ..@ cID   : NULL
 ##   ..@ cAtt  : int(0)</code></pre>
 <p>The {hexbin} package uses S4 data classes so the output is stored in slots. Use the <code>plot()</code> method to make a graph.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="thursday-october-20-2022.html#cb44-1" aria-hidden="true" tabindex="-1"></a>hbin <span class="sc">|&gt;</span></span>
-<span id="cb44-2"><a href="thursday-october-20-2022.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="thursday-october-20-2022.html#cb50-1" aria-hidden="true" tabindex="-1"></a>hbin <span class="sc">|&gt;</span></span>
+<span id="cb50-2"><a href="thursday-october-20-2022.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Hexagons have symmetric nearest neighbors (there is only rook contiguity). They have the most sides of any polygon that can tessellate the plane.</p>
 <p>They are generally more efficient than rectangles at covering the events. In other words it takes fewer of them to cover the same number of events.</p>
 <p>They are visually less biased for displaying local event intensity compared to squares/rectangles.</p>
 <p>Here you generate a large number of random events in the two-dimensional plane. Use a normal distribution in the x-direction and a student t-distribution in the y-direction.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="thursday-october-20-2022.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">131</span>)</span>
-<span id="cb45-2"><a href="thursday-october-20-2022.html#cb45-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7777</span>)</span>
-<span id="cb45-3"><a href="thursday-october-20-2022.html#cb45-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rt</span>(<span class="dv">7777</span>, <span class="at">df =</span> <span class="dv">3</span>)</span>
-<span id="cb45-4"><a href="thursday-october-20-2022.html#cb45-4" aria-hidden="true" tabindex="-1"></a>hexbin<span class="sc">::</span><span class="fu">hexbin</span>(x, y, <span class="at">xbins =</span> <span class="dv">25</span>) <span class="sc">|&gt;</span></span>
-<span id="cb45-5"><a href="thursday-october-20-2022.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<p>The {ggplot2} package has the <code>stat_binhex()</code> function so that also can be used for display.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="thursday-october-20-2022.html#cb46-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y)</span>
-<span id="cb46-2"><a href="thursday-october-20-2022.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
-<span id="cb46-3"><a href="thursday-october-20-2022.html#cb46-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
-<span id="cb46-4"><a href="thursday-october-20-2022.html#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_binhex</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="thursday-october-20-2022.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">131</span>)</span>
+<span id="cb51-2"><a href="thursday-october-20-2022.html#cb51-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7777</span>)</span>
+<span id="cb51-3"><a href="thursday-october-20-2022.html#cb51-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rt</span>(<span class="dv">7777</span>, <span class="at">df =</span> <span class="dv">3</span>)</span>
+<span id="cb51-4"><a href="thursday-october-20-2022.html#cb51-4" aria-hidden="true" tabindex="-1"></a>hexbin<span class="sc">::</span><span class="fu">hexbin</span>(x, y, <span class="at">xbins =</span> <span class="dv">25</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-5"><a href="thursday-october-20-2022.html#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>The {ggplot2} package has the <code>stat_binhex()</code> function so that also can be used for displaying spatial intensity.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="thursday-october-20-2022.html#cb52-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y)</span>
+<span id="cb52-2"><a href="thursday-october-20-2022.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb52-3"><a href="thursday-october-20-2022.html#cb52-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb52-4"><a href="thursday-october-20-2022.html#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_binhex</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Another way to quantify the spatial intensity is with kernel density estimation (KDE). Let <span class="math inline">\(s_i\)</span> for <span class="math inline">\(i\)</span> = 1…<span class="math inline">\(n\)</span> be event locations, then an estimate for the intensity of the events at any location <span class="math inline">\(s\)</span> is given by</p>
 <p><span class="math display">\[
 \hat \lambda (s) = \frac{1}{nh}\sum_{i=1}^nK\Big(\frac{s - s_i}{h}\Big)
 \]</span></p>
 <p>where <span class="math inline">\(K()\)</span> is the kernel function and <span class="math inline">\(h &gt; 0\)</span> is a smoothing parameter called the bandwidth. Typically the kernel function is a Gaussian probability density function.</p>
 <p>To help visualize KDE you generate 25 event locations (<code>el</code>) uniformly on the real number line representing a one-dimensional spatial domain between 0 and 1 and then use kernel density estimation to get a continuous intensity function. The density estimation is is done using the function <code>density()</code> and here you compare the intensity function for increasing bandwidths specified with the <code>bw =</code> argument.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="thursday-october-20-2022.html#cb47-1" aria-hidden="true" tabindex="-1"></a>el <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">25</span>)</span>
-<span id="cb47-2"><a href="thursday-october-20-2022.html#cb47-2" aria-hidden="true" tabindex="-1"></a>dd1 <span class="ot">&lt;-</span> <span class="fu">density</span>(el, <span class="at">bw =</span> .<span class="dv">025</span>)</span>
-<span id="cb47-3"><a href="thursday-october-20-2022.html#cb47-3" aria-hidden="true" tabindex="-1"></a>dd2 <span class="ot">&lt;-</span> <span class="fu">density</span>(el, <span class="at">bw =</span> .<span class="dv">05</span>)</span>
-<span id="cb47-4"><a href="thursday-october-20-2022.html#cb47-4" aria-hidden="true" tabindex="-1"></a>dd3 <span class="ot">&lt;-</span> <span class="fu">density</span>(el, <span class="at">bw =</span> .<span class="dv">1</span>)</span>
-<span id="cb47-5"><a href="thursday-october-20-2022.html#cb47-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(dd1<span class="sc">$</span>x, dd2<span class="sc">$</span>x, dd3<span class="sc">$</span>x), </span>
-<span id="cb47-6"><a href="thursday-october-20-2022.html#cb47-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">c</span>(dd1<span class="sc">$</span>y, dd2<span class="sc">$</span>y, dd3<span class="sc">$</span>y),</span>
-<span id="cb47-7"><a href="thursday-october-20-2022.html#cb47-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">bw =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;h = .025&quot;</span>, <span class="dv">512</span>), </span>
-<span id="cb47-8"><a href="thursday-october-20-2022.html#cb47-8" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">rep</span>(<span class="st">&quot;h = .05&quot;</span>, <span class="dv">512</span>),</span>
-<span id="cb47-9"><a href="thursday-october-20-2022.html#cb47-9" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">rep</span>(<span class="st">&quot;h = .1&quot;</span>, <span class="dv">512</span>)))</span>
-<span id="cb47-10"><a href="thursday-october-20-2022.html#cb47-10" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> el, <span class="at">y =</span> <span class="dv">0</span>)</span>
-<span id="cb47-11"><a href="thursday-october-20-2022.html#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
-<span id="cb47-12"><a href="thursday-october-20-2022.html#cb47-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
-<span id="cb47-13"><a href="thursday-october-20-2022.html#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb47-14"><a href="thursday-october-20-2022.html#cb47-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> bw, <span class="at">nrow =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb47-15"><a href="thursday-october-20-2022.html#cb47-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y), </span>
-<span id="cb47-16"><a href="thursday-october-20-2022.html#cb47-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> df2, </span>
-<span id="cb47-17"><a href="thursday-october-20-2022.html#cb47-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="thursday-october-20-2022.html#cb53-1" aria-hidden="true" tabindex="-1"></a>el <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">25</span>)</span>
+<span id="cb53-2"><a href="thursday-october-20-2022.html#cb53-2" aria-hidden="true" tabindex="-1"></a>dd1 <span class="ot">&lt;-</span> <span class="fu">density</span>(el, <span class="at">bw =</span> .<span class="dv">025</span>)</span>
+<span id="cb53-3"><a href="thursday-october-20-2022.html#cb53-3" aria-hidden="true" tabindex="-1"></a>dd2 <span class="ot">&lt;-</span> <span class="fu">density</span>(el, <span class="at">bw =</span> .<span class="dv">05</span>)</span>
+<span id="cb53-4"><a href="thursday-october-20-2022.html#cb53-4" aria-hidden="true" tabindex="-1"></a>dd3 <span class="ot">&lt;-</span> <span class="fu">density</span>(el, <span class="at">bw =</span> .<span class="dv">1</span>)</span>
+<span id="cb53-5"><a href="thursday-october-20-2022.html#cb53-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(dd1<span class="sc">$</span>x, dd2<span class="sc">$</span>x, dd3<span class="sc">$</span>x), </span>
+<span id="cb53-6"><a href="thursday-october-20-2022.html#cb53-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">c</span>(dd1<span class="sc">$</span>y, dd2<span class="sc">$</span>y, dd3<span class="sc">$</span>y),</span>
+<span id="cb53-7"><a href="thursday-october-20-2022.html#cb53-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">bw =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;h = .025&quot;</span>, <span class="dv">512</span>), </span>
+<span id="cb53-8"><a href="thursday-october-20-2022.html#cb53-8" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">rep</span>(<span class="st">&quot;h = .05&quot;</span>, <span class="dv">512</span>),</span>
+<span id="cb53-9"><a href="thursday-october-20-2022.html#cb53-9" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">rep</span>(<span class="st">&quot;h = .1&quot;</span>, <span class="dv">512</span>)))</span>
+<span id="cb53-10"><a href="thursday-october-20-2022.html#cb53-10" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> el, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb53-11"><a href="thursday-october-20-2022.html#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb53-12"><a href="thursday-october-20-2022.html#cb53-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb53-13"><a href="thursday-october-20-2022.html#cb53-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb53-14"><a href="thursday-october-20-2022.html#cb53-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> bw, <span class="at">nrow =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb53-15"><a href="thursday-october-20-2022.html#cb53-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y), </span>
+<span id="cb53-16"><a href="thursday-october-20-2022.html#cb53-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> df2, </span>
+<span id="cb53-17"><a href="thursday-october-20-2022.html#cb53-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>As the bandwidth increases the curve (black line) representing the local intensity becomes smoother. The intensity is estimated at every location, not just at the location of the event.</p>
 <p>The density is a summation of the kernels with one kernel centered on top of each event location. Event locations are marked with a point along the x-axis and the kernel is a Gaussian probability density function. The kernel is placed on each event and the bandwidth specifies the distance between the inflection points of the kernel. The one-dimensional KDE extends to two (or more) dimensions.</p>
 <p>Example: The distribution of trees in a tropical forest</p>
 <p>The object <code>bei</code> is a planar point pattern object from the {spatstat} package containing the locations of trees in a tropical rain forest.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="thursday-october-20-2022.html#cb48-1" aria-hidden="true" tabindex="-1"></a>bei <span class="sc">|&gt;</span></span>
-<span id="cb48-2"><a href="thursday-october-20-2022.html#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="thursday-october-20-2022.html#cb54-1" aria-hidden="true" tabindex="-1"></a>bei <span class="sc">|&gt;</span></span>
+<span id="cb54-2"><a href="thursday-october-20-2022.html#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
 <pre><code>## Planar point pattern:  3604 points
 ## Average intensity 0.007208 points per square metre
 ## 
@@ -640,20 +685,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Unit of length: 1 metre</code></pre>
 <p>There are 3604 events (trees) over an area of 500,000 square meters giving an average intensity of .0073 trees per unit area.</p>
 <p>The distribution of trees is not uniform (heterogeneous) as can be seen with a plot</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="thursday-october-20-2022.html#cb50-1" aria-hidden="true" tabindex="-1"></a>bei <span class="sc">|&gt;</span></span>
-<span id="cb50-2"><a href="thursday-october-20-2022.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="thursday-october-20-2022.html#cb56-1" aria-hidden="true" tabindex="-1"></a>bei <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href="thursday-october-20-2022.html#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>The plot shows clusters of trees and large areas with few if any trees.</p>
 <p>Elevation and elevation slope are factors associated with tree occurrence.</p>
 <p>The point pattern data is accompanied by data (<code>bei.extra</code>) on elevation (<code>elev</code>) and slope of elevation (<code>grad</code>) across the region.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="thursday-october-20-2022.html#cb51-1" aria-hidden="true" tabindex="-1"></a>bei.extra <span class="sc">|&gt;</span></span>
-<span id="cb51-2"><a href="thursday-october-20-2022.html#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="thursday-october-20-2022.html#cb57-1" aria-hidden="true" tabindex="-1"></a>bei.extra <span class="sc">|&gt;</span></span>
+<span id="cb57-2"><a href="thursday-october-20-2022.html#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>These data are stored as <code>im</code> (image) objects.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="thursday-october-20-2022.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(bei.extra<span class="sc">$</span>elev)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="thursday-october-20-2022.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(bei.extra<span class="sc">$</span>elev)</span></code></pre></div>
 <pre><code>## [1] &quot;im&quot;</code></pre>
 <p>The image object contains a list with 10 elements including the matrix of values (<code>v</code>).</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="thursday-october-20-2022.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(bei.extra<span class="sc">$</span>elev)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="thursday-october-20-2022.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(bei.extra<span class="sc">$</span>elev)</span></code></pre></div>
 <pre><code>## List of 10
 ##  $ v     : num [1:101, 1:201] 121 121 121 121 121 ...
 ##  $ dim   : int [1:2] 101 201
@@ -671,42 +716,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   ..- attr(*, &quot;class&quot;)= chr &quot;unitname&quot;
 ##  - attr(*, &quot;class&quot;)= chr &quot;im&quot;</code></pre>
 <p>Specifying a spatial domain (window) allows focuses the analysis on a particular region. Suppose you want to model locations of a certain tree type, but only for trees located at elevations above 145 meters. The <code>levelset()</code> function creates a window from an image object using <code>thresh =</code> and <code>compare =</code> arguments.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="thursday-october-20-2022.html#cb56-1" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> <span class="fu">levelset</span>(bei.extra<span class="sc">$</span>elev,</span>
-<span id="cb56-2"><a href="thursday-october-20-2022.html#cb56-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">thresh =</span> <span class="dv">145</span>, </span>
-<span id="cb56-3"><a href="thursday-october-20-2022.html#cb56-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">compare =</span> <span class="st">&quot;&gt;&quot;</span>)</span>
-<span id="cb56-4"><a href="thursday-october-20-2022.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(W)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="thursday-october-20-2022.html#cb62-1" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> <span class="fu">levelset</span>(bei.extra<span class="sc">$</span>elev,</span>
+<span id="cb62-2"><a href="thursday-october-20-2022.html#cb62-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">thresh =</span> <span class="dv">145</span>, </span>
+<span id="cb62-3"><a href="thursday-october-20-2022.html#cb62-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">compare =</span> <span class="st">&quot;&gt;&quot;</span>)</span>
+<span id="cb62-4"><a href="thursday-october-20-2022.html#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(W)</span></code></pre></div>
 <pre><code>## [1] &quot;owin&quot;</code></pre>
 <p>The result is an object of class <code>owin</code>. The plot method displays the window as a mask, which is the region in black.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="thursday-october-20-2022.html#cb58-1" aria-hidden="true" tabindex="-1"></a>W <span class="sc">|&gt;</span></span>
-<span id="cb58-2"><a href="thursday-october-20-2022.html#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="thursday-october-20-2022.html#cb64-1" aria-hidden="true" tabindex="-1"></a>W <span class="sc">|&gt;</span></span>
+<span id="cb64-2"><a href="thursday-october-20-2022.html#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <p>You subset the <code>ppp</code> object by the window using the bracket operator (<code>[]</code>). Here you assign the reduced <code>ppp</code> object to <code>beiW</code> and then make a plot.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="thursday-october-20-2022.html#cb59-1" aria-hidden="true" tabindex="-1"></a>beiW <span class="ot">&lt;-</span> bei[W]</span>
-<span id="cb59-2"><a href="thursday-october-20-2022.html#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(beiW)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="thursday-october-20-2022.html#cb65-1" aria-hidden="true" tabindex="-1"></a>beiW <span class="ot">&lt;-</span> bei[W]</span>
+<span id="cb65-2"><a href="thursday-october-20-2022.html#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="thursday-october-20-2022.html#cb65-3" aria-hidden="true" tabindex="-1"></a>beiW <span class="sc">|&gt;</span></span>
+<span id="cb65-4"><a href="thursday-october-20-2022.html#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>Now the analysis window is white and the event locations are plotted on top.</p>
 <p>As another example you create a window where altitude is lower than 145 m and slope exceeds .1 degrees. In this case you use the <code>solutionset()</code> function.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="thursday-october-20-2022.html#cb60-1" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">solutionset</span>(bei.extra<span class="sc">$</span>elev <span class="sc">&lt;=</span> <span class="dv">145</span> <span class="sc">&amp;</span> </span>
-<span id="cb60-2"><a href="thursday-october-20-2022.html#cb60-2" aria-hidden="true" tabindex="-1"></a>                 bei.extra<span class="sc">$</span>grad <span class="sc">&gt;</span> .<span class="dv">1</span>)</span>
-<span id="cb60-3"><a href="thursday-october-20-2022.html#cb60-3" aria-hidden="true" tabindex="-1"></a>beiV <span class="ot">&lt;-</span> bei[V]</span>
-<span id="cb60-4"><a href="thursday-october-20-2022.html#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(beiV)</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="thursday-october-20-2022.html#cb66-1" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">solutionset</span>(bei.extra<span class="sc">$</span>elev <span class="sc">&lt;=</span> <span class="dv">145</span> <span class="sc">&amp;</span> </span>
+<span id="cb66-2"><a href="thursday-october-20-2022.html#cb66-2" aria-hidden="true" tabindex="-1"></a>                 bei.extra<span class="sc">$</span>grad <span class="sc">&gt;</span> .<span class="dv">1</span>)</span>
+<span id="cb66-3"><a href="thursday-october-20-2022.html#cb66-3" aria-hidden="true" tabindex="-1"></a>beiV <span class="ot">&lt;-</span> bei[V]</span>
+<span id="cb66-4"><a href="thursday-october-20-2022.html#cb66-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-5"><a href="thursday-october-20-2022.html#cb66-5" aria-hidden="true" tabindex="-1"></a>beiV <span class="sc">|&gt;</span></span>
+<span id="cb66-6"><a href="thursday-october-20-2022.html#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p>You compute the spatial intensity function over the domain with the <code>density()</code> method using the default Gaussian kernel and fixed bandwidth determined by the window size.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="thursday-october-20-2022.html#cb61-1" aria-hidden="true" tabindex="-1"></a>beiV <span class="sc">|&gt;</span></span>
-<span id="cb61-2"><a href="thursday-october-20-2022.html#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>() <span class="sc">|&gt;</span></span>
-<span id="cb61-3"><a href="thursday-october-20-2022.html#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
-<p><img src="ASS-2022_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="thursday-october-20-2022.html#cb67-1" aria-hidden="true" tabindex="-1"></a>beiV <span class="sc">|&gt;</span></span>
+<span id="cb67-2"><a href="thursday-october-20-2022.html#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>() <span class="sc">|&gt;</span></span>
+<span id="cb67-3"><a href="thursday-october-20-2022.html#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <p>The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid (<span class="math inline">\(v\)</span>) and are returned as a pixel image.</p>
 <p>There are over 16K cells that have a value of <code>NA</code> as a result of the masking by elevation and slope.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="thursday-october-20-2022.html#cb62-1" aria-hidden="true" tabindex="-1"></a>den <span class="ot">&lt;-</span> beiV <span class="sc">|&gt;</span></span>
-<span id="cb62-2"><a href="thursday-october-20-2022.html#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>()</span>
-<span id="cb62-3"><a href="thursday-october-20-2022.html#cb62-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-4"><a href="thursday-october-20-2022.html#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(den<span class="sc">$</span>v))</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="thursday-october-20-2022.html#cb68-1" aria-hidden="true" tabindex="-1"></a>den <span class="ot">&lt;-</span> beiV <span class="sc">|&gt;</span></span>
+<span id="cb68-2"><a href="thursday-october-20-2022.html#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>()</span>
+<span id="cb68-3"><a href="thursday-october-20-2022.html#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="thursday-october-20-2022.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(den<span class="sc">$</span>v))</span></code></pre></div>
 <pre><code>## [1] 16020</code></pre>
-<p>Summary: Here the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced. Focus is typically on natural occurring systems where the spatial location of events is examined through the lens of statistics in an attempt to understand physical processes.</p>
-<p>The {spatstat} package is a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class <code>ppp</code>.</p>
-<p>The typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a <code>ppp</code> object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a <code>ppp</code> object.</p>
-<p>The first-order property of spatial point pattern data is spatial intensity. How many events per unit area of the domain. The spatial intensity can vary across the domain. A kernel density estimate is used to quantify the spatial varying intensity.</p>
+<p>Summarizing: Spatial point patterns play a big role in the analysis of natural occurring systems where the spatial location of events is examined through the lens of statistics in an attempt to understand physical processes.</p>
+<p>Some of the terminology and theory of point pattern data analysis was introduced in this lesson. Including the concept of complete spatial randomness (CSR) and the twin assumptions of stationarity and isotropy.</p>
+<p>The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class <code>ppp</code>.</p>
+<p>The typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a <code>ppp</code> object for analysis and modeling. But it is sometimes convenient to do at least part of the data munging after conversion to a <code>ppp</code> object.</p>
+<p>The first-order property of spatial point pattern data is spatial intensity. It is defined as the number of events per unit area of the domain. The spatial intensity can vary with domain area even if the number of events is constant. It can also vary across the domain. Quadrat counting and kernel density estimates are used to quantify the spatial varying intensity.</p>
 
 </div>
 </div>
