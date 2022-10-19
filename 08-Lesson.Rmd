@@ -442,6 +442,97 @@ Change the view mode back to a static plot.
 tmap::tmap_mode("plot")
 ```
 
+## Hillshape and colors with tidyterra
+
+<https://dieghernan.github.io/202210_tidyterra-hillshade/#r_bloggers>
+
+Get the data
+```{r}
+mydir <- here::here("data")
+
+r_init <- geodata::elevation_30s("BGR", 
+                                 path = mydir)
+r_init
+```
+Rename `BGR_elv_msk` to `alt` and set the minimum to zero using the parallel max function.
+
+```{r}
+names(r_init) <- "alt"
+
+r <- r_init |>
+  tidyterra::mutate(alt = pmax(0, alt))
+r
+```
+Quick plot
+```{r}
+library(ggplot2)
+autoplot(r) +
+  theme_minimal()
+```
+
+{tidyterra} provides additional gradients whose colors are placed unevenly with the goal of providing a better understanding of the maps.
+
+```{r}
+grad_hypso <- hypso.colors2(10, "dem_poster")
+
+autoplot(r) +
+  scale_fill_gradientn(colours = grad_hypso, 
+                       na.value = NA)
+```
+In contrast, a regular gradient would just interpolate colors assuming that the distance among colors is the same.
+
+Next step is to calculate the hillshade. You want to create is a layer that approximates the potential 'texture' of the surface based on the elevation and the sun position. This is done with the `terra::terrain()` and `terra::shade()` functions.
+
+```{r}
+slope <- r |>
+ terra::terrain("slope", unit = "radians")
+
+aspect <- r |>
+  terra::terrain("aspect", unit = "radians")
+
+hill <- terra::shade(slope, aspect, 30, 270)
+
+names(hill) <- "shades"
+```
+
+Start with a gray palette.
+
+```{r}
+pal_greys <- hcl.colors(1000, "Grays")
+
+( hill_plot <- ggplot() +
+  geom_spatraster(data = hill) +
+  scale_fill_gradientn(colors = pal_greys, 
+                       na.value = NA) )
+
+```
+
+Now blend the hillshade layer with the altitude layer using some level of alpha on the upper layer.
+```{r}
+r_limits <- terra::minmax(r) |> 
+  as.vector()
+
+# Rounded to lower and upper 500
+r_limits <- c(floor(r_limits[1] / 500), ceiling(r_limits[2] / 500)) * 500
+
+base_plot <- hill_plot +
+  geom_spatraster(data = r, maxcell = Inf) +
+  scale_fill_hypso_tint_c(
+    limits = r_limits,
+    palette = "dem_poster",
+    alpha = 0.4,
+    labels = scales::label_comma(),
+    # For the legend I use custom breaks
+    breaks = c(
+      seq(0, 500, 100),
+      seq(750, 1500, 250),
+      2000
+    )
+  )
+
+base_plot
+```
+
 ## Adding an inset map {.unnumbered}
 
 An inset map puts the geographic study area into context. Here you create a map of the central part of New Zealand's Southern Alps. The inset map shows where the main map is in relation to the rest of New Zealand.
