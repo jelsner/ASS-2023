@@ -6,7 +6,7 @@ Today
 
 -   Spatial data as point patterns
 -   Theoretical framework for analyzing/modeling point pattern data
--   Working with point pattern data using functions from the {spatstat} package
+-   Working with point pattern data
 -   Quantifying the spatial intensity of events
 
 ## Spatial data as point patterns {.unnumbered}
@@ -15,7 +15,7 @@ We now turn our attention to analyzing and modeling point pattern data. We start
 
 As humans we naturally seek patterns within a collection of events. A pattern that quickly catches our attention is clustering. Clusters of stars in the night sky were defined by the ancients as a constellation.
 
-A cluster of events in a particular region begs for an explanation. Why do events occur more often in one region rather than another region?
+A cluster of events in a particular region begs for an explanation. Why do events occur more often in one region rather than in another region?
 
 Consider tornado reports in the state of Kansas. Let the start position of a tornado be an *event location*. And let the damage rating (EF scale) provide a *mark* on the event.
 
@@ -159,7 +159,7 @@ A procedure to create a homogeneous Poisson point process follows from its defin
 For example, let area \|A\| = 1, and the rate of occurrence $\lambda$ = 20, then the code below generates a CSR set of events.
 
 ```{r}
-lambda <- 20
+lambda <- 2000
 N <- rpois(1, lambda)
 x <- runif(N)
 y <- runif(N)
@@ -181,7 +181,7 @@ Each person may have the same risk of heart disease, for instance, regardless of
 
 The intensity (density) function is a first-order property of point pattern data. If intensity varies (significantly) across the domain, the process generating the data is said to be heterogeneous. The intensity function describes the expected number of events at any location. Events might be independent of one another, but groups of events appear because of the changing intensity.
 
-It helps to visualize these concepts. We do that with functions from the {spatstat} package.
+It helps to visualize these concepts. We do that with functions from the {spatstat} family of packages.
 
 ## Working with point pattern data using functions from the spatstat package {.unnumbered}
 
