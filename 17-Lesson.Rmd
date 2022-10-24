@@ -428,3 +428,150 @@ Output also is the estimated value for the `(Intercept)` term. It is the logarit
 You interpret the model output as follows. The process producing the spatial pattern of pine saplings is such that you should see .0757 saplings per unit area [unobserved (latent) rate]. 
 
 But because of event inhibition, where saplings nearby other saplings fail to grow, the number of saplings is reduced to .0074 per unit area. Thus the spatial pattern is suggestive of sibling-sibling interaction. Adults have many offspring, but only some survive due to limited resources.
+
+## Fitting a log-Gaussian Cox process model to one-dimensional point pattern data
+
+<https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html>
+
+Using the method of stochastic partial differential equations.
+
+```{r}
+library(inlabru)
+library(INLA)
+library(mgcv)
+library(ggplot2)
+```
+
+Get the data
+
+```{r}
+data(Poisson2_1D)
+```
+
+Plot the data and a histogram
+
+```{r}
+ggplot(data = pts2) +
+  geom_histogram(mapping = aes(x = x), 
+                 binwidth = 55 / 20, 
+                 boundary = 0, 
+                 fill = NA, 
+                 color = "black") +
+  geom_point(mapping = aes(x), 
+             y = 0, pch = "|", cex = 4) +
+  coord_fixed(ratio = 2)
+```
+
+Create a 1D mesh
+
+```{r}
+x <- seq(0, 55, length.out = 50)
+mesh1D <- inla.mesh.1d(x, boundary = "free")
+```
+
+Specify the spatial autocorrelation with a Matern cluster process model. The first argument is the mesh onto which the model will be built.
+
+The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial autocorrelation and the second element the probability that the range will be less than that value. If the second value is `NA`, then the value of the first element is used as a fixed range.
+
+The argument `prior.sigma =` accepts a vector of length two with the first element is the marginal standard deviation of the field and the second element the probability that the standard deviation will be greater than that value.
+
+```{r}
+Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
+                              prior.range = c(150, .75),
+                              prior.sigma = c(.1, .75))
+```
+
+Next specify the full model.
+
+```{r}
+f <- x ~ spde1D(x, model = Matern) + Intercept(1)
+```
+
+Here you want to fit the model to the actual points. The {inlabru} function that does this is `lgcp()` (for 'log Gaussian Cox process'). The `domain =` argument specifies the 1D mesh as a list object.
+
+```{r}
+model.lgcp <- lgcp(components = f, 
+                   data = pts2, 
+                   domain = list(x = mesh1D))
+```
+
+You can look at the posterior distributions of the model parameters using the function `spde.posterior()`. It returns x and y values for a plot of the posterior probability density function (PDF) in a data frame, which can be plotted using using the `plot.bru()` function. 
+
+Here is the PDF for the range parameter.
+
+```{r}
+spde.posterior(result = model.lgcp, 
+               name = "spde1D", 
+               what = "range") |>
+  plot()
+```
+
+Perhaps better viewed on a log scale.
+
+```{r}
+spde.posterior(model.lgcp, 
+               name = "spde1D", 
+               what = "log.range") |>
+  plot()
+```
+
+Here is the PDF for the Matern correlation
+
+```{r}
+spde.posterior(model.lgcp, 
+               name = "spde1D", 
+               what = "matern.correlation") |>
+  plot()
+```
+
+You can get a feel for sensitivity to priors by specifying different priors and looking at these posterior plots. Always a good idea when fitting models using Bayesian methods.
+
+You can predict on the 'response' scale (i.e. the intensity function $\lambda$(s). First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method.
+
+```{r}
+grid.df <- data.frame(x = seq(0, 55, by = 1)) 
+pred.df <- predict(model.lgcp, 
+                   data = grid.df, 
+                   formula = ~ exp(spde1D + Intercept))
+```
+
+The output is a data frame containing the explanatory values and corresponding summary statistics on the posterior predictions.
+
+```{r}
+str(pred.df)
+```
+
+You pass this data frame to the `plot()` method to produce the following prediction plot.
+
+```{r}
+plot(pred.df, color = "red") +
+  geom_point(data = pts2, 
+             mapping = aes(x = x), 
+             y = 0, pch = "|", cex = 2) +
+  xlab("x") + ylab("Spatial intensity")
+```
+
+How does this compare with the underlying intensity function that generated the data? 
+
+The function `lambda2_1D( ) `in the dataset `Poission2_1D` calculates the true intensity that was used in simulating these data. In order to plot this, you make a data frame with x- and y-coordinates giving the true intensity function, $\lambda$(s). Use a lot of x-values to get a nice smooth plot (150 values).
+
+```{r}
+xs <- seq(0, 55, length = 150)
+true.lambda <- data.frame(x = xs, y = lambda2_1D(xs))
+```
+
+Plot the fitted and true intensity functions.
+
+```{r}
+plot(pred.df, color = "red") +
+  geom_point(data = pts2, 
+             mapping = aes(x = x), 
+             y = 0, pch = "|", cex = 2) +
+  geom_line(data = true.lambda, 
+            mapping = aes(x, y)) +
+  xlab("x") + ylab("Spatial intensity")
+```
+
+https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html
+
+Continue w/ Goodness-of-fit
