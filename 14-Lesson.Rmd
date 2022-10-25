@@ -6,7 +6,7 @@ Today
 
 -   Creating `ppp` and `owin` objects from simple feature data frames
 -   Estimating spatial intensity as a function of distance
--   Intensity trend as a possible confounding factor
+-   Covariate trend as a possible confounding factor
 
 Last time the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced.
 
@@ -16,11 +16,11 @@ Focus is on natural occurring systems where the geographic location of events is
 
 The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`.
 
-Typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object.
+Typical work flow includes importing and munging data as a simple feature data frame and then converting the spatial data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object.
 
 ## Creating `ppp` and `owin` objects from simple feature data frames {.unnumbered}
 
-Consider again Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating) since 1950 whose initial location occurred within the state.
+Consider again the set of Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating) since 1950 whose initial location occurred within the state.
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
@@ -33,13 +33,13 @@ Torn.sf |>
   head()
 ```
 
-The length unit is meters. This can be seen by printing the CRS.
+The length unit is meters. This is seen by printing the CRS.
 
 ```{r}
 sf::st_crs(Torn.sf)
 ```
 
-Further you note that some tornadoes are incorrectly coded as Kansas tornadoes by plotting the event locations.
+You note that some tornadoes are incorrectly coded as Kansas tornadoes by plotting the event locations.
 
 ```{r}
 plot(Torn.sf$geometry)
@@ -336,7 +336,7 @@ ggplot(data = df) +
 
 As expected, the number of random events near cities/towns is not higher than the number of random events at greater distances. Thus you reject the null hypothesis of no difference in tornado reports near and far from cities.
 
-## Intensity trend as a possible confounding factor {.unnumbered}
+## Covariate trend as a possible confounding factor {.unnumbered}
 
 Quantifying the report bias with the spatial intensity function works well for Kansas where there is no trend in the local intensity. Local tornado intensity is largely uniform across Kansas.
 
@@ -461,3 +461,5 @@ Given a tornado somewhere in Texas what is the chance that it will cause at leas
 Summary: Analyzing spatial point pattern data with function from the {spatstat} family of packages requires the data be of class `ppp`. A `ppp` object contains the events and the domain (window). You saw how to create `ppp` and `owin` objects from simple feature data frames. Visually you can compare your events against events generated from simple models of CSR. You saw how to estimate spatial intensity as a function of a covariate. This allowed you to examine the hypothesis of no population bias in the tornado reports. However, if the covariate has the same spatial intensity as the observed events then inference is not straight forward.
 
 Next we will look at estimating relative risk before we turn our attention to spatial clustering.
+
+Additional resource: <https://r-spatial.org/book/11-PointPattern.html>
