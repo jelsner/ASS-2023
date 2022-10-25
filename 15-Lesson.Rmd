@@ -6,6 +6,7 @@ Today
 
 - Estimating the relative risk of events
 - Estimating second-order properties of spatial events
+- Examples of spatial clustered events
 
 ## Estimating the relative risk of events {-}
 
@@ -261,9 +262,13 @@ tmap::tm_credits(text = "Data source: Karen Short https://doi.org/10.2737/RDS-20
 
 ## Estimating second-moment properties of spatial events {-}
 
-Spatial intensity is a first-moment property of event locations (like the average of a set of numbers). It answers the question: where are events more and less frequent? 
+Important concepts of point patterns analysis are the distinction between a point pattern and a point process: the latter is the stochastic process that, when sampled, generates a point pattern. A dataset is always a point pattern, and inference involves figuring out the properties of a process that could have generated a pattern like the one we observed. Properties of a spatial point process include:
 
-Clustering is a second-moment property of event locations (like the variance of a a set of numbers). It answers the question: is the probability of an event in the proximity of another event higher than expected by chance? 
+First order properties or intensity function, which measures the number of points per area unit; this function is spatially varying for a inhomogeneous point process
+
+Second order properties, e.g. pairwise interactions: given a constant or varying intensity function, are points distributed independently from one another, or do they tend to attract each other (clustering) or repulse each other (appear regularly distributed, compared to complete spatial randomness)
+
+Spatial intensity is a first-moment property of event locations (like the average of a set of numbers). It answers the question: where are events more and less frequent? 
 
 On example of cluster occurs with the location of trees in a forest. A tree's seed dispersal mechanism leads to a greater likelihood of another tree nearby.
 
@@ -405,3 +410,126 @@ $$
 $$
 
 where $r_{ij}$ is the Euclidean distance between event $i$ and event $j$, $r$ is the search radius, and $\hat \lambda$ is an estimate of the intensity $(\hat \lambda = n/|A|)$ where $|A|$ is the window area and $n$ is the number of events. $I(.)$ is an indicator function equal to 1 when the expression $r_{ij} < r$, and 0 otherwise. If the events are homogeneous, $\hat{K}(r)$ increases at a rate proportional to $\pi r^2$.
+
+## Examples of spatially clustered events {-}
+
+Bramble canes
+
+The locations of bramble canes are available as a marked `ppp` object in the {spatstat} package. A bramble is a rough (usually wild) tangled prickly shrub with thorny stems.
+
+```{r}
+suppressMessages(library(spatstat))
+
+data(bramblecanes)
+summary(bramblecanes)
+```
+
+The marks represent three different ages (as an ordered factor) for the bramble canes. The unit of length is 9 meters.
+
+```{r}
+plot(bramblecanes) 
+```
+
+Consider the point pattern for all the bramble canes regardless of age and estimate the $K$ function and a corresponding plot. Plot the empirical estimate of $K$ with an 'isotropic' correction at the domain borders (`iso`). Include a line for the theoretical $K$ under the assumption of CSR.
+
+```{r}
+K.df <- bramblecanes |>
+  Kest() |>
+  as.data.frame() |>
+  dplyr::mutate(r = r * 9)
+
+library(ggplot2)
+
+ggplot(data = K.df, 
+       mapping = aes(x = r, y = iso)) +
+  geom_line() +
+  geom_line(aes(y = theo), color = "red") +
+  xlab("Lag distance (m)") + ylab("K(r)") +
+  theme_minimal()
+```
+
+The $K$ estimate from the actual data (black line) lies to the left of the theoretical $K$  under CSR (red line). This means that for any distance from an event (lag distance) there tends to be _more_ events within this distance (larger $K$) than expected under CSR. You conclude that these bramble canes are more clustered than CRS.
+
+The expected number of additional events is multiplied by the total number of events (823) so a value of .1 indicates that at a distance of 1.6 meters (where .1 value of $K(r)$ intersects the red curve) you should expect to see about 82 additional events.
+
+Kansas tornado reports
+
+Previously you mapped the intensity of tornadoes across Kansas using the start locations as point pattern data. Here we return to these data and consider only tornadoes since 1994.
+
+```{r}
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
+  sf::st_transform(crs = 3082) |>
+  dplyr::filter(mag >= 0, yr >= 1994) |>
+  dplyr::mutate(EF = as.factor(mag)) |>
+  dplyr::select(EF)
+
+T.ppp <- Torn.sf["EF"] |>
+  as.ppp()
+
+KS.sf <- USAboundaries::us_states(states = "Kansas") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)$proj4string)
+
+W <- KS.sf |>
+  as.owin()
+
+T.ppp <- T.ppp[W] |>
+  spatstat.geom::rescale(s = 1000, 
+                         unitname = "km")
+
+T.ppp |>
+  plot()
+
+T.ppp |>
+  summary()
+```
+
+There are 2241 events with an average intensity of .01 events per square km (1 tornado per 10 square km over the 26-year period 1994--2020).
+
+You compare the $K$ function estimated from the set of tornado reports with a theoretical $K$ function from a model of CSR.
+
+```{r}
+K.df <- T.ppp |>
+  Kest(correction = "iso") |>
+  as.data.frame() |>
+  dplyr::mutate(Kdata = iso * sum(intensity(T.ppp)),
+                Kpois = theo * sum(intensity(T.ppp)))
+
+ggplot(data = K.df, 
+       mapping = aes(x = r, y = Kdata)) +
+  geom_line() +
+  geom_line(mapping = aes(y = Kpois), color = "red") +
+  geom_vline(xintercept = 60, lty = 'dashed') +
+  geom_hline(yintercept = 129, lty = 'dashed') +
+  geom_hline(yintercept = 115, lty = 'dashed') +
+  xlab("Lag distance (km)") + ylab("K(r), Expected number of additional tornadoes\n within a distance r of any tornado") +
+  theme_minimal()
+```
+
+Consider the lag distance of 60 km along the horizontal axis. If you draw a vertical line at that distance it intersects the black curve at a height of about 129. This value indicates that at a distance of 60 km from a random tornado report about 129 other tornado reports are in the vicinity (on average).
+
+Imagine placing a disc with radius 60 km centered on each event and then averaging the number of events under the disc over all events.
+
+The red line is the theoretical curve under the assumption that the tornado reports are CSR across the state. If this is the case then you would expect to see about 115 tornadoes within a distance 60 km from any tornado (on average). Since there are MORE tornadoes than expected within a given 60 km radius you conclude that there is evidence for clustering (at this spatial scale).
+
+The black line lies above the red line across distances from 0 to greater than 100 km.
+
+How do you interpret the results of applying the nearest neighbor function to these data? Here you create a data frame from the output of the `Gest()` function and remove distances exceeding 8 km.
+```{r}
+G.df <- T.ppp |>
+  Gest(correction = "km") |>
+  as.data.frame() |>
+  dplyr::filter(r < 8)
+
+ggplot(data = G.df, 
+       mapping = aes(x = r, y = km)) +
+  geom_line() + 
+  geom_line(aes(y = theo), color = "red") +
+  geom_hline(yintercept = .4, lty = 'dashed') +
+  geom_vline(xintercept = c(3.2, 4), lty = 'dashed') +
+  xlab("Lag distance (km)") + ylab("G(r): Cumulative % of tornadoes\n within a distance r of another tornado") +
+  theme_minimal()
+```
+
+The interpretation is that 40% ($G$ = .4) of all tornado reports have another report within a distance of about 3.2 km on average. If the reports where homogeneous Poisson (CSR) then the distance would be 4 km. We conclude they are more clustered. 
+
+Note: With a data set containing many events the difference between the raw and border-corrected estimates of the distance functions is typically small.

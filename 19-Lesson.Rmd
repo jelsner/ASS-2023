@@ -7,6 +7,8 @@ Today
 - Spatial data interpolation
 - Computing the sample (empirical) variogram
 
+See <https://r-spatial.org/book/12-Interpolation.html>
+
 ## Spatial data interpolation {-}
 
 In situ observations of the natural world are made at specific locations in space (and time). But we often want estimates of the values everywhere. The temperature reported at the airport is 15C, but what is it at my house 10 miles away? 
