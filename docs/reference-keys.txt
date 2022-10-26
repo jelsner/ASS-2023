@@ -3,3 +3,4 @@ including-plots
 getting-data-into-r
 working-with-data-frames-using-functions-from-dplyr
 hillshape-and-colors-with-tidyterra
+fitting-a-log-gaussian-cox-process-model-to-one-dimensional-point-pattern-data

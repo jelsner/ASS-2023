@@ -1,20 +1,25 @@
 # Thursday October 27, 2022 {.unnumbered}
 
-**"To me programming is more than an important practical art. It is also a gigantic undertaking in the foundations of knowledge."** – Grace Hopper
+**"To me programming is more than an important practical art. It is also a gigantic undertaking in the foundations of knowledge."** -- Grace Hopper
+
+*Please remember to vote in the upcoming midterm elections!*
 
 Today
 
-- Estimating the relative risk of events
-- Estimating second-order properties of spatial events
-- Examples of spatial clustered events
+-   Estimating the relative risk of events
+-   Estimating second-order properties of spatial events
+-   Examples of spatial clustered events
 
-## Estimating the relative risk of events {-}
+## Estimating the relative risk of events {.unnumbered}
 
-Separate spatial intensity maps across two marked types provides a way to estimate the risk of one event type conditional on the other event type. More generally, the relative risk of occurrence of some event is a conditional probability. In a non-spatial context, the risk of catching a disease if you are elderly relative to the risk if you are young.
+The relative risk of occurrence of some event is a conditional probability. In a non-spatial context, the risk of catching a disease if you are elderly relative to the risk if you are young.
 
-Given a tornado somewhere in Texas what is the chance that it will cause at least EF3 damage? With the historical set of all tornadoes marked by the damage rating you can make a map of all tornadoes and a map of the EF3+ tornadoes and then take the ratio.
+Spatial intensity maps constructed from two different point pattern data provides a way to estimate the risk of one event conditional on the other event.
 
-To see this start by importing the tornado data, mutating and selecting the damage rating as a factor called `EF` before turning the resulting simple feature data frame into a planar point pattern. 
+For example, given a tornado somewhere in Texas what is the chance that it will cause at least EF3 damage? With the historical set of all tornadoes marked by the damage rating you can make a map of all tornadoes and a map of the EF3+ tornadoes and then take the ratio.
+
+To see this start by importing the tornado data, mutating and selecting the damage rating as a factor called `EF` before turning the resulting simple feature data frame into a planar point pattern.
+
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
   sf::st_transform(crs = 3082) |>
@@ -27,7 +32,7 @@ T.ppp <- Torn.sf |>
   as.ppp()
 ```
 
-Then subset by the boundary of Texas.
+Next get the state boundary and transform the CRS to that of the tornadoes. Then create a `owin` object from it. Finally, subset the tornadoes by the window.
 
 ```{r}
 TX.sf <- USAboundaries::us_states(states = "Texas") |>
@@ -40,51 +45,58 @@ T.ppp <- T.ppp[W]
 summary(T.ppp)
 ```
 
-Chance that a tornado anywhere in Texas will be at least EF3 or worse is the sum of the proportions for these types: .03616 + .00537 + .00067 = .042 (or 4.2%). 
+You note the chance that a tornado anywhere in Texas will be at least EF3 or worse is the sum of the proportions for these types: .03616 + .00537 + .00067 = .042 (or 4.2%).
 
-As found previously there is a spatial intensity gradient across the state with fewer tornadoes in the southwest and more in the northeast. Also the more damaging tornadoes might be more common relative to all tornadoes in some parts of the state compared with other parts.
+As noted last time there is a spatial intensity gradient across the state with fewer tornadoes in the southwest and more in the northeast. Also, the more damaging tornadoes might be more common relative to all tornadoes in some parts of the state compared to other parts of the state.
 
 To create a map of the relative risk of the more damaging tornadoes you start by making two `ppp` objects, one being the set of all tornado events with damage ratings 0, 1, or 2 and the other the set of all tornado locations with damage ratings 3, 4, or 5. You do this by subset the object using brackets (`[]`) and the logical operator `|` (or) and then merge the two subsets assigning names `H` and `I` as marks with the `superimpose()` function.
 
 ```{r}
-H.ppp <- unmark(T.ppp[T.ppp$marks == 2 | T.ppp$marks == 1 | T.ppp$marks == 0])
-I.ppp <- unmark(T.ppp[T.ppp$marks == 3 | T.ppp$marks == 4 | T.ppp$marks == 5])
+H.ppp <- unmark(T.ppp[T.ppp$marks == 2 | 
+                      T.ppp$marks == 1 | 
+                      T.ppp$marks == 0])
+I.ppp <- unmark(T.ppp[T.ppp$marks == 3 | 
+                        T.ppp$marks == 4 | 
+                        T.ppp$marks == 5])
+
 T2.ppp <- superimpose(H = H.ppp, 
                       I = I.ppp)
 ```
 
-See https://en.wikipedia.org/wiki/Enhanced_Fujita_scale for definitions of EF tornado rating.
+See <https://en.wikipedia.org/wiki/Enhanced_Fujita_scale> for definitions of EF tornado rating.
 
 The chance that a tornado chosen at random is intense (EF3+) is 4.2%. Plot the event locations for the set of intense tornadoes.
 
 ```{r}
-plot(I.ppp, 
-     pch = 25, 
-     cols = "red", 
-     main = "")
-plot(T.ppp, add = TRUE, lwd = .1)
+I.ppp |>
+  plot(pch = 25, 
+       cols = "red", 
+       main = "")
+T.ppp |>
+  plot(add = TRUE, 
+       lwd = .1)
 ```
 
 To get the relative risk use the `relrisk()` function. If X is a multi-type point pattern with factor marks and two levels of the factor then the events of the first type (the first level of `marks(X)`) are treated as controls (conditionals) or non-events, and events of the second type are treated as cases.
 
-The `relrisk()` function estimates the local chance of a case (i.e. the probability $p(u)$ that a point at $u$ will be a case) using a kernel density smoother. The bandwidth for the kernel is specified or can be found through an iterative cross-validation procedure (recall the bandwidth selection procedure used in geographic regression) using the `bw.relrisk()` function. 
+The `relrisk()` function estimates the local chance of a case (i.e. the probability $p(u)$ that a point at $u$ will be a case) using a kernel density smoother. The bandwidth for the kernel is specified or can be found through an iterative cross-validation procedure (recall the bandwidth selection procedure used in geographic regression) using the `bw.relrisk()` function (Lesson 12).
 
 The bandwidth has units of length (here meters). You specify a minimum and maximum bandwidth with the `hmin =` and `hmax =` arguments. This takes a few seconds.
 
 ```{r}
-( bw <- bw.relrisk(T2.ppp,
-                   hmin = 1000,
-                   hmax = 200000) )
+( bw <- T2.ppp |>
+  bw.relrisk(hmin = 1000,
+             hmax = 200000) )
 ```
 
-The optimal bandwidth (`sigma`) is 119770 meters or about 120 km. 
+The optimal bandwidth (`sigma`) is 119770 meters or about 120 km.
 
 Now estimate the relative risk at points defined by a 256 by 256 grid and using the 120 km bandwidth for the kernel smoother.
 
 ```{r}
-rr <- relrisk(T2.ppp, 
-              sigma = bw,
-              dimyx = c(256, 256))
+rr.im <- T2.ppp |>
+  relrisk(sigma = bw,
+          dimyx = c(256, 256))
 ```
 
 The result is an object of class `im` (image) with values you interpret as the conditional probability of an 'intense' tornado.
@@ -92,58 +104,76 @@ The result is an object of class `im` (image) with values you interpret as the c
 You retrieve the range of probabilities with the `range()` function. Note that many of the values are `NA` corresponding pixels that are outside the window so you set the `na.rm` argument to `TRUE`.
 
 ```{r}
-range(rr, na.rm = TRUE)
+rr.im |>
+  range(na.rm = TRUE)
 ```
 
 The probabilities range from a low of .5% to a high of 6%. This range compares with the statewide average probability of 4.2%.
 
 Map the probabilities with the `plot()` method.
+
 ```{r}
-plot(rr)
+rr.im |>
+  plot()
 ```
 
-Make a better map by converting the image to a raster, setting the CRS, and then using functions from the {tmap} package.
+Improve the map by converting the image to a raster (`SpatRaster`), assigning the CRS, and then using functions from the {tmap} package.
 
 ```{r}
-tr.r <- raster::raster(rr)
-raster::crs(tr.r) <- sf::st_crs(Torn.sf)$proj4string
+rr.r <- rr.im |>
+  terra::rast()
 
-tmap::tm_shape(tr.r) +
+terra::crs(rr.r) <- sf::st_crs(Torn.sf)$proj4string
+
+tmap::tm_shape(rr.r) +
   tmap::tm_raster()
 ```
 
-The chance that a tornado is more damaging peaks in the northeast part of the state.
+The relative chance of a more damaging tornado peaks across the northeast part of the state.
 
-Since the relative risk is computed for any point it is of interest to extract the probabilities for cities and towns.
+Since the relative risk is computed for any point across the domain, it is interesting to extract these relative risks for cities and towns.
 
-You get city locations with the `us_cities()` function from the {USAboundaries} package that extracts a simple feature data frame of cities. The CRS is 4326 and you filter to keep only cities with at least 100000 in 2010.
+You get city locations with the `us_cities()` function from the {USAboundaries} package that extracts a simple feature data frame of cities. The CRS is 4326 and you filter to keep only cities with at least 100K residents in 2010.
 
 ```{r}
-Cities.sf <- USAboundaries::us_cities(state = "TX") |>
-  sf::st_transform(crs = raster::crs(tr.r)) |>
-  dplyr::filter(population > 100000)
+( Cities.sf <- USAboundaries::us_cities(state = "TX") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)) |>
+  dplyr::filter(population > 100000) )
 ```
 
-Use the `extract()` function from the {raster} package to get a single value for each city. Put these values into the simple feature data frame.
+The resulting simple feature data frame contains 29 rows (one row for each city with a population of at least 100K) and 13 columns. The geometry column is S3 simple feature column of type `POINT` as the center location.
+
+Use the `extract()` function from the {terra} package to get a data frame containing the relative risk at each of the 29 cities.
 
 ```{r}
-Cities.sf$tr <- raster::extract(tr.r, 
-                                Cities.sf)
+( rr.v <- rr.r |>
+    terra::extract(Cities.sf) |>
+    dplyr::pull(lyr.1) )
+```
 
-Cities.sf |>
-  dplyr::arrange(desc(tr)) 
+Attach these relative risk values to the `Cities.sf` object.
+
+```{r}
+( Cities.sf <- Cities.sf |>
+  dplyr::mutate(rr = rr.v) |>
+  dplyr::arrange(desc(rr)) )
 ```
 
 To illustrate the results create a graph using the `geom_lollipop()` function from the {ggalt} package. Use the package {scales} to allow for labels in percent.
+
 ```{r}
 library(ggalt)
 library(scales)
 
-ggplot(Cities.sf, aes(x = reorder(city, tr), y = tr)) +
-    geom_lollipop(point.colour = "steelblue", point.size = 3) +
-    scale_y_continuous(labels = percent, limits = c(0, .0625)) +
+ggplot(data = Cities.sf, 
+       mapping = aes(x = reorder(city, rr), y = rr)) +
+    geom_lollipop(point.colour = "steelblue", 
+                  point.size = 3) +
+    scale_y_continuous(labels = percent, 
+                       limits = c(0, .0625)) +
     coord_flip() +
-    labs(x = "", y = NULL, 
+    labs(x = "", 
+         y = NULL, 
          title = "Historical chance that a tornado caused at least EF3 damage",
          subtitle = "Cities in Texas with a 2010 population > 100,000",
          caption = "Data from SPC (1950-2020)") +
@@ -152,9 +182,10 @@ ggplot(Cities.sf, aes(x = reorder(city, tr), y = tr)) +
 
 Another example: Florida wildfires
 
-Given a wildfire in Florida what is the probability that it was started by lightning? 
+Given a wildfire in Florida what is the probability that it was started by lightning?
 
-Import wildfire data (available here: https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.4) as a simple feature data frame and transform the native CRS to a Florida GDL Albers (EPSG 3086).
+Import wildfire data (available here: <https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.4>) as a simple feature data frame and transform the native CRS to a Florida GDL Albers (EPSG 3086).
+
 ```{r}
 if(!"FL_Fires" %in% list.files(here::here("data"))){
   download.file("http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip",
@@ -168,7 +199,7 @@ FL_Fires.sf <- sf::st_read(dsn = here::here("data", "FL_Fires")) |>
 dim(FL_Fires.sf)
 ```
 
-Each row is a unique fire and the data spans the period 1992-2015. There are over 90K rows and 38 variables. 
+Each row is a unique fire and the data spans the period 1992-2015. There are over 90K rows and 38 variables.
 
 To make things run faster, here you analyze only a random sample of all the data. You do this with the `dplyr::sample_n()` function where the argument `size =` specifies the number of rows to choose at random. Save the sample of events to the object `FL_FiresS.sf`. First set the seed for the random number generator so that the set of rows chosen will be the same every time you run the code.
 
@@ -193,6 +224,7 @@ FL_FiresS.sf$STAT_CAU_1 |>
 There are 13 causes (listed in alphabetical order) with various occurrence frequencies. Lightning is the most common.
 
 To analyze these data as spatial events, you first convert the simple feature data to a `ppp` object over a window defined by the state boundaries. Use the cause of the fire as a factor mark.
+
 ```{r}
 F.ppp <- FL_FiresS.sf["STAT_CAU_1"] |>
   as.ppp()
@@ -207,11 +239,12 @@ marks(F.ppp) <- as.factor(marks(F.ppp)) # make the character marks factor marks
 summary(F.ppp)
 ```
 
-Output from the `summary()` method displays a table of frequency by type including the proportion and the average spatial intensity (per square meters). 
+Output from the `summary()` method displays a table of frequency by type including the proportion and the average spatial intensity (per square meters).
 
 The probability that a wildfire is caused by lightning is about 25% (`proportion` column of the frequency versus type table). How does this probability vary over the state?
 
 Note that the window contains four separate polygons to capture the main boundary (`polygon 4`) and the Florida Keys.
+
 ```{r}
 plot(W)
 ```
@@ -235,15 +268,17 @@ Now the two types are `NL` and `L` composing 75% and 25% of all wildfire events.
 The function `relrisk()` computes the spatially-varying probability of a case (event type), (i.e. the probability $p(u)$ that a point at location $u$ will be a case).
 
 Here you compute the relative risk on a 256 by 256 grid.
+
 ```{r}
-wfr <- relrisk(LNL.ppp, 
-               dimyx = c(256, 256))
+wfr.im <- relrisk(LNL.ppp, 
+                  dimyx = c(256, 256))
 ```
 
-Create a map from the raster by first converting the image object to a raster object and assigning the CRS with the `crs()` function from the {raster} package. Add the county borders for geographic reference.
+Create a map from the raster by first converting the image object to a raster object and assigning the CRS with the `crs()` function from the {terra} package. Add the county borders for geographic reference.
+
 ```{r}
-wfr.r <- raster::raster(wfr)
-raster::crs(wfr.r) <- sf::st_crs(FL_Fires.sf)$proj4string
+wfr.r <- terra::rast(wfr.im)
+terra::crs(wfr.r) <- sf::st_crs(FL_Fires.sf)$proj4string
 
 FL.sf <- USAboundaries::us_counties(state = "FL") |>
   sf::st_transform(crs = sf::st_crs(FL_Fires.sf))
@@ -260,58 +295,69 @@ tmap::tm_credits(text = "Data source: Karen Short https://doi.org/10.2737/RDS-20
                  position = c("left", "bottom")) 
 ```
 
-## Estimating second-moment properties of spatial events {-}
+## Estimating second-moment properties of spatial events {.unnumbered}
 
-Important concepts of point patterns analysis are the distinction between a point pattern and a point process: the latter is the stochastic process that, when sampled, generates a point pattern. A dataset is always a point pattern, and inference involves figuring out the properties of a process that could have generated a pattern like the one we observed. Properties of a spatial point process include:
+It is important to distinguish between a point pattern and a point process: the latter is the stochastic process that, when sampled, generates a point pattern. A set of data is always a point pattern, and inference involves figuring out the properties of a process that could have generated a pattern like the one you observed.
 
-First order properties or intensity function, which measures the number of points per area unit; this function is spatially varying for a inhomogeneous point process
+Properties of a spatial point process include: First order properties or intensity function, which measures the number of events per area unit; this function is spatially varying for a inhomogeneous point process
 
-Second order properties, e.g. pairwise interactions: given a constant or varying intensity function, are points distributed independently from one another, or do they tend to attract each other (clustering) or repulse each other (appear regularly distributed, compared to complete spatial randomness)
+Second order properties, e.g. pairwise interactions: given a constant or varying intensity function, are events distributed independently from one another, or do they tend to attract each other (clustering) or repulse each other (appear regularly distributed, compared to complete spatial randomness)
 
-Spatial intensity is a first-moment property of event locations (like the average of a set of numbers). It answers the question: where are events more and less frequent? 
-
-On example of cluster occurs with the location of trees in a forest. A tree's seed dispersal mechanism leads to a greater likelihood of another tree nearby.
+On example of clustering occurs with the location of trees in a forest. A tree's seed dispersal mechanism leads to a greater likelihood of another tree nearby.
 
 Let $r$ be the distance between two event locations or the distance between an event and an arbitrary point within the domain, then functions to describe clustering include:
 
-- The nearest neighbor distance function $G(r)$: The cumulative distribution of the distances from an event to the nearest other event (event-to-event function). It summarizes the distance between events (amount of clustering).
+-   The nearest neighbor distance function $G(r)$: The cumulative distribution of the distances from an event to the nearest other event (event-to-event function). It summarizes the distance between events (amount of clustering).
 
-- The empty space function $F(r)$: The cumulative distribution of the distances from a point in the domain to the nearest event (point-to-event function). It summarizes the distance gaps between events (amount of gappiness or lacunarity).
+-   The empty space function $F(r)$: The cumulative distribution of the distances from a point in the domain to the nearest event (point-to-event function). It summarizes the distance gaps between events (amount of gappiness or lacunarity).
 
-- The reduced second-moment function (Ripley $K$) $K(r)$: Defined such that $\lambda \times K(r)$ is the expected number of additional events within a distance $r$ of an event, where $\lambda$ is the average intensity of the events. It is a measure of the spatial autocorrelation among the events.
+-   The reduced second-moment function (Ripley $K$) $K(r)$: Defined such that $\lambda \times K(r)$ is the expected number of *additional* events within a distance $r$ of an event, where $\lambda$ is the average intensity of the events. It is a commonly used measure of the spatial autocorrelation among the events.
 
-To assess the degree of clustering and significance (in a statistical sense), we estimate values of the function using our data set and compare the resulting curve (empirical curve) to a theoretical curve assuming a homogeneous Poisson process. 
+*Key idea*: To assess the degree of clustering and its significance (in a statistical sense), you estimate values of the function using your data and compare the resulting curve (empirical curve) to a theoretical curve assuming a non-cluster process.
 
 The theoretical curve is well defined for homogeneous point patterns (recall: CSR--complete spatial randomness). Deviations of an 'empirical' curve from a theoretical curve provides evidence against CSR.
 
 The theoretical functions assuming a homogeneous Poisson process are:
 
-- $F(r) = G(r) = 1 - \exp(-\lambda \pi r^2)$
-- $K(r) = \pi r^2$
+-   $$F(r) = G(r) = 1 - \exp(-\lambda \pi r^2)$$
+-   $$K(r) = \pi r^2$$
 
-where $\lambda$ is the domain average spatial intensity and $\exp()$ is the exponential function.
+where $\lambda$ is the domain average spatial intensity $\exp()$ is the exponential function, and $\pi$ is the ratio of a circles circumference to its diameter.
 
 Recall the Swedish pine saplings data that comes with the {spatstat} package.
+
 ```{r}
 data(swedishpines)
 class(swedishpines)
 ```
 
-Assign the data to an object called `SP` to reduce the amount of typing. 
+Assign the data to an object called `SP` to reduce the amount of typing.
+
 ```{r}
 ( SP <- swedishpines )
 ```
 
 The output indicates that there are 71 events within a rectangle window 96 by 100 units where one unit is .1 meters.
 
-You obtain the values for the nearest neighbor function using the `Gest()` function from the {spatstat} package. Use the argument `correction = "none"` so no corrections are made for events near the window borders. Assign the output to a list object called `G`.
+Plot the event locations together with the window.
+
+```{r}
+SP |>
+  plot()
+```
+
+It appears like the spatial distribution of the saplings is random. But as we noted looks can be deceiving.
+
+You obtain the values for the nearest neighbor function using the `Gest()` function from the {spatstat} package. Use the argument `correction = "none"` so no corrections are made when computing the nearest-neighbor distances for events near the windo borders. Assign the output to a list object called `G`.
 
 ```{r}
 ( G <- Gest(SP,
             correction = "none") )
 ```
 
-The output includes the distance `r`, the raw uncorrected estimate of $G(r)$ (empirical estimate) at various distances, and a theoretical estimate at those same distances based on a homogeneous Poisson process. Using the `plot()` method on the saved object `G` you compare the empirical estimates with the theoretical estimates. Here two horizontal lines are added to help with the interpretation.
+The output includes the distance `r`, the raw uncorrected estimate of $G(r)$ (empirical estimate) at various distances, and a theoretical estimate at those same distances based on a homogeneous Poisson process.
+
+Using the `plot()` method on the saved object `G` you compare the empirical estimates with the theoretical estimates. Here two horizontal lines are added to help with the interpretation.
 
 ```{r}
 plot(G)
@@ -320,51 +366,68 @@ abline(h = c(.2, .5),
        lty = 2)
 ```
 
-Values of G are on the vertical axis and values of distance (lag) are on the horizontal axis starting at 0. The black curve is the uncorrected estimate of $G_{raw}(r)$ from the event locations and the red curve is $G_{pois}(r)$ estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.
+Values of G are on the vertical axis and values of inter-event distances (lag distances) are on the horizontal axis starting at 0. The black curve is the estimate of $G_{raw}(r)$ from the event locations and the red curve is $G_{pois}(r)$ estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.
 
-The horizontal dashed line at G = .2 intersects the black line at a relative distance (r) of 5 units. This means that 20% of the events have another event _within_ 5 units. This means that 20% of the saplings have another sapling withing .5 meter. 
+The horizontal dashed line at G = .2 intersects the black line at a lag distance (r) of 5 units. This means that 20% of the events have another event *within* 5 units. (20% of the saplings have another sapling withing .5 mete).
 
-Imagine placing a disc of radius 5 units around all 71 events then counting the number of events that have another event under the disc. That number divided by 71 is G(r).
+Imagine placing a disc of radius .5 meter around all 71 saplings then counting the number of saplings that have at least one other sapling under the disc. That number divided by 71 is G(r).
 
-To check this compute all pairwise distances with the `pairdist()` function.
+To check this compute all pairwise distances with the `pairdist()` function. Print the first 5 rows of the matrix.
+
 ```{r}
-PDmatrix <- pairdist(SP)
-PDmatrix[1:6, 1:6]
+PD.m <- SP |> 
+  pairdist()
+
+PD.m[1:5, 1:5]
 ```
 
-This creates a 71 x 71 square matrix of distances. 
+The object `PD.m` is a 71 x 71 `matrix` of distances.
 
-Sum the number of rows whose distances are within 5 units. The minus one means you don't count the row containing event over which you are summing (an event location is not a neighbor of itself).
+Sum the number of rows whose distances are less than 5 units and divide by the total number of saplings.
+
 ```{r}
-sum(rowSums(PDmatrix < 5) - 1) / nrow(PDmatrix) * 100
+sum(rowSums(PD.m < 5) - 1) / nrow(PD.m)
 ```
 
-Returning to the plot, the horizontal dashed line at G = .5 intersects the black line at .8 meters indicating that 50% of the pine saplings have another pine sapling within .8 meter.
+This is the proportion of all the saplings in the data with another sapling within .5 meter.
 
-You see that for a given radius the $G_{raw}$ line is _below_ the $G_{pois}(r)$ line indicating that there are _fewer_ pine saplings with another pine sapling in the vicinity than expected by chance.
+The minus one means you don't count the row containing the sapling over which you are summing (a sapling is not a neighbor of itself).
+
+Returning to the plot, the horizontal dashed line at G = .5 intersects the black line at .8 meters indicating that 50% of the saplings have another sapling within .8 meter.
+
+You see that for a given radius the $G_{raw}$ line is *below* the $G_{pois}(r)$ line indicating that there are *fewer* saplings with another sapling in the vicinity than expected by chance.
 
 For example, if the saplings were arranged under a model of CSR, you would expect 20% of the pairwise distances to be within .3 meter and 50% of them to be within .55 meter.
 
 You make a better plot by first converting the object `G` to a data frame and then using {ggplot2} functions. Here you do this and then remove estimates for distances greater than 1.1 meter and convert the distance units to meters.
+
 ```{r}
-G.df <- as.data.frame(G) |>
+G.df <- G |>
+  as.data.frame() |>
   dplyr::filter(r < 11) |>
   dplyr::mutate(r = r * .1)
 
 ggplot(data = G.df, 
        mapping = aes(x = r, y = raw)) +
+  scale_y_continuous(limits = c(0, 1)) +
   geom_line() +
-  geom_line(aes(y = theo), color = "red") +
+  geom_line(mapping = aes(y = theo), color = "red") +
   geom_hline(yintercept = c(.2, .5), lty = 'dashed') +
-  xlab("Lag distance (m)") +  ylab("G(r): Cumulative % of events having another event within a distance r") +
+  xlab("Lag distance (m)") +  ylab("G(r)") +
+  ggtitle(label = "Proportion of events having another event within a distance r") +
   theme_minimal()
 ```
 
-Values for the empty space function are obtained from the `Fest()` function. Here you apply the Kaplan-Meier correction for edge effects with `correction = "km"`. The function returns the percent of the domain within a distance from any event. 
+Although CSR appeared to be a good model for the spatial distribution of pine saplings when visually examined with a map, the inter-event distance function suggests the distribution is more regular than CSR.
+
+What about the other functions?
+
+Values for the empty space function are obtained using the `Fest()` function. Here you apply the Kaplan-Meier correction for edge effects with `correction = "km"`. The function returns the percent of the domain within a distance from any event.
 
 Imagine again placing the disc, but this time on top of every point in the window and counting the number of points that have an event underneath.
 
-Make a plot and add some lines to help with interpretation. 
+Make a plot and add some lines to help with interpretation.
+
 ```{r}
 F.df <- SP |>
   Fest(correction = "km") |>
@@ -375,16 +438,17 @@ F.df <- SP |>
 ggplot(data = F.df, 
        mapping = aes(x = r, y = km)) +
   geom_line() +
-  geom_line(aes(y = theo), color = "red") +
+  geom_line(mapping = aes(y = theo), color = "red") +
   geom_hline(yintercept = c(.7, .58), lty = 'dashed') +
   geom_vline(xintercept = .61, lty = 2) +
-  xlab("Lag distance (m)") +  ylab("Percent of domain within a distance r of an event") +
+  xlab("Lag distance (m)") +  ylab("F(r)")
+  ggtitle(label = "Proportion of the domain within a distance r of any event") +
   theme_minimal()
 ```
 
 The horizontal dashed line at F = .7 intersects the black line at a distance of .61 meter. This means that 70% of the spatial domain is less than .61 meters from a sapling. The red line is the theoretical homogeneous Poisson process model. If the process was CSR slightly less than 58% (F = .58) of the domain would be less than .6 meter from a sapling. In words, the arrangement of saplings is less "gappy" (more regular) than expected by chance.
 
-The J function is the ratio of the F function to the G function. For a CSR processes the value of J is one. Here we see a large and systematic departure of J from one for distances greater than about .5 meter, due to the regularity in the spacing of the saplings.
+The J function is the ratio of the F function to the G function. For a CSR processes the value of J is one. The {spatstat} function is called `Jest()`. Here you compute the J function on the saplings data frame and then make a plot.
 
 ```{r}
 J.df <- SP |>
@@ -396,12 +460,15 @@ J.df <- SP |>
 ggplot(data = J.df, 
        mapping = aes(x = r, y = km)) +
   geom_line() +
-  geom_line(aes(y = theo), color = "red") +
-  xlab("Lag distance (m)") + ylab("") +
+  geom_line(mapping = aes(y = theo), color = "red") +
+  xlab("Lag distance (m)") + ylab("J(r)") +
+  ggtitle(label = "F(r) / G(r)") +
   theme_minimal()
 ```
 
-A commonly used distance function for assessing clustering in point pattern data is called Ripley's K function. It is estimated with the `Kest()` function. 
+There is a large and systematic departure of J from one (red line) for distances greater than about .5 meter. This is due to the regularity in the spacing of the saplings relative to CSR.
+
+A commonly used distance function for assessing clustering in point pattern data is called Ripley's K function. It is estimated with the `Kest()` function.
 
 Mathematically it is defined as
 
@@ -411,44 +478,48 @@ $$
 
 where $r_{ij}$ is the Euclidean distance between event $i$ and event $j$, $r$ is the search radius, and $\hat \lambda$ is an estimate of the intensity $(\hat \lambda = n/|A|)$ where $|A|$ is the window area and $n$ is the number of events. $I(.)$ is an indicator function equal to 1 when the expression $r_{ij} < r$, and 0 otherwise. If the events are homogeneous, $\hat{K}(r)$ increases at a rate proportional to $\pi r^2$.
 
-## Examples of spatially clustered events {-}
+## Examples of spatially clustered events {.unnumbered}
 
-Bramble canes
+The distance functions indicate that the pine sapling data is more "regular" than CSR suggesting the point pattern process likely has some inhibition factors.
 
-The locations of bramble canes are available as a marked `ppp` object in the {spatstat} package. A bramble is a rough (usually wild) tangled prickly shrub with thorny stems.
+On the other side are point pattern processes that result in data that are more clustered than CSR.
+
+Consider the `ppp` object `bramblecanes` from the {spatstat} family of packages giving the locations and marks of bramble canes. A bramble is a rough (usually wild) tangled prickly shrub with thorny stems.
+
+Rename the object then summarize its contents.
 
 ```{r}
-suppressMessages(library(spatstat))
+BC <- bramblecanes
 
-data(bramblecanes)
-summary(bramblecanes)
+BC |>
+  summary()
 ```
 
-The marks represent three different ages (as an ordered factor) for the bramble canes. The unit of length is 9 meters.
+The marks represent three different ages (as an ordered factor with 0 being the youngest) for the bramble canes. The unit of length is 9 meters.
 
 ```{r}
-plot(bramblecanes) 
+BC |>
+  plot() 
 ```
 
 Consider the point pattern for all the bramble canes regardless of age and estimate the $K$ function and a corresponding plot. Plot the empirical estimate of $K$ with an 'isotropic' correction at the domain borders (`iso`). Include a line for the theoretical $K$ under the assumption of CSR.
 
 ```{r}
-K.df <- bramblecanes |>
+K.df <- BC |>
   Kest() |>
   as.data.frame() |>
   dplyr::mutate(r = r * 9)
 
-library(ggplot2)
-
 ggplot(data = K.df, 
        mapping = aes(x = r, y = iso)) +
   geom_line() +
-  geom_line(aes(y = theo), color = "red") +
+  geom_line(mapping = aes(y = theo), color = "red") +
+  geom_vline(xintercept = 1.6, lty = 'dashed') +
   xlab("Lag distance (m)") + ylab("K(r)") +
   theme_minimal()
 ```
 
-The $K$ estimate from the actual data (black line) lies to the left of the theoretical $K$  under CSR (red line). This means that for any distance from an event (lag distance) there tends to be _more_ events within this distance (larger $K$) than expected under CSR. You conclude that these bramble canes are more clustered than CRS.
+The $K$ estimate from the actual data (black line) lies to the left of the theoretical $K$ under CSR (red line). This means that for any distance from an event (lag distance) there tends to be *more* events within this distance (larger $K$) than expected under CSR. You conclude that these bramble canes are more clustered than CRS.
 
 The expected number of additional events is multiplied by the total number of events (823) so a value of .1 indicates that at a distance of 1.6 meters (where .1 value of $K(r)$ intersects the red curve) you should expect to see about 82 additional events.
 
@@ -501,7 +572,8 @@ ggplot(data = K.df,
   geom_vline(xintercept = 60, lty = 'dashed') +
   geom_hline(yintercept = 129, lty = 'dashed') +
   geom_hline(yintercept = 115, lty = 'dashed') +
-  xlab("Lag distance (km)") + ylab("K(r), Expected number of additional tornadoes\n within a distance r of any tornado") +
+  xlab("Lag distance (km)") + ylab("K(r)") +
+  ggtitle(label = "Expected number of additional tornadoes within a distance r of any tornado") +
   theme_minimal()
 ```
 
@@ -513,7 +585,8 @@ The red line is the theoretical curve under the assumption that the tornado repo
 
 The black line lies above the red line across distances from 0 to greater than 100 km.
 
-How do you interpret the results of applying the nearest neighbor function to these data? Here you create a data frame from the output of the `Gest()` function and remove distances exceeding 8 km.
+What about the nearest neighbor function? Here you create a data frame from the output of the `Gest()` function and remove distances exceeding 8 km.
+
 ```{r}
 G.df <- T.ppp |>
   Gest(correction = "km") |>
@@ -526,10 +599,11 @@ ggplot(data = G.df,
   geom_line(aes(y = theo), color = "red") +
   geom_hline(yintercept = .4, lty = 'dashed') +
   geom_vline(xintercept = c(3.2, 4), lty = 'dashed') +
-  xlab("Lag distance (km)") + ylab("G(r): Cumulative % of tornadoes\n within a distance r of another tornado") +
+  xlab("Lag distance (km)") + ylab("G(r)") +
+  ggtitle(label = "Proportion of tornadoes within a distance r of another tornado") +
   theme_minimal()
 ```
 
-The interpretation is that 40% ($G$ = .4) of all tornado reports have another report within a distance of about 3.2 km on average. If the reports where homogeneous Poisson (CSR) then the distance would be 4 km. We conclude they are more clustered. 
+The interpretation is that 40% ($G$ = .4) of all tornado reports have another report within a distance of about 3.2 km on average. If the reports where homogeneous Poisson then the distance would be 4 km. You conclude they are more clustered.
 
 Note: With a data set containing many events the difference between the raw and border-corrected estimates of the distance functions is typically small.
