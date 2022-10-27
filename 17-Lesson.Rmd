@@ -6,6 +6,7 @@ Today
 
 - Modeling point pattern data 
 - Fitting and interpreting an inhibition model
+- Fitting a log-Gaussian Cox model 
 
 ## Modeling point pattern data {-}
 
@@ -183,11 +184,11 @@ You interpret the model output as follows. The process producing the spatial pat
 
 But because of event inhibition, where saplings nearby other saplings fail to grow, the number of saplings is reduced to .0074 per unit area. Thus the spatial pattern is suggestive of sibling-sibling interaction. Adults have many offspring, but only some survive due to limited resources.
 
-## Fitting a log-Gaussian Cox process model to one-dimensional point pattern data
+## Fitting a log-Gaussian Cox model
 
 <https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html>
 
-Using the method of stochastic partial differential equations.
+You can also fit a Cox model using the method of stochastic partial differential equations (SPDE). This involves a probability (Bayesian) framework that approximates marginal posterior distributions.
 
 ```{r}
 library(inlabru)
@@ -200,9 +201,12 @@ Get the data
 
 ```{r}
 data(Poisson2_1D)
+
+dim(pts2)
+range(pts2)
 ```
 
-Plot the data and a histogram
+Plot the data and a histogram. Here you choose about 20 bins across the range of values.
 
 ```{r}
 ggplot(data = pts2) +
@@ -211,23 +215,25 @@ ggplot(data = pts2) +
                  boundary = 0, 
                  fill = NA, 
                  color = "black") +
-  geom_point(mapping = aes(x), 
-             y = 0, pch = "|", cex = 4) +
-  coord_fixed(ratio = 2)
+  geom_point(mapping = aes(x = x), 
+             y = 0, pch = "|", cex = 4) 
 ```
 
-Create a 1D mesh
+Create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are not constrained.
 
 ```{r}
 x <- seq(0, 55, length.out = 50)
-mesh1D <- inla.mesh.1d(x, boundary = "free")
+mesh1D <- inla.mesh.1d(loc = x, 
+                       boundary = "free")
 ```
 
 Specify the spatial autocorrelation with a Matern cluster process model. The first argument is the mesh onto which the model will be built.
 
-The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial autocorrelation and the second element the probability that the range will be less than that value. If the second value is `NA`, then the value of the first element is used as a fixed range.
+The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial autocorrelation and the second element the probability that the range will be less than that value. If the second value is `NA`, the value of the first element is used as a fixed range.
 
-The argument `prior.sigma =` accepts a vector of length two with the first element is the marginal standard deviation of the field and the second element the probability that the standard deviation will be greater than that value.
+The argument `prior.sigma =` accepts a vector of length two with the first element is the marginal standard deviation of the intensity and the second element the probability that the standard deviation will be greater than that value.
+
+Here you are non-committal on the range of spatial autocorrelation so you specify a large lag distance (150) with a 75% chance that it will be less than that.
 
 ```{r}
 Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
@@ -241,7 +247,7 @@ Next specify the full model.
 f <- x ~ spde1D(x, model = Matern) + Intercept(1)
 ```
 
-Here you want to fit the model to the actual points. The {inlabru} function that does this is `lgcp()` (for 'log Gaussian Cox process'). The `domain =` argument specifies the 1D mesh as a list object.
+Next you fit the model to the actual event locations in `pts2`. You use the `lgcp()` function from the {inlabru} package  for log Gaussian Cox process. The `domain =` argument specifies the 1D mesh as a list object.
 
 ```{r}
 model.lgcp <- lgcp(components = f, 
@@ -249,7 +255,7 @@ model.lgcp <- lgcp(components = f,
                    domain = list(x = mesh1D))
 ```
 
-You can look at the posterior distributions of the model parameters using the function `spde.posterior()`. It returns x and y values for a plot of the posterior probability density function (PDF) in a data frame, which can be plotted using using the `plot.bru()` function. 
+You can look at the posterior distributions of the model parameters using the function `spde.posterior()`. It returns x and y values for a plot of the posterior probability density function (PDF) as a data frame, which you plot with the `plot.bru()` function. 
 
 Here is the PDF for the range parameter.
 
@@ -269,7 +275,7 @@ spde.posterior(model.lgcp,
   plot()
 ```
 
-Here is the PDF for the Matern correlation
+Here is the PDF for the Matern correlation part of the model.
 
 ```{r}
 spde.posterior(model.lgcp, 
@@ -278,9 +284,13 @@ spde.posterior(model.lgcp,
   plot()
 ```
 
+It shows a maximum correlation of 1 at zero lag distance with a .5 correlation out at a lag of about 20 units.
+
 You can get a feel for sensitivity to priors by specifying different priors and looking at these posterior plots. Always a good idea when fitting models using Bayesian methods.
 
-You can predict on the 'response' scale (i.e. the intensity function $\lambda$(s). First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method.
+For example, change the prior range from 150 to 30 and refit, then compare the PDF of the Matern correlation.
+
+You can predict on the 'response' scale [i.e. the intensity function $\lambda$(s)]. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method.
 
 ```{r}
 grid.df <- data.frame(x = seq(0, 55, by = 1)) 
@@ -311,7 +321,8 @@ The function `lambda2_1D( ) `in the dataset `Poission2_1D` calculates the true i
 
 ```{r}
 xs <- seq(0, 55, length = 150)
-true.lambda <- data.frame(x = xs, y = lambda2_1D(xs))
+true.lambda <- data.frame(x = xs, 
+                          y = lambda2_1D(xs))
 ```
 
 Plot the fitted and true intensity functions.
@@ -326,6 +337,89 @@ plot(pred.df, color = "red") +
   xlab("x") + ylab("Spatial intensity")
 ```
 
-https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html
+You can look at the goodness-of-fit of the model using the function `bincount( )`, which plots the 95% credible intervals in a specified set of bins along the x-axis together with the observed count in each bin. 
 
-Continue w/ Goodness-of-fit
+```{r}
+bc <- bincount(
+  result = model.lgcp,
+  observations = pts2,
+  breaks = seq(0, max(pts2), length = 12),
+  predictor = x ~ exp(spde1D + Intercept)
+)
+
+attributes(bc)$ggp
+```
+
+The credible intervals are shown as red rectangles, the mean fitted value as a short horizontal blue line, and the observed data as black points.
+
+Abundance is the integral of the intensity over space. You estimate it by integrating the predicted intensity over x.
+
+Integration is done by adding up the intensity at locations x weighted by a particular weight. The locations x and their weights are constructed using the `ipoints()` function.
+
+Here you create 50 integration points cover the 1D range.
+
+```{r}
+ips <- ipoints(c(0, 55), 100, name = "x")
+
+head(ips)
+```
+
+Then compute the abundance with the `predict()` method.
+
+```{r}
+( Lambda <- predict(model.lgcp, 
+                    ips, 
+                    ~ sum(weight * exp(spde1D + Intercept))) )
+```
+
+* `mean` is the posterior mean abundance
+* `sd` is the estimated standard error of the posterior of the abundance
+* `q0.025` and `q0.975` are the 95% credible interval bounds
+* `q0.5` is the posterior median abundance
+
+The above posterior for abundance takes account only of the variance due to not knowing the parameters of the intensity function. It neglects the variance in the number of events, given the intensity function.
+
+To include this you need to modify the input to the `predict( )` method. You include a data frame that samples from a Poisson density for each value for the abundance (here `N = 50:250`).
+
+```{r}
+Nest <- predict(model.lgcp, 
+                ips,
+                ~ data.frame(N = 50:250,
+                             dpois = dpois(50:250,
+                             lambda = sum(weight * exp(spde1D + Intercept)))))
+```
+
+The result is the same statistics as were calculated for `Lambda`, but for every abundance value between 50 and 250, rather than for the posterior mean abundance alone.
+
+```{r}
+head(Nest)
+```
+
+You compute the 95% prediction interval and the median with the `inla.qmarginal()` function.
+
+```{r}
+inla.qmarginal(c(.025, .5, .975), 
+               marginal = list(x = Nest$N, 
+                               y = Nest$mean))
+```
+
+Now compare `Lambda` to `Nest` by plotting. First calculate the posterior conditional on the mean of `Lambda`.
+```{r}
+Nest$plugin_estimate <- dpois(Nest$N, 
+                              lambda = Lambda$mean)
+```
+
+Then plot it and the unconditional posterior.
+```{r}
+ggplot(data = Nest) +
+  geom_line(aes(x = N, 
+                y = mean, 
+                color = "Posterior")) +
+  geom_line(aes(x = N, 
+                y = plugin_estimate, 
+                color = "Plugin"))
+```
+
+Can you explain the difference?
+
+Spatial distribution of gorilla nests using SPDE <https://inlabru-org.github.io/inlabru/index.html>
