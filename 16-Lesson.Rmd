@@ -20,6 +20,32 @@ There are two ways to approach statistical inference. 1) Compare the function co
 
 With the first approach you take a `ppp` object and then compute the function of interest (e.g., Ripley's K) for a specified number of samples under the null hypothesis of a homogeneous Poisson process.
 
+Returning again to the Kansas tornado reports since 1994.
+
+```{r}
+library(spatstat)
+
+Torn.sf <- sf::st_read(dsn = here::here("data", 
+                                        "1950-2020-torn-initpoint")) |>
+  sf::st_transform(crs = 3082) |>
+  dplyr::filter(mag >= 0, yr >= 1994) |>
+  dplyr::mutate(EF = as.factor(mag)) |>
+  dplyr::select(EF)
+
+T.ppp <- Torn.sf["EF"] |>
+  as.ppp()
+
+KS.sf <- USAboundaries::us_states(states = "Kansas") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)$proj4string)
+
+W <- KS.sf |>
+  as.owin()
+
+T.ppp <- T.ppp[W] |>
+  spatstat.geom::rescale(s = 1000, 
+                         unitname = "km")
+```
+
 To make things run faster you consider a subset of all the tornadoes (those that have an EF rating of 2 or higher). You create a new `ppp` object that contains only tornadoes rated at least EF2. Since the marks is a factor vector you can't use `>=`.
 
 ```{r}
@@ -27,10 +53,34 @@ ST.ppp <- unmark(T.ppp[T.ppp$marks == 2 |
                        T.ppp$marks == 3 | 
                        T.ppp$marks == 4 |
                        T.ppp$marks == 5])
-plot(ST.ppp)
+ST.ppp |>
+  plot()
 ```
 
-The `envelope()` method from the {spatstat} package is used on this new `ST.ppp` object. You specify the function with the `fun = Kest` argument and the number of samples with the `nsim =` argument. You then convert the output to a data frame. It takes a few seconds to complete the computation of $K$ for all 99 samples.
+Plot the $K(r)$ function from the data and from a homogeneous Poisson model.
+
+```{r}
+ST.ppp |>
+  Kest(correction = "iso") |>
+  as.data.frame() |>
+  dplyr::mutate(Kdata = iso * sum(intensity(T.ppp)),
+                Kpois = theo * sum(intensity(T.ppp))) |>
+ggplot(mapping = aes(x = r, y = Kdata)) +
+  geom_line() +
+  geom_line(mapping = aes(y = Kpois), color = "red") +
+  xlab("Lag distance (km)") + ylab("K(r)") +
+  ggtitle(label = "Expected number of additional tornadoes within a distance r of any tornado") +
+  theme_minimal()
+
+```
+
+The plot reveals a difference in the expected number of additional events using the tornado reports (black line) and from the null hypothesis model of CSR. For a given distance there are more events nearby other events (large $K(r)$ than would be expected by chance.
+
+Is this difference significant?
+
+The `envelope()` method from the {spatstat} family of packages is used to help answer this question. You specify the function with the `fun = Kest` argument and the number of samples with the `nsim =` argument. 
+
+Here you then convert the output to a data frame. It takes a few seconds to complete the computation of $K$ for all 99 samples.
 
 ```{r}
 Kenv.df <- envelope(ST.ppp, 
@@ -43,20 +93,23 @@ head(Kenv.df)
 
 The resulting data frame contains estimates of Ripley's $K$ as a function of lag distance (`r`) (column labeled `obs`). It also has the estimates of $K$ under the null hypothesis of CSR (`theo`) and the lowest (`lo`) and highest (`hi`) values of $K$ across the 99 samples.
 
-You plot this information using the `geom_ribbon()` layer to include a gray ribbon around the model of CSR.
+You plot this information using the `geom_ribbon()` layer. This adds a gray ribbon around the model for CSR.
 
 ```{r}
 ggplot(data = Kenv.df, 
        mapping = aes(x = r, y = obs * intensity(ST.ppp))) +
   geom_ribbon(mapping = aes(ymin = lo * intensity(ST.ppp), 
-                            ymax = hi * intensity(ST.ppp)), fill = "gray70") +
+                            ymax = hi * intensity(ST.ppp)), 
+              fill = "gray70") +
   geom_line() +
   geom_line(aes(y = theo * intensity(ST.ppp)), color = "red") +
   xlab("Lag distance (km)") + ylab("K(r)") +
   theme_minimal()
 ```
 
-The $K$ function computed on the data is the black line and the $K$ function under CSR is the red line. The uncertainty ribbon (gray band) connects the point-wise minimum and maximum values of $K$ computed from the 99 generated point pattern samples.
+Again the black line is the $K$ function computed on the tornado report locations data and the red line is the same function under CSR. 
+
+The uncertainty ribbon (gray band) connects the point-wise minimum and maximum values of $K$ computed from the 99 generated point pattern samples. 
 
 Since the black line lies outside the gray band you can confidently conclude that the tornado reports are _more_ clustered than one would expect by chance.
 
@@ -188,7 +241,6 @@ ggplot(Kboot.df, aes(x = r * .1, y = iso * intensity(SP))) +
 
 At short distances (closer than about 1.5 m) the gray ribbon is below the blue line which you interpret to mean that there are fewer pine saplings near other pine saplings than would be expected by chance at this scale indicating regularity.
 
-
 ## Estimating event clustering in multi-type event locations {-}
 
 Often the interest focuses on whether the occurrence of one event type influences (or is influenced by) another event type. For example, does the occurrence of one species of tree influence the occurrence of another species?
@@ -300,7 +352,7 @@ K.df <- as.data.frame(K)
 head(K.df)
 ```
 
-In particular you  want the values of `r` and `iso`. The value of `iso` times the average spatial intensity is the number of tornadoes within a distance `r`.
+In particular you want the values of `r` and `iso`. The value of `iso` times the average spatial intensity is the number of tornadoes within a distance `r`.
 
 You add this information to the data frame.
 ```{r}
@@ -316,6 +368,7 @@ approx(x = K.df$r,
 ```
 
 Finally, the variance stabilized Ripley $K$ function called the $L$ function is often used instead of $K$.  The sample version of the $L$ function is defined as
+
 $$
 \hat{L}(r) = \Big( \hat{K}(r)/\pi\Big)^{1/2}.
 $$
@@ -333,8 +386,6 @@ Moreover, the functions characterize the spatial arrangement of event locations 
 As an example of the latter case, here you generate event locations at random with clustering on a small scale but with regularity on a larger scale. On average the event locations are CSR as indicated by the $K$ function.
 
 ```{r}
-suppressMessages(library(spatstat))
-
 set.seed(0112)
 X <- rcell(nx = 15)
 plot(X, main = "")
@@ -345,8 +396,6 @@ There are two 'local' clusters one in the north and one in the south. But overal
 Interpretation of the process that created the event locations based on Ripley's $K$ would be that the arrangement of events is CSR.
 
 ```{r}
-library(ggplot2)
-
 K.df <- X |>
   Kest() |>
   as.data.frame()
@@ -436,25 +485,8 @@ You conclude that the point pattern data are consistent with an inhomogeneous Po
 Let's return to the Kansas tornadoes (EF1+). You import the data and create a point pattern object windowed by the state borders.
 
 ```{r}
-Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
-  sf::st_transform(crs = 3082) |>
-  dplyr::filter(mag >= 1, yr >= 1994) |>
-  dplyr::mutate(EF = as.factor(mag)) |>
-  dplyr::select(EF)
-
-ST.ppp <- Torn.sf["EF"] |>
-  as.ppp()
-
-KS.sf <- USAboundaries::us_states(states = "Kansas") |>
-  sf::st_transform(crs = sf::st_crs(Torn.sf)$proj4string)
-
-W <- KS.sf |>
-  as.owin()
-
-ST.ppp <- ST.ppp[W] |>
-  spatstat.geom::rescale(s = 1000, 
-                         unitname = "km")
-plot(ST.ppp)
+ST.ppp
+  plot()
 ```
 
 There are more tornado reports in the west than in the east, especially across the southern part of the state indicating the process producing the events is not homogeneous. This means there are other factors contributing to local event intensity.
