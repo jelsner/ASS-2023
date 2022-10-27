@@ -352,7 +352,7 @@ SP |>
 
 It appears like the spatial distribution of the saplings is random. But as we noted looks can be deceiving.
 
-You obtain the values for the nearest neighbor function using the `Gest()` function from the {spatstat} package. Use the argument `correction = "none"` so no corrections are made when computing the nearest-neighbor distances for events near the windo borders. Assign the output to a list object called `G`.
+You obtain the values for the nearest neighbor function using the `Gest()` function from the {spatstat} package. Use the argument `correction = "none"` so no corrections are made when computing the nearest-neighbor distances for events near the window borders. Assign the output to a list object called `G`.
 
 ```{r}
 ( G <- Gest(SP,
@@ -372,7 +372,7 @@ abline(h = c(.2, .5),
 
 Values of G are on the vertical axis and values of inter-event distances (lag distances) are on the horizontal axis starting at 0. The black curve is the estimate of $G_{raw}(r)$ from the event locations and the red curve is $G_{pois}(r)$ estimated from a homogeneous Poisson process with the same average intensity as the pine saplings.
 
-The horizontal dashed line at G = .2 intersects the black line at a lag distance (r) of 5 units. This means that 20% of the events have another event *within* 5 units. (20% of the saplings have another sapling withing .5 mete).
+The horizontal dashed line at G = .2 intersects the black line at a lag distance (r) of 5 units. This means that 20% of the events have another event *within* 5 units. (20% of the saplings have another sapling withing .5 meter).
 
 Imagine placing a disc of radius .5 meter around all 71 saplings then counting the number of saplings that have at least one other sapling under the disc. That number divided by 71 is G(r).
 
