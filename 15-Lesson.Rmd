@@ -7,18 +7,18 @@
 Today
 
 -   Estimating the relative risk of events
--   Estimating second-order properties of spatial events
--   Examples of spatial clustered events
+-   Estimating second-order properties of events
+-   Examples of clustered events
 
-## Estimating the relative risk of events {.unnumbered}
+## Estimating the relative risk {.unnumbered}
 
-The relative risk of occurrence of some event is a conditional probability. In a non-spatial context, the risk of catching a disease if you are elderly relative to the risk if you are young.
+The relative risk of occurrence of some event is a conditional probability. In a non-spatial context, the probability of catching a disease conditional on being over 65 relative to probability over the entire population.
 
-Spatial intensity maps constructed from two different point pattern data provides a way to estimate the risk of one event conditional on the other event.
+Spatial intensity maps constructed from two point pattern data sets provides a way to estimate the conditional probability.
 
 For example, given a tornado somewhere in Texas what is the chance that it will cause at least EF3 damage? With the historical set of all tornadoes marked by the damage rating you can make a map of all tornadoes and a map of the EF3+ tornadoes and then take the ratio.
 
-To see this start by importing the tornado data, mutating and selecting the damage rating as a factor called `EF` before turning the resulting simple feature data frame into a planar point pattern.
+Start by importing the tornado data, filtering, mutating and selecting before turning the resulting simple feature data frame into a planar point pattern.
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
@@ -32,7 +32,7 @@ T.ppp <- Torn.sf |>
   as.ppp()
 ```
 
-Next get the state boundary and transform the CRS to that of the tornadoes. Then create a `owin` object from it. Finally, subset the tornadoes by the window.
+Next get the state boundary and transform the CRS to that of the tornadoes. Then create a `owin` object from it. Finally, subset the tornadoes keeping only those events that fall inside the window.
 
 ```{r}
 TX.sf <- USAboundaries::us_states(states = "Texas") |>
@@ -45,11 +45,15 @@ T.ppp <- T.ppp[W]
 summary(T.ppp)
 ```
 
-You note the chance that a tornado anywhere in Texas will be at least EF3 or worse is the sum of the proportions for these types: .03616 + .00537 + .00067 = .042 (or 4.2%).
+The chance that a tornado anywhere in Texas will be at least EF3 or worse is the sum of the proportions for these types: .03616 + .00537 + .00067 = .042 (or 4.2%).
 
-As noted last time there is a spatial intensity gradient across the state with fewer tornadoes in the southwest and more in the northeast. Also, the more damaging tornadoes might be more common relative to all tornadoes in some parts of the state compared to other parts of the state.
+As noted last time there is an intensity gradient across the state with fewer tornadoes in the southwest part of the state and more in the northeast part of the state.
 
-To create a map of the relative risk of the more damaging tornadoes you start by making two `ppp` objects, one being the set of all tornado events with damage ratings 0, 1, or 2 and the other the set of all tornado locations with damage ratings 3, 4, or 5. You do this by subset the object using brackets (`[]`) and the logical operator `|` (or) and then merge the two subsets assigning names `H` and `I` as marks with the `superimpose()` function.
+Here you are interested in the question of whether the more damaging tornadoes are more common relative to all tornadoes in some parts of the state compared to other parts of the state.
+
+To create a map of the relative risk of the more damaging tornadoes you start by making two `ppp` objects, one being the set of all tornado events with damage ratings 0, 1, or 2 and the other the set of all tornado locations with damage ratings 3, 4, or 5. 
+
+You do this by subset the object using brackets (`[]`) and the logical operator `|` (or) and then merge the two subsets assigning names `H` and `I` as marks with the `superimpose()` function.
 
 ```{r}
 H.ppp <- unmark(T.ppp[T.ppp$marks == 2 | 
@@ -295,7 +299,7 @@ tmap::tm_credits(text = "Data source: Karen Short https://doi.org/10.2737/RDS-20
                  position = c("left", "bottom")) 
 ```
 
-## Estimating second-moment properties of spatial events {.unnumbered}
+## Estimating second-moment properties of events {.unnumbered}
 
 It is important to distinguish between a point pattern and a point process: the latter is the stochastic process that, when sampled, generates a point pattern. A set of data is always a point pattern, and inference involves figuring out the properties of a process that could have generated a pattern like the one you observed.
 
@@ -478,7 +482,7 @@ $$
 
 where $r_{ij}$ is the Euclidean distance between event $i$ and event $j$, $r$ is the search radius, and $\hat \lambda$ is an estimate of the intensity $(\hat \lambda = n/|A|)$ where $|A|$ is the window area and $n$ is the number of events. $I(.)$ is an indicator function equal to 1 when the expression $r_{ij} < r$, and 0 otherwise. If the events are homogeneous, $\hat{K}(r)$ increases at a rate proportional to $\pi r^2$.
 
-## Examples of spatially clustered events {.unnumbered}
+## Examples of clustered events {.unnumbered}
 
 The distance functions indicate that the pine sapling data is more "regular" than CSR suggesting the point pattern process likely has some inhibition factors.
 
