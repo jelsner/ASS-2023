@@ -315,7 +315,7 @@ Let $r$ be the distance between two event locations or the distance between an e
 
 -   The empty space function $F(r)$: The cumulative distribution of the distances from a point in the domain to the nearest event (point-to-event function). It summarizes the distance gaps between events (amount of gappiness or lacunarity).
 
--   The reduced second-moment function (Ripley $K$) $K(r)$: Defined such that $\lambda \times K(r)$ is the expected number of *additional* events within a distance $r$ of an event, where $\lambda$ is the average intensity of the events. It is a commonly used measure of the spatial autocorrelation among the events.
+-   The reduced second-moment function (Ripley's $K$) $K$: Defined such that $\lambda \times K(r)$ is the expected number of *additional* events within a distance $r$ of an event, where $\lambda$ is the average intensity of the events. It is a commonly used measure of the spatial autocorrelation among the events.
 
 *Key idea*: To assess the degree of clustering and its significance (in a statistical sense), you estimate values of the function using your data and compare the resulting curve (empirical curve) to a theoretical curve assuming a non-cluster process.
 
@@ -525,7 +525,7 @@ ggplot(data = K.df,
 
 The $K$ estimate from the actual data (black line) lies to the left of the theoretical $K$ under CSR (red line). This means that for any distance from an event (lag distance) there tends to be *more* events within this distance (larger $K$) than expected under CSR. You conclude that these bramble canes are more clustered than CRS.
 
-The expected number of additional events is multiplied by the total number of events (823) so a value of .1 indicates that at a distance of 1.6 meters (where .1 value of $K(r)$ intersects the red curve) you should expect to see about 82 additional events.
+The expected number of additional events is multiplied by the total number of events (823) so a value of .1 indicates that at a distance of 1.6 meters (where .1 value of $K$ intersects the red curve) you should expect to see about 82 additional events.
 
 Kansas tornado reports
 
@@ -576,7 +576,7 @@ ggplot(data = K.df,
   geom_vline(xintercept = 60, lty = 'dashed') +
   geom_hline(yintercept = 129, lty = 'dashed') +
   geom_hline(yintercept = 115, lty = 'dashed') +
-  xlab("Lag distance (km)") + ylab("K(r)") +
+  xlab("Lag distance (km)") + ylab("K(r) * lambda") +
   ggtitle(label = "Expected number of additional tornadoes within a distance r of any tornado") +
   theme_minimal()
 ```

@@ -4,17 +4,74 @@
 
 Today
 
-- Determining the statistical significance of event clustering
-- Estimating event clustering in multi-type event locations
+- Removing duplicate events and defining the domain
+- Determining statistical significance of clustering
+- Estimating clustering in multi-type event locations
 - Interpolating output from a distance function
-- Inferring event interaction from a distance function
-- Removing duplicate event locations and defining the domain
+- Limitations of the distance functions
 
-Thursday we will look at modeling point pattern data. Next Tuesday there will be a lab.
+Thursday will be Lab 4. Next Tuesday we will look at modeling point pattern data.
 
-## Determining the statistical significance of event clustering {-}
+## Removing duplicate events and defining the domain {-}
 
-The plots show a separation between the black solid line and the red line, but is this separation large relative to sampling variation? Is the above difference between the empirical and theoretical distance functions (e.g., $G$) large enough to conclude there is significant clustering?
+Functions from the {spatstat} family of packages require the event locations (as a `ppp` object) and a domain over which the spatial statistics are computed (as an `owin` object).
+
+If no `owin` object is specified, the statistics are computed over a rectangle (bounding box) defined by the northern most, southern most, eastern most, and western most event locations.
+
+To see this, consider the Florida wildfire data as a simple feature data frame. Extract only fires occurring in Baker County (west of Duval County--Jacksonville). Include only wildfires started by lightning and select the fire size variable.
+
+```{r}
+FL_Fires.sf <- sf::st_read(dsn = here::here("data", "FL_Fires")) |>
+  sf::st_transform(crs = 3086)
+
+Baker.sf <- USAboundaries::us_counties(states = "FL") |>
+  dplyr::select(name) |>
+  dplyr::filter(name == "Baker") |>
+  sf::st_transform(crs = 3086)
+
+BakerFires.sf <- FL_Fires.sf |>
+  sf::st_intersection(Baker.sf) |>
+  dplyr::filter(STAT_CAU_1 == "Lightning") |>
+  dplyr::select(FIRE_SIZE_)
+```
+
+Create a `ppp` object and an unmarked `ppp` object. Summarize the unmarked object and make a plot.
+
+```{r}
+BF.ppp <- BakerFires.sf |>
+  as.ppp() 
+
+BFU.ppp <- unmark(BF.ppp)
+
+summary(BFU.ppp)
+plot(BFU.ppp)
+```
+
+The average intensity is 18 wildfires per 10 square km. But the intensity is based on a square domain. The lack of events in the northeast part of the domain is due to the fact that you removed wildfires outside the county border.
+
+Further, two event locations are identical if their x,y coordinates are the same, and their marks are the same (if they carry marks).
+
+Remove duplicate events with the `unique()` function, set the domain to be the county border, and set the name for the unit of length to meters.
+
+```{r}
+BFU.ppp <- unique(BFU.ppp)
+
+W <- Baker.sf |>
+  as.owin()
+
+BFU.ppp <- BFU.ppp[W]
+
+unitname(BFU.ppp) <- "meters"
+
+summary(BFU.ppp)
+plot(BFU.ppp)
+```
+
+Now the average intensity is 21 wildfires per 10 sq. km.
+
+## Determining statistical significance of clustering {-}
+
+On a distance function plot when you see a separation between the black solid line and the red line, you should ask "Is this separation large relative to sampling variation?" Said another way. Is the  difference between the empirical and theoretical distance functions large enough to conclude there is significant clustering?
 
 There are two ways to approach statistical inference. 1) Compare the function computed with the observed data against the function computed data generated under the null hypothesis and ask: does the function fall outside the envelope of functions from the null cases? 2) Get estimates of uncertainty on the function and ask: does the uncertainty interval contain the null case? 
 
@@ -53,30 +110,64 @@ ST.ppp <- unmark(T.ppp[T.ppp$marks == 2 |
                        T.ppp$marks == 3 | 
                        T.ppp$marks == 4 |
                        T.ppp$marks == 5])
-ST.ppp |>
-  plot()
 ```
 
-Plot the $K(r)$ function from the data and from a homogeneous Poisson model.
+Plot a map displaying the local intensity and include the event locations. The `plot()` method applied to the output of the `density()` function and applied to the `ppp` object will produce such a map.
 
 ```{r}
 ST.ppp |>
-  Kest(correction = "iso") |>
-  as.data.frame() |>
-  dplyr::mutate(Kdata = iso * sum(intensity(T.ppp)),
-                Kpois = theo * sum(intensity(T.ppp))) |>
+  density() |>
+  plot()
+
+plot(ST.ppp,
+     pch = '.',
+     add = TRUE)
+```
+
+Compute the nearest neighbor function ($G(r)$) using the `Gest()` function with a Kaplan-Meier correction for the borders (i.e., `correction = "km"`). Make a plot of this function that also includes a theoretical curve under the null hypothesis of complete spatial randomness. From the plot eyeball an estimate of the percentage of tornadoes there are within 15 km of another tornado.
+
+```{r}
+ST.ppp |>
+  Gest(correction = "km") |>
+  plot() 
+abline(v = 15, 
+       col = "black",
+       lty = 2)
+```
+
+
+Alternatively you can examine the case for clustering using the autocorrelation function ($K$). Here you compute the autocorrelation function with the `Kest()` function using the border correction method of Ripley (`correction = "Ripley"`). You convert the output to a data frame with the `as.data.frame()` function.
+
+```{r}
+K.df <- ST.ppp |>
+  Kest(correction = "Ripley") |>
+  as.data.frame()
+
+head(K.df)
+```
+
+The resulting data frame contains values for distance (`r`), the model (`theo`) and the border-corrected data estimates (`iso`).
+
+You then multiply the estimates from the data and from the model by the average intensity and send the output to `ggplot()` where you map the distance to the x aesthetic and the K estimates to the y aesthetic.
+
+```{r}
+K.df |>
+  dplyr::mutate(Kdata = iso * intensity(ST.ppp),
+                Kpois = theo * intensity(ST.ppp)) |>
 ggplot(mapping = aes(x = r, y = Kdata)) +
   geom_line() +
   geom_line(mapping = aes(y = Kpois), color = "red") +
-  xlab("Lag distance (km)") + ylab("K(r)") +
+  geom_vline(xintercept = 50, color = "blue") +
+  xlab("Lag distance (km)") + ylab("K(r) * lambda") +
   ggtitle(label = "Expected number of additional tornadoes within a distance r of any tornado") +
   theme_minimal()
-
 ```
 
-The plot reveals a difference in the expected number of additional events using the tornado reports (black line) and from the null hypothesis model of CSR. For a given distance there are more events nearby other events (large $K(r)$ than would be expected by chance.
+If the tornadoes were CSR we would expect about 6 additional tornadoes within a distance of 50 km from any tornado. We see that at this distance there are about 10 additional tornadoes.
 
-Is this difference significant?
+The above plots of $G(r)$ and $K$ show a difference in the spatial distribution of the tornadoes when compared with the spatial distribution of events generated from the null hypothesis model of CSR.
+
+Is this difference significant? Or more precisely, how much evidence is there in support of the null hypothesis of CSR?
 
 The `envelope()` method from the {spatstat} family of packages is used to help answer this question. You specify the function with the `fun = Kest` argument and the number of samples with the `nsim =` argument. 
 
@@ -103,7 +194,7 @@ ggplot(data = Kenv.df,
               fill = "gray70") +
   geom_line() +
   geom_line(aes(y = theo * intensity(ST.ppp)), color = "red") +
-  xlab("Lag distance (km)") + ylab("K(r)") +
+  xlab("Lag distance (km)") + ylab("K(r) * lambda") +
   theme_minimal()
 ```
 
@@ -113,27 +204,31 @@ The uncertainty ribbon (gray band) connects the point-wise minimum and maximum v
 
 Since the black line lies outside the gray band you can confidently conclude that the tornado reports are _more_ clustered than one would expect by chance.
 
-If the specific intention is to test a null hypothesis of CSR, then a single statistic indicating the departure of $K$ computed on the observations from the theoretical $K$ is appropriate. 
+To test the null hypothesis of CSR you need a statistic indicating the departure of $K$ (or any other distance function) computed on the observations from the theoretical $K$.
 
-One such statistic is the maximum absolute deviation (MAD) and is implemented with the `mad.test()` function from the {spatstat} package. The function performs a hypothesis test for goodness-of-fit of the observations to the theoretical model. The larger the value of the statistic, the less likely it is that the data are CSR.
+One statistic is the maximum absolute deviation (MAD) implemented with the `mad.test()` function from the {spatstat} family of packages. The function performs a hypothesis test for the null hypothesis that point pattern is CSR. The larger the value of the statistic, the less likely it is that the data are CSR and the evidence in support of the null is given by the $p$ value on that statistic.
+
+Here you use the test on the $G(r)$ function with the `fun = Gest` argument and 999 simulations.
 
 ```{r}
 mad.test(ST.ppp, 
-         fun = Kest, 
-         nsim = 99)
+         fun = Gest, 
+         nsim = 999)
 ```
 
-The maximum absolute deviation is 7297 which is very large so the $p$-value is small and you reject the null hypothesis of CSR for these data. This is consistent with the graph. Note: Since there are 99 simulations the lowest $p$-value is .01.
+The maximum absolute deviation is about .2 (largest difference in proportion of events within a given distance of an other event between the data and the model). 
+
+The value is relative large on the scale from 0 to 1 so the $p$-value is small and you reject the null hypothesis of CSR for these data. This is consistent with the evidence gleaned from the graph. Note: Since there are 999 simulations the lowest $p$-value is .001.
 
 Another test statistic is related to the sum of the squared deviations between the estimated and theoretical functions. It is implemented with the `dclf.test()` function.
 
 ```{r}
 dclf.test(ST.ppp, 
-          fun = Kest, 
-          nsim = 99)
+          fun = Gest, 
+          nsim = 999)
 ```
 
-Again the $p$-value on the test statistic against the two-sided alternative is less than .01.
+Again the $p$-value on the test statistic against the two-sided alternative is less than .01 so you reject the null hypothesis of CSR.
 
 Compare these test results on tornado report clustering with test results on pine sapling clustering in the `swedishpines` data set.
 
@@ -162,10 +257,15 @@ At larger distances the black line is close to the red line and inside the gray 
 
 Based on the fact that much of the black line is within the gray envelope you might anticipate that a formal test against the null hypothesis of CSR will likely fail to reject.
 
+MAD test.
 ```{r}
 mad.test(SP, 
          fun = Kest, 
          nsim = 99)
+```
+
+DCLF test.
+```{r}
 dclf.test(SP, 
           fun = Kest, 
           nsim = 99)
@@ -173,7 +273,7 @@ dclf.test(SP,
 
 Both return a $p$-value that is greater than .15 so you fail to reject the null hypothesis of CSR.
 
-In the second approach to inference the procedure of re-sampling is used. Note the distinction: Re-sampling refers to generating samples from the data while sampling, as above, refers to generating samples from some theoretical model.
+The other approach to inference the procedure uses re-sampling. Re-sampling refers to generating samples from the data while sampling refers to generating samples from some theoretical model.
 
 The bootstrap procedure is a re-sampling strategy whereby new samples are generated from the data by randomly choosing events within the domain. An event that is chosen for the 'bootstrap' sample gets the chance to be chosen again (called 'with replacement'). The number of events in each bootstrap sample must equal the number of events in the data.
 
@@ -241,15 +341,15 @@ ggplot(Kboot.df, aes(x = r * .1, y = iso * intensity(SP))) +
 
 At short distances (closer than about 1.5 m) the gray ribbon is below the blue line which you interpret to mean that there are fewer pine saplings near other pine saplings than would be expected by chance at this scale indicating regularity.
 
-## Estimating event clustering in multi-type event locations {-}
+## Estimating clustering in multi-type event locations {-}
 
 Often the interest focuses on whether the occurrence of one event type influences (or is influenced by) another event type. For example, does the occurrence of one species of tree influence the occurrence of another species?
 
-Analogues to the $G$ and $K$ functions are available for 'multi-type' point patterns where the marks are factors.
+Analogues to the $G(r)$ and $K$ functions are available for 'multi-type' point patterns where the marks are factors.
 
-A common statistic for examining 'cross correlation' of event type occurrences is the cross $K$ function $K_{ij}(r)$, which estimates the expected number of events of type $j$ within a distance $r$ of type $i$.
+A common statistic for examining 'cross correlation' of event type occurrences is the cross K function $K_{ij}(r)$, which estimates the expected number of events of type $j$ within a distance $r$ of type $i$.
 
-Consider the data called `lansing` from the {spatstat} package that contains the locations of 2,251 trees of various species in a wooded lot in Lansing, MI as a `ppp` object.
+Consider the data called `lansing` from {spatstat} that contains the locations of 2,251 trees of various species in a wooded lot in Lansing, MI as a `ppp` object.
 
 ```{r}
 data(lansing)
@@ -279,7 +379,7 @@ ggplot(data = Kc.df,
 
 The vertical axis is the number of hickory trees within a radius r of a maple tree divided by the average intensity of the hickories. So at a distance of .2 (.2 x 924 ft = 180 ft) from a random maple there is an average of roughly 65 hickories (.093 x 703 hickories). If hickory and maple trees are CSR you would expect about 88 maples (.125 * 703) within that distance.
 
-The presence of a hickory tree reduces the likelihood that a maple tree will be nearby.
+The presence of a hickory tree reduces the likelihood that a maple tree is nearby.
 
 Do the same for the EF1 and EF3 tornadoes in Kansas.
 
@@ -331,36 +431,50 @@ ggplot(data = Kcenv.df,
 
 And you can formally test as before using the `mad.test()` function.
 ```{r}
-mad.test(T.ppp13, fun = Kcross, nsim = 99)
+T.ppp13 |>
+mad.test(fun = Kcross,
+         nsim = 99)
+```
+
+```{r}
 dclf.test(T.ppp13, fun = Kcross, nsim = 99)
 ```
 
 Both tests lead you to conclude that EF3 tornadoes are more likely near EF1 tornadoes than would be expected if they were independently CSR.
 
-## Interpolating the output from a distance function {-}
+## Interpolating output from a distance function {-}
 
-Compute Ripley $K$ and look at the classes of the resulting object.
+The spatial scale matters. Departures from CSR might depend on the lag distance so it is important to be able to interpolate values output from the various distance function.
+
+As an example, compute $K$ and look at the classes of the resulting object.
 
 ```{r}
-K <- Kest(T.ppp)
+K <- T.ppp |>
+  Kest()
+
 class(K)
 ```
 
 It has two classes `fv` and `data.frame`. It is a data frame but with additional attribute information. You focus on the data frame portion. 
+
 ```{r}
-K.df <- as.data.frame(K)
+K.df <- K |>
+  as.data.frame()
+
 head(K.df)
 ```
 
 In particular you want the values of `r` and `iso`. The value of `iso` times the average spatial intensity is the number of tornadoes within a distance `r`.
 
 You add this information to the data frame.
+
 ```{r}
 K.df <- K.df |>
   dplyr::mutate(nT = summary(T.ppp)$intensity * iso)
 ```
 
 Suppose you are interested in the average number of tornadoes at a distance of exactly 50 km. Use the `approx()` function to interpolate the value of `nT` at a distance of 50 km.
+
 ```{r}
 approx(x = K.df$r, 
        y = K.df$nT,
@@ -375,7 +489,7 @@ $$
 
 For data that is CSR, the $L$ function has expected value $r$ and its variance is approximately constant in $r$. A common plot is a graph of $r - \hat{L}(r)$ against $r$, which approximately follows the horizontal zero-axis with constant dispersion if the data follow a homogeneous Poisson process.
 
-## Inferring event interaction from a distance function {-}
+## Limitations of the distance functions {-}
 
 The distance functions ($G$, $K$, etc) that are used to quantify clustering are defined and estimated under the assumption that the process that produced the events is stationary (homogeneous). If this is true then you can treat any sub-region of the domain as an independent and identically distributed (iid) sample from the entire set of data.
 
@@ -387,13 +501,14 @@ As an example of the latter case, here you generate event locations at random wi
 
 ```{r}
 set.seed(0112)
+
 X <- rcell(nx = 15)
 plot(X, main = "")
 ```
 
 There are two 'local' clusters one in the north and one in the south. But overall the events appear to be more regular (inhibition) than CSR. 
 
-Interpretation of the process that created the event locations based on Ripley's $K$ would be that the arrangement of events is CSR.
+Interpretation of the process that created the event locations based on $K$ would be that the arrangement of events is CSR.
 
 ```{r}
 K.df <- X |>
@@ -412,7 +527,9 @@ The empirical curve (black line) coincides with the theoretical CSR line (red li
 And the maximum absolute deviation test under the null hypothesis of CSR returns a large $p$-value so you fail to reject it.
 
 ```{r}
-mad.test(X, fun = Kest, nsim = 99)
+X |>
+  mad.test(fun = Kest, 
+           nsim = 99)
 ```
 
 As an example of the former case, here you generate event locations that have no inter-event interaction but there is a trend in the spatial intensity.
@@ -482,7 +599,7 @@ ggplot(Kenv.df, aes(x = r, y = obs)) +
 
 You conclude that the point pattern data are consistent with an inhomogeneous Poisson process without event interaction.
 
-Let's return to the Kansas tornadoes (EF1+). You import the data and create a point pattern object windowed by the state borders.
+Let's return to the Kansas tornadoes (EF1+). You imported the data and created a point pattern object windowed by the state borders.
 
 ```{r}
 ST.ppp
@@ -510,90 +627,3 @@ ggplot(Kenv.df, aes(x = r, y = obs)) +
 ```
 
 The output reveals no evidence of clustering at distances less than about 70 km. At greater distances there is evidence of regularity indicated by the black line significantly below the red line. This is due to the fact that tornado reports are more common near cities and towns and cities and towns tend to be spread out more regular than CSR.
-
-## Removing duplicate event locations and defining the domain {-}
-
-The functions in the {spatstat} package require the event locations (as a `ppp` object) and a domain over which the spatial statistics are computed (as an `owin` object).
-
-If no `owin` object is specified, the statistics are computed over a rectangle (bounding box) defined by the northern most, southern most, eastern most, and western most event locations.
-
-To see this, consider the Florida wildfire data as a simple feature data frame. Extract only fires occurring in Baker County (west of Duval County--Jacksonville). Include only wildfires started by lightning and select the fire size variable.
-```{r}
-FL_Fires.sf <- sf::st_read(dsn = here::here("data", "FL_Fires")) |>
-  sf::st_transform(crs = 3086)
-
-Baker.sf <- USAboundaries::us_counties(states = "FL") |>
-  dplyr::select(name) |>
-  dplyr::filter(name == "Baker") |>
-  sf::st_transform(crs = 3086)
-
-BakerFires.sf <- FL_Fires.sf |>
-  sf::st_intersection(Baker.sf) |>
-  dplyr::filter(STAT_CAU_1 == "Lightning") |>
-  dplyr::select(FIRE_SIZE_)
-```
-
-Create a `ppp` object and an unmarked `ppp` object. Summarize the unmarked object and make a plot.
-```{r}
-BF.ppp <- BakerFires.sf |>
-  as.ppp() 
-
-BFU.ppp <- unmark(BF.ppp)
-
-summary(BFU.ppp)
-plot(BFU.ppp)
-```
-
-The average intensity is 18 wildfires per 10 square km. But the intensity is based on a square domain. The lack of events in the northeast part of the domain is due to the fact that you removed wildfires outside the county border.
-
-Further, two event locations are identical if their x,y coordinates are the same, and their marks are the same (if they carry marks).
-
-Remove duplicate events with the `unique()` function, set the domain to be the county border, and set the name for the unit of length to meters.
-
-```{r}
-BFU.ppp <- unique(BFU.ppp)
-
-W <- Baker.sf |>
-  as.owin()
-
-BFU.ppp <- BFU.ppp[W]
-
-unitname(BFU.ppp) <- "meters"
-
-summary(BFU.ppp)
-plot(BFU.ppp)
-```
-
-Now the average intensity is 21 wildfires per 10 sq. km.
-
-Apply Ripley's $K$ function and graph the results.
-```{r}
-K.df <- BFU.ppp |>
-  Kest() |>
-  as.data.frame()
-
-ggplot(K.df, aes(x = r, y = iso * intensity(BFU.ppp))) +
-  geom_line() +
-  geom_line(aes(y = theo * intensity(BFU.ppp)), color = "red") +
-  xlab("Lag distance (m)") + ylab("K(r), Expected number of additional wildfires\n within a distance r of any wildfire") +
-  theme_minimal()
-```
-
-We see a difference indicating a cluster of event locations, but is the difference significant against a null hypothesis of a homogeneous Poisson?
-```{r}
-Kenv.df <- envelope(BFU.ppp, 
-                    fun = Kest, 
-                    nsim = 39, 
-                    rank = 1, 
-                    global = TRUE) |>
-  as.data.frame()
-
-ggplot(Kenv.df, aes(x = r, y = obs)) +
-  geom_ribbon(aes(ymin = lo, ymax = hi), fill = "gray70") +
-  geom_line() +
-  geom_line(aes(y = theo), color = "red", lty = 'dashed') +
-  xlab("Lag distance (m)") + ylab("K(r)") +
-  theme_minimal()
-```
-
-Yes it is.
