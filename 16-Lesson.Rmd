@@ -16,21 +16,22 @@ Thursday will be Lab 4. Next Tuesday we will look at modeling point pattern data
 
 Functions from the {spatstat} family of packages require the event locations (as a `ppp` object) and a domain over which the spatial statistics are computed (as an `owin` object).
 
-If no `owin` object is specified the default is a rectangular bounding box defined by the northern, southern, eastern most, and western most event locations.
+If no `owin` object is specified the default is a rectangular bounding box defined by the northern, southern, eastern, and western most event locations.
 
-Consider the Florida wildfire data as a simple feature data frame. Import the Florida wildfire data at location <http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip> as a simple feature data frame called `FL_Fires.sf` and transform the native CRS to a Florida GDL Albers projected CRS (EPSG 3086).
+Consider the Florida wildfire data as a simple feature data frame. Import the Florida wildfire data from here <http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip> as a simple feature data frame called `FL_Fires.sf` and transform the native CRS to a Florida GDL Albers projected CRS (EPSG 3086).
 
 ```{r}
 FL_Fires.sf <- sf::st_read(dsn = here::here("data", "FL_Fires")) |>
   sf::st_transform(crs = 3086)
 ```
 
-Extract only fires occurring in Baker County (west of Duval County--Jacksonville).
+Keep only fires occurring in Baker County (west of Jacksonville).
 
 Use the `us_counties()` function with `resolution = "high"` from the {USAboundaries} package to get county boundaries in Florida as a simple feature data frame. Then select on the variable `name` before filtering on the variable `name` to keep only the boundary of Liberty County. Transform the native CRS to EPSG 3086. Assign the resulting simple feature data frame the name `Baker.sf`.
 
 ```{r}
-Baker.sf <- USAboundaries::us_counties(states = "FL") |>
+Baker.sf <- USAboundaries::us_counties(states = "FL",
+                                       resolution = "high") |>
   dplyr::select(name) |>
   dplyr::filter(name == "Baker") |>
   sf::st_transform(crs = 3086)
@@ -52,17 +53,15 @@ library(spatstat)
 
 BF.ppp <- BakerFires.sf |>
   as.ppp() |>
-  unmark() |>
-  rescale(s = 1000, 
-          unitname = "km")
+  unmark() 
 
 BF.ppp |>
   summary()
 ```
 
-There are 327 events (wildfires). This is an average intensity of 18 wildfires per 10 square km (.18 \* 100 = 18). The pattern also contains duplicated events.
+There are 327 events (wildfires). This is an average intensity of 18 wildfires per 10 square km (.18 X 100 = 18). The pattern also contains duplicated events.
 
-The intensity is based on a square domain.
+The average intensity is based on a square domain.
 
 ```{r}
 BF.ppp |>
@@ -71,9 +70,9 @@ BF.ppp |>
 
 The lack of events in the northeast part of the domain is because you previously removed wildfires outside the county border.
 
-Further, two event locations are duplicated if their x,y coordinates are the same, and their marks are the same.
+Further there are duplicated events. Events are duplicated if their locations x,y coordinates are the same, and their marks are the same. Whether you remove them depends on your knowledge of what they are and how the data were collected.
 
-Remove duplicate events with the `unique()` function, create a window (`W`) from the `Baker.sf` simple feature data frame, then subset the `BF.ppp` object by the window.
+Here you remove duplicate events with the `unique()` function. You then create a window (`W`) from the `Baker.sf` simple feature data frame and subset the `BF.ppp` object by that window.
 
 ```{r}
 BF.ppp <- BF.ppp |>
@@ -84,24 +83,32 @@ W <- Baker.sf |>
 
 BF.ppp <- BF.ppp[W]
 
+BF.ppp <- BF.ppp |>
+  rescale(s = 1000,
+          unitname = "km")
+
 BF.ppp |>
   plot()
 ```
 
-Summarize.
+Summarize the resulting `ppp` object.
 
 ```{r}
 BF.ppp |>
   summary()
 ```
 
-Now the average intensity is 21 wildfires per 10 square kilometers.
+Now the average intensity is 21 wildfires per 10 square kilometers, which is a better estimate of the wildfire occurrence rates at the county level.
 
 ## Determining statistical significance of clustering {.unnumbered}
 
-On a plot of the distance curve if you see a separation between the black solid line and the red line, you should ask "Is this separation large relative to sampling variation?" Said another way. Is the difference between the empirical and theoretical distance curves large enough to conclude there is significant clustering?
+With event distance functions like G, F, and K computed on `ppp` objects from the {statspat} family of packages, the default plot method is to show a black curve and a red curve. The black curve is the function computed from the data and the red curve is the function computed from a model of CSR.
 
-There are two ways to approach any statistical inference. In this situation:
+When you see a separation between the black and red curve, you should ask "Is this separation large relative to sampling variation?" Said another way. Is the difference between the empirical and theoretical distance curves large enough to conclude there is significant clustering?
+
+There are two ways to approach statistical inference. 
+
+In this situation:
 
 1)  Compare the curve computed with the observed data against curves computed with data generated under the null hypothesis and ask: "does the curve fall outside the envelope of curves from the null cases?"
 
@@ -305,7 +312,7 @@ dclf.test(SP,
 
 Both return a $p$-value that is greater than .15 so you fail to reject the null hypothesis of CSR.
 
-The other approach to inference is to use the procedure of re-sampling. *Re-sampling* refers to generating samples from the data while *sampling* refers to generating samples from a theoretical model.
+The other approach to inference is to use the procedure of re-sampling. *Re-sampling* refers to generating samples from the observed data while *sampling* refers to generating samples from a theoretical model.
 
 The bootstrap procedure is a re-sampling strategy whereby new samples are generated from the data by randomly choosing events within the domain with replacement. An event that is chosen for the 'bootstrap' sample gets the chance to be chosen again (called 'with replacement'). The number of events in each bootstrap sample should equal the number of events in the data.
 
