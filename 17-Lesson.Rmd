@@ -1,13 +1,13 @@
-# Tuesday November 1, 2022 {.unnumbered}
+# Tuesday November 8, 2022 {.unnumbered}
 
 **"Weeks of coding can save you hours of planning."** - Unknown
 
 Today
 
-- Limitations of the distance functions
+- Limitations of distance functions
 - Modeling point pattern data 
 - Fitting and interpreting an inhibition model
-- Fitting a log-Gaussian Cox model 
+- Fitting and interpreting a cluster model
 
 ## Limitations of the distance functions {.unnumbered}
 
@@ -20,6 +20,8 @@ Moreover, the functions characterize the spatial arrangement of event locations 
 As an example of the latter case, here you generate event locations at random with clustering on a small scale but with regularity on a larger scale. Then, on average, the event locations will be CSR as indicated by the $K$ function.
 
 ```{r}
+library(spatstat)
+
 set.seed(0112)
 
 X <- rcell(nx = 15)
@@ -65,6 +67,8 @@ By design there is a clear trend toward fewer events moving toward the east.
 You compute and plot the $K$ function on these event locations.
 
 ```{r}
+library(ggplot2)
+
 X |>
   Kest() |>
   as.data.frame() |>
@@ -167,9 +171,10 @@ Cluster models can be derived by starting with a Poisson model. For example, you
 
 Then consider each individual event $y_i$ in $Y$ to be a 'parent' that produces a set of 'offspring' events ($x_i$) according to some mechanism. The resulting set of offspring forms clustered point pattern data $X$. Said another way, the model is homogeneous Poisson at an unobserved level $Y$ (latent level) but clustered at the level of the observations ($X$).
 
-One example of this parent-child process is the Matern cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and then each parent has a Poisson ($\mu$) number of offspring that are iid within a radius $r$ centered on the parent.
+One example of this parent-child process is the Matern cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and then each parent has a Poisson ($\mu$) number of offspring that are independent and identically distributed (iid) within a radius $r$ centered on the parent.
 
-For instance here you use the `rMatClust()` function from the {spatstat} package to produce a clustered `ppp` object. We use a disc radius of .1 units and an offspring rate equal to 5 (`mu = 5`).
+For instance here you use the `rMatClust()` function from the {spatstat} package to produce a clustered `ppp` object. You use a disc radius of .1 units and an offspring rate equal to 5 (`mu = 5`).
+
 ```{r}
 rMatClust(kappa = 10, 
                r = .1, 
@@ -203,7 +208,9 @@ par(mfrow = c(1, 1))
 
 The statistical moments of Cox models are defined in terms of the moments of $\Lambda$. For instance, the intensity function of $X$ is $\lambda(s)$ = E[$\Lambda(s)$], where E[] is the expected value.
 
-Cox models are convenient for describing clustered point pattern data. A Cox model is over-dispersed relative to a Poisson model (i.e. the variance of the number of events falling in any region of size A, is greater than the mean number of events in those regions). The Matern cluster model and the Thomas models are Cox models. Another common type of a Cox model is the log-Gaussian Cox processes (LGCP) model in which logarithm of $\Lambda(s)$ is a Gaussian random function.
+Cox models are convenient for describing clustered point pattern data. A Cox model is over-dispersed relative to a Poisson model (i.e. the variance of the number of events falling in any region of size A, is greater than the mean number of events in those regions). 
+
+The Matern cluster model and the Thomas models are Cox models. Another common type of a Cox model is the log-Gaussian Cox processes (LGCP) model in which the logarithm of $\Lambda(s)$ is a Gaussian random function.
 
 If you have a way of generating samples from a random function $\Lambda$ of interest, then you can use the `rpoispp()` function to generate the Cox process. The intensity argument `lambda` of `rpoispp()` can be a function of x or y or a pixel image.
 
@@ -211,6 +218,7 @@ Another way to generate clustered point pattern data is by 'thinning'. Thinning 
 To simulate a inhibition process you can use a 'thinning' mechanism.
 
 An example of this is Matern's Model I model. Here a homogeneous Poisson model first generates a point pattern $Y$, then any event in $Y$ that lies closer than a distance $r$ from another event is deleted. This results in point pattern data whereby close neighbor events do not exist.
+
 ```{r}
 plot(rMaternI(kappa = 70, 
               r = .05), main = "")
@@ -244,7 +252,7 @@ Three cases:
 - If $\gamma < 1$, then $\lambda(s, x) < \beta$. Events inhibit nearby events.
 - If $\gamma > 1$, then $\lambda(s, x) > \beta$. Events encourage nearby events.
 
-Note the distinction between the interaction term $\gamma$ and the trend term $\beta$. Note: A similar distinction exists between autocorrelation $\rho$ and trend $\beta$ in spatial regression models.
+Note the distinction between the interaction term $\gamma$ and the trend term $\beta$. A similar distinction exists between autocorrelation $\rho$ and trend $\beta$ in spatial regression models.
 
 More generally, you write the logarithm of the conditional intensity $\log[\lambda(s, x)]$ as linear expression with two components.
 
@@ -258,7 +266,7 @@ The term $B(s)$ depends only on location so it represents trend and explanatory 
 
 ## Fitting and interpreting an inhibition model {-}
 
-The {spatstat} package contains functions for fitting statistical models to point pattern data. Models can include trend (to account for non-stationarity), explanatory variables (covariates), _and_ event interactions of any order (in other words, interactions are not restricted to pairwise). Models are fit with the method of maximum likelihood and the method of minimum contrasts.
+The {spatstat} family of packages contains functions for fitting statistical models to point pattern data. Models can include trend, explanatory variables, and event interactions of any order (not restricted to pairwise). Models are fit with the method of maximum likelihood and the method of minimum contrasts.
 
 The method of maximum likelihood estimates the probability of the empirical $K$ curve given the theoretical curve for various parameter values. Parameter values are chosen so as to maximize the likelihood of the empirical curve.
 
@@ -266,13 +274,16 @@ The method of minimum contrasts derives a cost function as the difference betwee
 
 The `ppm()` function is used to fit a spatial point pattern model. The syntax has the form `ppm(X, formula, interaction, ...)` where `X` is the point pattern object of class `ppp`, `formula` describes the systematic (trend and covariate) part of the model, and `interaction` describes the stochastic dependence between events (e.g., Matern process).
 
-Recall a plot of the Swedish pine saplings. There was no indication of a trend (no systematic variation in the intensity of saplings).
+Recall a plot the Swedish pine saplings. There was no indication of a trend (no systematic variation in the intensity of saplings).
 
 ```{r}
 SP <- swedishpines
-plot(SP)
 
-intensity(SP)
+SP |>
+  plot()
+
+SP |>
+  intensity()
 ```
 
 There is no obvious spatial trend in the distribution of saplings and the average intensity is .0074 saplings per unit area.
@@ -315,7 +326,8 @@ The first-order term (`beta`) has a value of .0757. This is the intensity of the
 Recall the intensity of the events is obtained as
 
 ```{r}
-intensity(SP)
+SP |>
+  intensity()
 ```
 
 The interaction parameter (`gamma`) is .275. It is less than one, indicating an inhibition process. The logarithm of gamma, called the interaction coefficient (`Interaction`), is -1.29. Interaction coefficients less than zero imply inhibition.
@@ -335,242 +347,103 @@ You interpret the model output as follows. The process producing the spatial pat
 
 But because of event inhibition, where saplings nearby other saplings fail to grow, the number of saplings is reduced to .0074 per unit area. Thus the spatial pattern is suggestive of sibling-sibling interaction. Adults have many offspring, but only some survive due to limited resources.
 
-## Fitting a log-Gaussian Cox model
+## Fitting and interpreting a cluster model {-}
 
-<https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html>
+Let's compare the inhibition model fit previously to describe the Swedish pine saplings data with a cluster model for describing the Lansing Woods maple trees (in the `ppp` object called `lansing` from the {spatstat} package).
 
-You can also fit a Cox model using the method of stochastic partial differential equations (SPDE). This involves a probability (Bayesian) framework that approximates marginal posterior distributions.
+Start by extracting the events marked as `maple` and putting them in a separate `ppp` object called `MT`.
 
 ```{r}
-library(inlabru)
-library(INLA)
-library(mgcv)
-library(ggplot2)
+data(lansing)
+summary(lansing)
+
+MT <- lansing |>
+  subset(marks == "maple") |>
+  unmark()
+
+summary(MT)
 ```
 
-Get the data
+There are 514 maple trees over this square region (924 x 924 square feet).
+
+Plots of the tree locations and the local intensity function help you understand the first-order property of these data.
 
 ```{r}
-data(Poisson2_1D)
-
-dim(pts2)
-range(pts2)
-```
-
-Plot the data and a histogram. Here you choose about 20 bins across the range of values.
-
-```{r}
-ggplot(data = pts2) +
-  geom_histogram(mapping = aes(x = x), 
-                 binwidth = 55 / 20, 
-                 boundary = 0, 
-                 fill = NA, 
-                 color = "black") +
-  geom_point(mapping = aes(x = x), 
-             y = 0, pch = "|", cex = 4) 
-```
-
-Create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are not constrained.
-
-```{r}
-x <- seq(0, 55, length.out = 50)
-mesh1D <- inla.mesh.1d(loc = x, 
-                       boundary = "free")
-```
-
-Specify the spatial autocorrelation with a Matern cluster process model. The first argument is the mesh onto which the model will be built.
-
-The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial autocorrelation and the second element the probability that the range will be less than that value. If the second value is `NA`, the value of the first element is used as a fixed range.
-
-The argument `prior.sigma =` accepts a vector of length two with the first element is the marginal standard deviation of the intensity and the second element the probability that the standard deviation will be greater than that value.
-
-Here you are non-committal on the range of spatial autocorrelation so you specify a large lag distance (150) with a 75% chance that it will be less than that.
-
-```{r}
-Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
-                              prior.range = c(150, .75),
-                              prior.sigma = c(.1, .75))
-```
-
-Next specify the full model.
-
-```{r}
-f <- x ~ spde1D(x, model = Matern) + Intercept(1)
-```
-
-Next you fit the model to the actual event locations in `pts2`. You use the `lgcp()` function from the {inlabru} package  for log Gaussian Cox process. The `domain =` argument specifies the 1D mesh as a list object.
-
-```{r}
-model.lgcp <- lgcp(components = f, 
-                   data = pts2, 
-                   domain = list(x = mesh1D))
-```
-
-You can look at the posterior distributions of the model parameters using the function `spde.posterior()`. It returns x and y values for a plot of the posterior probability density function (PDF) as a data frame, which you plot with the `plot.bru()` function. 
-
-Here is the PDF for the range parameter.
-
-```{r}
-spde.posterior(result = model.lgcp, 
-               name = "spde1D", 
-               what = "range") |>
+MT |>
+  density() |>
   plot()
+
+plot(MT, add = TRUE)
 ```
 
-Perhaps better viewed on a log scale.
+There are maple trees across the southern and central parts of the study domain.
+
+A plot of the $G$ function summarizes the second-order properties under the assumption of no trend.
 
 ```{r}
-spde.posterior(model.lgcp, 
-               name = "spde1D", 
-               what = "log.range") |>
-  plot()
+G.df <- MT |>
+  Gest() |>
+  as.data.frame() |>
+  dplyr::filter(r < .033) |>
+  dplyr::mutate(r = r * 924)
+
+ggplot(G.df, aes(x = r, y = km)) +
+  geom_line() +
+  geom_line(aes(y = theo), color = "blue") +
+  geom_vline(xintercept = 18, lty = 'dashed') +
+  xlab("Lag distance (ft)") + ylab("G(r): Cumulative % of events within a distance r of another maple") +
+  theme_minimal()
 ```
 
-Here is the PDF for the Matern correlation part of the model.
+The plot provides evidence that the maple trees are clustered. The empirical curve is above the theoretical curve. For example about 74% of the maple trees are within 18 feet of another maple tree (vertical blue line). If the trees were arranged as CSR then only 49% of the trees would be within 18 feet of another maple.
+
+Is the clustering due to interaction or trends (or both)?
+
+You start the modeling process by investigating event interaction using a stationary Strauss model with interaction radius of .019 units (18 ft).
 
 ```{r}
-spde.posterior(model.lgcp, 
-               name = "spde1D", 
-               what = "matern.correlation") |>
-  plot()
+ppm(MT, 
+    trend = ~ 1, 
+    interaction = Strauss(r = .019))
 ```
 
-It shows a maximum correlation of 1 at zero lag distance with a .5 correlation out at a lag of about 20 units.
+Here the first order term beta is 345. It is the 'latent' rate (intensity) of maple trees per unit area. This rate is less than the 514 actual maple trees. The fitted interaction parameter (gamma) is 1.72. It is greater than one since the trees are clustered. The logarithm of gamma is positive at .545.
 
-You can get a feel for sensitivity to priors by specifying different priors and looking at these posterior plots. Always a good idea when fitting models using Bayesian methods.
+The model is interpreted as follows. The process producing the maple trees is such that you expect to see about 345 maples. Because of clustering where maple trees are more likely in the vicinity of other maple trees, the number of maples increases to the observed 514 per unit area.
 
-For example, change the prior range from 150 to 30 and refit, then compare the PDF of the Matern correlation.
+Here the physical explanation could be event interaction. But it also could be explained by inhibition with hickory trees. You can model this using a term for cross event type interaction.
 
-You can predict on the 'response' scale [i.e. the intensity function $\lambda$(s)]. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method.
+The Strauss process is for inhibition models. So although you use it here for diagnostics, you need to fit a cluster model (thus the `*** Model is not valid ***` warning).
+
+For a cluster model the spatial intensity $$\lambda(s) = \kappa \mu(s)$$ where $\kappa$ is the average number of clusters and where $\mu(s)$ is the spatial varying cluster size (number events per cluster).
+
+Cluster models are fit using the `kppm()` function from the {spatstat} package. Here you specify the cluster process with `clusters = "Thomas"`. 
+
+That means each cluster consists of a Poisson number of maple trees and where each tree in the cluster is placed randomly about the 'parent' tree with intensity that varies inversely with distance from the parent as a Gaussian function.
 
 ```{r}
-grid.df <- data.frame(x = seq(0, 55, by = 1)) 
-pred.df <- predict(model.lgcp, 
-                   data = grid.df, 
-                   formula = ~ exp(spde1D + Intercept))
+( model.cl <- kppm(MT, 
+                   trend = ~ 1,
+                   clusters = "Thomas") )
 ```
 
-The output is a data frame containing the explanatory values and corresponding summary statistics on the posterior predictions.
+Here $\kappa$ is 21.75 and $\bar \mu(s)$ (mean cluster size) is 23.6 trees. The product of kappa and the mean cluster size is the number of events. The cluster model describes a parent-child process. The number of parents is about 22. The distribution of the parents can be described as CSR. Each parent produces about 24 offspring distributed randomly about the location of the parent within a characteristic distance. Note: The physical process might be different from the statistical process used to describe it.
+
+The cluster scale parameter indicating the characteristic size (area units) of the clusters is $\sigma^2$. 
+
+A `plot()` method verifies that the cluster process statistically 'explains' the spatial correlation.
 
 ```{r}
-str(pred.df)
+plot(model.cl, 
+     what = "statistic")
 ```
 
-You pass this data frame to the `plot()` method to produce the following prediction plot.
+The model (black line) is very close to the cluster process line (red dashed line). Also note that it is far from the CSR model (green line).
 
+The spatial scale of the clustering is visualized with the `what = "cluster"` argument.
 ```{r}
-plot(pred.df, color = "red") +
-  geom_point(data = pts2, 
-             mapping = aes(x = x), 
-             y = 0, pch = "|", cex = 2) +
-  xlab("x") + ylab("Spatial intensity")
+plot(model.cl, 
+     what = "cluster")
 ```
 
-How does this compare with the underlying intensity function that generated the data? 
-
-The function `lambda2_1D( ) `in the dataset `Poission2_1D` calculates the true intensity that was used in simulating these data. In order to plot this, you make a data frame with x- and y-coordinates giving the true intensity function, $\lambda$(s). Use a lot of x-values to get a nice smooth plot (150 values).
-
-```{r}
-xs <- seq(0, 55, length = 150)
-true.lambda <- data.frame(x = xs, 
-                          y = lambda2_1D(xs))
-```
-
-Plot the fitted and true intensity functions.
-
-```{r}
-plot(pred.df, color = "red") +
-  geom_point(data = pts2, 
-             mapping = aes(x = x), 
-             y = 0, pch = "|", cex = 2) +
-  geom_line(data = true.lambda, 
-            mapping = aes(x, y)) +
-  xlab("x") + ylab("Spatial intensity")
-```
-
-You can look at the goodness-of-fit of the model using the function `bincount( )`, which plots the 95% credible intervals in a specified set of bins along the x-axis together with the observed count in each bin. 
-
-```{r}
-bc <- bincount(
-  result = model.lgcp,
-  observations = pts2,
-  breaks = seq(0, max(pts2), length = 12),
-  predictor = x ~ exp(spde1D + Intercept)
-)
-
-attributes(bc)$ggp
-```
-
-The credible intervals are shown as red rectangles, the mean fitted value as a short horizontal blue line, and the observed data as black points.
-
-Abundance is the integral of the intensity over space. You estimate it by integrating the predicted intensity over x.
-
-Integration is done by adding up the intensity at locations x weighted by a particular weight. The locations x and their weights are constructed using the `ipoints()` function.
-
-Here you create 50 integration points cover the 1D range.
-
-```{r}
-ips <- ipoints(c(0, 55), 100, name = "x")
-
-head(ips)
-```
-
-Then compute the abundance with the `predict()` method.
-
-```{r}
-( Lambda <- predict(model.lgcp, 
-                    ips, 
-                    ~ sum(weight * exp(spde1D + Intercept))) )
-```
-
-* `mean` is the posterior mean abundance
-* `sd` is the estimated standard error of the posterior of the abundance
-* `q0.025` and `q0.975` are the 95% credible interval bounds
-* `q0.5` is the posterior median abundance
-
-The above posterior for abundance takes account only of the variance due to not knowing the parameters of the intensity function. It neglects the variance in the number of events, given the intensity function.
-
-To include this you need to modify the input to the `predict( )` method. You include a data frame that samples from a Poisson density for each value for the abundance (here `N = 50:250`).
-
-```{r}
-Nest <- predict(model.lgcp, 
-                ips,
-                ~ data.frame(N = 50:250,
-                             dpois = dpois(50:250,
-                             lambda = sum(weight * exp(spde1D + Intercept)))))
-```
-
-The result is the same statistics as were calculated for `Lambda`, but for every abundance value between 50 and 250, rather than for the posterior mean abundance alone.
-
-```{r}
-head(Nest)
-```
-
-You compute the 95% prediction interval and the median with the `inla.qmarginal()` function.
-
-```{r}
-inla.qmarginal(c(.025, .5, .975), 
-               marginal = list(x = Nest$N, 
-                               y = Nest$mean))
-```
-
-Now compare `Lambda` to `Nest` by plotting. First calculate the posterior conditional on the mean of `Lambda`.
-```{r}
-Nest$plugin_estimate <- dpois(Nest$N, 
-                              lambda = Lambda$mean)
-```
-
-Then plot it and the unconditional posterior.
-```{r}
-ggplot(data = Nest) +
-  geom_line(aes(x = N, 
-                y = mean, 
-                color = "Posterior")) +
-  geom_line(aes(x = N, 
-                y = plugin_estimate, 
-                color = "Plugin"))
-```
-
-Can you explain the difference?
-
-Spatial distribution of gorilla nests using SPDE <https://inlabru-org.github.io/inlabru/index.html>
+The color ramp is the spatial intensity (number of events per unit area) about an arbitrary single event revealing the spatial scale and extent of clustering.
