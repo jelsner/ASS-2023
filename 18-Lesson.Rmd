@@ -14,7 +14,7 @@ Today
 
 You can also fit a Cox model using the method of stochastic partial differential equations (SPDE). This involves a probability (Bayesian) framework that approximates marginal posterior distributions.
 
-Here we consider a 1D space.
+To see how this works, here you consider a 1D space.
 
 ```{r}
 library(inlabru)
@@ -249,6 +249,7 @@ ggplot(data = Nest) +
 Can you explain the difference?
 
 Spatial distribution of gorilla nests using SPDE <https://inlabru-org.github.io/inlabru/index.html>
+
 ## Assessing how well the model fits {-}
 
 Workflow in fitting spatial event location models
