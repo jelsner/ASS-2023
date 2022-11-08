@@ -5,23 +5,23 @@
 Today
 
 - Limitations on interpreting distance functions
-- Modeling point pattern data 
+- Models for point pattern data 
 - Fitting and interpreting inhibition models
 - Fitting and interpreting cluster models
 
 ## Limitations on interpreting distance functions {.unnumbered}
 
-The distance functions ($G$, $K$, etc) used in quantifying clustering are defined and estimated under the assumption that a stationary process produced the events. If this assumption is true then you can treat any sub-region of the domain as an independent and identically distributed (iid) sample from the entire domain.
+The distance functions ($G$, $K$, etc) that quantify clustering are defined and estimated under the assumption that a stationary process produced the events. Under this assumption any sub-region of the domain is treated as an independent and identically distributed (iid) sample of events from the entire domain.
 
-If the spatial distribution of the locations is influenced by event interaction then the distance curves will deviate from the CSR model curves. 
+If the spatial distribution of event locations is influenced by event interaction then the distance curves will deviate from the curves under a model of CSR.
 
 Two points to keep in mind:
 
-(1) A deviation from CSR detected by an distance function does not necessarily imply event interaction. Rather it could be the result of a non-stationary process.
+(1) Deviations from CSR detected by a distance function do not necessarily imply event interaction. Instead deviations could be the result of a non-stationary process.
 
-(2) A distance function characterizes the spatial arrangement of event locations 'on average' so variations in an interaction as a function of scale might be interpreted as CSR.
+(2) Distance functions characterize the spatial arrangement of event locations 'on average' so variations in an interaction as a function of scale might be interpreted as CSR.
 
-As an example of this second point, here you generate event locations at random with _clustering_ on a small scale and with _regularity_ on a larger scale. On average the event locations will be indistinguishable from CSR, here as indicated by the $K$ function.
+As an example of this second point, here you generate event locations with _clustering_ on a small scale and with _regularity_ on a larger scale. On average the event locations will be indistinguishable from CSR. Here as indicated by the $K$ function.
 
 ```{r}
 library(spatstat)
@@ -33,7 +33,7 @@ X |>
   plot(main = "")
 ```
 
-There are two 'local' event clusters one in the north and one in the south. But overall the events appear to be separated from each other more than you might expect by chance.
+Overall the events appear to be separated from each other more than you might expect by chance. But there are two 'local' clusters one in the north and one in the south. 
 
 Based on the $K$ curve you would conclude that the process generating the events is homogeneous Poisson.
 
@@ -60,7 +60,9 @@ X |>
            nsim = 99)
 ```
 
-As an example of the first point, here you generate event locations that have no inter-event interactions but instead there is a trend in the spatial intensity.
+By design the events have inhibition at large scale and clustering at local scales so that _on average_ the events are indistinguishable from CSR by the distance function.
+
+As an example of the first point, here you generate event locations that have no event interactions but instead there is a _trend_ in the spatial intensity.
 
 ```{r}
 X <- rpoispp(function(x, y){ 300 * exp(-3 * x) })
@@ -162,7 +164,7 @@ ST.ppp |>
 
 There are more tornado reports in the west than in the east, especially across the southern part of the state indicating the process producing the events is not homogeneous. This means there are other factors contributing to local event intensity.
 
-Evidence for clustering must account for this inhomogeneity. Here you do this by computing the envelope around the inhomogeneous Ripley K function using the argument `fun = Kinhom`.
+Evidence for clustering must account for this inhomogeneity. Here you do this by computing the envelope around the inhomogeneous $K$ function using the argument `fun = Kinhom`.
 
 ```{r}
 envelope(ST.ppp,
@@ -183,7 +185,7 @@ ggplot(mapping = aes(x = r, y = obs)) +
 
 The output reveals no evidence of clustering at distances less than about 70 km. At greater distances there is some evidence of regularity indicated by the black line below the red line and just outside the uncertainty ribbon. This is due to the fact that tornado reports are more common near cities and towns and cities and towns tend to be spread out more regular than CSR.
 
-The variance stabilized Ripley $K$ function called the $L$ function is sometimes used instead of $K$. $L$ is defined as
+One last point on distance functions. The variance stabilized Ripley $K$ function called the $L$ function is sometimes used instead of $K$. $L$ is defined as
 
 $$
 \hat{L}(r) = \Big( \hat{K}(r)/\pi\Big)^{1/2}.
@@ -191,9 +193,9 @@ $$
 
 For data that is CSR, the $L$ function has expected value $r$ and its variance is approximately constant in $r$. A graph of $r - \hat{L}(r)$ against $r$ should follow a diagonal line with constant dispersion if the event locations follow a homogeneous Poisson process.
 
-## Modeling point pattern data {-}
+## Models for point pattern data {-}
 
-Models are helpful for trying to understanding the processes leading to the event locations when event interaction is suspected. Event interaction means that an event at one location changes the probability of an event nearby.
+Models are helpful in trying to understanding the processes leading to the event locations when event interaction is suspected. Event interaction means that an event at one location changes the probability of an event nearby.
 
 Cluster models can be derived by starting with a Poisson model. For example, you begin with a homogeneous Poisson model describing a set of events $Y$. Then each individual event $y_i$ in $Y$ is considered a 'parent' that produces 'offspring' events ($x_i$) according to some mechanism. 
 
@@ -219,7 +221,7 @@ Other clustered Poisson models include:
 
 A Cox model is a homogeneous Poisson model with a random intensity function. Let $\Lambda(s)$ be a function with non-negative values defined at all locations $s$ inside the domain. Then, conditional on $\Lambda$ let $X$ be a Poisson model with an intensity function $\Lambda$. Then $X$ will be a sample from a Cox model.
 
-An example of a Cox model is the mixed Poisson process in which a  variable $\Lambda$ is generated from some distribution that allow only positive number and then, conditional on $\Lambda$, a homogeneous point process is generated. 
+An example of a Cox model is the mixed Poisson process in which a  variable $\Lambda$ is generated from some distribution that allow only positive numbers and then, conditional on $\Lambda$, a homogeneous point process is generated. 
 
 Following are two samples from a Cox point process.
 
@@ -247,7 +249,7 @@ Another way to generate clustered point pattern data is by 'thinning'. Thinning 
 An example of this is Matern's Model I model. Here a homogeneous Poisson model first generates a point pattern $Y$, then any event in $Y$ that lies closer than a distance $r$ from another event is deleted. This results in point pattern data whereby close neighbor events do not exist.
 
 ```{r}
-plot(rMaternI(kappa = 70, 
+plot(rMaternI(kappa = 7, 
               r = .05), main = "")
 
 X <- rMaternI(kappa = 70, 
@@ -267,6 +269,7 @@ $$\lambda(s, x) = \lambda$$ where $s$ is any location in the window W and $x$ is
 Then the inhomogeneous Poisson model has conditional intensity
 
 $$\lambda(s, x) = \lambda(s)$$. 
+
 The intensity $\lambda(s)$ depends on a spatial trend or on an explanatory variable.
 
 There is also a class of 'Markov' point process models that allow for clustering (or inhibition) due to event interaction. Markov refers to the fact that the interaction is limited to nearest neighbors. Said another way, a Markov point process generalizes a Poisson process in the case where events are pairwise dependent.
@@ -427,7 +430,7 @@ ggplot(G.df, aes(x = r, y = km)) +
   theme_minimal()
 ```
 
-The plot provides evidence that the maple trees are clustered. The empirical curve is above the theoretical curve. About 74% of the maple trees are within 18 feet of another maple tree (vertical blue line). If the trees were arranged as CSR then only 49% of the trees would be within 18 feet of another maple.
+The plot provides evidence that the maple trees are clustered. The empirical curve is above the theoretical curve. About 74% of the maple trees are within 18 feet of another maple tree (vertical line). If the trees were arranged as CSR then only 49% of the trees would be within 18 feet of another maple.
 
 Is the clustering due to interaction or trends (or both)?
 
