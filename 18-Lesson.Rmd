@@ -180,7 +180,7 @@ The credible intervals are shown as red rectangles, the mean fitted value as a s
 
 Abundance is the integral of the intensity over space. You estimate it by integrating the predicted intensity over x.
 
-Integration is done by adding up the intensity at locations x weighted by a particular weight. The locations x and their weights are constructed using the `ipoints()` function.
+Integration is done by adding up the intensity at locations x weighted by a particular value. The locations x and their weight values are constructed using the `ipoints()` function.
 
 Here you create 50 integration points cover the 1D range.
 
@@ -230,12 +230,14 @@ inla.qmarginal(c(.025, .5, .975),
 ```
 
 Now compare `Lambda` to `Nest` by plotting. First calculate the posterior conditional on the mean of `Lambda`.
+
 ```{r}
 Nest$plugin_estimate <- dpois(Nest$N, 
                               lambda = Lambda$mean)
 ```
 
 Then plot it and the unconditional posterior.
+
 ```{r}
 ggplot(data = Nest) +
   geom_line(aes(x = N, 
@@ -309,6 +311,16 @@ The black line is the empirical (data) curve and the red line is the average ove
 From this plot you confidently conclude that a homogeneous inhibition model is adequate for describing the pine sapling data.
 
 What about the model for the maple trees? The model is saved as `model.cl`.
+
+```{r}
+MT <- lansing |>
+  subset(marks == "maple") |>
+  unmark()
+
+( model.cl <- kppm(MT, 
+                   trend = ~ 1,
+                   clusters = "Thomas") )
+```
 
 ```{r}
 plot(envelope(model.cl, 
