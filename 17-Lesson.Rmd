@@ -1,20 +1,15 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: inline
----
 # Tuesday November 8, 2022 {.unnumbered}
 
 **"Weeks of coding can save you hours of planning."** - Unknown
 
 Today
 
-- Limitations of distance functions
+- Limitations on interpreting distance functions
 - Modeling point pattern data 
-- Fitting and interpreting an inhibition model
-- Fitting and interpreting a cluster model
+- Fitting and interpreting inhibition models
+- Fitting and interpreting cluster models
 
-## Limitations of the distance functions {.unnumbered}
+## Limitations on interpreting distance functions {.unnumbered}
 
 The distance functions ($G$, $K$, etc) used in quantifying clustering are defined and estimated under the assumption that a stationary process produced the events. If this assumption is true then you can treat any sub-region of the domain as an independent and identically distributed (iid) sample from the entire domain.
 
@@ -301,7 +296,7 @@ where the $\theta$'s are model parameters that need to be estimated.
 
 The term $B(s)$ depends only on location so it represents trend and explanatory variable (covariate) effects. It is the 'systematic component' of the model. The term $C(s, x)$ represents stochastic interactions (dependency) between events.
 
-## Fitting and interpreting an inhibition model {-}
+## Fitting and interpreting inhibition models {-}
 
 The {spatstat} family of packages contains functions for fitting statistical models to point pattern data. Models can include trend, explanatory variables, and event interactions of any order (not restricted to pairwise). Models are fit with the method of maximum likelihood and the method of minimum contrasts.
 
@@ -383,7 +378,7 @@ You interpret the model output as follows. The process producing the spatial pat
 
 But because of event inhibition, where saplings nearby other saplings fail to grow, the number of saplings is reduced to .0074 per unit area. Thus the spatial pattern is suggestive of sibling-sibling interaction. Adults have many offspring, but only some survive due to limited resources.
 
-## Fitting and interpreting a cluster model {-}
+## Fitting and interpreting cluster models {-}
 
 Let's compare this inhibition model with a cluster model for describing the Lansing Woods maple trees (in the `ppp` object called `lansing` from the {spatstat} package).
 
