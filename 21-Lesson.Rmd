@@ -1,4 +1,4 @@
-# Thursday November 17, 2022 {.unnumbered}
+# Tuesday November 29, 2022 {.unnumbered}
 
 **"The problem of nonparametric estimation consists in estimation, from the observations, of an unknown function belonging to a sufficiently large class of functions."** - A.B. Tsybakov
 

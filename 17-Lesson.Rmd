@@ -219,9 +219,9 @@ Other clustered Poisson models include:
 - Gauss-Poisson model: each cluster is either a single event or a pair of events.  
 - Neyman-Scott model: the cluster mechanism is arbitrary.
 
-A Cox model is a homogeneous Poisson model with a random intensity function. Let $\Lambda(s)$ be a function with non-negative values defined at all locations $s$ inside the domain. Then, conditional on $\Lambda$ let $X$ be a Poisson model with an intensity function $\Lambda$. Then $X$ will be a sample from a Cox model.
+A Cox model is a homogeneous Poisson model with a random intensity function. Let $\Lambda(s)$ be a function with non-negative values defined at all points $s$ inside the domain. Then at each point let $X$ be a Poisson model with an intensity $\Lambda$. Then $X$ will be a sample from a Cox model.
 
-An example of a Cox model is the mixed Poisson process in which a  variable $\Lambda$ is generated from some distribution that allow only positive numbers and then, conditional on $\Lambda$, a homogeneous point process is generated. 
+A Cox model is doubly Poisson since $\Lambda$ is generated from some distribution that allow only positive numbers and then, conditional on $\Lambda$, a homogeneous point process is generated.
 
 Following are two samples from a Cox point process.
 

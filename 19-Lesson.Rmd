@@ -1,4 +1,4 @@
-# Thursday November 10, 2022 {.unnumbered}
+# Thursday November 17, 2022 {.unnumbered}
 
 **"Beyond basic mathematical aptitude, the difference between good programmers and great programmers is verbal ability."** – Marissa Mayer
 
@@ -53,9 +53,9 @@ These assumptions are needed to get us started with statistical interpolation. I
 
 Computing the covariogram and the correlogram
 
-In practice we focus on a model for the variogram $\gamma(h)$. But to understand the variogram it helps to first consider the covariogram. This is because of our familiarity with the idea of nearby things being more correlated than things farther away.
+In practice you focus on a model for the variogram $\gamma(h)$. But to understand the variogram it helps to first consider the covariogram. This is because of your familiarity with the idea of nearby things being more correlated than things farther away.
 
-To make things simple without loss in generality, we start with a 4 x 6 grid of equally spaced surface air temperatures across a field in degrees C.
+To make things simple without loss in generality, start with a 4 x 6 grid of equally spaced surface air temperatures across a field in degrees C.
 
   21  21  20  19  18  19 
   
