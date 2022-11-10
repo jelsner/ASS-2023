@@ -9,7 +9,7 @@ Today
 - Example from my research on tornadoes
 - Spatial logistic regression
 
-## Fitting a log-Gaussian Cox model
+## Fitting a log-Gaussian Cox model {-}
 
 Last time you saw how to fit a cluster model using the `kppm()` function from the {spatstat} family of packages. You fit a Thomas model to the maple trees in the Lansing Woods data. 
 
@@ -34,7 +34,7 @@ Get the data
 data(Poisson2_1D)
 
 pts2 |>
-  glimpse()
+  dplyr::glimpse()
 ```
 
 The object `pts2` is a one column data frame with column name `x`.
@@ -484,7 +484,7 @@ E |>
 
 The uncertainty band is much wider. The empirical curve fits inside the band so you conclude that an inhomogeneous cluster process appears to be an adequate description of the point pattern data.
 
-## Example from my research on tornadoes
+## Example from my research on tornadoes {-}
 
 The vast majority of tornadoes have winds of less than 60 m/s (120 mph). Violent tornadoes, with winds exceeding 90 m/s, are rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions. 
 

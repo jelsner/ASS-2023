@@ -6,3 +6,4 @@ hillshape-and-colors-with-tidyterra
 fitting-a-log-gaussian-cox-process-model-to-one-dimensional-point-pattern-data
 fitting-a-log-gaussian-cox-model
 example-from-my-research
+example-from-my-research-on-tornadoes
