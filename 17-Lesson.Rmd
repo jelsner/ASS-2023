@@ -201,7 +201,7 @@ Cluster models can be derived by starting with a Poisson model. For example, you
 
 The resulting set of offspring forms clustered point pattern data $X$. Said another way, the model is homogeneous Poisson at an unobserved level $Y$ (latent level) but clustered at the level of the observations ($X$).
 
-One example of this parent-child process is the Matern cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and then each parent has a Poisson ($\mu$) number of offspring that are independent and identically distributed (iid) within a radius $r$ centered on the parent.
+One example of this parent-child process is the Matérn cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and then each parent has a Poisson ($\mu$) number of offspring that are independent and identically distributed (iid) within a radius $r$ centered on the parent.
 
 For instance here you use the `rMatClust()` function from the {spatstat} package to produce a clustered `ppp` object. You use a disc radius of .1 units and an offspring rate equal to 5 (`mu = 5`).
 
@@ -240,19 +240,19 @@ The statistical moments of Cox models are defined in terms of the moments of $\L
 
 Cox models are convenient for describing clustered point pattern data. A Cox model is over-dispersed relative to a Poisson model (i.e. the variance of the number of events falling in any region of size A, is greater than the mean number of events in those regions). 
 
-The Matern cluster model and the Thomas models are types of Cox models. Another common type of Cox model is the log-Gaussian Cox processes (LGCP) model in which the logarithm of $\Lambda(s)$ is a Gaussian random function.
+The Matérn cluster model and the Thomas models are types of Cox models. Another common type of Cox model is the log-Gaussian Cox processes (LGCP) model in which the logarithm of $\Lambda(s)$ is a Gaussian random function.
 
 If you have a way of generating samples from a random function $\Lambda$ of interest, then you can use the `rpoispp()` function to generate the Cox process. The intensity argument `lambda` of `rpoispp()` can be a function of x or y or a pixel image.
 
 Another way to generate clustered point pattern data is by 'thinning'. Thinning refers to deleting some of the events. With 'independent thinning' the fate of each event is independent of the fate of the other events. When independent thinning is applied to a homogeneous Poisson point pattern, the resulting point pattern consisting of the retained events is also Poisson.
 
-An example of this is Matern's Model I model. Here a homogeneous Poisson model first generates a point pattern $Y$, then any event in $Y$ that lies closer than a distance $r$ from another event is deleted. This results in point pattern data whereby close neighbor events do not exist.
+An example of this is Matérn's Model I model. Here a homogeneous Poisson model first generates a point pattern $Y$, then any event in $Y$ that lies closer than a distance $r$ from another event is deleted. This results in point pattern data whereby close neighbor events do not exist.
 
 ```{r}
-plot(rMaternI(kappa = 7, 
+plot(rMatérnI(kappa = 7, 
               r = .05), main = "")
 
-X <- rMaternI(kappa = 70, 
+X <- rMatérnI(kappa = 70, 
               r = .05)
 
 X |>
@@ -307,7 +307,7 @@ The method of maximum likelihood estimates the probability of the empirical $K$ 
 
 The method of minimum contrasts derives a cost function as the difference between the theoretical and empirical $K$ curves. Parameter values for the theoretical curve are those that minimize this cost function.
 
-The `ppm()` function from {spatstat} is used to fit a spatial point pattern model. The syntax has the form `ppm(X, formula, interaction, ...)` where `X` is the point pattern object of class `ppp`, `formula` describes the systematic (trend and covariate) part of the model, and `interaction` describes the stochastic dependence between events (e.g., Matern process).
+The `ppm()` function from {spatstat} is used to fit a spatial point pattern model. The syntax has the form `ppm(X, formula, interaction, ...)` where `X` is the point pattern object of class `ppp`, `formula` describes the systematic (trend and covariate) part of the model, and `interaction` describes the stochastic dependence between events (e.g., Matérn process).
 
 Recall a plot the Swedish pine saplings. There was no indication of a trend (no systematic variation in the intensity of saplings).
 

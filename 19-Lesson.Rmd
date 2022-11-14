@@ -4,8 +4,94 @@
 
 Today
 
+- Spatial logistic regression
 - Spatial data interpolation
 - Computing the sample (empirical) variogram
+
+## Spatial logistic regression {-}
+
+Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise.
+
+Then a logistic regression models the presence probability $p = P(Y = 1)$ as a function of explanatory variables $X$ in the (matrix) form 
+
+$$
+\log \frac{p}{1-p} = \beta X
+$$ 
+where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients to be determined.
+
+If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.
+
+Let's look at an example from the package (a good strategy in general when learning a new technique).
+
+Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are linear features that consist of geological faults.
+
+It is of interest to be able to predict the probability of a copper ore from the lineament pattern. The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
+
+```{r}
+data(copper)
+plot(copper$SouthPoints)
+plot(copper$SouthLines, add = TRUE)
+```
+
+For convenience you first rotate the events (points and lines) by 90 degrees in the anticlockwise direction and save them as separate objects.
+
+```{r}
+C <- rotate(copper$SouthPoints, pi/2)
+L <- rotate(copper$SouthLines, pi/2)
+
+C |>
+  plot()
+L |>
+  plot(add = TRUE)
+```
+
+You summarize the planar point pattern data object `C`.
+
+```{r}
+C |>
+  summary()
+```
+
+There are 57 ore deposits over a region of size 5584 square km resulting in an intensity of about .01 ore deposits per square km.
+
+Next you create a distance map of the lineaments to be used as a covariate.
+
+```{r}
+D <- L |>
+  distmap()
+
+D |>
+  plot()
+```
+
+Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} package.
+
+```{r}
+model.slr <- slrm(C ~ D)
+model.slr
+```
+
+The model says that the odds of a copper ore along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.
+
+The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments.
+
+The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. The values are the probability of a random ore deposit in each pixel.
+
+```{r}
+model.slr |>
+  fitted() |>
+  plot()
+C |>
+  plot(add = TRUE)
+```
+
+Integrating the predictions over the area equals the observed number of ore deposits.
+
+```{r}
+model.slr |>
+  fitted() |>
+  sum()
+```
 
 See <https://r-spatial.org/book/12-Interpolation.html>
 

@@ -6,20 +6,29 @@ Today
 
 - Fitting a log-Gaussian Cox model
 - Assessing how well the model fits
-- Example from my research on tornadoes
-- Spatial logistic regression
+- An example of a point process model in the wild
 
 ## Fitting a log-Gaussian Cox model {-}
 
-Last time you saw how to fit a cluster model using the `kppm()` function from the {spatstat} family of packages. You fit a Thomas model to the maple trees in the Lansing Woods data. 
+Last time you saw how to fit a cluster model to point pattern data using the `kppm()` function from the {spatstat} family of packages. You fit a Thomas model to the maple trees in the Lansing Woods data.
 
-The Thomas model is a type of Cox model where the logarithm of the spatial intensity is a sample from a non-negative random variable. A limitation is that the samples are spatially independent. Nearby locations might have vastly different spatial intensities.
+The Thomas cluster model is a type of Cox process where the logarithm of the spatial intensity is a sample from a non-negative random variable. If the dispersion of events around other events is uniform rather than Gaussian than you fit a Matérn cluster model. 
 
-A log Gaussian Cox process (LGCP) is one where the non-negative random variable is a Gaussian random field (GRF). That is, the log spatial intensity values are spatially correlated. LGCP models are more difficult to fit using conventional methods.
+A limitation of the Thomas and Matérn cluster models is that the samples are assumed to be _spatially independent_. Nearby locations might have different spatial intensities. 
 
-You can fit a Cox model using the method of stochastic partial differential equations (SPDE). This involves a probability (Bayesian) framework that approximates marginal posterior distributions.
+If there is a systematic trend or covariate influence on the spatial intensity then you can include this in the model.
 
-To see how this works, here you consider a 1D space.
+A related but more flexible process is the log-Gaussian Cox process (LGCP). A LGCP has a hierarchical structure, where at the first level the events are assumed to be drawn from a Poisson distribution conditional on the intensity function, and at the second level the log of the intensity function is assumed to be drawn from a Gaussian process. That is, the log spatial intensity values are _spatially correlated_.
+
+The flexibility of the model arises from the Gaussian process prior specified over the log-intensity function. Given this hierarchical structure with a Gaussian process at the second level, fitting this model to observed spatial point pattern data is a computational challenge.
+
+One way is through the method of stochastic partial differential equations (SPDE), which involves a probability (Bayesian) framework to approximate posterior distributions.
+
+To see how this works and to get a glimpse of the Bayesian framework, here you consider a 1D space and you fit the model using functions from the {inlabru} and {INLA} packages.
+
+Example modified from <https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html>
+
+Install and make the packages available to this session.
 
 ```{r}
 library(inlabru)
@@ -28,7 +37,7 @@ library(mgcv)
 library(ggplot2)
 ```
 
-Get the data
+Get the data to model from the {inlabru} package using the `data(Poisson2_1D)` function. The data are in the object `pts2`.
 
 ```{r}
 data(Poisson2_1D)
@@ -44,9 +53,9 @@ pts2 |>
   range()
 ```
 
-The values of `x` range between .33 and 51
+The values of `x` are strictly positive between .33 and 51. 
 
-Plot the data as points along a line and a histogram. Here you choose about 20 bins across the range of values.
+Plot the data as points along a horizontal line together with a histogram estimating the 1D spatial intensity. Here you choose about 20 bins across the range of values from 0 to 55.
 
 ```{r}
 ggplot(data = pts2) +
@@ -59,25 +68,28 @@ ggplot(data = pts2) +
              y = 0, pch = "|", cex = 4) 
 ```
 
-The histogram is a discrete version of the spatial intensity. It shows that events tend to be most common near the value of 20.
+The histogram is a discrete version of the spatial intensity. It shows that events along the horizontal axis tend to be most common near the value of 20.
 
-Our goal is a smoothed estimate of the 1-D spatial intensity taking into account clustering.
+Your goal is a smoothed estimate of the 1-D spatial intensity taking into account event clustering.
 
-First create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are not constrained.
+First create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are unconstrained by setting `boundary = "free"`. 
 
 ```{r}
-x <- seq(0, 55, length.out = 50)
+x <- seq(from = 0, 
+         to = 55, 
+         length.out = 50)
+
 mesh1D <- inla.mesh.1d(loc = x, 
                        boundary = "free")
 ```
 
-Then specify the spatial correlation with a Matern cluster model. The first argument is the mesh onto which the model will be built.
+Then specify the spatial correlation with a Matérn cluster model. The first argument is the mesh onto which the model will be built.
 
 The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial correlation and the second element the probability that the range will be less than that value. If the second value is `NA`, the value of the first element is used as a fixed range.
 
 The argument `prior.sigma =` accepts a vector of length two with the first element the marginal standard deviation of the spatial intensity and the second element the probability that the standard deviation will be greater than that value.
 
-Here you are non-committal on the range of spatial correlation so you specify a large distance (150) with a 75% chance that it will be less than that. A broad prior range.
+Here you are non-committal on the range of spatial correlation so you specify a large distance (150) with a 75% chance that it will be less than that. That is you give a broad range to the prior.
 
 ```{r}
 Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
@@ -85,13 +97,13 @@ Matern <- inla.spde2.pcmatern(mesh = mesh1D,
                               prior.sigma = c(.1, .75))
 ```
 
-Next specify the full model.
+Next specify the full model and assign it to the object `f`.
 
 ```{r}
 f <- x ~ spde1D(x, model = Matern) + Intercept(1)
 ```
 
-Next you fit the model to the actual event locations in `pts2`. You use the log Gaussian Cox process `lgcp()` function from the {inlabru} package. The `domain =` argument specifies the 1D mesh as a list object.
+Next fit the model to the actual event locations in `pts2`. You use the log Gaussian Cox process `lgcp()` function from the {inlabru} package. The `domain =` argument specifies the 1D mesh as a list object.
 
 ```{r}
 model.lgcp <- lgcp(components = f, 
@@ -99,9 +111,9 @@ model.lgcp <- lgcp(components = f,
                    domain = list(x = mesh1D))
 ```
 
-You look at the posterior distributions of the model parameters using the function `spde.posterior()`. It returns x and y values for a plot of the posterior probability density function (PDF) as a data frame, which you plot with the `plot.bru()` function (`plot()` method). 
+You look at the output posterior distributions of the model parameters using the `spde.posterior()` function. The function returns x and y values for a plot of the posterior probability density function (PDF) as a data frame, which you plot with the `plot.bru()` function (`plot()` method). 
 
-Here is the probability density function for the range parameter.
+Start with the probability density function for the range parameter by specifying `what = "range"`.
 
 ```{r}
 spde.posterior(result = model.lgcp, 
@@ -110,9 +122,7 @@ spde.posterior(result = model.lgcp,
   plot()
 ```
 
-The prior range value was specified quite broadly but the posterior range is focused on values between 2.5 and 5.
-
-Perhaps better viewed on a log scale.
+The prior range value was specified broadly but the posterior range is focused on values between 2.5 and 5. The output is better viewed on a logarithmic scale by specifying `what = "log.range"`.
 
 ```{r}
 spde.posterior(model.lgcp, 
@@ -121,7 +131,7 @@ spde.posterior(model.lgcp,
   plot()
 ```
 
-Here you plot the probability density function for the Matern correlation component of the model.
+Next you plot the probability density function for the Matérn correlation component of the model.
 
 ```{r}
 spde.posterior(model.lgcp, 
@@ -134,51 +144,51 @@ The black line is the posterior median correlation as a function of lag distance
 
 You can get a feel for sensitivity to priors by specifying different priors and looking at these posterior plots. Always a good idea when fitting models using Bayesian methods.
 
-For example, change the prior range from 150 to 30 and refit, then compare the probability density function of the Matern correlation.
+For example, change the prior range from 150 to 30 and refit, then compare the probability density function of the Matérn correlation.
 
-You can predict on the 'response' scale [i.e. the intensity function $\lambda$(s)]. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method.
+You predict on the 'response' scale [i.e. the intensity function $\lambda$(s)] as follows. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method with `data = grid.df` and `formula = ~ exp(spde1D + Intercept`. It takes a few seconds to make predictions at each grid point location.
 
 ```{r}
-grid.df <- data.frame(x = seq(0, 55, by = 1)) 
+grid.df <- data.frame(x = seq(from = 0, to = 55, by = 1)) 
 pred.df <- predict(model.lgcp, 
                    data = grid.df, 
                    formula = ~ exp(spde1D + Intercept))
 ```
 
-It takes a few seconds.
-
-The output is a data frame containing the locations on the grid (`x`) and the corresponding summary statistics on the posterior predictions at those location.
+The output is a data frame containing the locations on the grid (`x`) and the corresponding summary statistics (mean, median, standard deviation, and quantiles) on the posterior predictions at those location.
 
 ```{r}
 pred.df |>
   dplyr::glimpse()
 ```
 
-You pass this data frame to the `plot()` method to produce the following prediction plot.
+You pass this data frame to the `plot()` method to produce the following prediction plot using the grammar of graphics.
 
 ```{r}
 plot(pred.df, color = "red") +
   geom_point(data = pts2, 
              mapping = aes(x = x), 
              y = 0, pch = "|", cex = 2) +
-  xlab("x") + ylab("Spatial intensity")
+  xlab("x") + 
+  ylab("Spatial intensity\n number of events per unit interval") +
+  theme_minimal()
 ```
 
-The LGCP model provides a smoothed spatial intensity of the events and a 95% credible interval about the intensity at each grid location.
+The LGCP model provides a smoothed spatial intensity of the events and a 95% credible interval about the intensity at each grid location. The intensity values are the number of events per unit interval.
 
 How does this compare with the intensity function that generated the data? 
 
-The function `lambda2_1D( ) `in the dataset `Poission2_1D` calculates the true intensity that was used in simulating these data. 
+The function `lambda2_1D( ) `in the data object `Poission2_1D` calculates the true intensity that was used in simulating the data. 
 
-To plot this, you make a data frame with x- and y-coordinates giving the true intensity function, $\lambda$(s). Use a lot of x-values to get a nice smooth plot (150 values).
+To plot this function you make a data frame with x- and y-coordinates giving the true intensity function, $\lambda(s)$. Here you use 150 x-values to get a smooth plot.
 
 ```{r}
-xs <- seq(0, 55, length = 150)
+xs <- seq(from = 0, to = 55, length = 150)
 true.lambda <- data.frame(x = xs, 
                           y = lambda2_1D(xs))
 ```
 
-Now plot the fitted (from the LGCP model) and the true intensity functions.
+Now plot the LGCP model predicted values together with the true intensity function.
 
 ```{r}
 plot(pred.df, color = "red") +
@@ -187,16 +197,20 @@ plot(pred.df, color = "red") +
              y = 0, pch = "|", cex = 2) +
   geom_line(data = true.lambda, 
             mapping = aes(x, y)) +
-  xlab("x") + ylab("Spatial intensity")
+  xlab("x") + 
+  ylab("Spatial intensity") +
+  theme_minimal()
 ```
 
-You can look at the goodness-of-fit of the model using the function `bincount( )`, which plots the 95% credible intervals in a specified set of bins along the x-axis together with the observed count in each bin. 
+The match is pretty good. Keep in mind that the data represents just one sample generated from the
+
+You can look at the goodness-of-fit of the model using the function `bincount( )`, which plots the 95% credible intervals in a set of bins along the x-axis together with the observed count in each bin. 
 
 ```{r}
 bc <- bincount(
   result = model.lgcp,
   observations = pts2,
-  breaks = seq(0, max(pts2), length = 12),
+  breaks = seq(from = 0, to = max(pts2), length = 12),
   predictor = x ~ exp(spde1D + Intercept)
 )
 
@@ -205,13 +219,11 @@ attributes(bc)$ggp
 
 The credible intervals are shown as red rectangles, the mean fitted value as a short horizontal blue line, and the observed data as black points.
 
-Abundance is the integral of the intensity over space. You estimate it by integrating the predicted intensity over x.
+Abundance is the integral of the intensity over the entire space. Here space is 1D and you estimate the abundance by integrating the predicted intensity over the range of x.
 
-Integration is done by a weighted sum of the intensities.
+Integration is done as a weighted sum of the intensities. The locations along the x axis and their weights are constructed using the `ipoints()` function.
 
-The locations x and their weights are constructed using the `ipoints()` function.
-
-Here you create 50 equally-space integration points cover the 1D range. The weights are all the same (55/100).
+Here you create 50 equally-space integration points cover the 1D range. The weights are all equal to 55/100.
 
 ```{r}
 ips <- ipoints(c(0, 55), 100, name = "x")
@@ -232,9 +244,13 @@ Then compute the abundance over the entire domain with the `predict()` method.
 * `q0.025` and `q0.975` are the 95% credible interval bounds
 * `q0.5` is the posterior median abundance
 
-The above posterior values for the abundance takes into account only the variance due to the parameters of the intensity function. It neglects the variance in the number of events, given the intensity function.
+The mean number of events is just over 130 with a standard deviation of 11.5 events.
 
-To include this you need to modify the input to the `predict( )` method. You include a data frame that samples from a Poisson density for each value of the abundance (here `N = 50:250`).
+Recall that the LGCP has a hierarchical structure, where at the first level the process is assumed Poisson conditional on the intensity function, and at the second level the log of the intensity function is assumed to be drawn from a Gaussian process.
+
+The above posterior values for the abundance takes into account only the variance due to the parameters of the intensity function (2nd level). It neglects the variance in the number of events, given the intensity function (first level).
+
+To include both variances you need to modify the input to the `predict( )` method. You include a data frame that samples from a Poisson density for each value of the abundance (here `N = 50:250`).
 
 ```{r}
 Nest <- predict(model.lgcp, 
@@ -244,11 +260,11 @@ Nest <- predict(model.lgcp,
                              lambda = sum(weight * exp(spde1D + Intercept)))))
 ```
 
-The result is the same statistics as were calculated for `Lambda`, but here for every abundance value between 50 and 250, rather than for the posterior mean abundance alone.
+The result shows the same set of statistics as were calculated for `Lambda`, but here for every abundance value between 50 and 250, rather than for the posterior mean abundance alone.
 
 ```{r}
 Nest |>
-  dplyr::glimpse()
+  head()
 ```
 
 You compute the 95% prediction interval and the median with the `inla.qmarginal()` function.
@@ -284,16 +300,13 @@ Can you explain the difference?
 
 Spatial distribution of gorilla nests using SPDE <https://inlabru-org.github.io/inlabru/index.html>
 
-More info <https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html>
-
 ## Assessing how well the model fits {-}
 
 A model should be capable of generating fake data that are statistically indistinguishable from the real data. If your model is a point pattern model you produce samples of event locations with the `simulate()` function.
 
 Let's return to the Swedish pine sapling data and the inhibition model that you fit last time.
 
-
-You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the probability density of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the density where $\gamma$ is less than one.
+You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intenstiy of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one.
 
 You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument.
 
@@ -342,7 +355,7 @@ From this plot you confidently conclude that a homogeneous inhibition model is a
 
 What about the cluster model for the maple trees? You used a Thomas cluster process which means that centered on each event the chance of a nearby event decays as a two-dimensional Gaussian distribution. The latent rate of a nearby event is a two-dimensional kernel.
 
-This differs from a Matern cluster process which means that centered on each event there is an equal chance of a nearby event out to some distance r.
+This differs from a Matérn cluster process which means that centered on each event there is an equal chance of a nearby event out to some distance r.
 
 Use use the `kppm()` function and include the point pattern data as the first argument. You assume stationarity so `trend = 1` and the argument `clusters =` is set to `"Thomas"`.
 
@@ -484,7 +497,7 @@ E |>
 
 The uncertainty band is much wider. The empirical curve fits inside the band so you conclude that an inhomogeneous cluster process appears to be an adequate description of the point pattern data.
 
-## Example from my research on tornadoes {-}
+## An example of a point process model in the wild {-}
 
 The vast majority of tornadoes have winds of less than 60 m/s (120 mph). Violent tornadoes, with winds exceeding 90 m/s, are rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions. 
 
@@ -684,88 +697,3 @@ plot(V.ppp)
 ```
 
 The model appears to due a good job simulating data that looks like the actual data.
-
-## Spatial logistic regression {-}
-
-Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise.
-
-Then a logistic regression models the presence probability $p = P(Y = 1)$ as a function of explanatory variables $X$ in the (matrix) form 
-
-$$
-\log \frac{p}{1-p} = \beta X
-$$ 
-where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients to be determined.
-
-If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.
-
-Let's look at an example from the package (a good strategy in general when learning a new technique).
-
-Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are linear features that consist of geological faults.
-
-It is of interest to be able to predict the probability of a copper ore from the lineament pattern. The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
-
-```{r}
-data(copper)
-plot(copper$SouthPoints)
-plot(copper$SouthLines, add = TRUE)
-```
-
-For convenience you first rotate the events (points and lines) by 90 degrees in the anticlockwise direction and save them as separate objects.
-
-```{r}
-C <- rotate(copper$SouthPoints, pi/2)
-L <- rotate(copper$SouthLines, pi/2)
-
-C |>
-  plot()
-L |>
-  plot(add = TRUE)
-```
-
-You summarize the planar point pattern data object `C`.
-
-```{r}
-C |>
-  summary()
-```
-
-There are 57 ore deposits over a region of size 5584 square km resulting in an intensity of about .01 ore deposits per square km.
-
-Next you create a distance map of the lineaments to be used as a covariate.
-
-```{r}
-D <- L |>
-  distmap()
-
-D |>
-  plot()
-```
-
-Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} package.
-
-```{r}
-model.slr <- slrm(C ~ D)
-model.slr
-```
-
-The model says that the odds of a copper ore along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.
-
-The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments.
-
-The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. The values are the probability of a random ore deposit in each pixel.
-
-```{r}
-model.slr |>
-  fitted() |>
-  plot()
-C |>
-  plot(add = TRUE)
-```
-
-Integrating the predictions over the area equals the observed number of ore deposits.
-
-```{r}
-model.slr |>
-  fitted() |>
-  sum()
-```
