@@ -522,7 +522,7 @@ At large lags there are fewer estimates so the values have greater variance. A m
 
 The variogram values have units of square feet and are calculated using point pairs at lag distances within a lag tolerance. The number of point pairs depends on the lag so the variogram values are less precise at large distance.
 
-Plot the number of point pairs used as a function of lag distance.
+Plot the number of point pairs used in the calculation of the variogram as a function of lag distance.
 
 ```{r}
 ggplot(data = topo.v2,
