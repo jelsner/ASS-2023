@@ -5,7 +5,7 @@
 Today
 
 - Fitting a log-Gaussian Cox model
-- Assessing how well the model fits
+- Assessing how well a point pattern model fits the data
 - An example of a point process model in the wild
 
 ## Fitting a log-Gaussian Cox model {-}
@@ -144,7 +144,7 @@ The black line is the posterior median correlation as a function of lag distance
 
 You can get a feel for sensitivity to priors by specifying different priors and looking at these posterior plots. Always a good idea when fitting models using Bayesian methods.
 
-For example, change the prior range from 150 to 30 and refit, then compare the probability density function of the Matérn correlation.
+For example, change the prior range from 150 to 30 and refit the model. Compare the probability density function of the Matérn correlation.
 
 You predict on the 'response' scale [i.e. the intensity function $\lambda$(s)] as follows. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method with `data = grid.df` and `formula = ~ exp(spde1D + Intercept`. It takes a few seconds to make predictions at each grid point location.
 
@@ -300,7 +300,7 @@ Can you explain the difference?
 
 Spatial distribution of gorilla nests using SPDE <https://inlabru-org.github.io/inlabru/index.html>
 
-## Assessing how well the model fits {-}
+## Assessing how well a point pattern model fits the data {-}
 
 A model should be capable of generating fake data that are statistically indistinguishable from the real data. If your model is a point pattern model you produce samples of event locations with the `simulate()` function.
 
