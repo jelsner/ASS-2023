@@ -72,6 +72,8 @@ The histogram is a discrete version of the spatial intensity. It shows that even
 
 Your goal is a smoothed estimate of the 1-D spatial intensity taking into account event clustering.
 
+Draw the DAG.
+
 First create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are unconstrained by setting `boundary = "free"`. Assign the mesh to an object with name `mesh1D`.
 
 ```{r}
