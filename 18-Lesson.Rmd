@@ -72,7 +72,7 @@ The histogram is a discrete version of the spatial intensity. It shows that even
 
 Your goal is a smoothed estimate of the 1-D spatial intensity taking into account event clustering.
 
-First create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are unconstrained by setting `boundary = "free"`. 
+First create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are unconstrained by setting `boundary = "free"`. Assign the mesh to an object with name `mesh1D`.
 
 ```{r}
 x <- seq(from = 0, 
@@ -83,7 +83,18 @@ mesh1D <- inla.mesh.1d(loc = x,
                        boundary = "free")
 ```
 
-Then specify the spatial correlation with a Matérn cluster model. The first argument is the mesh onto which the model will be built.
+
+Then specify the _prior_ spatial correlation as a Matérn cluster model.
+
+The first argument is the mesh onto which the model will be built and the next two arguments are the prior distributions for the range and standard deviation of the spatial correlation.
+
+This allows you to control the priors of the parameters by supplying information on the scale of the problem. What is a reasonable upper magnitude for the spatial effect and what is a reasonable lower scale at which the spatial effect can operate?
+
+```{r}
+Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
+                              prior.range = c(150, .75),
+                              prior.sigma = c(.1, .75))
+```
 
 The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial correlation and the second element the probability that the range will be less than that value. If the second value is `NA`, the value of the first element is used as a fixed range.
 
@@ -91,11 +102,9 @@ The argument `prior.sigma =` accepts a vector of length two with the first eleme
 
 Here you are non-committal on the range of spatial correlation so you specify a large distance (150) with a 75% chance that it will be less than that. That is you give a broad range to the prior.
 
-```{r}
-Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
-                              prior.range = c(150, .75),
-                              prior.sigma = c(.1, .75))
-```
+Values for `prior.range` and `prior.sigma` are called hyper-parameters.
+
+_Key idea_: In the frequentist context you are interested in the likelihood of the data given the model P(D | M). In a Bayesian context, you are interested in the probability of the model given the data P(M | D). This is called the posterior. You get from P(D | M) to P(M | D) by multiplying the likelihood by the priors P(M). This requires you to specify the priors.
 
 Next specify the full model and assign it to the object `f`.
 
