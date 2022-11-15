@@ -317,7 +317,7 @@ A model should be capable of generating fake data that are statistically indisti
 
 Let's return to the Swedish pine sapling data and the inhibition model that you fit last time.
 
-You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intenstiy of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one.
+You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intensity of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one.
 
 You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument.
 
@@ -368,7 +368,7 @@ What about the cluster model for the maple trees? You used a Thomas cluster proc
 
 This differs from a Matérn cluster process which means that centered on each event there is an equal chance of a nearby event out to some distance r.
 
-Use use the `kppm()` function and include the point pattern data as the first argument. You assume stationarity so `trend = 1` and the argument `clusters =` is set to `"Thomas"`.
+Use use the `kppm()` function and include the point pattern data as the first argument. You assume stationarity so `trend = ~ 1` and the argument `clusters =` is set to `"Thomas"`.
 
 ```{r}
 MT <- lansing |>
@@ -383,10 +383,11 @@ MT <- lansing |>
 Now plot the $K$ function on the data and on 99 model simulations.
 
 ```{r}
-plot(envelope(model.cl, 
-              fun = Kest, 
-              nsim = 99, 
-              correction = 'border'), legend = FALSE)
+model.cl |>
+  envelope(fun = Kest, 
+           nsim = 99, 
+           correction = 'border') |>
+  plot(legend = FALSE)
 ```
 
 In the case of the maple trees, a cluster model is adequate. 
@@ -643,7 +644,7 @@ So the model should include two covariates (trend terms), distance to nearest ci
 ```{r}
 model.ppm1 <- V.ppp |>
   ppm(trend = ~ Zc + Znv, 
-     covariates = list(Zc = Zc, Znv = Znv))
+      covariates = list(Zc = Zc, Znv = Znv))
 
 model.ppm1 |>
   summary() |>
@@ -652,7 +653,7 @@ model.ppm1 |>
 
 As expected the model shows fewer violent tornadoes with increasing distance from the nearest city (negative coefficient on `Zc`) and fewer violent tornadoes with increasing distance from a non-violent tornado (negative coefficient on `Znv`).
 
-Since the spatial unit is meters the coefficient of -3.06e-05 is interpreted as a [1 - exp(-.0306)] * 100% or 3% decrease in violent tornado reports per kilometer of distance from a city. Similarly the coefficient on distance from nearest non-violent tornado is interpreted as a 23% decrease in violent tornado reports per kilometer of distance from nearest non-violent tornado.
+Since the spatial unit is meters the coefficient of -3.21e-05 is interpreted as a [1 - exp(-.0321)] * 100% or 3% decrease in violent tornado reports per kilometer of distance from a city. Similarly the coefficient on distance from nearest non-violent tornado is interpreted as a 23% decrease in violent tornado reports per kilometer of distance from nearest non-violent tornado.
 
 Check if there is any residual nearest neighbor correlation.
 
