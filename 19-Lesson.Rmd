@@ -28,6 +28,8 @@ Consider the locations of 57 copper ore deposits (events) and 146 line segments 
 It is of interest to be able to predict the probability of a copper ore from the lineament pattern. The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
 
 ```{r}
+library(spatstat)
+
 data(copper)
 plot(copper$SouthPoints)
 plot(copper$SouthLines, add = TRUE)
