@@ -2,7 +2,7 @@
 
 **"Beyond basic mathematical aptitude, the difference between good programmers and great programmers is verbal ability."** – Marissa Mayer
 
-Today
+Class next Tuesday, November 22 will be via Zoom. I will start at 8a and record it so you can watch it live or at your convenience.
 
 - Spatial logistic regression
 - Spatial data interpolation
@@ -21,21 +21,27 @@ where the left-hand side is the logit (log of the odds ratio) and the $\beta$ ar
 
 If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.
 
-Let's look at an example from the package (a good strategy in general when learning a new technique).
+Let's look at an example from the package (a good strategy when learning a new technique).
 
 Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are linear features that consist of geological faults.
 
-It is of interest to be able to predict the probability of a copper ore from the lineament pattern. The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
+Interest centers on being able to predict the probability of a copper ore from the distance to the lineaments. 
+
+The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
 
 ```{r}
 library(spatstat)
 
 data(copper)
-plot(copper$SouthPoints)
-plot(copper$SouthLines, add = TRUE)
+
+copper$SouthPoints |>
+  plot()
+
+copper$SouthLines |>
+  plot(add = TRUE)
 ```
 
-For convenience you first rotate the events (points and lines) by 90 degrees in the anticlockwise direction and save them as separate objects.
+First rotate the events (points and lines) by 90 degrees in the anticlockwise direction and save them as separate objects.
 
 ```{r}
 C <- rotate(copper$SouthPoints, pi/2)
@@ -73,11 +79,11 @@ model.slr <- slrm(C ~ D)
 model.slr
 ```
 
-The model says that the odds of a copper ore along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.
+The model says that the odds of a copper ore deposit along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.
 
 The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments.
 
-The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. The values are the probability of a random ore deposit in each pixel.
+The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. Values are the probability of finding an ore deposit in each pixel.
 
 ```{r}
 model.slr |>
@@ -87,7 +93,7 @@ C |>
   plot(add = TRUE)
 ```
 
-Integrating the predictions over the area equals the observed number of ore deposits.
+Integrating (summing) the predictions over the domain area equals the abundance (number of ore deposits).
 
 ```{r}
 model.slr |>
@@ -99,36 +105,43 @@ See <https://r-spatial.org/book/12-Interpolation.html>
 
 ## Spatial data interpolation {-}
 
-In situ observations of the natural world are made at specific locations in space (and time). But we often want estimates of the values everywhere. The temperature reported at the airport is 15C, but what is it at my house 10 miles away? 
+In situ observations of the natural world are made at specific locations in space (and time). But you often want estimates of the values everywhere. The temperature reported at the airport is 15C, but what is it at my house 10 miles away? 
 
-We need to interpolate values observed at certain locations to values anywhere over the domain. To do this we assume the observations are taken from a _continuous_ field (surface). Data observed or measured at locations across a continuous field are called geostatistical data. Examples: concentrations of heavy metals across a farm field, surface air pressures in cities across the country, air temperatures within a city during the night.
+Interpolation of the observed to values across the domain is needed.  You must assume the observations are taken from a _continuous_ field (surface). Data observed or measured at locations across a continuous field are called geostatistical data. Examples: concentrations of heavy metals across a farm field, surface air pressures in cities across the country, air temperatures within a city during the night.
 
-Local averaging, spline functions, or inverse-distance weighting are interpolation methods. If it is 20C five miles north of here and 30C files miles to the south, then it is 25C here. This type of interpolation is a reasonable first-order assumption. But these types of interpolation methods do not take into account spatial autocorrelation and do not estimate uncertainty about the interpolated values.
+Local averaging, spline functions, or inverse-distance weighting are interpolation methods. If it is 20C five miles north of here and 30C files miles to the south, then it is 25C here. 
+
+_Key idea_: These types of interpolation fail to take into account spatial autocorrelation and they do not contain estimates of uncertainty.
 
 Kriging is statistical spatial interpolation. It is the centerpiece of what is called 'geostatistics.' The resulting surface (kriged surface) has three parts. (1) Spatial trend: an increase or decrease in the values that depends on direction or a covariate (co-kriging); (2) Local spatial autocorrelation. (3) Random variation. This should now sound familiar. Together the three components provide a model that is used to estimate values everywhere within a specified domain.
 
 In short, geostatistics is used to quantify spatial correlation, predict values at locations where values were not observed, estimate uncertainty on the predicted values, and simulate data.
 
-As we've done with areal data and point pattern data (Moran's I, Ripley's K), we begin with quantifying spatial autocorrelation. To get started we need some definitions.
+As you've done with areal data (Moran's I) and point pattern data (Ripley's K), you will begin with quantifying spatial autocorrelation.
+
+First some definitions.
 
 - Statistical interpolation assumes the observed values are spatially homogeneous. This implies stationarity and continuity
+
 - Stationarity means that the average difference in values between pairs of observations separated by a given distance (lag) is constant across the domain
+
 - Continuity means that the spatial autocorrelation depends only on the lag (and orientation) between observations. That is; spatial autocorrelation is independent of location and can be described by a single function
+
 - Stationarity and continuity allow different parts of the region to be treated as "independent" samples
 
-Stationarity can be weak or intrinsic. Both assume the average of the difference in values at observations separated by a lag distance $h$ is zero. That is, E$[z_i - z_j]$ = 0, where location $i$ and location $j$ are a (lag) distance $h$ apart. This implies that the interpolated surface $Z(s)$ is a random function with a constant mean ($m$) and a residual ($\varepsilon$).
+Stationarity can be weak or intrinsic. Both assume the average of the difference in values at observations separated by a lag distance $h$ is zero. That is, E$[z_i - z_j]$ = 0, where location $i$ and location $j$ are a (lag) distance $h$ apart. This implies that the interpolated surface $Z(s)$ is a random function with a constant mean ($m$) and a residual ($z$).
 
 $$
-Z(s) = m + \varepsilon(s).
+Z(s) = m + z(s).
 $$
-The expected value (average across all values) in the domain is $m$.
+The expected value (average across all values) in the domain is $m$ and the residuals are spatially correlated.
 
 Weak stationarity assumes that the covariance is a function of lag distance $h$.
 
 $$
 \hbox{cov}(z_i, z_j) = \hbox{cov}(h)
 $$
-where cov($h$) is called the covariogram.
+where cov($h$) is called the covariogram and $z_i$ and $z_j$ are residuals at different locations in $s$.
 
 Intrinsic stationarity assumes the variance of the difference in values is a function of the lag distance.
 
@@ -137,13 +150,13 @@ $$
 $$
 where $\gamma(h)$ is called the variogram. This means that spatial autocorrelation is independent of location.
 
-These assumptions are needed to get us started with statistical interpolation. If the assumptions are not met, we remove the trends in the data before spatially interpolating the residuals.
+These assumptions are needed to get started with statistical interpolation. If the assumptions are not met, we remove the trends in the data before spatially interpolating the residuals.
 
 Computing the covariogram and the correlogram
 
-In practice you focus on a model for the variogram $\gamma(h)$. But to understand the variogram it helps to first consider the covariogram. This is because of your familiarity with the idea of nearby things being more correlated than things farther away.
+In practice you focus on fitting a model to the variogram $\gamma(h)$. But to understand the variogram it helps to first consider the covariogram. This is because you are likely familiar with the idea of nearby things being more correlated than things farther away.
 
-To make things simple without loss in generality, start with a 4 x 6 grid of equally spaced surface air temperatures across a field in degrees C.
+To make things simple but without loss in generality, start with a 4 x 6 grid of equally spaced surface air temperatures across a field in degrees C.
 
   21  21  20  19  18  19 
   
@@ -160,15 +173,18 @@ temps <- c(21, 21, 20, 19, 18, 19,
            26, 25, 26, 27, 29, 28, 
            32, 33, 34, 35, 30, 28, 
            34, 35, 35, 36, 32, 31)
-mean(temps)
-var(temps)
+temps |>
+  mean()
+temps |>
+  var()
 ```
 
-To start, you focus only on the covariance function in the north-south direction. To compute the sample covariance function you first compute the covariance between the observed values one distance unit apart. Using maths
+Focusing only on the covariance function in the north-south direction, to compute the sample covariance function you first compute the covariance between the observed values one distance unit apart. Using math
 
 $$
 \hbox{cov}(0, 1) = 1/|N(1)| \sum (z_i - Z)(z_j - Z)
 $$
+
 where $|N(1)|$ is the number of distinct observation pairs with a distance separation of one unit in the north-south direction and where $Z$ is the average over all observations. We let zero in cov(0, 1) refer to the direction and we let one refer to the distance one unit apart. With this grid of observations $|N(1)|$ = 18.
 
 The equation for the covariance can be simplified to
@@ -176,6 +192,7 @@ The equation for the covariance can be simplified to
 $$
 \hbox{cov}(0, 1) = 1/|N(1)| \sum z_i z_j - m_{-1} m_{+1}
 $$
+
 where $m_{-1}$ is the average temperature over all rows except the first (northern most) and $m_{+1}$ is the average temperature over all rows except the last (southern most).
 
 To simplify the notation re-index the grid of temperatures using lexicographic (reading) order.
@@ -206,10 +223,12 @@ k <- 1:N
 
 The covariance has units of the observed variable squared (here $^\circ C^2$).
 
-You also have observation pairs two units of distance apart. So you compute the cov(0, 2) in a similar way. 
+You also have observation pairs two units of distance apart. So you compute the cov(0, 2) in a similar way.
+
 $$
 \hbox{cov}(0, 2) = 1/|N(2)| \sum z_i z_j - m_{-2} m_{+2}
 $$
+
 where $m_{-2}$ is the average temperature over all rows except the first two and $m_{+2}$ is the average temperature over all rows except the last two. $|N(2)|$ is the number of pairs two units apart.
 
 ```{r}
@@ -219,9 +238,11 @@ k <- 1:N
 ```
 
 Similarly you have observation pairs three units apart so you compute cov(0, 3) as
+
 $$
 \hbox{cov}(0, 3) = 1/|N(3)| \sum z_i z_j - m_{-3} m_{+3}
 $$
+
 ```{r}
 N <- 6
 k <- 1:N
@@ -230,7 +251,7 @@ k <- 1:N
 
 There are no observation pairs four units apart in the north-south direction so you are finished. The covariogram is a plot of the covariance values as a function of lag distance. Let $h$ be the lag distance, then
 
-$h$      |  cov($h$)  
+$h$    |  cov($h$)  
 -------|--------  
 (0, 1) |  15  
 (0, 2) |   3  
@@ -242,14 +263,15 @@ The covariogram is a decreasing function of lag distance. The _variogram_ is the
 
 Mathematically: var($z_i - z_j$) for locations $i$ and $j$. The semivariogram is 1/2 the variogram. If location $i$ is near location $j$, the difference in the values will be small and so too will the variance of their differences, in general. If location $i$ is far from location $j$, the difference in values will be large and so too will the variance of their differences.
 
-In practice you have a set of observations and we compute a variogram. This is the sample (empirical) variogram. Let $t_i = (x_i, y_i)$  be the ith location and $h_{i,j} = t_j - t_i$ be the vector connecting location $t_i$ with location $t_j$. Then the sample variogram is defined as
+In practice you have a set of observations and you compute a variogram. This is called the sample (empirical) variogram. Let $t_i = (x_i, y_i)$  be the ith location and $h_{i,j} = t_j - t_i$ be the vector connecting location $t_i$ with location $t_j$. Then the sample variogram is defined as
 
 $$
 \gamma(h) = \frac{1}{2N(h)} \sum^{N(h)} (z_i - z_j)^2
 $$
+
 where $N(h)$ is the number of observation pairs a distance of $h$ units apart.
 
-The variogram assumes intrinsic stationarity so the raw observed values should not have a trend. If there is a trend it needs to be removed before computing the variogram.
+The sample variogram assumes intrinsic stationarity so the raw observed values should not have a trend. If there is a trend in the observed value it needs to be removed before computing the variogram.
 
 The sample variogram is characterized by a set of points the values of which generally increase as $h$ increases before leveling off (reaching a plateau).
 
@@ -257,11 +279,12 @@ As an example, you compute and plot the sample variogram from the `meuse.all` da
 
 ```{r}
 library(gstat)
+
 data(meuse.all)
 head(meuse.all)
 ```
 
-The data are locations and top soil heavy metal concentrations (ppm), along with a number of soil and landscape variables, collected in a flood plain of the river Meuse, near the village Stein, NL. Heavy metal concentrations are bulk sampled from an area of approximately 15 m x 15 m.
+The data are the locations and heavy metal concentrations (ppm) in the soil at those locations along with other soil and landscape variables collected in a flood plain of the river Meuse, near the village Stein, NL. Heavy metal concentrations are bulk sampled from an area of approximately 15 m x 15 m.
 
 Next locate where the data are from. First convert the data frame to a spatial data frame and then use functions from the {tmap} package in view mode.
 
@@ -282,11 +305,13 @@ Then compute the sample variogram and save it as `meuse.v`.
 meuse.v <- variogram(zinc ~ 1,
                      data = meuse.all,
                      locations = ~ x + y)
-
-class(meuse.v)
+meuse.v |>
+  class()
 ```
 
-The output is an object of class `gstatVariogram` and `data.frame`. Plot the sample variogram and label the key features.
+The output is an object of class `gstatVariogram` and `data.frame`. 
+
+Make a graph of the sample variogram and label the key features using functions from the {ggplot2} package. Map the variable `gamma` in the `meuse.v` data frame to the y aesthetic and the variable `dist` to the x aesthetic.
 
 ```{r}
 library(ggplot2)
@@ -311,7 +336,7 @@ ggplot(data = meuse.v,
 - Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag (here units ppm squared). The nugget is the variation in the values at the observation locations independent of spatial variation. It is related to the observation (or measurement) precision 
 - Sill: The height of the variogram at which the values are uncorrelated
 - Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage
-- Range: The distance beyond which the values are uncorrelated. The range is indicated on the empirical variogram as the position along the horizontal axis where values of the variogram reach a constant height
+- Range: The distance beyond which the values are uncorrelated. The range is indicated on the sample variogram as the position along the horizontal axis where values of the variogram reach a constant height
 
 Additional terms.
 - Isotropy: The condition in which spatial correlation is the same in all directions
@@ -321,7 +346,7 @@ Additional terms.
 - Lag spacing: The distance between successive lags is called the lag spacing or lag increment
 - Lag tolerance: The distance allowable for observational pairs at a specified lag. With arbitrary observation locations there will be no observations exactly a lag distance from any observation. Lag tolerance provides a range of distances to be used for computing values of the variogram at a specified lag.
 
-Computing the sample variogram is the first step in modeling geostatistical data. The next step is fitting a model to the variogram. The model is important since the sample variogram estimates are made only at discrete lag distances (with specified lag tolerance and azimuth). You need a continuous function that varies smoothly across all lags. In short, the statistical model replaces the discrete set of points.
+Computing the sample variogram is the first step in modeling geostatistical data. The next step is fitting a model to the variogram. The model is important since the sample variogram estimates are made only at discrete lag distances (with specified lag tolerance and azimuth). You need a continuous function that varies smoothly across all lags. The statistical model replaces the discrete set of points.
 
 Variogram models come from different families. The fitting process first requires a decision about what family to choose and then given the family, a decision about what parameters (nugget, sill, range) to choose. 
 
@@ -371,7 +396,7 @@ There are other ways to determine the parameters including by eye, and by the me
 
 The final step in spatial statistical interpolation is called kriging. Kriging interpolates the observed data using the variogram model. It was developed by a South African miner (D.G. Krige) as a way to improve estimates of where ore reserves might be located. Extraction costs are reduced substantially if good predictions can be made of where the ore resides given samples taken across the mine.
 
-A kriged estimate is a weighted average of the observations where the weights are based on the variogram model. The kriged estimates are optimal in the sense that they minimize the error variance. The type of kriging depends on the characteristics of the observations and the purpose of interpolation.
+A kriged estimate is a weighted average of the observations where the weights are based on the variogram model. The kriged estimates are optimal in the sense that they minimize the error between observed and predicted. The type of kriging depends on the characteristics of the observations and the purpose of interpolation.
 
 - Simple kriging assumes a known constant mean for the domain 
 - Ordinary kriging assumes an unknown constant mean
@@ -381,7 +406,7 @@ To review, the steps for spatial interpolation (statistical) are:
 
 1. Examine the observations for trends and isotropy
 2. Compute a sample (empirical) variogram
-3. Fit a variogram model to the empirical variogram
+3. Fit a variogram model to the sample variogram
 4. Create an interpolated surface using the variogram model together with the data (kriging)
 
 ## Computing the sample variogram {-}
@@ -412,9 +437,12 @@ ggplot(data = sf,
 Lag distance (distance between locations) is the independent variable in the variogram function. You get all pairwise distances by applying the `dist()` function to a matrix of spatial coordinates.
 
 ```{r}
-dist(cbind(sx, sy))
-max(dist(cbind(sx, sy)))
-min(dist(cbind(sx, sy)))
+cbind(sx, sy) |>
+  dist()
+
+cbind(sx, sy) |>
+  dist() |>
+  range()
 ```
 
 The `dist()` function computes a pairwise distance matrix. The distance between the first and second observation is 2.16 units and so on. The largest lag distance is 8.04 units and the smallest lag distance is 2.05 units.
@@ -460,7 +488,8 @@ Note the trend in the north-south direction and the skewness in the observed val
 Examine the residuals after removing a first-order trend from the observations.
 
 ```{r}
-topo.df$z1 <- residuals(lm(z ~ x + y, data = topo.df))
+topo.df$z1 <- lm(z ~ x + y, data = topo.df) |>
+  residuals()
 
 p1 <- ggplot(data = topo.df,
              mapping = aes(x = x, y = y, color = z1)) +
@@ -490,9 +519,9 @@ p4 <- ggplot(data = topo.df,
 
 The north-south trend is removed and the observations have a more symmetric distribution. There appears to be some non-linear trend (U-shape) in the east-west direction. 
 
-However, the residuals appear to show spatial autocorrelations (areas with above and below residuals). 
+However, the residuals appear to show spatial autocorrelation (areas with above and below residuals). 
 
-Compare the empirical variograms using first the raw values and then the residuals after removing the first-order trend.
+Compare the sample variograms using first the raw values and then the residuals after removing the first-order trend.
 
 ```{r}
 topo.sf <- topo.df |>
@@ -500,10 +529,10 @@ topo.sf <- topo.df |>
 
 topo.v1 <- variogram(z ~ 1,
                      data = topo.sf,
-                     cutoff = 2.5)
+                     cutoff = 6)
 topo.v2 <- variogram(z1 ~ 1,
                      data = topo.sf,
-                     cutoff = 2.5)
+                     cutoff = 6)
 
 ggplot(data = topo.v1,
        mapping = aes(x = dist, y = gamma)) +
@@ -511,25 +540,37 @@ ggplot(data = topo.v1,
   geom_point(data = topo.v2,
              mapping = aes(x = dist, y = gamma),
              color = "black") +
-  scale_x_continuous(breaks = seq(0, 2.5, by = .25)) +
+  scale_x_continuous(breaks = seq(0, 6, by = 1)) +
   xlab("Lag distance (h)") + 
   ylab(expression(paste(gamma,"(h)"))) +
   theme_minimal()
 ```
 
+The semivariance ($\gamma(u)$) is plotted against lag distance ($h$). 
 
-The semivariance ($\gamma(u)$) is plotted against lag distance. Values increase with increasing lag until a lag distance of about 2. 
+Values increase with lag out to a distance of 3 from the sample variogram computed with the detrended data (black dots) but continue to increase from the sample variogram computed with the raw data (red dots). 
 
-At large lags there are fewer estimates so the values have greater variance. A model for the semivariance is fit only for the the increasing portion of the graph.
+For short lag distances, the increasing variogram values are due to spatial autocorrelation but at large distances the increasing variogram values are due to trend. That is why you need to remove trends before computing and modeling the variogram.
 
-The variogram values have units of square feet and are calculated using point pairs at lag distances within a lag tolerance. The number of point pairs depends on the lag so the variogram values are less precise at large distance.
+The units of the variogram values are squared units of the variable units (here square feet). Values are calculated using observational point pairs at lag distances within a lag tolerance. The number of point pairs depends on the lag. At short and long distances there are fewer observational point pairs, so the sample variogram values have greater variance for short and long lag distances.
 
-Plot the number of point pairs used in the calculation of the variogram as a function of lag distance.
+Plot the number of observational point pairs used to calculate the variogram.
 
 ```{r}
 ggplot(data = topo.v2,
        mapping = aes(y = np, x = dist)) +
   geom_point() +
-  xlab("Lag Distance") + ylab("Number of Observation Pairs") +
+  xlab("Lag Distance") + 
+  ylab("Number of Observation Pairs") +
   theme_minimal()
 ```
+
+Summary: 
+
+Modeling point pattern data is not straightforward so often the data are aggregated to areal units and spatial logistic regression is used to indicate the presence or absence of events at a particular scale. The scale is chosen so as to effectively remove clustering or inhibition processes. You saw how to implement a spatial logistic regression model with functions from the {spatstat} family of packages.
+
+The topic of spatial interpolation was introduced. There are many ways to interpolate. Kriging provides a statistical methodology that is useful for estimating uncertainty about the interpolated values and for simulation. The first steps are to examine the data for trends and compute the sample variogram on the residuals. If there is spatial autocorrelation in the residuals then the sample variogram values increase with lag distance out to some range. 
+
+The next steps are fitting a variogram model to the sample variogram and creating an interpolated surface with the method of kriging. Kriging combines the variogram model with the observations.
+
+Class next Tuesday, November 22 will be via Zoom. I will start at 8a and record it so you can watch it live or at your convenience.

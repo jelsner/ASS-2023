@@ -2,8 +2,6 @@
 
 **"Statistics is such a powerful language for describing data in ways that reveal nothing about their causes. Of course statistics is powerful for revealing causes as well. But it takes some care. Like the difference between talking and making sense."** - Richard McElreath
 
-Today
-
 - Fitting a variogram model to the sample variogram
 - Creating an interpolated surface with the method of kriging
 
@@ -97,7 +95,7 @@ ggplot() +
 
 There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue). 
 
-Compute and plot the empirical variogram using the `variogram()` function from the {gstat} package.
+Compute and plot the sample variogram using the `variogram()` function from the {gstat} package.
 
 ```{r}
 library(gstat)
@@ -176,11 +174,11 @@ ggplot(data = df,
 
 The four variograms all have a similar shape and there is large overlap in the uncertainty bands surrounding the smooth curves so you conclude that the assumption of isotropy is reasonable.
 
-Fit a variogram model to the empirical variogram
+Fit a variogram model to the sample variogram
 
-You are now ready to fit a variogram model to the empirical variogram. This amounts to fitting a parametric curve through the set of points that make up the empirical variogram.
+You are now ready to fit a variogram model to the sample variogram. This amounts to fitting a parametric curve through the set of points that make up the sample variogram.
 
-Start by plotting the (omni-directional) empirical variogram saved in object `p`.
+Start by plotting the (omni-directional) sample variogram saved in object `p`.
 
 ```{r}
 p
@@ -215,7 +213,7 @@ Other terms: (1) Relative nugget effect: The ratio of the nugget to the sill exp
 
 From the figure you estimate the sill at 44000 ft^2, the nugget at 12000 ft^2 and the range at 100 km. 
 
-To fit a model to the empirical variogram you start with the `vgm()` function that sets the curve family (here spherical) and the initial parameter values. You save result in an object called `wca.vmi`. The function needs the partial sill (`psill =` argument) as the difference between the sill and the nugget.
+To fit a model to the sample variogram you start with the `vgm()` function that sets the curve family (here spherical) and the initial parameter values. You save result in an object called `wca.vmi`. The function needs the partial sill (`psill =` argument) as the difference between the sill and the nugget.
 
 ```{r}
 wca.vmi <- vgm(model = "Sph", 
@@ -225,7 +223,7 @@ wca.vmi <- vgm(model = "Sph",
 wca.vmi
 ```
 
-Next you apply the function `fit.variogram()`, which uses the method of weighted least squares to improve the parameter estimates from the set of initial estimates. The function takes the empirical variogram and the set of initial estimates as `object =` and `model =`, respectively.
+Next you apply the function `fit.variogram()`, which uses the method of weighted least squares to improve the parameter estimates from the set of initial estimates. The function takes the sample variogram and the set of initial estimates as `object =` and `model =`, respectively.
 
 ```{r}
 wca.vm <- fit.variogram(object = wca.v, 
@@ -233,7 +231,7 @@ wca.vm <- fit.variogram(object = wca.v,
 wca.vm
 ```
 
-Note: Ordinary least squares is not an appropriate method for fitting a variogram model to the empirical variogram because the semivariances are correlated across the lag distances and the precision on the estimates depends on the number of site pairs for a given lag.
+Note: Ordinary least squares is not an appropriate method for fitting a variogram model to the sample variogram because the semivariances are correlated across the lag distances and the precision on the estimates depends on the number of site pairs for a given lag.
 
 The output table shows the nugget and spherical model. The nugget is 9812 ft^2 and the partial sill for the spherical model is 34851 ft^2 with a range of 107 km. These values are close to your initial estimates.
 
@@ -243,7 +241,7 @@ To check the model and fit plot them together with the `plot()` method.
 plot(wca.v, wca.vm)
 ```
 
-The blue line is the variogram model and the points are the empirical variogram values.
+The blue line is the variogram model and the points are the sample variogram values.
 
 Note that the `fit.variogram()` function will find the optimal fit even if the initial values are not very good. Here you lower the partial sill to 10000 ft^2, reduce the range to 50 km and set the nugget to 8000 ft^2.
 
@@ -277,7 +275,7 @@ plot(wca.v, wca.vm3)
 plot(wca.v, wca.vm4)
 ```
 
-The Gaussian model has a S-shaped curve (sigmodial) indicating more spatial autocorrelation at close distances. The exponential model has no plateau. Both models fit the empirical variogram values reasonably well. 
+The Gaussian model has a S-shaped curve (sigmodial) indicating more spatial autocorrelation at close distances. The exponential model has no plateau. Both models fit the sample variogram values reasonably well. 
 
 In practice, the choice often makes very little difference in the quality of the spatial interpolation.
 
@@ -371,4 +369,4 @@ ggplot() +
   theme_minimal()
 ```
 
-Areas with the largest uncertainty are in areas away from observations (northwest corner). This makes sense our knowledge of the aquifer comes from these observations.
+Areas with the largest uncertainty are in areas away from observations (northwest corner). This makes sense since your knowledge of the aquifer comes from these observations.

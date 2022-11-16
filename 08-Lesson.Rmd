@@ -442,7 +442,7 @@ Change the view mode back to a static plot.
 tmap::tmap_mode("plot")
 ```
 
-## Hillshape and colors with tidyterra
+## Hillshape and colors with tidyterra {-}
 
 <https://dieghernan.github.io/202210_tidyterra-hillshade/#r_bloggers>
 

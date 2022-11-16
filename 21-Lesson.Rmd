@@ -43,7 +43,7 @@ tmap::tm_shape(sts) +
 
 There is a clear trend in the temperature field with the coolest values to the north. Besides the trend there is some local clustering of similar values (spatial autocorrelation).
 
-Compute and plot the empirical variogram on the residuals after removing the trend. The trend term is specified in the formula as `temp ~ X + Y`.
+Compute and plot the sample variogram on the residuals after removing the trend. The trend term is specified in the formula as `temp ~ X + Y`.
 
 ```{r}
 library(gstat)
