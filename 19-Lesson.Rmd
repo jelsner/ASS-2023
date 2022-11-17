@@ -12,25 +12,27 @@ _Announcement_ Starting today all remaining lessons will be via Zoom. I will sta
 
 Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise.
 
-Then a logistic regression models the presence probability $p = P(Y = 1)$ as a function of explanatory variables $X$ in the (matrix) form 
+Then a logistic regression is a model for the presence probability $p = P(Y = 1)$ as a function of explanatory variables $X$ in the form 
 
 $$
 \log \frac{p}{1-p} = \beta X
-$$ 
-where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients to be determined.
+$$
+
+where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients on the explanatory variables to be determined.
 
 If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.
 
 Let's look at an example from the package (a good strategy when learning a new technique).
 
-Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are linear features that consist of geological faults.
+Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are geological fault lines.
 
-Interest centers on being able to predict the probability of a copper ore from the distance to the lineaments. 
+Interest centers on being able to predict the probability of a copper ore from the distance to the fault line. 
 
 The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
 
 ```{r}
-library(spatstat)
+library(spatstat) |>
+  suppressMessages()
 
 data(copper)
 
@@ -62,7 +64,7 @@ C |>
 
 There are 57 ore deposits over a region of size 5584 square km resulting in an intensity of about .01 ore deposits per square km.
 
-Next you create a distance map of the lineaments to be used as a covariate.
+Next you create a distance map indicating the distance to the nearest fault line. This distance will be used as a covariate for a model of the probability of an ore deposit.
 
 ```{r}
 D <- L |>
@@ -72,7 +74,7 @@ D |>
   plot()
 ```
 
-Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} package.
+Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} family of packages.
 
 ```{r}
 model.slr <- slrm(C ~ D)
