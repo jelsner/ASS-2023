@@ -2,7 +2,7 @@
 
 **"Beyond basic mathematical aptitude, the difference between good programmers and great programmers is verbal ability."** – Marissa Mayer
 
-Class next Tuesday, November 22 will be via Zoom. I will start at 8a and record it so you can watch it live or at your convenience.
+_Announcement_ Starting today all remaining lessons will be via Zoom. I will start the lesson at 8 a.m. and record it so you can watch it live or later at your convenience.
 
 - Spatial logistic regression
 - Spatial data interpolation
