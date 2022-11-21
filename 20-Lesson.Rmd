@@ -11,20 +11,20 @@ Some years ago there were three nuclear waste repository sites being proposed. O
 
 In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste. The facility has yet to be built.
 
-The site must isolate the waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters. The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seeks its own level in the pipe (piezometer).
+The site must isolate nuclear waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters. 
 
-The head measurements, given in units of feet above sea level, are from drill stem tests and indicate the total energy of the water in units of height. The higher the head height, the greater the potential energy.  Water flows away from areas of high potential energy with aquifer discharge proportional to the gradient of the piezometric head. The data are in `wolfcamp.csv` on my website.
+The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seek its own level in the pipe (piezometer). The head measurements indicate the total energy of the water in units of height (feet above sea level). The higher the head height, the greater the potential energy.  Water flows away from areas of high potential energy to areas of lower energy with aquifer discharge proportional to the gradient of the piezometric head. The data are in `wolfcamp.csv` on my website.
 
-Examine the observed data for trends and check to see if the observations are adequately described by a normal distribution.
-
-Import the data as a data frame from the csv file.
+Start by examining the values of head height for trends and check to see if the values can adequately described by a normal distribution. Import the csv file as a data frame. Change the name `head` to `head_ft` and add a column for heights in meters.
 
 ```{r}
 L <- "http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv"
-wca.df <- readr::read_csv(L, show_col_types = FALSE)
+wca.df <- readr::read_csv(L) |>
+  dplyr::rename(head_ft = head) |>
+  dplyr::mutate(head_m = head_ft * .3048)
 ```
 
-Create a simple feature data frame and make a map showing the locations and the values for the head heights.
+Create a simple feature data frame and make a map showing the locations and the head heights. This is done by specifying the columns `lon` and `lat` as coordinates with the `coords =` argument. Then using functions from the {tmap} package.
 
 ```{r}
 wca.sf <- sf::st_as_sf(x = wca.df, 
@@ -34,10 +34,11 @@ wca.sf <- sf::st_as_sf(x = wca.df,
 tmap::tmap_mode("view")
 
 tmap::tm_shape(wca.sf) +
-  tmap::tm_dots("head")
+  tmap::tm_dots("head_m")
 ```
+The aquifer measurements are taken across the panhandle region of Texas and portions of northeast New Mexico.
 
-You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trends. So you include them as attributes in your spatial data frame.
+You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trends. So you include them as attributes in your spatial data frame. Note: they were removed as attributes when creating the simple feature data frame.
 
 ```{r}
 XY <- wca.sf |>
@@ -47,7 +48,7 @@ wca.sf$X <- XY[, 1]
 wca.sf$Y <- XY[, 2]
 ```
 
-Are all observations at different locations? Duplicate coordinates might be due to an error or they might represent multiple measurements at a location.
+Do all observations have different locations? Duplicate coordinates might be due to an error or they might represent multiple measurements at a location.
 
 You check for duplicates with the {base} `duplicated()` function applied to the geometry field.
 
@@ -74,60 +75,60 @@ Summarize the information in the spatial data frame.
 ```{r}
 wca.sf |>
   summary()
+
 wca.sf |>
   sf::st_bbox(wca.sf)
-
 ```
 
 There are 84 well sites bounded between longitude lines 104.55W and 100.02W and latitude lines 33.51N and 36.09N.
 
-The data values are summarized. The values are piezometric head heights in units of feet.
+The data values are summarized. A minimum of 312 m and a maximum of 1088 m with an average of 609 m.
 
 ```{r}
 library(ggplot2)
 
 ggplot() +
   geom_sf(data = wca.sf,
-          mapping = aes(color = head)) +
+          mapping = aes(color = head_m)) +
   scale_color_viridis_c() +
-  labs(col = "Height (ft)") +
+  labs(col = "Height (m)") +
   theme_minimal()
 ```
 
-There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue). 
+There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue).
 
-Compute and plot the sample variogram using the `variogram()` function from the {gstat} package.
+There are two sources of variation in any set of spatial data: trend and spatial autocorrelation. With geostatistical data, trend is modeled with a smooth curve and autocorrelation is modeled with the variogram. 
+
+Compute and plot the sample variogram using the `variogram()` function from the {gstat} package. Here you are assuming that all spatial variation is due to autocorrelation.
 
 ```{r}
 library(gstat)
 
-variogram(head ~ 1,
+variogram(head_m ~ 1,
           data = wca.sf) |>
   plot()
 ```
 
-The continuously increasing set of variances with little fluctuation results from the data trend you saw in the map. There are at least two sources of variation in any set of geostatistical data: trend and spatial autocorrelation. Trend is modeled with a smooth curve and autocorrelation is modeled with the variogram.
-
-Note: since the spatial coordinates are unprojected (decimal latitude/longitude) great circle distances are used and the units are kilometers. 
+You see nearly continuously increasing variances (m^2) with lag distance (km). Note: since the spatial coordinates are un-projected (decimal latitude/longitude) great circle distances are used and the units are kilometers. 
 
 You compute and plot the variogram this time with the trend removed. You replace the `1` with `X + Y` on the right hand side of the formula. The variogram is then computed on the residuals from the linear trend model.
 
 ```{r}
-variogram(head ~ X + Y,
+variogram(head_m ~ X + Y,
           data = wca.sf) |>
   plot()
 ```
 
-Here you see an increase in the variance with lag distance out to about 100 km, but then the values fluctuate about a variance of about 41000 (ft$^2$).
+Here you see an increase in the variance with lag distance out to about 100 km, but then the values fluctuate about a variance of about 4000 (m^2).
 
 You save the variogram object computed on the residuals.
 
 ```{r}
-wca.v <- variogram(head ~ X + Y, 
+wca.v <- variogram(head_m ~ X + Y, 
                    data = wca.sf)
 ```
 
-You then use this information contained in the variogram object to anticipate the type of variogram model.
+You then use the information contained in the variogram object to anticipate the type of variogram model.
 
 ```{r}
 df <- wca.v |>
@@ -145,18 +146,14 @@ df <- wca.v |>
 
 The blue line is a least-squares regression smoother through the variogram estimates. The fact that it is not a flat horizontal line indicates spatial autocorrelation in the residuals (distinct from the first-order trend). 
 
-Directional variograms
+Next check the assumption of isotropy. The assumption is that spatial autocorrelation is similar in all directions. To check this assumption you compute variograms using observational pairs located along the same orientation to examine this assumption. Instead of considering all observational pairs within a lag distance $h$ and lag tolerance $\delta h$, you consider only pairs within a directional segment.
 
-The assumption of isotropy implies the same spatial autocorrelation function in all directions.
+This is done with the `alpha =` argument in the `variogram()` function that specifies the direction in the (x, y) plane in degrees starting with 0 (due north).
 
-You compute variograms using observational pairs located along the same orientation to examine this assumption. Instead of considering all observational pairs within a lag distance $h$ and lag tolerance $\delta h$, you consider only pairs within a directional segment.
-
-This is done with the `alpha =` argument specifying the direction in plane (x,y), in positive degrees clockwise from positive y (North): alpha = 0 for direction North (increasing y), alpha = 90 for direction East (increasing x).
-
-Here you specify four directions (north-south-0, northeast-southwest-45, east-west-90, and southeast-northeast-135) and compute the corresponding directional variograms.
+Here you specify four directions (north-south-0, northeast-southwest-45, east-west-90, and southeast-northeast-135) and compute the corresponding _directional_ variograms.
 
 ```{r}
-wca.vd <- variogram(head ~ X + Y, 
+wca.vd <- variogram(head_m ~ X + Y, 
                     data = wca.sf,
                     alpha = c(0, 45, 90, 135))
 df <- wca.vd |>
@@ -173,9 +170,7 @@ ggplot(data = df,
   theme_minimal()
 ```
 
-The four variograms all have a similar shape and there is large overlap in the uncertainty bands surrounding the smooth curves so you conclude that the assumption of isotropy is reasonable.
-
-Fit a variogram model to the sample variogram
+All four variograms all have a similar shape and there is large overlap in the uncertainty bands surrounding the smooth curves so you conclude that the assumption of isotropy is reasonable.
 
 You are now ready to fit a variogram model to the sample variogram. This amounts to fitting a parametric curve through the set of points that make up the sample variogram.
 
@@ -185,24 +180,24 @@ Start by plotting the (omni-directional) sample variogram saved in object `p`.
 p
 ```
 
-The shape of the blue line gives you an idea of the type of variogram family of models you should consider.
+The shape of the blue line gives you an idea of the type of variogram family of models you should consider. The values increase nearly linearly through a distance of about 80 km and then abruptly level off.
 
 Now you can guess at a family for the variogram model and eyeball the parameters. A _spherical_ variogram model has a nearly linear increase in variances with lag distance before an abrupt flattening so that is a good choice.
 
 The parameters for the model can be estimated from the graph as follows.
 ```{r}
 p +
-  geom_hline(yintercept = c(12000, 45000), color = "red") +
-  geom_vline(xintercept = 100, color = "red") +
-  geom_segment(aes(x = 0, y = 0, xend = 0, yend = 12000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = 15, y = 11000, label = "nugget")) +
-  geom_segment(aes(x = 0, y = 12000, xend = 0, yend = 45000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = 10, y = 44000, label = "sill")) +
-  geom_segment(aes(x = 0, y = 47000, xend = 100, yend = 47000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
-  geom_label(aes(x = 50, y = 48000, label = "range"))
+  geom_hline(yintercept = c(1000, 4100), color = "red") +
+  geom_vline(xintercept = 90, color = "red") +
+  geom_segment(aes(x = 0, y = 0, xend = 0, yend = 1000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 10, y = 800, label = "nugget")) +
+  geom_segment(aes(x = 0, y = 1000, xend = 0, yend = 4100,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 5, y = 3900, label = "sill")) +
+  geom_segment(aes(x = 0, y = 4200, xend = 90, yend = 4200,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 50, y = 4400, label = "range"))
 ```
 
-The three parameters used in fitting a variogram model are nugget, sill, and range.
+The nugget, sill, and range are the parameters used in fitting a variogram model.
 
 - Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag. The nugget is the variation in the values at the observation locations without regard to spatial variation. Related to the observation (or measurement) precision.
 
@@ -212,15 +207,15 @@ The three parameters used in fitting a variogram model are nugget, sill, and ran
 
 Other terms: (1) Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage. (2) Lag distance: Relative distance between observation locations.
 
-From the figure you estimate the sill at 44000 ft^2, the nugget at 12000 ft^2 and the range at 100 km. 
+From the figure you estimate the sill at 4100 m^2, the nugget at 1000 m^2 and the range at 90 km. 
 
-To fit a model to the sample variogram you start with the `vgm()` function that sets the curve family (here spherical) and the initial parameter values. You save result in an object called `wca.vmi`. The function needs the partial sill (`psill =` argument) as the difference between the sill and the nugget.
+To fit a model to the sample variogram you start with the `vgm()` function that sets the curve family (here spherical) and the initial parameter values. You save result in an object called `wca.vmi`. The function needs the partial sill (`psill =` argument) as the difference between the sill and the nugget (4100 - 1000 = 3100).
 
 ```{r}
 wca.vmi <- vgm(model = "Sph", 
-               psill = 32000, 
-               range = 100, 
-               nugget = 12000)
+               psill = 3100, 
+               range = 90, 
+               nugget = 1000)
 wca.vmi
 ```
 
@@ -234,23 +229,24 @@ wca.vm
 
 Note: Ordinary least squares is not an appropriate method for fitting a variogram model to the sample variogram because the semivariances are correlated across the lag distances and the precision on the estimates depends on the number of site pairs for a given lag.
 
-The output table shows the nugget and spherical model. The nugget is 9812 ft^2 and the partial sill for the spherical model is 34851 ft^2 with a range of 107 km. These values are close to your initial estimates.
+The output table shows the nugget and spherical model. The nugget is 912 m^2 and the partial sill for the spherical model is 3238 m^2 with a range of 107 km. These values are close to your initial estimates.
 
 To check the model and fit plot them together with the `plot()` method.
 
 ```{r}
-plot(wca.v, wca.vm)
+wca.v |>
+  plot(wca.vm)
 ```
 
 The blue line is the variogram model and the points are the sample variogram values.
 
-Note that the `fit.variogram()` function will find the optimal fit even if the initial values are not very good. Here you lower the partial sill to 10000 ft^2, reduce the range to 50 km and set the nugget to 8000 ft^2.
+Note that the `fit.variogram()` function will find the optimal fit even if the initial values are not very good. Here you lower the partial sill to 2000 m^2, reduce the range to 50 km and set the nugget to 500 ft^2.
 
 ```{r}
 wca.vmi2 <- vgm(model = "Sph", 
-                psill = 10000, 
+                psill = 2000, 
                 range = 50, 
-                nugget = 8000)
+                nugget = 500)
 wca.vm2 <- fit.variogram(object = wca.v, 
                         model = wca.vmi2)
 wca.vm2
@@ -258,27 +254,35 @@ wca.vm2
 
 The initial values are poor but good enough for the `fit.variogram()` function to find the optimal model.
 
-Compare the spherical model to a Gaussian and an exponential model.
+Fit a Gaussian model.
 ```{r}
 wca.vmi3 <- vgm(model = "Gau", 
-                psill = 30000, 
+                psill = 9100, 
                 range = 30, 
-                nugget = 10000)
+                nugget = 3000)
 wca.vm3 <- fit.variogram(object = wca.v, 
                          model = wca.vmi3)
-wca.vmi4 <- vgm(model = "Exp", 
-                psill = 30000, 
-                range = 10, 
-                nugget = 10000)
-wca.vm4 <- fit.variogram(object = wca.v, 
-                         model = wca.vmi4)
-plot(wca.v, wca.vm3)
-plot(wca.v, wca.vm4)
+wca.v |>
+  plot(wca.vm3)
 ```
 
-The Gaussian model has a S-shaped curve (sigmodial) indicating more spatial autocorrelation at close distances. The exponential model has no plateau. Both models fit the sample variogram values reasonably well. 
+The Gaussian model has a S-shaped curve (sigmodial) indicating more spatial autocorrelation at close distances. 
 
-In practice, the choice often makes very little difference in the quality of the spatial interpolation.
+Fit an exponential model.
+```{r}
+wca.vmi4 <- vgm(model = "Exp", 
+                psill = 9100, 
+                range = 10, 
+                nugget = 3000)
+wca.vm4 <- fit.variogram(object = wca.v, 
+                         model = wca.vmi4)
+wca.v |>
+  plot(wca.vm4)
+```
+
+The exponential model has no plateau. Both models fit the sample variogram values reasonably well. 
+
+In practice, the choice often makes little difference in the quality of the spatial interpolation.
 
 On the other hand, it is possible to optimize over all sets of variogram models and parameters using the `autofitVariogram()` function from the {automap} package. The package requires the data to be of S4 class but uses the functions from the {gstat} package.
 
@@ -286,18 +290,20 @@ Here you use the function on the Wolfcamp aquifer data.
 
 ```{r}
 wca.sp <- as(wca.sf, "Spatial")
-wca.vm5 <- automap::autofitVariogram(formula = head ~ X + Y, 
+wca.vm5 <- automap::autofitVariogram(formula = head_m ~ X + Y, 
                                      input_data = wca.sp)
 plot(wca.vm5)
 ```
 
-The automatic fitting results in a Matern model with Stein's parameterization. The Matern family of variogram models has an additional parameter (besides the nugget, sill, and range) kappa that allows for local smoothing. With an extra parameter these models will generally outperform models with fewer parameters.
+The automatic fitting results in a Matérn model. The Matérn family of variogram models has an additional parameter kappa (besides the nugget, sill, and range) that allows for local smoothing. With an extra parameter these models will generally outperform models with fewer parameters.
+
+The general shape is that of the exponential model except at small lags. The Matérn model can describe spatial processes with different local behavior.
 
 ## Creating an interpolated surface with the method of kriging {-}
 
 Kriging uses the variogram model together with the observed data to estimate values at any location of interest. The kriged estimates are a weighted average of the neighborhood values with the weights defined by the variogram model. 
 
-Estimates are often made at locations defined on a regular grid. Here you create a regular grid of locations within the boundary of the spatial data frame using the `sf::st_make_grid()` function.  You specify the number of locations in the x and y direction using the argument `n =`. The `what = "centers"` returns the center locations of the grid cells as points.
+Estimates can be made anywhere in the domain but are often made at locations defined on a regular grid. Here you create a regular grid of locations within the boundary of the spatial data frame using the `sf::st_make_grid()` function.  You specify the number of locations in the x and y direction using the argument `n =`. The `what = "centers"` returns the center locations of the grid cells as points.
 
 ```{r}
 grid.sfc <- sf::st_make_grid(wca.sf,
@@ -305,9 +311,7 @@ grid.sfc <- sf::st_make_grid(wca.sf,
                              what = "centers")
 ```
 
-The result is a simple feature column (`sfc`) of points.
-
-Plot the grid locations together with the observation locations.
+The result is a simple feature column (`sfc`) of points. Plot the grid locations together with the observation locations.
 
 ```{r}
 sts <- USAboundaries::us_states()
@@ -320,8 +324,9 @@ tmap::tm_shape(grid.sfc) +
 tmap::tm_shape(sts) +
   tmap::tm_borders()
 ```
+The observations in gray circles and the grid locations in red dots.
 
-Since there is a trend term you need to add the X and Y values to the simple feature column of the grid. First make it a simple feature data frame then using then add the columns with `dplyr::mutate()`.
+Since the variogram is done on the residuals after a trend in the X and Y directions is removed you need to add the X and Y coordinates to the simple feature column of the grid. First make it a simple feature data frame then add the columns with `dplyr::mutate()`.
 
 ```{r}
 XY <- grid.sfc |>
@@ -332,42 +337,53 @@ grid.sf <- grid.sfc |>
                 Y = XY[, 2])
 ```
 
-Next interpolate the aquifer heights to the grid locations. You do this with the `krige()` function. The first argument is the formula for the trend, the locations argument is the observed data locations from the simple feature data frame, the new data argument is the locations and independent variables (in this case the trend variables) and the model argument is the variogram model that you fit above.
+Next you interpolate the aquifer heights to the grid locations. You do this with the `krige()` function. The first argument is the formula for the trend, the locations argument is the observed data locations from the simple feature data frame, the new data argument is the locations and independent variables (in this case the trend variables) and the model argument is the variogram model that you fit above.
 
 ```{r}
-wca.int <- krige(head ~ X + Y,
+wca.int <- krige(head_m ~ X + Y,
                  locations = wca.sf,
                  newdata = grid.sf,
                  model = wca.vm)
-head(wca.int)
 ```
 
-The output says `using universal kriging`. This is because there is a trend and a variogram model.
+The output says `using universal kriging`. This is because there is a trend and a variogram model. If there is only a variogram model, then it is called "ordinary kriging."
 
-The output is a simple feature data frame containing the interpolated values at the grid locations in the column labeled `var1.pred`. The interpolated uncertainty is given in the column labeled `var1.var`.
+```{r}
+wca.int |> 
+  head()
+```
 
-You plot the interpolated aquifer heights at the grid locations using functions from the {ggplot2} package.
+The output is a simple feature data frame containing the interpolated values at the grid locations in the column labeled `var1.pred` (variable 1 predictions). The interpolated uncertainty is given in the column labeled `var1.var`.
+
+Plot the interpolated aquifer heights at the grid locations using functions from the {ggplot2} package. Add a plot of the measured head heights using the same color ramp.
 
 ```{r}
 ggplot() +
   geom_sf(data = wca.int,
-          mapping = aes(col = var1.pred)) +
+          mapping = aes(col = var1.pred), size = 4) +
+  geom_sf(data = wca.sf, 
+          mapping = aes(col = head_m)) +
   scale_color_viridis_c() +
-  labs(col = "Height (ft)") +
+  labs(col = "Height (m)") +
   theme_minimal()
 ```
 
-The trend captures the large scale feature while the variogram captures the local spatial autocorrelation. Together they produce an interpolated surface that matches exactly the values at the observation locations (when the nugget is fixed at zero).
+Since the `sfc` geometry is `POINT` the map is the grid of points colored by the predicted piezometric head heights.
 
-Plot the uncertainty in the estimated interpolated values as the square root of the variance.
+The trend captures the large scale feature of higher heights in the southwest and lower heights in the northeast while the variogram captures the local spatial autocorrelation. Together they produce an interpolated surface that closely matches the values at the observation locations (exactly matches when the nugget is fixed at zero).
+
+Plot the uncertainty in the estimated interpolated values as the square root of the predicted variance. Add the locations of the observations as points.
 
 ```{r}
 ggplot() +
   geom_sf(data = wca.int,
-          mapping = aes(col = sqrt(var1.var))) +
+          mapping = aes(col = sqrt(var1.var)), size = 4) +
   scale_color_viridis_c(option = "plasma") +
-  labs(col = "Uncertainty (ft)") +
+  geom_sf(data = wca.sf, size = .5, col = "white") +
+  labs(col = "Uncertainty (m)") +
   theme_minimal()
 ```
 
-Areas with the largest uncertainty are in areas away from observations (northwest corner). This makes sense since your knowledge of the aquifer comes from these observations.
+Standard deviation of the prediction variance in units of meters. Recall the range of head heights was from a low of 312 m to a high of 1088 m so the predictive errors are generally less than 10%. 
+
+Predictive errors are a function of distance to nearest measurement (northwest corner). This makes sense since information about the aquifer heights comes from the measurements.
