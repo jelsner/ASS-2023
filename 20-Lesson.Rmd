@@ -7,9 +7,9 @@
 
 ## Fitting a variogram model to the sample variogram {-}
 
-Some years ago there were three nuclear waste repository sites being proposed in Nevada, Texas, and Washington. The proposed site needed to be large enough for more than 68,000 high-level waste containers placed underground, about 9 m (~30 feet) apart, in trenches surrounded by salt. 
+Some years ago there were three nuclear waste repository sites being proposed. One in Nevada, one in Texas, and one in Washington. The proposed site needed to be large enough for more than 68,000 high-level waste containers placed underground, about 9 m (~30 feet) apart, in trenches surrounded by salt. 
 
-In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste.
+In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste. The facility has yet to be built.
 
 The site must isolate the waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters. The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seeks its own level in the pipe (piezometer).
 
@@ -41,7 +41,8 @@ You will use the spatial coordinates to model the spatial autocorrelation and to
 
 ```{r}
 XY <- wca.sf |>
-  sf::st_coordinates() 
+  sf::st_coordinates()
+
 wca.sf$X <- XY[, 1]
 wca.sf$Y <- XY[, 2]
 ```
