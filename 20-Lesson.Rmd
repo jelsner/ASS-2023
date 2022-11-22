@@ -199,7 +199,7 @@ p +
 
 The nugget, sill, and range are the parameters used in fitting a variogram model.
 
-- Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag. The nugget is the variation in the values at the observation locations without regard to spatial variation. Related to the observation (or measurement) precision.
+- Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag. The nugget is the variation in the values at the measurement locations without regard to spatial variation. Related to the observation (or measurement) precision.
 
 - Sill: The height of the variogram at which the values are uncorrelated. The sill is indicated by the height of the plateau in the variogram. 
 
@@ -240,7 +240,7 @@ wca.v |>
 
 The blue line is the variogram model and the points are the sample variogram values.
 
-Note that the `fit.variogram()` function will find the optimal fit even if the initial values are not very good. Here you lower the partial sill to 2000 m^2, reduce the range to 50 km and set the nugget to 500 ft^2.
+Note that the `fit.variogram()` function will find the optimal fit even if the initial values are not very good. Here you lower the partial sill to 2000 m^2, reduce the range to 50 km and set the nugget to 500 m^2.
 
 ```{r}
 wca.vmi2 <- vgm(model = "Sph", 
