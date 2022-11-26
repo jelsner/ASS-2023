@@ -2,11 +2,6 @@
 
 **"The problem of nonparametric estimation consists in estimation, from the observations, of an unknown function belonging to a sufficiently large class of functions."** - A.B. Tsybakov
 
-Today
-
-- Comparing interpolation methods
-- Evaluating the accuracy of the interpolation
-
 ## Comparing interpolation methods {-}
 
 Here you consider a data set of monthly average surface air temperatures for April across the Midwest. The data are available on my website in the file `MidwestTemps.txt`.
@@ -348,4 +343,4 @@ The interpolation error using full cross validation will always be larger than t
 One final note about cross validation in the context of spatial data is the observations are not independent. As such it is better to create spatial areas for training separate from the spatial areas for testing.
 
 A nice introduction to so-called 'block' cross validation in the context of species distribution modeling is available here
-https://cran.r-project.org/web/packages/blockCV/vignettes/BlockCV_for_SDM.html
+<https://cran.r-project.org/web/packages/blockCV/vignettes/BlockCV_for_SDM.html>

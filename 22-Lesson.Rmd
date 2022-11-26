@@ -2,13 +2,6 @@
 
 **“Practice any art, music, singing, dancing, acting, drawing, painting, sculpting, poetry, fiction, essays, reportage, no matter how well or badly, not to get money & fame, but to experience becoming, to find out what's inside you, to make your soul grow.”** - Kurt Vonnegut
 
-Today
-
-- Interpolating to areal units
-- Simulating spatial fields
-- Interpolating multiple variables
-- Machine learning for spatial interpolation
-
 ## Interpolating to areal units (block kriging) {-}
 
 In 2008 tropical cyclone (TC) Fay formed from a tropical wave near the Dominican Republic, passed over the island of Hispaniola, Cuba, and the Florida Keys, then crossed the Florida peninsula and moved westward across portions of the Panhandle producing heavy rains in parts of the state.
@@ -521,4 +514,4 @@ Kriging is useful tool for ‘filling in the gaps’ between sampling sites. Han
 
 ## Machine learning for spatial interpolation {-}
 
-See https://geocompr.robinlovelace.net/spatial-cv.html
+See <https://geocompr.robinlovelace.net/spatial-cv.html>
