@@ -508,9 +508,9 @@ tmap::tm_shape(hm.int) +
 
 The map shows areas of the flood plain with high (and low) correlations between cadmium and zinc. Caution: Higher values of the covariance indicate lower correlations. There is an inverse relationship between the correlogram and the covariogram.
 
-Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your toolbox.
-
 Kriging is useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
+
+Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your toolbox.
 
 ## Machine learning for spatial interpolation {-}
 
