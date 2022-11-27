@@ -165,6 +165,7 @@ t.trend <- krige(temp ~ X + Y,
                  locations = t.sf,
                  newdata = grid.sf) 
 ```
+
 Add the interpolated temperature trend (located in `t.trend$var1.pred`) to the `t.int` simple feature data frame.
 
 ```{r}
@@ -296,23 +297,51 @@ t.int2 <- krige(temp ~ X + Y,
 cor(t.int2$var1.pred, t.sf$temp)
 ```
 
-So this is not helpful. 
+This is not helpful. 
 
-Instead you use cross validation. Cross validation is a procedure for assessing how well a model does at interpolating the values when observations specific to the interpolation are removed from the model fitting procedure. 
+Instead you use cross validation. Cross validation in this context is a procedure to assess how well the interpolation does at estimating the values at the observed locations when those values are not used in setting the interpolation procedure.
 
-Cross validation partitions the data into two disjoint subsets and the model is fit to one subset of the data (training set) and the model is validated on the other subset (testing set).
+Cross validation partitions the data into disjoint subsets and the interpolation procedure is set using one subset of the data (training set) and interpolations are made using the procedure on the other subset (testing set).
 
-Leave-one-out cross validation (LOOCV) uses all but one observation for fitting and the left-out observation for testing. The procedure is repeated with every observation taking turns being left out. 
+Leave-one-out cross validation (LOOCV) uses all but one observation for setting the procedure and the left-out observation is used for interpolation. This process is repeated with every observation taking turns being left out.
+
+The `krige.cv()` function from the {gstat} package is used for cross validating the kriging procedure. Interpolations are made at the observation locations.
+
+The arguments are the same as in `krige()` except the `nfold =` argument. Values for the argument range between 2 and the number of observations (here 131). The default is 131 which is LOOCV.
+
+For example with `nfold = 3` cross validation cuts the set of observations into 3rds (3 folds). Each observation gets put into one of the three folds with the interpolation procedure set using observations from the two folds and interpolations made on the remaining observation. This is repeated three times with each third taking turns being left out.
+
+```{r}
+xv3 <- krige.cv(temp ~ X + Y,
+                locations = t.sf,
+                model = t.vm,
+                nfold = 3)
+
+xv3 |>
+  head()
+
+xv3 |>
+  tail()
+```
+The output is the same as before but now the data frame has a column indicating the fold (the set of observations that were left out).
+
+Using cross validation you are able to compare the interpolated value against the observed value at the observation locations. Here you use three statistics for comparisons. The correlation (r), the root-mean-squared error (rmse), and the mean absolute error (mae). These statistics are estimates of how skillful universal kriging is in producing the interpolated surface.
 
 ```{r}
 krige.cv(temp ~ X + Y,
          locations = t.sf,
-         model = t.vm) |>
+         model = t.vm,
+         nfold = 131) |>
   sf::st_drop_geometry() |>
   dplyr::summarize(r = cor(var1.pred, observed),
                    rmse = sqrt(mean((var1.pred - observed)^2)),
                    mae = mean(abs(var1.pred - observed)))
+```
+The correlation is .944, the rmse is 1.32°F and the mae is 1.04°F.
 
+How do these skill metrics compare to interpolations from ordinary kriging.
+
+```{r}
 krige.cv(temp ~ 1,
          locations = t.sf,
          model = t.vm) |>
@@ -320,14 +349,24 @@ krige.cv(temp ~ 1,
   dplyr::summarize(r = cor(var1.pred, observed),
                    rmse = sqrt(mean((var1.pred - observed)^2)),
                    mae = mean(abs(var1.pred - observed)))
+```
+With ordinary kriging the skill values are worse. The correlation is lower and the rmse and mae are larger.
 
+How do these skill metrics compare to interpolations from a trend-only interpolation.
+
+```{r}
 krige.cv(temp ~ X + Y,
          locations = t.sf) |>
   sf::st_drop_geometry() |>
   dplyr::summarize(r = cor(var1.pred, observed),
                    rmse = sqrt(mean((var1.pred - observed)^2)),
                    mae = mean(abs(var1.pred - observed)))
+```
+Even worse. The correlation is lower and the rmse and mae are higher.
 
+What about inverse-distance weighting interpolation?
+
+```{r}
 krige.cv(temp ~ 1,
          locations = t.sf) |>
   sf::st_drop_geometry() |>
@@ -335,6 +374,7 @@ krige.cv(temp ~ 1,
                    rmse = sqrt(mean((var1.pred - observed)^2)),
                    mae = mean(abs(var1.pred - observed)))
 ```
+Better than the trend-only interpolation but not as good as universal kriging.
 
 All four interpolations result in high correlation between observed and interpolated values that exceed .9 and root-mean-squared errors (RMSE) less than 1.8. But the universal kriging interpolation gives the highest correlation and the lowest RMSE and mean-absolute errors.
 
@@ -358,16 +398,17 @@ The black line represents a perfect prediction and the red line is the best fit 
 
 The `nfold =` argument, which by default is set to the number of observations and does a LOOCV, allows you to divide the data into different size folds (instead of N-1).
 
-Note that these performance metrics are biased toward the sample of data because cross validation is done only on the interpolation (kriging) and not on the variogram model fitting.
+These skill metrics are based on a fixed variogram model that uses all the observations when fitting. Thus cross validation using the `krige.cv()` function is a _partial_ cross validation. 
 
-That is, with kriging the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. 
+With kriging the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. To perform a _full_ LOOCV you need to _refit_ the variogram after removing the observation for which you want the interpolation.
 
-To perform a full LOOCV you need to refit the variogram after removing the observation for which you want the interpolation.
-```{r, eval=FALSE}
-vmi <- vgm(model = "Sph", 
-           psill = 2, 
-           range = 200, 
-           nugget = 1)
+Here is one way to do that using a `for()` loop.
+
+```{r}
+vmi <- vgm(model = "Exp", 
+             psill = 2.5, 
+             range = 150, 
+             nugget = .5)
 int <- NULL
 for(i in 1:nrow(t.sf)){
   t <- t.sf[-i, ]
@@ -377,16 +418,89 @@ for(i in 1:nrow(t.sf)){
                       model = vmi)
   int[i] <- krige(temp ~ X + Y,
                   locations = t,
-                  newdata = t[i, ],
+                  newdata = t.sf[i, ],
                   model = vm)$var1.pred
 }
 ```
 
-The interpolation error using full cross validation will always be larger than the interpolation error using a fixed variogram model.
+Now compare the observed values with the interpolated values.
+
+```{r}
+data.frame(interpolated = int,
+           observed = t.sf$temp) |>
+   dplyr::summarize(r = cor(interpolated, observed),
+                   rmse = sqrt(mean((interpolated - observed)^2)),
+                   mae = mean(abs(interpolated - observed)))
+```
+
+These values are slightly worse (r is lower, and rmse and mae are larger). This will always be the case when using full cross validation but these skill estimates represent how well the procedure will perform on a new set of _independent_ observations. 
 
 ## Block cross validation {-}
 
-One final note about cross validation in the context of spatial data is the observations are not independent. As such it is better to create spatial areas for training separate from the spatial areas for testing.
+Unfortunately, with cross validation in the context of spatial data, the observations are not independent. As such it is better to create spatial areas for training separate from the spatial areas for testing.
 
-A nice introduction to so-called 'block' cross validation in the context of species distribution modeling is available here
+The function `blockCV::spatialBlock()` function creates spatially separated folds based on a pre-specified distance (cell size of the blocks) from raster and vector spatial data objects. It assigns blocks to the training and testing folds with random, checkerboard, or systematic patterns (default is random). The range must be specified in units of meters. The argument `k =` specifies the number of folds with a default value of 5.
+
+```{r}
+sb <- t.sf |>
+  blockCV::spatialBlock(theRange = 200000)
+```
+
+The output shows how many observations are in the training and testing sets for each fold.
+
+The `$plot` list is a `ggplot2` object. Render the plot then add the observation locations to see the block assignments.
+
+```{r}
+sb$plots + 
+  geom_sf(data = t.sf, 
+          alpha = .5)
+```
+
+Now you need to repeat the full cross validation `for()` loop with some minor changes. First you need to add the fold and observation identification for each observation. Then rearrange the observations by these two indices.
+
+```{r}
+t.sf2 <- t.sf |>
+  dplyr::mutate(foldID = sb$foldID,
+                obsID = 1:nrow(t.sf)) |>
+  dplyr::arrange(foldID, obsID)
+
+t.sf2 |>
+  head()
+```
+
+Now repeat the loop on the new `t.sf2` spatial data frame. This time subset on `foldID`. Keep all folds not equal to `i` for training and then use the ith fold for interpolation.
+
+```{r}
+vmi <- vgm(model = "Exp", 
+             psill = 2.5, 
+             range = 150, 
+             nugget = .5)
+int <- NULL
+for(i in 1:5){
+  t <- t.sf2[t.sf2$foldID != i, ]
+  v <- variogram(temp ~ X + Y, 
+                 data = t)
+  vm <- fit.variogram(object = v, 
+                      model = vmi)
+  int_i <- krige(temp ~ X + Y,
+                 locations = t,
+                 newdata = t.sf2[t.sf2$foldID == i, ],
+                 model = vm)$var1.pred
+  int <- c(int, int_i)
+}
+```
+
+Finally create a data frame and compute the skill metrics.
+
+```{r}
+data.frame(interpolated = int,
+           observed = t.sf2$temp) |>
+   dplyr::summarize(r = cor(interpolated, observed),
+                   rmse = sqrt(mean((interpolated - observed)^2)),
+                   mae = mean(abs(interpolated - observed)))
+```
+
+The skill metrics are worse but more representative of how well the interpolation will work with a different but similarly spatial correlated temperature field.
+
+An introduction to 'block' cross validation in the context of species distribution modeling is available here
 <https://cran.r-project.org/web/packages/blockCV/vignettes/BlockCV_for_SDM.html>
