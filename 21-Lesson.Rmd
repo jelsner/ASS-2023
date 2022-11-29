@@ -282,7 +282,7 @@ krige(temp ~ 1,
       model = t.vm)
 ```
 
-## Evaluating the accuracy of the interpolation {-}
+## Evaluating interpolation accuracy {-}
 
 How do you evaluate how good the interpolated surface is? If you use the variogram model to predict at the observation locations, you will get the observed values back when the nugget is zero.
 
@@ -309,7 +309,7 @@ The `krige.cv()` function from the {gstat} package is used for cross validating 
 
 The arguments are the same as in `krige()` except the `nfold =` argument. Values for the argument range between 2 and the number of observations (here 131). The default is 131 which is LOOCV.
 
-For example with `nfold = 3` cross validation cuts the set of observations into 3rds (3 folds). Each observation gets put into one of the three folds with the interpolation procedure set using observations from the two folds and interpolations made on the remaining observation. This is repeated three times with each third taking turns being left out.
+For example with `nfold = 3` cross validation cuts the set of observations into 3rds (3 folds). Each observation gets put into one of the three folds with the interpolation procedure set using observations from the two folds and interpolations made on the remaining observations. This is repeated three times with each third taking turns being left out.
 
 ```{r}
 xv3 <- krige.cv(temp ~ X + Y,
@@ -429,8 +429,8 @@ Now compare the observed values with the interpolated values.
 data.frame(interpolated = int,
            observed = t.sf$temp) |>
    dplyr::summarize(r = cor(interpolated, observed),
-                   rmse = sqrt(mean((interpolated - observed)^2)),
-                   mae = mean(abs(interpolated - observed)))
+                    rmse = sqrt(mean((interpolated - observed)^2)),
+                    mae = mean(abs(interpolated - observed)))
 ```
 
 These values are slightly worse (r is lower, and rmse and mae are larger). This will always be the case when using full cross validation but these skill estimates represent how well the procedure will perform on a new set of _independent_ observations. 
