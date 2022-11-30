@@ -4,7 +4,7 @@
 
 ## Interpolating to areal units (block kriging) {-}
 
-As a way to reinforce the procedures involved with a statistical spatial interpolation, let's look at another example. The example will highlight additional aspects of the procedure like better plots, variogram maps, anisotropy, and block kriging.
+Let's consider at another example of spatial statistical interpolation. The example will highlight additional aspects of the procedure like making better plots, constructing and interpreting variogram maps, working with anisotropy, and kriging to polygons.
 
 In 2008 tropical cyclone (TC) Fay formed from a tropical wave near the Dominican Republic, passed over the island of Hispaniola, Cuba, and the Florida Keys, then crossed the Florida peninsula and moved westward across portions of the Panhandle producing heavy rains in parts of the state.
 
