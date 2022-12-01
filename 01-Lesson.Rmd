@@ -1,55 +1,35 @@
-# Tuesday, August 23, 2022 {.unnumbered}
+# Thursday, January 12, 2023 {.unnumbered}
 
 **"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."** --- Martin Fowler
 
-Today
+Student Hours: TR 9:15-10:30 a.m., 2-3 p.m. The best way to get a hold of me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}.
 
--   What this course is about
+This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.
 
--   Details about lessons, assignments, and grading
+During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own.
 
--   How to get the most out of this course
+Grades are determined by how well you do on the lab assignments. Lab assignments will be started in class on the following dates:
 
--   Is Milwaukee snowier than Madison?
+| Lab | Date                  | Lessons covered |
+|-----|-----------------------|-----------------|
+| 1   | Tuesday September 6   | 1-4             |
+| 2   | Thursday September 22 | 5-8             |
+| 3   | Thursday October 13   | 9-13            |
+| 4   | Tuesday November 8    | 14-19           |
+| 5   | Thursday December 1   | 20-23           |
 
--   Is global warming making hurricanes stronger?
+Lab assignments are due by 6 p.m. on that day.
 
--   Are tornadoes more likely to form over smooth terrain?
+Help with all aspects of R programming is ubiquitous on the web. A list of some of the sites related to spatial analysis and modeling using R are listed in the syllabus.
 
--   Understand what this course is about, how it is structured, and what I expect from you
+A new resource on getting started with R and R spatial I came across my desk yesterday. - [Getting started with R and R-spatial](https://bakaniko.github.io/foss4g2022-getting-started-rspatial/)
 
--   Getting set to work with R and RStudio
+Switch markdown editing mode from Source to Visual.
 
-## Install R and RStudio on your computer {.unnumbered}
+I will spend the first several lessons teaching you how to work with R. This material might be a review. If this is entirely new, don't get discouraged. This class will not involve writing complex code.
 
-First get R
+Today I show you how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your initial installation. The functions form these packages provide the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages.
 
--   Go to <http://www.r-project.org>
--   Select the CRAN (Comprehensive R Archive Network). Scroll to a mirror site
--   Choose the appropriate file for your computer
--   Follow the instructions to install R
-
-Then get RStudio
-
--   Go to on <http://rstudio.org>
--   Download RStudio Desktop
--   Install and open RStudio
-
-Finally, learn how to connect to GitHub (optional). See Jennifer Bryan's Happy Git and GitHub for R.
-
-<https://happygitwithr.com/install-git.html>
-
-## Download course materials {.unnumbered}
-
--   Navigate to \<[[https://github.com/jelsner/ASS-2022\\\\](https://github.com/jelsner/ASS-2022){.uri}](%5Bhttps://github.com/jelsner/ASS-2022\%5D(https://github.com/jelsner/ASS-2022)%7B.uri%7D){.uri}\>
--   Click on the bright green Code button
--   Download ZIP
--   Unzip the file on your computer
--   Open the `ASS-2022.Rproj` file
-
-## Read the syllabus {.unnumbered}
-
--   Open the `00-Syllabus.Rmd` file under the `Files` tab
 
 ## About RStudio {.unnumbered}
 

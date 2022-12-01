@@ -7,7 +7,7 @@
 -   Instructor Name: Professor James B. Elsner
 -   Instructor Location: Bellamy Building, Room 314
 -   Lesson Hours: TR 8:00-9:15 a.m.
--   Student Hours: TR 9:15-10:30 a.m., 2-3 p.m.
+-   Student Hours: 
 
 Email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}
 
@@ -15,13 +15,13 @@ Links to my professional stuff (if you are curious)
 
 -   [Website](http://myweb.fsu.edu/jelsner/_site/)
 -   [GitHub](https://github.com/jelsner/)
--   [Twitter](https://twitter.com/JBElsner)
+-   [Mastodon](https://fediscience.org/@jelsner)
 
 ## Course description and expected learning outcomes {.unnumbered}
 
 This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes you know basic statistics through multiple linear regression. And that you have some prior experience with using R. If you have no knowledge of R you should look at various online tutorials (see below).
 
-All the course content is available on GitHub <https://github.com/jelsner/ASS-2022>
+All the course content is available on GitHub <https://github.com/jelsner/ASS-2023>
 
 In this course you will get a survey of the methods used to describe, analyze, and model spatial data. Focus will be on applications. Emphasis is on how statistical methods are related through the concept of spatial autocorrelation.
 
@@ -38,7 +38,7 @@ But in taking this approach I don't want to give you the false impression that s
 Materials and class meetings {.unnumbered}
 
 -   Access to the internet and a computer
--   All course materials are available through GitHub <https://github.com/jelsner/ASS-2022>
+-   All course materials are available through GitHub <https://github.com/jelsner/ASS-2023>
 -   No textbook is required
 -   Many excellent online resources are also available. Here are some of my favorites
 
@@ -118,7 +118,7 @@ It is my intent to present notes and data that are respectful of diversity: gend
 | 2          | Thursday September 22 |   5-8             |
 | 3          | Thursday October 13   |   9-13            |
 | 4          | Tuesday November 8    |  14-19            |
-| 5          | Thursday December 1   |  20-23            |
+| 5          | Thursday December 1   |  20-22            |
 
 ## Reference materials {.unnumbered}
 
@@ -237,3 +237,35 @@ However, much of it is still not easy to script. Open source Geographic Informat
 Instead here we will focus on a command line interface (CLI) to help you create reproducible work flows.
 
 You might be interested in this article: [Practical reproducibility in geography and geosciences](https://myweb.fsu.edu/jelsner/NustPebesma2020.pdf)
+
+## Install R and RStudio on your computer {.unnumbered}
+
+First get R
+
+-   Go to <http://www.r-project.org>
+-   Select the CRAN (Comprehensive R Archive Network). Scroll to a mirror site
+-   Choose the appropriate file for your computer
+-   Follow the instructions to install R
+
+Then get RStudio
+
+-   Go to on <http://rstudio.org>
+-   Download RStudio Desktop
+-   Install and open RStudio
+
+Finally, learn how to connect to GitHub (optional). See Jennifer Bryan's Happy Git and GitHub for R.
+
+<https://happygitwithr.com/install-git.html>
+
+## Download course materials {.unnumbered}
+
+-   Navigate to \<[[https://github.com/jelsner/ASS-2022\\\\](https://github.com/jelsner/ASS-2022){.uri}](%5Bhttps://github.com/jelsner/ASS-2022\%5D(https://github.com/jelsner/ASS-2022)%7B.uri%7D){.uri}\>
+-   Click on the bright green Code button
+-   Download ZIP
+-   Unzip the file on your computer
+-   Open the `ASS-2022.Rproj` file
+
+## Read the syllabus {.unnumbered}
+
+-   Open the `00-Syllabus.Rmd` file under the `Files` tab
+
