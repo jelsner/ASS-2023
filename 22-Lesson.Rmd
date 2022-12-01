@@ -4,13 +4,13 @@
 
 ## Interpolating to areal units (block kriging) {-}
 
-Let's consider at another example of spatial statistical interpolation. The example will highlight additional aspects of the procedure like making better plots, constructing and interpreting variogram maps, working with anisotropy, and kriging to polygons.
+Let's consider at another application of spatial statistical interpolation to highlight additional aspects of the procedure like making better plots, constructing and interpreting variogram maps, working with anisotropy, and kriging to polygons.
 
 In 2008 tropical cyclone (TC) Fay formed from a tropical wave near the Dominican Republic, passed over the island of Hispaniola, Cuba, and the Florida Keys, then crossed the Florida peninsula and moved westward across portions of the Panhandle producing heavy rains in parts of the state.
 
-Rainfall is an example of geostatistical data. In principle it can be measured anywhere, but typically you have values at a sample of sites. Interest centers on making inferences about how much rain fell across the region.
+Rainfall is an example of geostatistical data. In principle it can be measured anywhere, but typically you have rainfall amounts at scattered measurement sites. Interest centers on making inferences about how much rain fell at certain locations or over averaged over a region (e.g., watershed basin).
 
-Storm total rainfall amounts from stations in and around the state are in `FayRain.txt` on my website. They are reports from official weather sites and cooperative sites. The cooperative sites are the Community Collaborative Rain, Hail and Snow Network (CoCoRaHS), a community-based, high density precipitation network made up of volunteers who take measurements of precipitation on their property. The data were obtained from NOAA/NCEP/HPC and from the Florida Climate Center.
+Storm total rainfall amounts from sites in and around the state are in `FayRain.txt` on my website. The reports are a mix of official weather stations and cooperative sites. The cooperative sites are the Community Collaborative Rain, Hail and Snow Network (CoCoRaHS), a community-based, high density precipitation network made up of volunteers who take measurements of precipitation on their property. The data are from the Florida Climate Center.
 
 Import the data.
 
@@ -19,7 +19,7 @@ L <- "http://myweb.fsu.edu/jelsner/temp/data/FayRain.txt"
 ( FR.df <- readr::read_table(L) )
 ```
 
-The data frame contains 803 rainfall sites. Longitude and latitude coordinates of the sites are given in the first two columns and total rainfall in inches and millimeters are given in the second two columns. 
+The data frame contains 803 rainfall measurement sites. Longitude and latitude coordinates are given in the first two columns and total rainfall in inches and millimeters are given in the second two columns. 
 
 Create a spatial points data frame by specifying columns that contain the spatial coordinates. Then assign a geographic coordinate system and convert the rainfall from millimeters to centimeters.
 
@@ -169,7 +169,7 @@ plot(vmap)
 
 Along the dx = 0 vertical line in the north-south direction (top-to-bottom on the plot), the semivariance values increase away from dy = 0, but the increase is less compared to along the dy = 0 horizontal line in the east-west direction (left-to-right on the plot) indicative of directional dependency.
 
-You refit the variogram model defining an anisotropy ellipse with the `anis =` argument. The first value is the direction of longest range (here north-south) and the second value is the ratio of the longest to shortest ranges. Here about (200/300 = .67, see the directional variogram plot above).
+You refit the variogram model defining an anisotropy ellipse with the `anis =` argument. The first value is the direction of longest range (here north-south) and the second value is the ratio of the shortest to longest ranges. Here about (200/300 = .67, see the directional variogram plot above).
 
 ```{r}
 vmi <- vgm(model = "Gau", 
