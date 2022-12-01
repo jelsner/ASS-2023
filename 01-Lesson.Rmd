@@ -12,11 +12,11 @@ Grades are determined by how well you do on the lab assignments. Lab assignments
 
 | Lab | Date                  | Lessons covered |
 |-----|-----------------------|-----------------|
-| 1   | Tuesday September 6   | 1-4             |
-| 2   | Thursday September 22 | 5-8             |
-| 3   | Thursday October 13   | 9-13            |
-| 4   | Tuesday November 8    | 14-19           |
-| 5   | Thursday December 1   | 20-23           |
+| 1   | Thursday January 26   | 1-4             |
+| 2   | Tuesday February 14   | 5-8             |
+| 3   | Tuesday March 7       | 9-13            |
+| 4   | Tuesday April 11      | 14-19           |
+| 5   | Tuesday April 25      | 20-22           |
 
 Lab assignments are due by 6 p.m. on that day.
 
