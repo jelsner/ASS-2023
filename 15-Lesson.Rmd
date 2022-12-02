@@ -1,8 +1,6 @@
-# Thursday October 27, 2022 {.unnumbered}
+# Thursday March 23, 2023 {.unnumbered}
 
 **"To me programming is more than an important practical art. It is also a gigantic undertaking in the foundations of knowledge."** -- Grace Hopper
-
-*Please remember to vote in the upcoming midterm elections!*
 
 Today
 
