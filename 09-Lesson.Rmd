@@ -1,16 +1,6 @@
-# Tuesday October 4, 2022 {.unnumbered}
+# Thursday February 16, 2023 {.unnumbered}
 
-**"You haven't mastered a tool until you understand when it should not be used."** -- Kelsey Hightower
-
-A former PhD student from this department, who I had the pleasure to supervise, is looking for a masters-level geographer to assist with disease mapping and basic spatial analysis as applied to livestock disease.
-
-To support non-spatial scientists (virologists, field epidemiologists) and post-docs (some with spatial analysis expertise) in the mapping and visualizing of disease occurrence data from across the US and encouraged to develop independent projects leading to publication. Flexible work location especially if working toward a PhD.
-
-Here's the link: <https://www.zintellect.com/Opportunity/Details/USDA-ARS-2022-0343>
-
-My answers to Lab 2 are on Canvas.
-
-Making maps with {rdeck} <https://www.mrworthington.com/articles/rstats/mapping-in-r/> Excellent resource on data visualization <https://clauswilke.com/dataviz/>
+**"You haven't mastered a tool until you understand when it should not be used."** -- Kelsey Hightower\
 
 Today
 
@@ -452,6 +442,11 @@ Wsids <- spdep::lag.listw(wts,
 ```
 
 For each value in the vector `sids` there is a corresponding value in the object `Wsids` representing the neighborhood average SIDS rate.
+
+## Making maps with rdeck
+
+<https://www.mrworthington.com/articles/rstats/mapping-in-r/> Excellent resource on data visualization <https://clauswilke.com/dataviz/>
+
 
 ```{r}
 Wsids[1]

@@ -1,4 +1,4 @@
-# Tuesday August 30, 2022 {.unnumbered}
+# Thursday January 19, 2023 {.unnumbered}
 
 **"When I'm explaining some of the tidy verse principles and philosophy in R statistics, I often break down a home baked chunk of code and illustrate that 'it says what it does and it does what it says.'** --- Diane Beldame
 

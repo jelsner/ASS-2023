@@ -1,4 +1,4 @@
-# Thursday September 1, 2022 {.unnumbered}
+# Tuesday January 24, 2023 {.unnumbered}
 
 **"Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."** --- Hadley Wickham
 

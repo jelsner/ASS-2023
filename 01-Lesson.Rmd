@@ -164,3 +164,6 @@ swirl()
 Choose the lesson: R Programming. Work through lessons 1:8
 
 Getting help: <https://www.r-project.org/help.html>
+
+Ten simple rules for teaching yourself R <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010372#sec007>
+
