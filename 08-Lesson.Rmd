@@ -582,6 +582,9 @@ print(nz_map,
       vp = grid::viewport(.8, .27, width = .5, height = .5))
 ```
 
+-   See also {ggspatial} <https://www.mm218.dev/posts/2022-12-12-tools/>
+
 -   Additional details and examples on making maps in R are available in the book "Geocomputation with R" by Lovelace, Nowosad, and Muenchow <https://geocompr.robinlovelace.net/adv-map.html>
 
 -   Mapping walking (etc) distances. <https://walker-data.com/mapboxapi/>
+
