@@ -533,6 +533,10 @@ base_plot <- hill_plot +
 base_plot
 ```
 
+## Visualizing spatial data
+
+https://nrennie.rbind.io/blog/2022-12-17-r-packages-for-visualising-spatial-data/
+
 ## Adding an inset map {.unnumbered}
 
 An inset map puts the geographic study area into context. Here you create a map of the central part of New Zealand's Southern Alps. The inset map shows where the main map is in relation to the rest of New Zealand.
