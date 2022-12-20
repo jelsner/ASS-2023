@@ -442,6 +442,76 @@ Change the view mode back to a static plot.
 tmap::tmap_mode("plot")
 ```
 
+## Isolines and isobands
+
+The {isoband} package has functions to generate contour lines (isolines) and contour polygons (isobands) from regularly spaced grids containing elevation (or other) data.
+
+```{r}
+library(isoband)
+```
+
+The two main functions are `isolines()` and `isobands()`. They return a list of isolines/isobands for each isolevel specified. 
+
+Each isoline/isoband consists of vectors of x and y coordinates, as well as a vector of ids specifying which sets of coordinates should be connected. This format can be handed directly to `grid.polyline()`/`grid.path()` for drawing. However, you can also convert the output to spatial features and draw with functions from {ggplot2}.
+
+Consider the following matrix.
+```{r}
+( m <- matrix(c(0, 0, 0, 0, 0,
+              0, 1, 2, 1, 0,
+              0, 1, 2, 0, 0,
+              0, 1, 0, 1, 0,
+              0, 0, 0, 0, 0), 5, 5, byrow = TRUE) )
+```
+
+Apply the function `isolines()` specifying the x locations, y locations, and the levels.
+```{r}
+( isoband::isolines(x = 1:ncol(m), 
+                    y = 1:nrow(m), 
+                    z = m, 
+                    levels = .5) )
+```
+
+Apply the function `isobands()` specifying the x locations, y locations, the low and high levels.
+```{r}
+( isoband::isobands(x = 1:ncol(m), 
+                    y = 1:nrow(m), 
+                    z = m, 
+                    levels_low = .5,
+                    levels_high = 1.5) )
+```
+The function `plot_iso()` is a convenience function for debugging and testing.
+
+```{r}
+plot_iso(m, vlo = .5, vhi = 1.5)
+```
+
+Let’s calculate isolines and isobands for the volcano dataset, convert to {sf}, and plot with {ggplot2}.
+```{r}
+library(ggplot2)
+suppressWarnings(library(sf))
+
+m <- volcano
+b <- isobands((1:ncol(m))/(ncol(m)+1), (nrow(m):1)/(nrow(m)+1), m, 10*(9:19), 10*(10:20))
+l <- isolines((1:ncol(m))/(ncol(m)+1), (nrow(m):1)/(nrow(m)+1), m, 10*(10:19))
+
+bands <- iso_to_sfg(b)
+data_bands <- st_sf(
+  level = 1:length(bands),
+  geometry = st_sfc(bands)
+)
+lines <- iso_to_sfg(l)
+data_lines <- st_sf(
+  level = 2:(length(lines)+1),
+  geometry = st_sfc(lines)
+)
+
+ggplot() +
+  geom_sf(data = data_bands, aes(fill = level), color = NA, alpha = 0.7) +
+  geom_sf(data = data_lines, color = "black") +
+  scale_fill_viridis_c(guide = "none") +
+  coord_sf(expand = FALSE)
+```
+
 ## Hillshape and colors with tidyterra {-}
 
 <https://dieghernan.github.io/202210_tidyterra-hillshade/#r_bloggers>
