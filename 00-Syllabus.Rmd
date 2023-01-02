@@ -1,4 +1,4 @@
-# Syllabus {-}
+# Syllabus and set up {-}
 
 GIS5122: Applied Spatial Statistics
 
@@ -7,11 +7,11 @@ GIS5122: Applied Spatial Statistics
 -   Instructor Name: Professor James B. Elsner
 -   Instructor Location: Bellamy Building, Room 314
 -   Lesson Hours: TR 8:00-9:15 a.m.
--   Student Hours: 
+-   Student Hours: TR 9:15-9:45 a.m., MW 2:15-3 p.m.
 
 Email: [jelsner@fsu.edu](mailto:jelsner@fsu.edu){.email}
 
-Links to my professional stuff (if you are curious)
+Links to my professional stuff
 
 -   [Website](http://myweb.fsu.edu/jelsner/_site/)
 -   [GitHub](https://github.com/jelsner/)
@@ -19,21 +19,21 @@ Links to my professional stuff (if you are curious)
 
 ## Course description and expected learning outcomes {-}
 
-This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes you know basic statistics through multiple linear regression. And that you have some prior experience with using R. If you have no knowledge of R you should look at various online tutorials (see below).
+This course is for students who want to learn how to analyze, map, and model spatial and geographical data using the R programming language. It assumes you know basic statistics through multiple linear regression. And that you have some prior experience with using R. If you have no knowledge of R you should look at various online tutorials (see below)
 
-All the course content is available on GitHub <https://github.com/jelsner/ASS-2023>
+All course materials are available on GitHub <https://github.com/jelsner/ASS-2023>
 
-In this course you will get a survey of the methods used to describe, analyze, and model spatial data. Focus will be on applications. Emphasis is on how statistical methods are related through the concept of spatial autocorrelation.
+In this course you will get a survey of the methods used to describe, analyze, and model spatial data. Focus will be on applications. Emphasis is on how statistical methods are related through the concept of spatial autocorrelation
 
 Expected learning outcomes
 
 1.  Learn how and when to apply statistical methods and models to spatial data,
-2.  learn various packages in R for analyzing and modeling spatial data, and
-3.  learn how to interpret the results of a spatial data model.
+2.  learn various packages for analyzing and modeling spatial data, and
+3.  learn how to interpret the results of a spatial data model
 
-The course offers a programming approach to exposing you to spatial statistics. I want to demystify the process and give you confidence that you can analyze and fit spatial models. I believe some investment in honing programming skills will pay dividends for you later on.
+The course offers a programming approach to exposing you to spatial statistics. I want to demystify the process and give you confidence that you can analyze and fit spatial models. I believe some investment in honing programming skills and in learning how to work collaboratively will pay dividends for you later on
 
-But in taking this approach I don't want to give you the false impression that statisticians have the answers. A *working* knowledge of the model fitting process needs to be combined with a good understanding of the context in which you are working.
+But in taking this approach I don't want to give you the false impression that statisticians have the answers. A *working* knowledge of the model fitting process needs to be combined with a good understanding of the domain-specific context in which you are working
 
 Materials and class meetings {-}
 
@@ -49,9 +49,9 @@ Materials and class meetings {-}
 
 Class meetings
 
-During each lesson I will work through and explain the R code and notes contained within an `xx-Lesson.Rmd` file. Lessons will be held in this classroom (BEL 320). The notes in the lesson files are comprehensive, so you can work through them on your own if you are unable to make it to class.
+During each lesson I will work through and explain the R code and notes contained within an `xx-Lesson.Rmd` file. Lessons will be held in this classroom (BEL 320). The notes in the lesson files are comprehensive, so you can work through them on your own if you are unable to make it to class
 
-The notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application.
+The notes are written using the markdown language. Markdown is a way to write content for the Web. An R markdown file has the suffix `.Rmd` (R markdown file). The file is opened using the RStudio application
 
 ## Grades and ethics {-}
 
@@ -68,7 +68,7 @@ Grades are determined by how well you do on the assignments using the following 
 -   D: Poor: several major errors/omissions
 -   F: Fail: many major errors/omissions
 
-I'll use the +/- grading system.
+I'll use the +/- grading system
 
 Grades will be posted as they are recorded on [FSU Canvas](https://canvas.fsu.edu)
 
@@ -82,7 +82,7 @@ Students with disabilities needing academic accommodation should: (1) register w
 
 Diversity and inclusiveness
 
-It is my intent to present notes and data that are respectful of diversity: gender identity, sexuality, disability, age, socioeconomic status, ethnicity, race, nationality, religion, and culture.
+It is my intent to present notes and data that are respectful of diversity: gender identity, sexuality, disability, age, socioeconomic status, ethnicity, race, nationality, religion, and culture
 
 ## Outline of topics and schedule {-}
 
@@ -236,24 +236,24 @@ Recent research examples
 
 ## Reproducible research {-}
 
-A scientific paper has at least two goals: announce a new result and convince readers that the result is correct. Scientific papers should describe the results *and* provide a clear protocol to allow repetition and extension.
+A scientific paper has at least two goals: announce a new result and convince readers that the result is correct. Scientific papers should describe the results *and* provide a clear protocol to allow repetition and extension
 
-Analysis and modeling tools should integrate text with code to make it easier to provide a clear protocol of what was done.
+Analysis and modeling tools should integrate text with code to make it easier to provide a clear protocol of what was done
 
--   Such tools make doing research efficient. Changes are made with little effort.
--   Such tools allow others to build on what you've done. Research achieves more faster.
--   Collaboration is easier.
--   Code sharing leads to greater research impact. Research impact leads to promotion & tenure.
+-   Such tools make doing research efficient. Changes are made with little effort
+-   Such tools allow others to build on what you've done. Research achieves more faster
+-   Collaboration is easier
+-   Code sharing leads to greater research impact. Research impact leads to promotion & tenure
 
-Free and open source software for geospatial data has progressed at an astonishing rate. High performance spatial libraries are now widely available.
+Free and open source software for geospatial data has progressed at an astonishing rate. High performance spatial libraries are now widely available
 
-However, much of it is still not easy to script. Open source Geographic Information Systems (GIS) like QGIS (see <https://qgis.org>) have greatly reduced the 'barrier to entry' but emphasis on the graphical user interface (GUI) makes reproducible research difficult.
+However, much of it is still not easy to script. Open source Geographic Information Systems (GIS) like QGIS (see <https://qgis.org>) have greatly reduced the 'barrier to entry' but emphasis on the graphical user interface (GUI) makes reproducible research difficult
 
-Instead here we will focus on a command line interface (CLI) to help you create reproducible work flows.
+Instead here we will focus on a command line interface (CLI) to help you create reproducible work flows
 
 You might be interested in this article: [Practical reproducibility in geography and geosciences](https://myweb.fsu.edu/jelsner/NustPebesma2020.pdf)
 
-## Install R and RStudio on your computer {-}
+## Getting set up {-}
 
 First get R
 
