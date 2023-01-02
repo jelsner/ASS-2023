@@ -255,32 +255,81 @@ You might be interested in this article: [Practical reproducibility in geography
 
 ## Getting set up {-}
 
-First get R
+Do this 1st
 
--   Go to <http://www.r-project.org>
--   Select the CRAN (Comprehensive R Archive Network). Scroll to a mirror site
--   Choose the appropriate file for your computer
--   Follow the instructions to install R
+-   Download and install {{< fa brands r-project >}} by going to <https://cloud.r-project.org/>
+-   If you are using {{< fa brands windows >}}: Click on *Download R for Windows*, then click on *base*, then click on the *Download* link
+-   If you are using a {{< fa brands apple >}}: Click on *Download R for (Mac) OS X*, then under *Latest release:* click on *R-X.X.X.pkg*, where R-X.X.X is the version number. If you have the newer Mac with the Apple silicon chip (M1) use the *R-X.X.X-arm64.pkg*
+-   For example, the latest version of {{< fa brands r-project >}} as of November 18, 2022 is R-4.2.2
 
-Then get RStudio
+Do this 2nd
 
--   Go to on <http://rstudio.org>
--   Download RStudio Desktop
--   Install and open RStudio
+-   Download and install RStudio desktop by going to <https://posit.co/download/rstudio-desktop/> *Step 2:*
+-   Scroll down to find your computer's operating system and select the appropriate file to download
+-   Click on the downloaded file to install
 
-Finally, learn how to connect to GitHub (optional). See Jennifer Bryan's Happy Git and GitHub for R.
+How to videos & more about
 
-<https://happygitwithr.com/install-git.html>
+-   Install {{< fa brands r-project >}} and RStudio for {{< fa brands windows >}} {{< video https://www.youtube.com/embed/TFGYlKvQEQ4 >}} 5 minutes
+-   Install {{< fa brands r-project >}} and RStudio for {{< fa brands apple >}} {{< video https://www.youtube.com/embed/JqV-USGR6AA >}} 4 minutes
+-   Quarto lets you to weave together content (text, images, videos) and executable code into a finished presentation. See <https://quarto.org/docs/presentations/>
 
-## Download course materials {-}
+Do this 3rd
 
--   Navigate to [https://github.com/jelsner/ASS-2023](https://github.com/jelsner/ASS-2023)
--   Click on the bright green Code button
--   Download ZIP
--   Unzip the file on your computer
--   Open the `ASS-2023.Rproj` file
+-   [Install Git](https://happygitwithr.com/install-git.html)
+-   [Configure Git](https://happygitwithr.com/hello-git.html)
 
-## Read the syllabus {-}
+Do this 4th
 
--   Open the `00-Syllabus.Rmd` file under the `Files` tab
+-   Go to <https://github.com/>
+-   Click on `Sign up`
+-   Enter your email, Create a password, Enter a username
+-   Solve the puzzle
+-   Enter the code sent to your email
+-   How many team members: 1, Student
+-   Collaborative coding
+-   Continue for free
 
+Do this 5th
+
+-   Go to <https://github.com/jelsner/>
+-   Click on the link `jelsner/CCS-2023`
+-   In the upper right click on scroll down arrow next to `Fork`
+-   Add your name (no spaces) to the `Repository name`
+-   Click on the green `Create fork`
+
+Do this 6th
+
+-   Open RStudio. You should now see a `Git` tab in one of the windows (upper right)
+-   Under `File` > `New Project` select `Version Control`
+-   Select `Git`
+-   Repository URL: `https://github.com/[your GitHub username]/CCS-2023-[your name].git`
+-   Project directory name: `CCS-2023-[your name]`
+-   Create a project as a subdirectory of: e.g. `Browse to Desktop`
+-   Select `Create Project`
+
+At the start of each class
+
+-   Go to `https://github.com/[your GitHub username]`
+-   Select the `Sync fork` button under the green `Code` button then click `Update branch`
+-   Open the Folder `CCS-2023-[your name]` on your Desktop
+-   Open the file `CC-2023.Rproj`
+-   Under the `Git` tab select blue arrow (pointing down) to `Pull` down changes from your GitHub repository
+-   Select the `XX-name-of-lesson.Rmd` file
+-   Add your own notes to the file and/or `Render`
+
+Push your notes to your repository
+
+-   Make changes then select check the `Staged` button under the `Git` tab
+-   Then select the `Commit` button
+-   Add a note to the `Commit message` section (e.g., my updates from today)
+-   Select the green arrow (pointing up) to `Push` changes to your GitHub
+-   The first time you do this you need to include your GitHub username and Personal access token
+
+Get a personal access token
+
+-   Go to your GitHub account
+-   In the far upper-right pull down menu (next to your avatar) select `Settings` then `Developer settings`
+-   In the left menu select `Personal access tokens > Tokens (classic)`
+-   Follow instructions to generate a personal access toke (PAT)
+-   Use your PAT as your password when pushing changes made on your computer to your GitHub account
