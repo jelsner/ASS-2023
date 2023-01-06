@@ -277,7 +277,9 @@ How to videos & more about
 Do this 3rd
 
 -   [Install Git](https://happygitwithr.com/install-git.html)
+-   Open RStudio
 -   [Configure Git](https://happygitwithr.com/hello-git.html)
+-   Close RStudio
 
 Do this 4th
 
@@ -295,6 +297,7 @@ Do this 5th
 -   Go to <https://github.com/jelsner/>
 -   Click on the link `jelsner/CCS-2023`
 -   In the upper right click on scroll down arrow next to `Fork`
+-   Select "+ Create new fork"
 -   Add your name (no spaces) to the `Repository name`
 -   Click on the green `Create fork`
 
