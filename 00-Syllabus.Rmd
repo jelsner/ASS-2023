@@ -78,7 +78,7 @@ Academic honor code
 
 Americans With Disabilities Act
 
-Students with disabilities needing academic accommodation should: (1) register with and provide documentation to the Student Disability Resource Center; (2) bring a letter indicating the need for accommodation and what type. This should be done during the first week of classes.
+Students with disabilities needing academic accommodation should: (1) register with and provide documentation to the Student Disability Resource Center; (2) bring a letter indicating the need for accommodation and what type. This should be done during the first week of classes
 
 Diversity and inclusiveness
 
@@ -86,38 +86,40 @@ It is my intent to present notes and data that are respectful of diversity: gend
 
 ## Outline of topics and schedule {-}
 
-January 10 Syllabus
-January 12 Lesson 1
-January 17 Lesson 2
-January 19 Lesson 3
-January 24 Lesson 4
-January 26 Lab 1
-January 31 Lesson 5
-February 2 Lesson 6
-February 7 Lesson 7
-February 9 Lesson 8
-February 14 Lab 2
-February 16 Lesson 9
-February 21 Lesson 10
-February 23 Lesson 11
-February 28 Lesson 12
-March 2 Lab 3
-March 7 Lesson 13
-March 9 FREE
-March 14 Spring Break
-March 16 Spring Break
-March 21 Lesson 14
-March 23 Lesson 15
-March 28 Lesson 16
-March 30 Lesson 17
-April 4 Lesson 18
-April 6 Lesson 19
-April 11 Lab 4
-April 13 Lesson 20
-April 18 Lesson 21
-April 20 Lesson 22
-April 25 Lab 5
-April 27 FREE
+| Date     | Lesson/Lab|
+|----------|-----------|
+|January 10 | Syllabus |
+|January 12 | Lesson 1 |
+|January 17 | Lesson 2 |
+|January 19 | Lesson 3 |
+|January 24 | Lesson 4 |
+|January 26 | Lab 1 |
+|January 31 | Lesson 5 |
+|February 2 | Lesson 6 |
+|February 7 | Lesson 7 |
+|February 9 | Lesson 8 |
+|February 14 | Lab 2 |
+|February 16 | Lesson 9 |
+|February 21 | Lesson 10 |
+|February 23 | Lesson 11 |
+|February 28 | Lesson 12 |
+|March 2 | Lab 3 |
+|March 7 | Lesson 13 |
+|March 9 | FREE |
+|March 14 | Spring Break |
+|March 16 | Spring Break |
+|March 21 | Lesson 14 |
+|March 23 | Lesson 15 |
+|March 28 | Lesson 16 |
+|March 30 | Lesson 17 |
+|April 4 | Lesson 18 |
+|April 6 | Lesson 19 |
+|April 11 | Lab 4 |
+|April 13 | Lesson 20 |
+|April 18 | Lesson 21 |
+|April 20 | Lesson 22 |
+|April 25 | Lab 5 |
+|April 27 | FREE |
 
 1.  Working with data and making graphs (4 lessons)
 2.  Working with spatial data and making maps (4 lessons)
@@ -137,9 +139,9 @@ April 27 FREE
 
 ## Reference materials {-}
 
-1.  Bivand, R. S., E. J. Pebesma, and V. G. Gomez-Rubio, 2013: Applied Spatial Data Analysis with R, 2nd Edition, Springer. A source for much of the material in the lesson notes.
-2.  Lovelace, R. Nowosad, J. and Muenchow, J. Geocomputation with R. <https://geocompr.robinlovelace.net/> A source for some of the material in the lesson notes.
-3.  Healy, K., 2018: Data Visualization: A practical introduction, <https://socviz.co/>. This book teaches you how to really look at your data. A source for some of the early material in the lesson notes.
+1.  Bivand, R. S., E. J. Pebesma, and V. G. Gomez-Rubio, 2013: Applied Spatial Data Analysis with R, 2nd Edition, Springer. A source for much of the material in the lesson notes
+2.  Lovelace, R. Nowosad, J. and Muenchow, J. Geocomputation with R. <https://geocompr.robinlovelace.net/> A source for some of the material in the lesson notes
+3.  Healy, K., 2018: Data Visualization: A practical introduction, <https://socviz.co/>. This book teaches you how to really look at your data. A source for some of the early material in the lesson notes
 4.  Waller, L. A., and C. A. Gotway, 2004: Applied Spatial Statistics for Public Health Data, John Wiley & Sons, Inc. (Available as an e-book in the FSU library). Good overall reference material for analyzing and modeling spatial data.
 5.  Analyzing US Census Data: Methods, Maps, and Models in R <https://walker-data.com/census-r/index.html>
 
@@ -215,19 +217,19 @@ Climate data
 
 <https://waterdata.usgs.gov/blog/dataretrieval/>
 
-Traditional reference books on the theory and application of spatial statistics.
+Reference books/papers on the theory and application of spatial statistics
 
--   Anselin, L., 2005: Spatial Regression Analysis in R, Spatial Analysis Laboratory, Center for Spatially Integrated Social Science.
--   Baddeley, A., and R. Turner, 2005: spatstat: An R Package for Analyzing Spatial Point Patterns, Journal of Statistical Software, v12.
--   Blangiardo, M., and M. Cameletti, 2015: Spatial and Spatio-temporal Bayesian Models with R-INLA, John Wiley & Sons, Inc., New York. An introduction to Bayesian models for spatial data.
--   Cressie, N. A. C., 1993: Statistics for Spatial Data, Wiley Series in Probability and Mathematical Statistics, John Wiley & Sons, Inc., New York. A mathematical treatment of spatial data analysis.
--   Cressie, N. A. C., and C. K. Wikle, 2011: Statistics for Spatio-Temporal Data, Wiley Series in Probability and Mathematical Statistics, John Wiley & Sons, Inc., New York. A mathematical treatment of space-time statistics with an emphasis on Bayesian models.
--   Diggle, P. J., 2003: Statistical Analysis of Spatial Point Patterns, Second Edition, Arnold Publishers. An introduction to the concepts and methods of statistical analysis of spatial point patterns.
--   Fotherhingham, A. S., C. Brunsdon, and M. Charlton, 2000: Quantitative Geography: Perspectives on Spatial Data Analysis, SAGE Publications, London. A survey of spatial data analysis from the perspective of modern geography.
--   Haining, R., 2003: Spatial Data Analysis: Theory and Practice, Cambridge University Press. A confluence of geographic information science and applied spatial statistics.
--   Illian, J., A. Penttinen, H. Stoyan, and D. Stoyan, 2008: Statistical Analysis and Modeling of Spatial Point Patterns, Wiley Series in Statistics in Practice, John Wiley & Sons, Inc., New York. A mathematical treatment of spatial point processes.
--   Ripley, B. D., 1981: Spatial Statistics, Wiley, New York. A reference book on spatial data analysis with emphasis on point pattern analysis.
--   Wickham, H., 2009: ggplot2: Elegant Graphics for Data Analysis, Springer UseR! Series, Springer, New York. An introduction to the ggplot package for graphics.
+-   Anselin, L., 2005: Spatial Regression Analysis in R, Spatial Analysis Laboratory, Center for Spatially Integrated Social Science
+-   Baddeley, A., and R. Turner, 2005: spatstat: An R Package for Analyzing Spatial Point Patterns, Journal of Statistical Software, v12
+-   Blangiardo, M., and M. Cameletti, 2015: Spatial and Spatio-temporal Bayesian Models with R-INLA, John Wiley & Sons, Inc., New York. An introduction to Bayesian models for spatial data
+-   Cressie, N. A. C., 1993: Statistics for Spatial Data, Wiley Series in Probability and Mathematical Statistics, John Wiley & Sons, Inc., New York. A mathematical treatment of spatial data analysis
+-   Cressie, N. A. C., and C. K. Wikle, 2011: Statistics for Spatio-Temporal Data, Wiley Series in Probability and Mathematical Statistics, John Wiley & Sons, Inc., New York. A mathematical treatment of space-time statistics with an emphasis on Bayesian models
+-   Diggle, P. J., 2003: Statistical Analysis of Spatial Point Patterns, Second Edition, Arnold Publishers. An introduction to the concepts and methods of statistical analysis of spatial point patterns
+-   Fotherhingham, A. S., C. Brunsdon, and M. Charlton, 2000: Quantitative Geography: Perspectives on Spatial Data Analysis, SAGE Publications, London. A survey of spatial data analysis from the perspective of modern geography
+-   Haining, R., 2003: Spatial Data Analysis: Theory and Practice, Cambridge University Press. A confluence of geographic information science and applied spatial statistics
+-   Illian, J., A. Penttinen, H. Stoyan, and D. Stoyan, 2008: Statistical Analysis and Modeling of Spatial Point Patterns, Wiley Series in Statistics in Practice, John Wiley & Sons, Inc., New York. A mathematical treatment of spatial point processes
+-   Ripley, B. D., 1981: Spatial Statistics, Wiley, New York. A reference book on spatial data analysis with emphasis on point pattern analysis
+-   Wickham, H., 2009: ggplot2: Elegant Graphics for Data Analysis, Springer UseR! Series, Springer, New York. An introduction to the ggplot package for graphics
 
 Recent research examples
 
@@ -253,7 +255,7 @@ Instead here we will focus on a command line interface (CLI) to help you create 
 
 You might be interested in this article: [Practical reproducibility in geography and geosciences](https://myweb.fsu.edu/jelsner/NustPebesma2020.pdf)
 
-## Getting set up {-}
+## Getting you set up {-}
 
 Do this 1st
 
