@@ -297,7 +297,7 @@ Do this 4th
 Do this 5th
 
 -   Go to <https://github.com/jelsner/>
--   Click on the link `jelsner/CCS-2023`
+-   Click on the link `jelsner/ASS-2023`
 -   In the upper right click on scroll down arrow next to `Fork`
 -   Select "+ Create new fork"
 -   Add your name (no spaces) to the `Repository name`
