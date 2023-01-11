@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Thursday, January 12, 2023 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Thursday, January 12, 2023 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Thursday, January 12, 2023 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Thursday, January 12, 2023 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="syllabus-and-set-up.html"/>
+<link rel="next" href="tuesday-january-17-2023.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html"><i class="fa fa-check"></i>Syllabus and set up</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#getting-you-set-up"><i class="fa fa-check"></i>Getting you set up</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html"><i class="fa fa-check"></i>Thursday, January 12, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#continue-with-setup"><i class="fa fa-check"></i>Continue with setup</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#completely-new-to-r"><i class="fa fa-check"></i>Completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html"><i class="fa fa-check"></i>Tuesday, January 17, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#data-science-workflow-with-r-markdown-1"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#an-introduction-to-using-r"><i class="fa fa-check"></i>An introduction to using R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html"><i class="fa fa-check"></i>Thursday January 19, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#working-with-data-frames-using-base-r"><i class="fa fa-check"></i>Working with data frames using base R</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#getting-data-into-r"><i class="fa fa-check"></i>Getting data into R</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html"><i class="fa fa-check"></i>Tuesday January 24, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html"><i class="fa fa-check"></i>Tuesday January 31, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#introduction-to-simple-features"><i class="fa fa-check"></i>Introduction to simple features</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html"><i class="fa fa-check"></i>Thursday February 2, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html#spatial-data-subsets-and-joins"><i class="fa fa-check"></i>Spatial data subsets and joins</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html#interpolation-using-areal-weights"><i class="fa fa-check"></i>Interpolation using areal weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html"><i class="fa fa-check"></i>Tuesday February 7, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html"><i class="fa fa-check"></i>Thursday February 9, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="0.1" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html#isolines-and-isobands"><i class="fa fa-check"></i><b>0.1</b> Isolines and isobands</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html#hillshape-and-colors-with-tidyterra"><i class="fa fa-check"></i>Hillshape and colors with tidyterra</a></li>
+<li class="chapter" data-level="0.2" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html#visualizing-spatial-data"><i class="fa fa-check"></i><b>0.2</b> Visualizing spatial data</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-9-2023.html"><a href="thursday-february-9-2023.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html"><i class="fa fa-check"></i>Thursday February 16, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#spatial-lag-and-its-relation-to-autocorrelation"><i class="fa fa-check"></i>Spatial lag and its relation to autocorrelation</a></li>
+<li class="chapter" data-level="0.3" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#making-maps-with-rdeck"><i class="fa fa-check"></i><b>0.3</b> Making maps with rdeck</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#other-neighbor-definitions"><i class="fa fa-check"></i>Other neighbor definitions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html"><i class="fa fa-check"></i>Tuesday February 21, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Local indicators of spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html"><i class="fa fa-check"></i>Thursday February 23, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html#fitting-and-interpreting-spatial-regression-models"><i class="fa fa-check"></i>Fitting and interpreting spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html"><i class="fa fa-check"></i>Tuesday February 28, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#fitting-and-interpreting-geographic-regression"><i class="fa fa-check"></i>Fitting and interpreting geographic regression</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#mapping-incidence-and-risk-with-a-spatial-regression-model"><i class="fa fa-check"></i>Mapping incidence and risk with a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html"><i class="fa fa-check"></i>Tuesday March 7, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#theoretical-framework-for-analyzingmodeling-point-pattern-data"><i class="fa fa-check"></i>Theoretical framework for analyzing/modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#working-with-point-pattern-data-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern data using functions from the spatstat package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#quantifying-the-spatial-intensity-of-events"><i class="fa fa-check"></i>Quantifying the spatial intensity of events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-march-21-2023.html"><a href="tuesday-march-21-2023.html"><i class="fa fa-check"></i>Tuesday March 21, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-march-21-2023.html"><a href="tuesday-march-21-2023.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-21-2023.html"><a href="tuesday-march-21-2023.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-21-2023.html"><a href="tuesday-march-21-2023.html#covariate-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Covariate trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html"><i class="fa fa-check"></i>Thursday March 23, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#estimating-the-relative-risk"><i class="fa fa-check"></i>Estimating the relative risk</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#estimating-second-moment-properties-of-events"><i class="fa fa-check"></i>Estimating second-moment properties of events</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#examples-of-clustered-events"><i class="fa fa-check"></i>Examples of clustered events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html"><i class="fa fa-check"></i>Tuesday March 28, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#removing-duplicate-events-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate events and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#determining-statistical-significance-of-clustering"><i class="fa fa-check"></i>Determining statistical significance of clustering</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#estimating-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#interpolating-output-from-a-distance-function"><i class="fa fa-check"></i>Interpolating output from a distance function</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#limitations-of-the-distance-functions"><i class="fa fa-check"></i>Limitations of the distance functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html"><i class="fa fa-check"></i>Thursday March 30, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#limitations-on-interpreting-distance-functions"><i class="fa fa-check"></i>Limitations on interpreting distance functions</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#models-for-point-pattern-data"><i class="fa fa-check"></i>Models for point pattern data</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#fitting-and-interpreting-inhibition-models"><i class="fa fa-check"></i>Fitting and interpreting inhibition models</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#fitting-and-interpreting-cluster-models"><i class="fa fa-check"></i>Fitting and interpreting cluster models</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html"><i class="fa fa-check"></i>Tuesday April 4, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#fitting-a-log-gaussian-cox-model"><i class="fa fa-check"></i>Fitting a log-Gaussian Cox model</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#assessing-how-well-a-point-pattern-model-fits-the-data"><i class="fa fa-check"></i>Assessing how well a point pattern model fits the data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#an-example-of-a-point-process-model-in-the-wild"><i class="fa fa-check"></i>An example of a point process model in the wild</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html"><i class="fa fa-check"></i>Thursday April 6, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html"><i class="fa fa-check"></i>Thursday April 13, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html"><i class="fa fa-check"></i>Tuesday April 18, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#evaluating-interpolation-accuracy"><i class="fa fa-check"></i>Evaluating interpolation accuracy</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html"><i class="fa fa-check"></i>Thursday April 20, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#machine-learning-for-spatial-interpolation"><i class="fa fa-check"></i>Machine learning for spatial interpolation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thursday-january-12-2023" class="section level1 unnumbered hasAnchor">
+<h1>Thursday, January 12, 2023<a href="thursday-january-12-2023.html#thursday-january-12-2023" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“Any fool can write code that a computer can understand. Good programmers write code that humans can understand.”</strong> — Martin Fowler</p>
+<p>Student Hours: TR 9:15-9:45 a.m., MW 2:15-3 p.m. The best way to get a hold of me is through email: <a href="mailto:jelsner@fsu.edu" class="email">jelsner@fsu.edu</a>.</p>
+<p>This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.</p>
+<p>During each lesson I will work through and explain the R code within an <code>xx-Lesson.Rmd</code> file. The notes in the files are comprehensive, so you can work through them on your own.</p>
+<p>Grades are determined by how well you do on the lab assignments. Lab assignments will be started in class on the following dates:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Lab</th>
+<th>Date</th>
+<th>Lessons covered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Thursday January 26</td>
+<td>1-4</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Tuesday February 14</td>
+<td>5-8</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Tuesday March 7</td>
+<td>9-13</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Tuesday April 11</td>
+<td>14-19</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Tuesday April 25</td>
+<td>20-22</td>
+</tr>
+</tbody>
+</table>
+<p>Lab assignments are due by 6 p.m. on that day</p>
+<div id="continue-with-setup" class="section level2 unnumbered hasAnchor">
+<h2>Continue with setup<a href="thursday-january-12-2023.html#continue-with-setup" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After installing R and RStudio, install git</p>
+<ul>
+<li><a href="https://happygitwithr.com/install-git.html">Install Git</a></li>
+<li>Open RStudio</li>
+<li><a href="https://happygitwithr.com/hello-git.html">Configure Git</a></li>
+<li>Close RStudio</li>
+</ul>
+<p>Then get a GitHub account</p>
+<ul>
+<li>Go to <a href="https://github.com/" class="uri">https://github.com/</a></li>
+<li>Click on <code>Sign up</code></li>
+<li>Enter your email, Create a password, Enter a username</li>
+<li>Solve the puzzle</li>
+<li>Enter the code sent to your email</li>
+<li>How many team members: 1, Student</li>
+<li>Collaborative coding</li>
+<li>Continue for free</li>
+</ul>
+<p>Create a fork of the class repository on GitHub</p>
+<ul>
+<li>Go to <a href="https://github.com/jelsner/" class="uri">https://github.com/jelsner/</a></li>
+<li>Click on the link <code>jelsner/ASS-2023</code></li>
+<li>In the upper right click on scroll down arrow next to <code>Fork</code></li>
+<li>Select “+ Create new fork”</li>
+<li>Add your name (no spaces) to the <code>Repository name</code></li>
+<li>Click on the green <code>Create fork</code></li>
+</ul>
+<p>Create a directory on your computer of your forked GitHub repository</p>
+<ul>
+<li>Open RStudio. You should now see a <code>Git</code> tab in one of the windows (upper right)</li>
+<li>Under <code>File</code> &gt; <code>New Project</code> select <code>Version Control</code></li>
+<li>Select <code>Git</code></li>
+<li>Repository URL: <code>https://github.com/[your GitHub username]/CCS-2023-[your name].git</code></li>
+<li>Project directory name: <code>CCS-2023-[your name]</code></li>
+<li>Create a project as a subdirectory of: e.g. <code>Browse to Desktop</code></li>
+<li>Select <code>Create Project</code></li>
+<li>Click on the <code>01-Lesson.Rmd</code></li>
+<li>Select <code>Knit</code> to generate the lesson as HTML</li>
+</ul>
+<p>At the start of each class</p>
+<ul>
+<li>Go to <code>https://github.com/[your GitHub username]</code></li>
+<li>Select the <code>Sync fork</code> button under the green <code>Code</code> button</li>
+<li>Click <code>Update branch</code></li>
+<li>Open the Folder <code>ASS-2023-[your name]</code> on your Desktop</li>
+<li>Open the file <code>ASS-2023.Rproj</code></li>
+<li>Under the <code>Git</code> tab select blue arrow (pointing down) to <code>Pull</code> down changes from your GitHub repository</li>
+<li>Select the <code>XX-name-of-lesson.Rmd</code> file</li>
+</ul>
+<p>Don’t push!</p>
+<ul>
+<li>You can add notes to the lesson files (<code>_.Rmd</code>) on your computer</li>
+<li>You can add new files to your local directory</li>
+<li>These changes stay on your computer only</li>
+<li>Don’t Push them to your GitHub repository!</li>
+</ul>
+<p>At the end of the semester you can push your notes to your repository</p>
+<ul>
+<li>Check the <code>Staged</code> button under the <code>Git</code> tab for all files you want to push</li>
+<li>Then select the <code>Commit</code> button</li>
+<li>Add a note to the <code>Commit message</code> section (e.g., my updates)</li>
+<li>Select the green arrow (pointing up) to <code>Push</code> changes to your GitHub</li>
+<li>The first time you do this you need to include your GitHub username and Personal access token</li>
+</ul>
+<p>Get a personal access token</p>
+<ul>
+<li>Go to your GitHub account</li>
+<li>In the far upper-right pull down menu (next to your avatar) select <code>Settings</code> then <code>Developer settings</code></li>
+<li>In the left menu select <code>Personal access tokens &gt; Tokens (classic)</code></li>
+<li>Follow instructions to generate a personal access toke (PAT)</li>
+<li>Use your PAT as your password when pushing changes made on your computer to your GitHub account</li>
+</ul>
+<p>Finally you can unfork your repository (see <a href="https://nickymeuleman.netlify.app/blog/unfork-github-repo" class="uri">https://nickymeuleman.netlify.app/blog/unfork-github-repo</a>)</p>
+<p>Help with all aspects of git, GitHub, and R programming is ubiquitous on the web. A list of some of the sites related to spatial analysis and modeling using R are listed in the syllabus</p>
+<p>I will spend the first several lessons teaching you how to work with R. This material might be a review. If this is entirely new, don’t get discouraged. This class will not involve writing complex code</p>
+<p>I will start by showing you how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your initial installation. The functions form these packages provide the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages</p>
+<p>Here is a new resource on getting started with R and R spatial - <a href="https://bakaniko.github.io/foss4g2022-getting-started-rspatial/">Getting started with R and R-spatial</a></p>
+</div>
+<div id="about-rstudio" class="section level2 unnumbered hasAnchor">
+<h2>About RStudio<a href="thursday-january-12-2023.html#about-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>Written in HTML</p></li>
+<li><p>Top menus</p>
+<ul>
+<li>File &gt; New File &gt; R Markdown</li>
+<li>Tools &gt; Global Options &gt; Appearance</li>
+</ul></li>
+<li><p>Upper left panel is the markdown file. This is where you put your text and code</p>
+<ul>
+<li>Run code chunks from this panel</li>
+<li>Output from the operations can be placed in this panel or in the Console (see the gear icon above)</li>
+<li>All the text, code, and output can be rendered to an HTML file or a PDF or Word document (see the Knit button above)</li>
+</ul></li>
+<li><p>Upper right panel shows what is in your current environment and the history of the commands you issued</p>
+<ul>
+<li>This is also where you can connect to github</li>
+</ul></li>
+<li><p>Lower left panel is the Console</p>
+<ul>
+<li>I think of this as a sandbox where you try out small bits of code. If it works and is relevant to what you want to do you move it to the markdown file</li>
+<li>This is also where output from running code will be placed</li>
+<li>Not a place for plain text</li>
+</ul></li>
+<li><p>Lower right panel shows your project files, the plots that get made, and all the packages associated with the project</p>
+<ul>
+<li>The File tab shows the files in the project. The most important one is the .Rmd.</li>
+<li>The Plot tab currently shows a blank sheet</li>
+<li>The Packages tab shows all the packages that have been downloaded from CRAN and are associated with this project</li>
+</ul></li>
+</ul>
+</div>
+<div id="lab-assignments" class="section level2 unnumbered hasAnchor">
+<h2>Lab assignments<a href="thursday-january-12-2023.html#lab-assignments" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You will do all assignments inside a <code>Rmd</code> file</p>
+<ol style="list-style-type: decimal">
+<li>Get the assignment <code>Rmd</code> file from github and rename it to <code>yourLastName_yourFirstName.Rmd</code></li>
+<li>Open the <code>Rmd</code> file with RStudio</li>
+<li>Replace ‘Your Name’ with your name in the preamble (YAML)</li>
+<li>Answer the questions by typing appropriate code between the code-chunk delimiters</li>
+<li>Select the Knit button to generate an HTML file</li>
+<li>Fix any errors</li>
+<li>Email your completed assignment <code>Rmd</code> file to <a href="mailto:jelsner@fsu.edu" class="email">jelsner@fsu.edu</a></li>
+</ol>
+</div>
+<div id="data-science-workflow-with-r-markdown" class="section level2 unnumbered hasAnchor">
+<h2>Data science workflow with R markdown<a href="thursday-january-12-2023.html#data-science-workflow-with-r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A scientific paper is <em>advertisement</em> for a claim about the world. The <em>proof</em> is the procedure that was used to obtain the result that under girds the claim. Computer code is typically the exact procedure.</p>
+<p>Computer code is a recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self.</p>
+<p>When you use a spreadsheet to obtain a result, it’s hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words used to describe these types of procedures are not standard.</p>
+<p>If you’ve ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code to produce another map with new data is simple.</p>
+<p>Code is an efficient way to communicate because all the information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.</p>
+<p>The person most likely to reproduce your work a few months later is you. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code you write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.</p>
+<p>When doing data science you switch between:</p>
+<ol style="list-style-type: decimal">
+<li><p>Writing code: Code to get your data into R, code to look at tables and summary statistics, code to make graphs, code to compute statistics, code to model and plot your results.</p></li>
+<li><p>Looking at output that your code produced: Your code is a set of instructions that produces the output you want: a table, a model, or a figure. It is helpful to be able to see that output.</p></li>
+<li><p>Taking notes: You also write text about what you are doing, why you are doing it, and what the results mean.</p></li>
+</ol>
+<p>To be efficient you write code and comments <em>together</em> in the same file. This is where R markdown comes in (files that end with <code>.Rmd</code>). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When you <code>Knit</code> this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output.</p>
+<p>The resulting file is converted into HTML or into a PDF or Word document. Some of the text in a markdown file is for format instructions. The following symbols are used for emphasis <em>italics</em>, <strong>bold</strong>, and <code>code font</code>. When you create a <em>new</em> markdown document in R Studio, it contains a sample example.</p>
+<p>File &gt; New File &gt; R Markdown &gt; My Rmd &gt; Save to Desktop &gt; Knit</p>
+<p>Lesson notes for this class are written in text using markdown formatting as needed. Text is interspersed with code. The format for code chunks is</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="thursday-january-12-2023.html#cb1-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="st">&quot;hello world&quot;</span><span class="co"># lines of code here</span></span>
+<span id="cb1-2"><a href="thursday-january-12-2023.html#cb1-2" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<pre><code>## [1] &quot;hello world&quot;</code></pre>
+<p>Three back-ticks (on a U.S. keyboard, the character under the escape key) followed by a pair of curly braces containing the name of the computer language you are using. The back-ticks-and-braces part signal that code is about to begin. You write code as needed, and then end the chunk with a new line containing three more back-ticks.</p>
+<p>You can use the Green insert button above to save time.</p>
+<p>In the markdown file, the lines between the first and second set of back ticks is grayed and a few small icons are noted in the upper-right corner of the grayed area. The green triangle is used to execute the code and either post the results in the console below or in the line below.</p>
+<p>When you keep notes in this way, you are able to see everything together, the code, the output it produces, and your commentary or clarification on it. Also you can turn it into a good-looking document with one click. This is how you will do everything in this course.</p>
+<p>Finally, note the <em>Outline</em> button in the upper right corner of the markdown file. You can organize and navigate through the markdown file section by section based on the pound symbol (<code>#</code>).</p>
+</div>
+<div id="getting-started-with-r" class="section level2 unnumbered hasAnchor">
+<h2>Getting started with R<a href="thursday-january-12-2023.html#getting-started-with-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Applied statistics is the analysis and modeling of data. Use the <code>c()</code> function to input small bits of data into R. The function combines (concatenates) items in a list together.</p>
+<p>For example, consider a set of hypothetical annual land falling hurricane counts over a ten-year period.</p>
+<p>2 3 0 3 1 0 0 1 2 1</p>
+<p>You save these 10 integer values in your working directory by typing them into the console as follows. The console is the lower left window.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="thursday-january-12-2023.html#cb3-1" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="thursday-january-12-2023.html#cb3-2" aria-hidden="true" tabindex="-1"></a>counts</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1</code></pre>
+<p>You assign the values to an object called <code>counts</code>. The assignment operator is an equal sign (<code>&lt;-</code> or <code>=</code>). Values do not print. They are assigned to an object name. They are printed by typing the object name as we did on the second line. When printed the values are prefaced with a <code>[1]</code>. This indicates that the object is a vector and the first entry in the vector has a value of 2 (The number immediately to the right of <code>[1]</code>).</p>
+<p>Use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.</p>
+<p>Then you apply functions to data stored in an object.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="thursday-january-12-2023.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="thursday-january-12-2023.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="thursday-january-12-2023.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(counts) <span class="sc">/</span> <span class="fu">length</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="thursday-january-12-2023.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(counts)</span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<p>The function <code>sum()</code> totals the number of hurricanes over all ten years, <code>length()</code> gives the number of elements in the vector. There is one element (integer value) for each year, so the function returns a value of 10.</p>
+<p>Other functions include <code>sort()</code>, <code>min()</code>, <code>max()</code>, <code>range()</code>, <code>diff()</code>, and <code>cumsum()</code>. Try these functions on the landfall counts. What does the <code>range()</code> function do? What does the function <code>diff()</code> do?</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="thursday-january-12-2023.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span>(counts)</span></code></pre></div>
+<pre><code>## [1]  1 -3  3 -2 -1  0  1  1 -1</code></pre>
+<p>The hurricane count data stored in the object <code>counts</code> is a vector. This means that R keeps track of the order that the data were entered. There is a first element, a second element, and so on. This is good for several reasons.</p>
+<p>The vector of counts has a natural order; year 1, year 2, etc. You don’t want to mix these. You would like to be able to make changes to the data item by item instead of entering the values again. Also, vectors are math objects so that math operations can be performed on them.</p>
+<p>For example, suppose <code>counts</code> contain the annual landfall count from the first decade of a longer record. You want to keep track of counts over other decades. This is done here as follows.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="thursday-january-12-2023.html#cb15-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> counts</span>
+<span id="cb15-2"><a href="thursday-january-12-2023.html#cb15-2" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<p>Most functions operate on each element of the data vector at the same time.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="thursday-january-12-2023.html#cb16-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">+</span> d2</span></code></pre></div>
+<pre><code>##  [1] 2 8 4 5 4 0 3 4 4 2</code></pre>
+<p>The first year of the first decade is added from the first year of the second decade and so on.</p>
+<p>What happens if you apply the <code>c()</code> function to these two vectors? Try it.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="thursday-january-12-2023.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(d1, d2)</span></code></pre></div>
+<pre><code>##  [1] 2 3 0 3 1 0 0 1 2 1 0 5 4 2 3 0 3 3 2 1</code></pre>
+<p>If you are interested in each year’s count as a difference from the decade mean, you type</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="thursday-january-12-2023.html#cb20-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">-</span> <span class="fu">mean</span>(d1)</span></code></pre></div>
+<pre><code>##  [1]  0.7  1.7 -1.3  1.7 -0.3 -1.3 -1.3 -0.3  0.7 -0.3</code></pre>
+<p>In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector.</p>
+<p>This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times.</p>
+</div>
+<div id="completely-new-to-r" class="section level2 unnumbered hasAnchor">
+<h2>Completely new to R?<a href="thursday-january-12-2023.html#completely-new-to-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The {swirl} package contains functions to get you started with the basics of R. To install the package use the <code>install.packages()</code> function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using <code>update.packages()</code> function.</p>
+<p>To make the functions work in your current session use the <code>library()</code> function with the name of the package (without quotes). This needs to be done for every session, but only once per session.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="thursday-january-12-2023.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;swirl&quot;</span>)</span>
+<span id="cb22-2"><a href="thursday-january-12-2023.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swirl)</span></code></pre></div>
+<p>Type:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="thursday-january-12-2023.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swirl</span>()</span></code></pre></div>
+<p>Choose the lesson: R Programming. Work through lessons 1:8</p>
+<p>Getting help: <a href="https://www.r-project.org/help.html" class="uri">https://www.r-project.org/help.html</a></p>
+<p>Ten simple rules for teaching yourself R <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010372#sec007" class="uri">https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010372#sec007</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="syllabus-and-set-up.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="tuesday-january-17-2023.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
