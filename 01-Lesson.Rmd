@@ -2,9 +2,9 @@
 
 **"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."** --- Martin Fowler
 
-Student Hours: TR 9:15-9:45 a.m., MW 2:15-3 p.m. The best way to get a hold of me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}
+Student Hours: TR 9:15-9:45 a.m., MW 2:15-3 p.m. The best way to get a hold of me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu)
 
-This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation
+This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. Emphasis is on how spatial statistical methods are related through the concept of spatial autocorrelation
 
 During each lesson I'll work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own
 
@@ -22,16 +22,13 @@ Lab assignments are due by 6 p.m. on that day
 
 ## Continue with setup {-}
 
-After installing R and RStudio, install git
+After installing R and RStudio, install and configure Git
 
--   [Install Git](https://happygitwithr.com/install-git.html)
--   Open RStudio
--   [Configure Git](https://happygitwithr.com/hello-git.html)
--   Close RStudio
+-   [Install & configure Git](https://happygitwithr.com/install-git.html) 
 
-Then get a GitHub account
+Get a GitHub account
 
--   Go to <https://github.com/>
+-   [Signup for a GitHub account](https://github.com/)
 -   Click on `Sign up`
 -   Enter your email, Create a password, Enter a username
 -   Solve the puzzle
@@ -42,7 +39,7 @@ Then get a GitHub account
 
 Create a fork of the class repository on GitHub
 
--   Go to <https://github.com/jelsner/>
+-   [Create a fork](https://github.com/jelsner/)
 -   Click on the link `jelsner/ASS-2023`
 -   In the upper right click on scroll down arrow next to `Fork`
 -   Select "+ Create new fork"
@@ -57,11 +54,11 @@ Create a directory on your computer of your forked GitHub repository
 -   Repository URL: `https://github.com/[your GitHub username]/ASS-2023-[your name].git`
 -   Project directory name: `ASS-2023-[your name]`
 -   Create a project as a subdirectory of: e.g. `Browse to Desktop`
--   Select `Create Project`. You should now see a `Git` tab in one of the windows (upper right)
+-   Select `Create Project`. You should now see a `Git` tab in one of the window panes (upper right)
 -   Click on the `01-Lesson.Rmd`
 -   Select `Knit` to generate the lesson as HTML
 
-At the start of each class
+At the start of each class (Sync from GitHub then Pull from RStudio)
 
 -   Go to `https://github.com/[your GitHub username]`
 -   Select the `Sync fork` button under the green `Code` button 
@@ -82,7 +79,7 @@ Don't panic!
 
 If you can't get things to work with your GitHub repository and/or your RStudio does not recognize git then you can download my entire class repository all at once
 
--   Go to <https://github.com/jelsner/ASS-2023>
+-   [Don't panic](https://github.com/jelsner/ASS-2023)
 -   Select the Green code button and scroll to `Download ZIP`
 -   Unzip the file on your Desktop
 -   From the `ASS-2023-main` folder open the `ASS-2023.Rproj` file
@@ -91,7 +88,7 @@ If you can't get things to work with your GitHub repository and/or your RStudio 
 
 Getting individual files off GitHub (only if you don't have a git tab). To keep the `ASS-2023-main` folder up to date you can get the individual lesson file off GitHub
 
--   Go to <https://github.com/jelsner/ASS-2023>
+-   [Don't panic](https://github.com/jelsner/ASS-2023)
 -   Select the individual lesson file (`xx-Lesson.rmd`)
 -   Select the Raw tab then Save page as
 -   Move that file to your folder `CCS-2023-main`
@@ -102,7 +99,7 @@ At the end of the semester you can push your notes to your repository
 -   Then select the `Commit` button
 -   Add a note to the `Commit message` section (e.g., my updates)
 -   Select the green arrow (pointing up) to `Push` changes to your GitHub
--   The first time you do this you need to include your GitHub username and Personal access token
+-   The _first time_ you do this you need to include your GitHub username and Personal access token
 
 Get a personal access token
 
@@ -112,27 +109,26 @@ Get a personal access token
 -   Follow instructions to generate a personal access toke (PAT)
 -   Use your PAT as your password when pushing changes made on your computer to your GitHub account
 
-Finally you can unfork your repository (see <https://nickymeuleman.netlify.app/blog/unfork-github-repo>)
+Finally you can unfork your repository (see the instructions here <https://nickymeuleman.netlify.app/blog/unfork-github-repo>)
 
-Help with all aspects of git, GitHub, and R programming is ubiquitous on the web. A list of some of the sites related to spatial analysis and modeling using R are listed in the syllabus
+Help with all aspects of git, GitHub, and R programming is widespread across the web. A list of some of the sites related to spatial analysis and modeling using R are listed in the syllabus
 
-I will spend the first several lessons teaching you how to work with R. This material might be a review. If this is entirely new, don't get discouraged. This class will not involve writing complex code
+I will spend the first several lessons teaching you how to work with R. This material might be a review. I will start by showing you how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your initial installation. The functions form these packages provide the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages. If this is entirely new, don't get discouraged. This class will not involve writing complex code
 
-I will start by showing you how to work with small bits of data using functions from the {base} packages. The {base} packages are included in your initial installation. The functions form these packages provide the scaffolding for working with the code, but much of what you will do in this class involve functions from other packages
-
-Here is a new resource on getting started with R and R spatial - [Getting started with R and R-spatial](https://bakaniko.github.io/foss4g2022-getting-started-rspatial/)
+[Getting started with R and R-spatial](https://bakaniko.github.io/foss4g2022-getting-started-rspatial/)
 
 ## About RStudio {-}
 
 -   Written in HTML
 -   Top menus
     -   File > New File > R Markdown
+    -   Pane layout (see the icon next to `Addins`)
     -   Tools > Global Options > Appearance
     
 -   Upper left panel is the markdown file. This is where you put your text and code
     -   Run code chunks from this panel
     -   Output from the operations can be placed in this panel or in the Console (see the gear icon above)
-    -   All the text, code, and output can be rendered to an HTML file or a PDF or Word document (see the Knit button above)
+    -   All the text, code, and output can be rendered to an HTML, PDF or Word (see the Knit button above)
     
 -   Upper right panel shows what is in your current environment and the history of the commands you issued
     -   This is also where you can connect to github
@@ -143,9 +139,9 @@ Here is a new resource on getting started with R and R spatial - [Getting starte
     -   Not a place for plain text
 
 -   Lower right panel shows your project files, the plots that get made, and all the packages associated with the project
-    -   The File tab shows the files in the project. The most important one is the .Rmd
+    -   The File tab shows the files in the project
     -   The Plot tab currently shows a blank sheet
-    -   The Packages tab shows all the packages that have been downloaded from CRAN and are associated with this project
+    -   The Packages tab shows all the packages that have been downloaded from CRAN and are associated with this project. Checked boxes indicate the package is loaded for this session
 
 ## Lab assignments {-}
 
@@ -157,9 +153,9 @@ You will do all assignments inside a `Rmd` file
 4.  Answer the questions by typing appropriate code between the code-chunk delimiters
 5.  Select the Knit button to generate an HTML file
 6.  Fix any errors
-7.  Email your completed assignment `Rmd` file (not the `html`) to [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}
+7.  Email your completed assignment `Rmd` file (not the `html`) to [jelsner\@fsu.edu](mailto:jelsner@fsu.edu)
 
-## Data science workflow with R markdown {.unnumbered}
+## Data science workflow with R markdown {-}
 
 A scientific paper is *advertisement* for a claim about the world. The *proof* is the procedure that was used to obtain the result that under girds the claim. Computer code is typically the exact procedure
 
@@ -173,7 +169,7 @@ Code is an efficient way to communicate because all the information is given as 
 
 The person most likely to reproduce your work a few months later is you. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code you write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator
 
-When doing data science you switch between:
+When doing data science you switch between
 
 (1) Writing code: Code to get your data into R, code to look at tables and summary statistics, code to make graphs, code to compute statistics, code to model and plot your results
 
@@ -222,7 +218,7 @@ You assign the values to an object called `counts`. The assignment operator is a
 
 Use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line
 
-Then you apply functions to data stored in an object
+Then you apply functions to data stored in an object as follows
 
 ```{r}
 sum(counts)
