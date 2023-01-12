@@ -2,6 +2,8 @@
 
 **"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."** --- Martin Fowler
 
+## Important points from the syllabus {-}
+
 Student Hours: TR 9:15-9:45 a.m., MW 2:15-3 p.m. The best way to get a hold of me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu)
 
 This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. Emphasis is on how spatial statistical methods are related through the concept of spatial autocorrelation
