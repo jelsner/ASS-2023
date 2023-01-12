@@ -58,6 +58,7 @@ Create a directory on your computer of your forked GitHub repository
 -   Create a project as a subdirectory of: e.g. `Browse to Desktop`
 -   Select `Create Project`. You should now see a `Git` tab in one of the window panes (upper right)
 -   Click on the `01-Lesson.Rmd`
+-   Install {markdown} and {bookdown}
 -   Select `Knit` to generate the lesson as HTML
 
 At the start of each class (Sync from GitHub then Pull from RStudio)
@@ -155,7 +156,7 @@ You will do all assignments inside a `Rmd` file
 4.  Answer the questions by typing appropriate code between the code-chunk delimiters
 5.  Select the Knit button to generate an HTML file
 6.  Fix any errors
-7.  Email your completed assignment `Rmd` file (not the `html`) to [jelsner\@fsu.edu](mailto:jelsner@fsu.edu)
+7.  Email your completed assignment `Rmd` file (not the `html`) to [jelsner@fsu.edu](mailto:jelsner@fsu.edu)
 
 ## Data science workflow with R markdown {-}
 
@@ -191,7 +192,6 @@ Lesson notes for this class are written in text using markdown formatting as nee
 z <- "hello world"# lines of code here
 z
 ```
-
 Three back-ticks (on a U.S. keyboard, the character under the escape key) followed by a pair of curly braces containing the name of the computer language you are using. The back-ticks-and-braces part signal that code is about to begin. You write code as needed, and then end the chunk with a new line containing three more back-ticks.
 
 You can use the Green insert button above to save time.
