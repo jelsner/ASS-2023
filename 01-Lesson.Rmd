@@ -2,13 +2,13 @@
 
 **"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."** --- Martin Fowler
 
-Student Hours: TR 9:15-9:45 a.m., MW 2:15-3 p.m. The best way to get a hold of me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}.
+Student Hours: TR 9:15-9:45 a.m., MW 2:15-3 p.m. The best way to get a hold of me is through email: [jelsner\@fsu.edu](mailto:jelsner@fsu.edu){.email}
 
-This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation.
+This course is a survey of methods to describe, analyze, and model geographic data using R. Focus is on applications. I emphasize how spatial statistical methods are related through the concept of spatial autocorrelation
 
-During each lesson I will work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own.
+During each lesson I'll work through and explain the R code within an `xx-Lesson.Rmd` file. The notes in the files are comprehensive, so you can work through them on your own
 
-Grades are determined by how well you do on the lab assignments. Lab assignments will be started in class on the following dates:
+Grades are determined by how well you do on the lab assignments. Lab assignments will be started in class on the following dates
 
 | Lab | Date                  | Lessons covered |
 |-----|-----------------------|-----------------|
@@ -51,13 +51,13 @@ Create a fork of the class repository on GitHub
 
 Create a directory on your computer of your forked GitHub repository
 
--   Open RStudio. You should now see a `Git` tab in one of the windows (upper right)
+-   Open RStudio
 -   Under `File` > `New Project` select `Version Control`
 -   Select `Git`
--   Repository URL: `https://github.com/[your GitHub username]/CCS-2023-[your name].git`
--   Project directory name: `CCS-2023-[your name]`
+-   Repository URL: `https://github.com/[your GitHub username]/ASS-2023-[your name].git`
+-   Project directory name: `ASS-2023-[your name]`
 -   Create a project as a subdirectory of: e.g. `Browse to Desktop`
--   Select `Create Project`
+-   Select `Create Project`. You should now see a `Git` tab in one of the windows (upper right)
 -   Click on the `01-Lesson.Rmd`
 -   Select `Knit` to generate the lesson as HTML
 
@@ -76,7 +76,25 @@ Don't push!
 -   You can add notes to the lesson files (`_.Rmd`) on your computer
 -   You can add new files to your local directory
 -   These changes stay on your computer only
--   Don't Push them to your GitHub repository!
+-   Don't push them to your GitHub repository!
+
+Don't panic!
+
+If you can't get things to work with your GitHub repository and/or your RStudio does not recognize git then you can download my entire class repository all at once
+
+-   Go to <https://github.com/jelsner/ASS-2023>
+-   Select the Green code button and scroll to `Download ZIP`
+-   Unzip the file on your Desktop
+-   From the `ASS-2023-main` folder open the `ASS-2023.Rproj` file
+-   Select the `xx-lesson.Rmd` file
+-   Select `Knit` to generate HTML
+
+Getting individual files off GitHub (only if you don't have a git tab). To keep the `ASS-2023-main` folder up to date you can get the individual lesson file off GitHub
+
+-   Go to <https://github.com/jelsner/ASS-2023>
+-   Select the individual lesson file (`xx-Lesson.rmd`)
+-   Select the Raw tab then Save page as
+-   Move that file to your folder `CCS-2023-main`
 
 At the end of the semester you can push your notes to your repository
 
@@ -125,7 +143,7 @@ Here is a new resource on getting started with R and R spatial - [Getting starte
     -   Not a place for plain text
 
 -   Lower right panel shows your project files, the plots that get made, and all the packages associated with the project
-    -   The File tab shows the files in the project. The most important one is the .Rmd.
+    -   The File tab shows the files in the project. The most important one is the .Rmd
     -   The Plot tab currently shows a blank sheet
     -   The Packages tab shows all the packages that have been downloaded from CRAN and are associated with this project
 
@@ -143,29 +161,29 @@ You will do all assignments inside a `Rmd` file
 
 ## Data science workflow with R markdown {.unnumbered}
 
-A scientific paper is *advertisement* for a claim about the world. The *proof* is the procedure that was used to obtain the result that under girds the claim. Computer code is typically the exact procedure.
+A scientific paper is *advertisement* for a claim about the world. The *proof* is the procedure that was used to obtain the result that under girds the claim. Computer code is typically the exact procedure
 
-Computer code is a recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self.
+Computer code is a recipe for what was done. It is the most efficient way to communicate precisely the steps involved. Communication to others and to your future self
 
-When you use a spreadsheet to obtain a result, it's hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words used to describe these types of procedures are not standard.
+When you use a spreadsheet to obtain a result, it's hard to explain to someone precisely what you did. Click here, then right click here, then choose menu X, etc. The words used to describe these types of procedures are not standard
 
-If you've ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code to produce another map with new data is simple.
+If you've ever made a map using GIS you know how hard it is to make another (even similar one) with a new set of data. Running code to produce another map with new data is simple
 
-Code is an efficient way to communicate because all the information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs.
+Code is an efficient way to communicate because all the information is given as plain text without ambiguity. Being able to code is a key skill for most technical jobs
 
-The person most likely to reproduce your work a few months later is you. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code you write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator.
+The person most likely to reproduce your work a few months later is you. This is especially true for graphs and figures. These often have a finished quality to them as a result of tweaking and adjustments to the details. This makes it hard to reproduce later. The goal is to do as much of this tweaking as possible with the code you write, rather than in a way that is invisible (retrospectively). Contrast editing an image in Adobe Illustrator
 
 When doing data science you switch between:
 
-(1) Writing code: Code to get your data into R, code to look at tables and summary statistics, code to make graphs, code to compute statistics, code to model and plot your results.
+(1) Writing code: Code to get your data into R, code to look at tables and summary statistics, code to make graphs, code to compute statistics, code to model and plot your results
 
-(2) Looking at output that your code produced: Your code is a set of instructions that produces the output you want: a table, a model, or a figure. It is helpful to be able to see that output.
+(2) Looking at output that your code produced: Your code is a set of instructions that produces the output you want: a table, a model, or a figure. It is helpful to be able to see that output
 
-(3) Taking notes: You also write text about what you are doing, why you are doing it, and what the results mean.
+(3) Taking notes: You also write text about what you are doing, why you are doing it, and what the results mean
 
-To be efficient you write code and comments *together* in the same file. This is where R markdown comes in (files that end with `.Rmd`). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When you `Knit` this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output.
+To be efficient you write code and comments *together* in the same file. This is where R markdown comes in (files that end with `.Rmd`). An R markdown file is a plain text document where text (such as notes or discussion) is interspersed with pieces, or chunks, of R code. When you `Knit` this file the code is executed (from the top to the bottom of the file) and the results supplement or replace the code with output
 
-The resulting file is converted into HTML or into a PDF or Word document. Some of the text in a markdown file is for format instructions. The following symbols are used for emphasis *italics*, **bold**, and `code font`. When you create a *new* markdown document in R Studio, it contains a sample example.
+The resulting file is converted into HTML or into a PDF or Word document. Some of the text in a markdown file is for format instructions. The following symbols are used for emphasis *italics*, **bold**, and `code font`. When you create a *new* markdown document in R Studio, it contains a sample example
 
 File > New File > R Markdown > My Rmd > Save to Desktop > Knit
 
@@ -180,21 +198,21 @@ Three back-ticks (on a U.S. keyboard, the character under the escape key) follow
 
 You can use the Green insert button above to save time.
 
-In the markdown file, the lines between the first and second set of back ticks is grayed and a few small icons are noted in the upper-right corner of the grayed area. The green triangle is used to execute the code and either post the results in the console below or in the line below.
+In the markdown file, the lines between the first and second set of back ticks is grayed and a few small icons are noted in the upper-right corner of the grayed area. The green triangle is used to execute the code and either post the results in the console below or in the line below
 
-When you keep notes in this way, you are able to see everything together, the code, the output it produces, and your commentary or clarification on it. Also you can turn it into a good-looking document with one click. This is how you will do everything in this course.
+When you keep notes in this way, you are able to see everything together, the code, the output it produces, and your commentary or clarification on it. Also you can turn it into a good-looking document with one click. This is how you will do everything in this course
 
-Finally, note the *Outline* button in the upper right corner of the markdown file. You can organize and navigate through the markdown file section by section based on the pound symbol (`#`).
+Finally, note the *Outline* button in the upper right corner of the markdown file. You can organize and navigate through the markdown file section by section based on the pound symbol (`#`)
 
 ## Getting started with R {-}
 
-Applied statistics is the analysis and modeling of data. Use the `c()` function to input small bits of data into R. The function combines (concatenates) items in a list together.
+Applied statistics is the analysis and modeling of data. Use the `c()` function to input small bits of data into R. The function combines (concatenates) items in a list together
 
-For example, consider a set of hypothetical annual land falling hurricane counts over a ten-year period.
+For example, consider a set of hypothetical annual land falling hurricane counts over a ten-year period
 
 2 3 0 3 1 0 0 1 2 1
 
-You save these 10 integer values in your working directory by typing them into the console as follows. The console is the lower left window.
+You save these 10 integer values in your working directory by typing them into the console as follows. The console is the lower left window
 
 ```{r}
 counts <- c(2, 3, 0, 3, 1, 0, 0, 1, 2, 1)
@@ -202,9 +220,9 @@ counts
 ```
 You assign the values to an object called `counts`. The assignment operator is an equal sign (`<-` or `=`). Values do not print. They are assigned to an object name. They are printed by typing the object name as we did on the second line. When printed the values are prefaced with a `[1]`. This indicates that the object is a vector and the first entry in the vector has a value of 2 (The number immediately to the right of `[1]`).
 
-Use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line.
+Use the arrow keys to retrieve previous commands. Each command is stored in the history file. The up-arrow key moves backwards through the history file. The left and right arrow keys move the cursor along the line
 
-Then you apply functions to data stored in an object.
+Then you apply functions to data stored in an object
 
 ```{r}
 sum(counts)
@@ -213,7 +231,7 @@ sum(counts) / length(counts)
 mean(counts)
 ```
 
-The function `sum()` totals the number of hurricanes over all ten years, `length()` gives the number of elements in the vector. There is one element (integer value) for each year, so the function returns a value of 10.
+The function `sum()` totals the number of hurricanes over all ten years, `length()` gives the number of elements in the vector. There is one element (integer value) for each year, so the function returns a value of 10
 
 Other functions include `sort()`, `min()`, `max()`, `range()`, `diff()`, and `cumsum()`. Try these functions on the landfall counts. What does the `range()` function do? What does the function `diff()` do?
 
@@ -221,26 +239,26 @@ Other functions include `sort()`, `min()`, `max()`, `range()`, `diff()`, and `cu
 diff(counts)
 ```
 
-The hurricane count data stored in the object `counts` is a vector. This means that R keeps track of the order that the data were entered. There is a first element, a second element, and so on. This is good for several reasons.
+The hurricane count data stored in the object `counts` is a vector. This means that R keeps track of the order that the data were entered. There is a first element, a second element, and so on. This is good for several reasons
 
-The vector of counts has a natural order; year 1, year 2, etc. You don't want to mix these. You would like to be able to make changes to the data item by item instead of entering the values again. Also, vectors are math objects so that math operations can be performed on them.
+The vector of counts has a natural order; year 1, year 2, etc. You don't want to mix these. You would like to be able to make changes to the data item by item instead of entering the values again. Also, vectors are math objects so that math operations can be performed on them
 
-For example, suppose `counts` contain the annual landfall count from the first decade of a longer record. You want to keep track of counts over other decades. This is done here as follows.
+For example, suppose `counts` contain the annual landfall count from the first decade of a longer record. You want to keep track of counts over other decades. This is done here as follows
 
 ```{r}
 d1 <- counts
 d2 <- c(0, 5, 4, 2, 3, 0, 3, 3, 2, 1)
 ```
 
-Most functions operate on each element of the data vector at the same time.
+Most functions operate on each element of the data vector at the same time
 
 ```{r}
 d1 + d2
 ```
 
-The first year of the first decade is added from the first year of the second decade and so on.
+The first year of the first decade is added from the first year of the second decade and so on
 
-What happens if you apply the `c()` function to these two vectors? Try it.
+What happens if you apply the `c()` function to these two vectors? Try it
 
 ```{r}
 c(d1, d2)
@@ -252,15 +270,15 @@ If you are interested in each year's count as a difference from the decade mean,
 d1 - mean(d1)
 ```
 
-In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector.
+In this case a single number (the mean of the first decade) is subtracted from a vector. The result is from subtracting the number from each entry in the data vector
 
-This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times.
+This is an example of data recycling. R repeats values from one vector so that the vector lengths match. Here the mean is repeated 10 times
 
 ## Completely new to R? {-}
 
-The {swirl} package contains functions to get you started with the basics of R. To install the package use the `install.packages()` function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using `update.packages()` function.
+The {swirl} package contains functions to get you started with the basics of R. To install the package use the `install.packages()` function with the name of the package in quotes. The function downloads the package from the Comprehensive R Archive Network (CRAN). You update packages using `update.packages()` function
 
-To make the functions work in your current session use the `library()` function with the name of the package (without quotes). This needs to be done for every session, but only once per session.
+To make the functions work in your current session use the `library()` function with the name of the package (without quotes). This needs to be done for every session, but only once per session
 
 ```{r, eval=FALSE}
 install.packages("swirl")
