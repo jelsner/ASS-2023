@@ -69,7 +69,7 @@ At the start of each class (Sync from GitHub then Pull from RStudio)
 -   Open the Folder `ASS-2023-[your name]` on your Desktop
 -   Open the file `ASS-2023.Rproj`
 -   Under the `Git` tab select blue arrow (pointing down) to `Pull` down changes from your GitHub repository
--   Select the `XX-name-of-lesson.Rmd` file
+-   Select the `XX-Lesson.Rmd` file
 
 Don't push!
 
