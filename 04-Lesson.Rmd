@@ -2,10 +2,6 @@
 
 **"Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."** --- Hadley Wickham
 
-Today
-
--   Making graphs
-
 Before moving on lets review what you learned last time.
 
 Working with data frames is part of the cycle of data science, along with visualizing, and modeling. The cycle of data science:
