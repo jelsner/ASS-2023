@@ -562,9 +562,9 @@ dim(airquality)
 head(airquality)
 ```
 
-The columns include `Ozone` (ozone concentration in ppb), `Solar.R` (solar radiation in langleys), `Wind` (wind speed in mph), `Temp` (air temperature in degrees F), `Month`, and `Day`.
+The columns include `Ozone` (ozone concentration in ppb), `Solar.R` (solar radiation in langleys), `Wind` (wind speed in mph), `Temp` (air temperature in degrees F), `Month`, and `Day`
 
-You get summary statistics on the values in each column with the `summary()` method.
+You get summary statistics on the values in each column with the `summary()` method
 
 ```{r}
 summary(airquality)
@@ -585,31 +585,29 @@ The pipe operator allows you to string together functions that when read by a hu
 Think of it this way: suppose the object of interest is called `me` and there is a function called `wake_up()`. I could apply this function called `wake_up()` in two ways
 
 ```{r, eval=FALSE}
-wake_up(me)  # way number one, classical way
+wake_up(me)  # classic
 
-me |> wake_up()  # way number two, tidyverse way
+me |> wake_up()  # tidyverse
 ```
 
-The second way involves more typing but it is easier to read (the subject comes before the predicate like simple English grammar) and thus easier to understand. This becomes clear when stringing together functions
+The second way involves more typing but it is easier to read (the subject comes before the predicate like simple English grammar) and thus easier to interpret. This becomes clear when stringing many functions together
 
-Continuing with the made-up example, what happens to the result of `me` after the function `wake_up()` has been applied? I `get_out_of_bed()` and then `get_dressed()`
+Continuing, what happens to the result of `me` after the function `wake_up()` has been applied? I `get_out_of_bed()` and then `get_dressed()`
 
 Again, you can apply these functions in two ways
 
 ```{r, eval=FALSE}
-get_dressed(get_out_of_bed(wake_up(me)))
+get_dressed(get_out_of_bed(wake_up(me))) # classic
 
-me |>
+me |> # tidyverse
   wake_up() |>
   get_out_of_bed() |>
   get_dressed()
 ```
 
-The order of the functions usually matters to the outcome. I can't get dressed before I wake up but I could get dressed without getting out of bed
+The order of the functions often matters. I can't get dressed before I wake up but I could get dressed without getting out of bed
 
-Note how I format the code. Each line is gets only one verb and each line ends with the pipe (except the last one). This makes it easier to read
-
-Continuing...
+Note how I format the code. Each line is gets only one verb and each line ends with the pipe (except the last one). This makes it easy to read. Continuing
 
 ```{r, eval=FALSE}
 me |>
@@ -623,17 +621,7 @@ me |>
 
 Which is much better in terms of 'readability' then `leave_house(drink_coffee(make_coffee(get_dressed(get_out_of_bed(wake_up(me))))))`.
 
-Tibbles are data frames that make working with data frames a little easier. R is an old language, and some things that were useful 10 or 20 years ago now get in your way. To make a data frame a tibble (tabular data frame) use the `as_tibble()` function
-
-```{r}
-class(airquality)
-airquality <- dplyr::as_tibble(airquality)
-class(airquality)
-```
-
-Click on `airquality` in the environment. It is a data frame. We will use the terms 'tibble' and 'data frame' interchangeably in this class
-
-Now you are ready to look at some of the commonly used verbs and to see how to apply them to a data frame
+Now lets look at some of the commonly used verbs and to see how to apply them to a data frame
 
 The function `select()` chooses variables by name. For example, choose the month (`Month`), day (`Day`), and temperature (`Temp`) columns.
 
