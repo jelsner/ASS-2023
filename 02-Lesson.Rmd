@@ -11,6 +11,7 @@ So at the start of each class (Sync from GitHub then Pull from RStudio)
 -   Go to `https://github.com/[your GitHub username]`
 -   Select the `Sync fork` button under the green `Code` button 
 -   Click `Update branch`
+
 -   Open the Folder `ASS-2023-[your name]` on your Desktop
 -   Open the file `ASS-2023.Rproj`
 -   Under the `Git` tab select blue arrow (pointing down) to `Pull` down changes from your GitHub repository
@@ -42,6 +43,8 @@ Get a personal access token
 -   Use your PAT as your password when pushing changes made on your computer to your GitHub account
 
 Finally you can unfork your repository (see the instructions here <https://nickymeuleman.netlify.app/blog/unfork-github-repo>)
+
+New resource for applied spatial statistics <https://geocompx.org/>
 
 ## Using R {-}
 
