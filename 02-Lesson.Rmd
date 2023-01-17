@@ -19,7 +19,7 @@ So at the start of each class (Sync from GitHub then Pull from RStudio)
 
 Note: If you see a yellow caution sign when you open the lesson file, download the required packages
 
-Don't push!
+Don't push and rename your files
 
 -   You can add notes to the lesson files (`_.Rmd`) on your computer
 -   You can add new files to your local directory

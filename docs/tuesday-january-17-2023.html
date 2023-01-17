@@ -165,10 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#getting-data-into-r"><i class="fa fa-check"></i>Getting data into R</a></li>
 <li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html"><i class="fa fa-check"></i>Thursday January 19, 2023</a>
-<ul>
-<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#working-with-data-frames-using-functions-from-dplyr-1"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html"><i class="fa fa-check"></i>Thursday January 19, 2023</a></li>
 <li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html"><i class="fa fa-check"></i>Tuesday January 24, 2023</a>
 <ul>
 <li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
@@ -320,16 +317,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You should now have a set of class notes as lesson files in your own GitHub repository and on your laptop. Note that these files are based on last semester’s class. I will update them as we proceed through the semester</p>
 <p>So at the start of each class (Sync from GitHub then Pull from RStudio)</p>
 <ul>
-<li>Go to <code>https://github.com/[your GitHub username]</code></li>
-<li>Select the <code>Sync fork</code> button under the green <code>Code</code> button</li>
-<li>Click <code>Update branch</code></li>
-<li>Open the Folder <code>ASS-2023-[your name]</code> on your Desktop</li>
-<li>Open the file <code>ASS-2023.Rproj</code></li>
-<li>Under the <code>Git</code> tab select blue arrow (pointing down) to <code>Pull</code> down changes from your GitHub repository</li>
-<li>Select the <code>XX-Lesson.Rmd</code> file</li>
+<li><p>Go to <code>https://github.com/[your GitHub username]</code></p></li>
+<li><p>Select the <code>Sync fork</code> button under the green <code>Code</code> button</p></li>
+<li><p>Click <code>Update branch</code></p></li>
+<li><p>Open the Folder <code>ASS-2023-[your name]</code> on your Desktop</p></li>
+<li><p>Open the file <code>ASS-2023.Rproj</code></p></li>
+<li><p>Under the <code>Git</code> tab select blue arrow (pointing down) to <code>Pull</code> down changes from your GitHub repository</p></li>
+<li><p>Select the <code>XX-Lesson.Rmd</code> file</p></li>
 </ul>
 <p>Note: If you see a yellow caution sign when you open the lesson file, download the required packages</p>
-<p>Don’t push!</p>
+<p>Don’t push and rename your files</p>
 <ul>
 <li>You can add notes to the lesson files (<code>_.Rmd</code>) on your computer</li>
 <li>You can add new files to your local directory</li>
@@ -353,6 +350,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Use your PAT as your password when pushing changes made on your computer to your GitHub account</li>
 </ul>
 <p>Finally you can unfork your repository (see the instructions here <a href="https://nickymeuleman.netlify.app/blog/unfork-github-repo" class="uri">https://nickymeuleman.netlify.app/blog/unfork-github-repo</a>)</p>
+<p>New resource for applied spatial statistics <a href="https://geocompx.org/" class="uri">https://geocompx.org/</a></p>
 </div>
 <div id="using-r" class="section level2 unnumbered hasAnchor">
 <h2>Using R<a href="tuesday-january-17-2023.html#using-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -900,8 +898,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4    18     313 11.5   62     5   4
 ## 5    NA      NA 14.3   56     5   5
 ## 6    28      NA 14.9   66     5   6</code></pre>
-<p>The columns include <code>Ozone</code> (ozone concentration in ppb), <code>Solar.R</code> (solar radiation in langleys), <code>Wind</code> (wind speed in mph), <code>Temp</code> (air temperature in degrees F), <code>Month</code>, and <code>Day</code>.</p>
-<p>You get summary statistics on the values in each column with the <code>summary()</code> method.</p>
+<p>The columns include <code>Ozone</code> (ozone concentration in ppb), <code>Solar.R</code> (solar radiation in langleys), <code>Wind</code> (wind speed in mph), <code>Temp</code> (air temperature in degrees F), <code>Month</code>, and <code>Day</code></p>
+<p>You get summary statistics on the values in each column with the <code>summary()</code> method</p>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="tuesday-january-17-2023.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(airquality)</span></code></pre></div>
 <pre><code>##      Ozone           Solar.R           Wind             Temp      
 ##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
@@ -941,21 +939,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You read the pipe as THEN. “take the <code>airquality</code> data frame THEN summarize the columns”</p>
 <p>The pipe operator allows you to string together functions that when read by a human makes it easy to understand what is being done</p>
 <p>Think of it this way: suppose the object of interest is called <code>me</code> and there is a function called <code>wake_up()</code>. I could apply this function called <code>wake_up()</code> in two ways</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="tuesday-january-17-2023.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wake_up</span>(me)  <span class="co"># way number one, classical way</span></span>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="tuesday-january-17-2023.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wake_up</span>(me)  <span class="co"># classic</span></span>
 <span id="cb160-2"><a href="tuesday-january-17-2023.html#cb160-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb160-3"><a href="tuesday-january-17-2023.html#cb160-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span> <span class="fu">wake_up</span>()  <span class="co"># way number two, tidyverse way</span></span></code></pre></div>
-<p>The second way involves more typing but it is easier to read (the subject comes before the predicate like simple English grammar) and thus easier to understand. This becomes clear when stringing together functions</p>
-<p>Continuing with the made-up example, what happens to the result of <code>me</code> after the function <code>wake_up()</code> has been applied? I <code>get_out_of_bed()</code> and then <code>get_dressed()</code></p>
+<span id="cb160-3"><a href="tuesday-january-17-2023.html#cb160-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span> <span class="fu">wake_up</span>()  <span class="co"># tidyverse</span></span></code></pre></div>
+<p>The second way involves more typing but it is easier to read (the subject comes before the predicate like simple English grammar) and thus easier to interpret. This becomes clear when stringing many functions together</p>
+<p>Continuing, what happens to the result of <code>me</code> after the function <code>wake_up()</code> has been applied? I <code>get_out_of_bed()</code> and then <code>get_dressed()</code></p>
 <p>Again, you can apply these functions in two ways</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="tuesday-january-17-2023.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_dressed</span>(<span class="fu">get_out_of_bed</span>(<span class="fu">wake_up</span>(me)))</span>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="tuesday-january-17-2023.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_dressed</span>(<span class="fu">get_out_of_bed</span>(<span class="fu">wake_up</span>(me))) <span class="co"># classic</span></span>
 <span id="cb161-2"><a href="tuesday-january-17-2023.html#cb161-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-3"><a href="tuesday-january-17-2023.html#cb161-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span></span>
+<span id="cb161-3"><a href="tuesday-january-17-2023.html#cb161-3" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span> <span class="co"># tidyverse</span></span>
 <span id="cb161-4"><a href="tuesday-january-17-2023.html#cb161-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">|&gt;</span></span>
 <span id="cb161-5"><a href="tuesday-january-17-2023.html#cb161-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_out_of_bed</span>() <span class="sc">|&gt;</span></span>
 <span id="cb161-6"><a href="tuesday-january-17-2023.html#cb161-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_dressed</span>()</span></code></pre></div>
-<p>The order of the functions usually matters to the outcome. I can’t get dressed before I wake up but I could get dressed without getting out of bed</p>
-<p>Note how I format the code. Each line is gets only one verb and each line ends with the pipe (except the last one). This makes it easier to read</p>
-<p>Continuing…</p>
+<p>The order of the functions often matters. I can’t get dressed before I wake up but I could get dressed without getting out of bed</p>
+<p>Note how I format the code. Each line is gets only one verb and each line ends with the pipe (except the last one). This makes it easy to read. Continuing</p>
 <div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="tuesday-january-17-2023.html#cb162-1" aria-hidden="true" tabindex="-1"></a>me <span class="sc">|&gt;</span></span>
 <span id="cb162-2"><a href="tuesday-january-17-2023.html#cb162-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">|&gt;</span></span>
 <span id="cb162-3"><a href="tuesday-january-17-2023.html#cb162-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_out_of_bed</span>() <span class="sc">|&gt;</span></span>
@@ -964,192 +961,935 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb162-6"><a href="tuesday-january-17-2023.html#cb162-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drink_coffee</span>() <span class="sc">|&gt;</span></span>
 <span id="cb162-7"><a href="tuesday-january-17-2023.html#cb162-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">leave_house</span>()</span></code></pre></div>
 <p>Which is much better in terms of ‘readability’ then <code>leave_house(drink_coffee(make_coffee(get_dressed(get_out_of_bed(wake_up(me))))))</code>.</p>
-<p>Tibbles are data frames that make working with data frames a little easier. R is an old language, and some things that were useful 10 or 20 years ago now get in your way. To make a data frame a tibble (tabular data frame) use the <code>as_tibble()</code> function</p>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="tuesday-january-17-2023.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(airquality)</span></code></pre></div>
-<pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="tuesday-january-17-2023.html#cb165-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">as_tibble</span>(airquality)</span>
-<span id="cb165-2"><a href="tuesday-january-17-2023.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(airquality)</span></code></pre></div>
-<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
-<p>Click on <code>airquality</code> in the environment. It is a data frame. We will use the terms ‘tibble’ and ‘data frame’ interchangeably in this class</p>
-<p>Now you are ready to look at some of the commonly used verbs and to see how to apply them to a data frame</p>
+<p>Now lets look at some of the commonly used verbs and to see how to apply them to a data frame</p>
 <p>The function <code>select()</code> chooses variables by name. For example, choose the month (<code>Month</code>), day (<code>Day</code>), and temperature (<code>Temp</code>) columns.</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="tuesday-january-17-2023.html#cb167-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb167-2"><a href="tuesday-january-17-2023.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Month, Day, Temp)</span></code></pre></div>
-<pre><code>## # A tibble: 153 × 3
-##    Month   Day  Temp
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
-##  1     5     1    67
-##  2     5     2    72
-##  3     5     3    74
-##  4     5     4    62
-##  5     5     5    56
-##  6     5     6    66
-##  7     5     7    65
-##  8     5     8    59
-##  9     5     9    61
-## 10     5    10    69
-## # … with 143 more rows</code></pre>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="tuesday-january-17-2023.html#cb163-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb163-2"><a href="tuesday-january-17-2023.html#cb163-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Month, Day, Temp)</span></code></pre></div>
+<pre><code>##     Month Day Temp
+## 1       5   1   67
+## 2       5   2   72
+## 3       5   3   74
+## 4       5   4   62
+## 5       5   5   56
+## 6       5   6   66
+## 7       5   7   65
+## 8       5   8   59
+## 9       5   9   61
+## 10      5  10   69
+## 11      5  11   74
+## 12      5  12   69
+## 13      5  13   66
+## 14      5  14   68
+## 15      5  15   58
+## 16      5  16   64
+## 17      5  17   66
+## 18      5  18   57
+## 19      5  19   68
+## 20      5  20   62
+## 21      5  21   59
+## 22      5  22   73
+## 23      5  23   61
+## 24      5  24   61
+## 25      5  25   57
+## 26      5  26   58
+## 27      5  27   57
+## 28      5  28   67
+## 29      5  29   81
+## 30      5  30   79
+## 31      5  31   76
+## 32      6   1   78
+## 33      6   2   74
+## 34      6   3   67
+## 35      6   4   84
+## 36      6   5   85
+## 37      6   6   79
+## 38      6   7   82
+## 39      6   8   87
+## 40      6   9   90
+## 41      6  10   87
+## 42      6  11   93
+## 43      6  12   92
+## 44      6  13   82
+## 45      6  14   80
+## 46      6  15   79
+## 47      6  16   77
+## 48      6  17   72
+## 49      6  18   65
+## 50      6  19   73
+## 51      6  20   76
+## 52      6  21   77
+## 53      6  22   76
+## 54      6  23   76
+## 55      6  24   76
+## 56      6  25   75
+## 57      6  26   78
+## 58      6  27   73
+## 59      6  28   80
+## 60      6  29   77
+## 61      6  30   83
+## 62      7   1   84
+## 63      7   2   85
+## 64      7   3   81
+## 65      7   4   84
+## 66      7   5   83
+## 67      7   6   83
+## 68      7   7   88
+## 69      7   8   92
+## 70      7   9   92
+## 71      7  10   89
+## 72      7  11   82
+## 73      7  12   73
+## 74      7  13   81
+## 75      7  14   91
+## 76      7  15   80
+## 77      7  16   81
+## 78      7  17   82
+## 79      7  18   84
+## 80      7  19   87
+## 81      7  20   85
+## 82      7  21   74
+## 83      7  22   81
+## 84      7  23   82
+## 85      7  24   86
+## 86      7  25   85
+## 87      7  26   82
+## 88      7  27   86
+## 89      7  28   88
+## 90      7  29   86
+## 91      7  30   83
+## 92      7  31   81
+## 93      8   1   81
+## 94      8   2   81
+## 95      8   3   82
+## 96      8   4   86
+## 97      8   5   85
+## 98      8   6   87
+## 99      8   7   89
+## 100     8   8   90
+## 101     8   9   90
+## 102     8  10   92
+## 103     8  11   86
+## 104     8  12   86
+## 105     8  13   82
+## 106     8  14   80
+## 107     8  15   79
+## 108     8  16   77
+## 109     8  17   79
+## 110     8  18   76
+## 111     8  19   78
+## 112     8  20   78
+## 113     8  21   77
+## 114     8  22   72
+## 115     8  23   75
+## 116     8  24   79
+## 117     8  25   81
+## 118     8  26   86
+## 119     8  27   88
+## 120     8  28   97
+## 121     8  29   94
+## 122     8  30   96
+## 123     8  31   94
+## 124     9   1   91
+## 125     9   2   92
+## 126     9   3   93
+## 127     9   4   93
+## 128     9   5   87
+## 129     9   6   84
+## 130     9   7   80
+## 131     9   8   78
+## 132     9   9   75
+## 133     9  10   73
+## 134     9  11   81
+## 135     9  12   76
+## 136     9  13   77
+## 137     9  14   71
+## 138     9  15   71
+## 139     9  16   78
+## 140     9  17   67
+## 141     9  18   76
+## 142     9  19   68
+## 143     9  20   82
+## 144     9  21   64
+## 145     9  22   71
+## 146     9  23   81
+## 147     9  24   69
+## 148     9  25   63
+## 149     9  26   70
+## 150     9  27   77
+## 151     9  28   75
+## 152     9  29   76
+## 153     9  30   68</code></pre>
 <p>The result is a data frame containing only the three columns with column names listed in the <code>select()</code> function.</p>
 <p>Suppose you want a new data frame with only the temperature and ozone concentrations. You include an assignment operator (<code>&lt;-</code>) and an object name (here <code>df</code>).</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="tuesday-january-17-2023.html#cb169-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span></span>
-<span id="cb169-2"><a href="tuesday-january-17-2023.html#cb169-2" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Temp, Ozone)</span>
-<span id="cb169-3"><a href="tuesday-january-17-2023.html#cb169-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
-<pre><code>## # A tibble: 153 × 2
-##     Temp Ozone
-##    &lt;int&gt; &lt;int&gt;
-##  1    67    41
-##  2    72    36
-##  3    74    12
-##  4    62    18
-##  5    56    NA
-##  6    66    28
-##  7    65    23
-##  8    59    19
-##  9    61     8
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="tuesday-january-17-2023.html#cb165-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span></span>
+<span id="cb165-2"><a href="tuesday-january-17-2023.html#cb165-2" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Temp, Ozone)</span>
+<span id="cb165-3"><a href="tuesday-january-17-2023.html#cb165-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<pre><code>##     Temp Ozone
+## 1     67    41
+## 2     72    36
+## 3     74    12
+## 4     62    18
+## 5     56    NA
+## 6     66    28
+## 7     65    23
+## 8     59    19
+## 9     61     8
 ## 10    69    NA
-## # … with 143 more rows</code></pre>
+## 11    74     7
+## 12    69    16
+## 13    66    11
+## 14    68    14
+## 15    58    18
+## 16    64    14
+## 17    66    34
+## 18    57     6
+## 19    68    30
+## 20    62    11
+## 21    59     1
+## 22    73    11
+## 23    61     4
+## 24    61    32
+## 25    57    NA
+## 26    58    NA
+## 27    57    NA
+## 28    67    23
+## 29    81    45
+## 30    79   115
+## 31    76    37
+## 32    78    NA
+## 33    74    NA
+## 34    67    NA
+## 35    84    NA
+## 36    85    NA
+## 37    79    NA
+## 38    82    29
+## 39    87    NA
+## 40    90    71
+## 41    87    39
+## 42    93    NA
+## 43    92    NA
+## 44    82    23
+## 45    80    NA
+## 46    79    NA
+## 47    77    21
+## 48    72    37
+## 49    65    20
+## 50    73    12
+## 51    76    13
+## 52    77    NA
+## 53    76    NA
+## 54    76    NA
+## 55    76    NA
+## 56    75    NA
+## 57    78    NA
+## 58    73    NA
+## 59    80    NA
+## 60    77    NA
+## 61    83    NA
+## 62    84   135
+## 63    85    49
+## 64    81    32
+## 65    84    NA
+## 66    83    64
+## 67    83    40
+## 68    88    77
+## 69    92    97
+## 70    92    97
+## 71    89    85
+## 72    82    NA
+## 73    73    10
+## 74    81    27
+## 75    91    NA
+## 76    80     7
+## 77    81    48
+## 78    82    35
+## 79    84    61
+## 80    87    79
+## 81    85    63
+## 82    74    16
+## 83    81    NA
+## 84    82    NA
+## 85    86    80
+## 86    85   108
+## 87    82    20
+## 88    86    52
+## 89    88    82
+## 90    86    50
+## 91    83    64
+## 92    81    59
+## 93    81    39
+## 94    81     9
+## 95    82    16
+## 96    86    78
+## 97    85    35
+## 98    87    66
+## 99    89   122
+## 100   90    89
+## 101   90   110
+## 102   92    NA
+## 103   86    NA
+## 104   86    44
+## 105   82    28
+## 106   80    65
+## 107   79    NA
+## 108   77    22
+## 109   79    59
+## 110   76    23
+## 111   78    31
+## 112   78    44
+## 113   77    21
+## 114   72     9
+## 115   75    NA
+## 116   79    45
+## 117   81   168
+## 118   86    73
+## 119   88    NA
+## 120   97    76
+## 121   94   118
+## 122   96    84
+## 123   94    85
+## 124   91    96
+## 125   92    78
+## 126   93    73
+## 127   93    91
+## 128   87    47
+## 129   84    32
+## 130   80    20
+## 131   78    23
+## 132   75    21
+## 133   73    24
+## 134   81    44
+## 135   76    21
+## 136   77    28
+## 137   71     9
+## 138   71    13
+## 139   78    46
+## 140   67    18
+## 141   76    13
+## 142   68    24
+## 143   82    16
+## 144   64    13
+## 145   71    23
+## 146   81    36
+## 147   69     7
+## 148   63    14
+## 149   70    30
+## 150   77    NA
+## 151   75    14
+## 152   76    18
+## 153   68    20</code></pre>
 <p>The verbs take data frames as input and return data frames</p>
 <p>The function <code>filter()</code> chooses observations based on specific values. Suppose you want only the observations where the temperature is at or above 80 F</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="tuesday-january-17-2023.html#cb171-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb171-2"><a href="tuesday-january-17-2023.html#cb171-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 73 × 6
-##    Ozone Solar.R  Wind  Temp Month   Day
-##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-##  1    45     252  14.9    81     5    29
-##  2    NA     186   9.2    84     6     4
-##  3    NA     220   8.6    85     6     5
-##  4    29     127   9.7    82     6     7
-##  5    NA     273   6.9    87     6     8
-##  6    71     291  13.8    90     6     9
-##  7    39     323  11.5    87     6    10
-##  8    NA     259  10.9    93     6    11
-##  9    NA     250   9.2    92     6    12
-## 10    23     148   8      82     6    13
-## # … with 63 more rows</code></pre>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="tuesday-january-17-2023.html#cb167-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb167-2"><a href="tuesday-january-17-2023.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span>)</span></code></pre></div>
+<pre><code>##    Ozone Solar.R Wind Temp Month Day
+## 1     45     252 14.9   81     5  29
+## 2     NA     186  9.2   84     6   4
+## 3     NA     220  8.6   85     6   5
+## 4     29     127  9.7   82     6   7
+## 5     NA     273  6.9   87     6   8
+## 6     71     291 13.8   90     6   9
+## 7     39     323 11.5   87     6  10
+## 8     NA     259 10.9   93     6  11
+## 9     NA     250  9.2   92     6  12
+## 10    23     148  8.0   82     6  13
+## 11    NA     332 13.8   80     6  14
+## 12    NA      98 11.5   80     6  28
+## 13    NA     138  8.0   83     6  30
+## 14   135     269  4.1   84     7   1
+## 15    49     248  9.2   85     7   2
+## 16    32     236  9.2   81     7   3
+## 17    NA     101 10.9   84     7   4
+## 18    64     175  4.6   83     7   5
+## 19    40     314 10.9   83     7   6
+## 20    77     276  5.1   88     7   7
+## 21    97     267  6.3   92     7   8
+## 22    97     272  5.7   92     7   9
+## 23    85     175  7.4   89     7  10
+## 24    NA     139  8.6   82     7  11
+## 25    27     175 14.9   81     7  13
+## 26    NA     291 14.9   91     7  14
+## 27     7      48 14.3   80     7  15
+## 28    48     260  6.9   81     7  16
+## 29    35     274 10.3   82     7  17
+## 30    61     285  6.3   84     7  18
+## 31    79     187  5.1   87     7  19
+## 32    63     220 11.5   85     7  20
+## 33    NA     258  9.7   81     7  22
+## 34    NA     295 11.5   82     7  23
+## 35    80     294  8.6   86     7  24
+## 36   108     223  8.0   85     7  25
+## 37    20      81  8.6   82     7  26
+## 38    52      82 12.0   86     7  27
+## 39    82     213  7.4   88     7  28
+## 40    50     275  7.4   86     7  29
+## 41    64     253  7.4   83     7  30
+## 42    59     254  9.2   81     7  31
+## 43    39      83  6.9   81     8   1
+## 44     9      24 13.8   81     8   2
+## 45    16      77  7.4   82     8   3
+## 46    78      NA  6.9   86     8   4
+## 47    35      NA  7.4   85     8   5
+## 48    66      NA  4.6   87     8   6
+## 49   122     255  4.0   89     8   7
+## 50    89     229 10.3   90     8   8
+## 51   110     207  8.0   90     8   9
+## 52    NA     222  8.6   92     8  10
+## 53    NA     137 11.5   86     8  11
+## 54    44     192 11.5   86     8  12
+## 55    28     273 11.5   82     8  13
+## 56    65     157  9.7   80     8  14
+## 57   168     238  3.4   81     8  25
+## 58    73     215  8.0   86     8  26
+## 59    NA     153  5.7   88     8  27
+## 60    76     203  9.7   97     8  28
+## 61   118     225  2.3   94     8  29
+## 62    84     237  6.3   96     8  30
+## 63    85     188  6.3   94     8  31
+## 64    96     167  6.9   91     9   1
+## 65    78     197  5.1   92     9   2
+## 66    73     183  2.8   93     9   3
+## 67    91     189  4.6   93     9   4
+## 68    47      95  7.4   87     9   5
+## 69    32      92 15.5   84     9   6
+## 70    20     252 10.9   80     9   7
+## 71    44     236 14.9   81     9  11
+## 72    16     201  8.0   82     9  20
+## 73    36     139 10.3   81     9  23</code></pre>
 <p>The result is a data frame with the same 6 columns but now only 73 observations. Each of the observations has a temperature of at least 80 F</p>
 <p>Suppose you want a new data frame keeping only observations when temperature is at least 80 F and when winds are less than 5 mph</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="tuesday-january-17-2023.html#cb173-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span> </span>
-<span id="cb173-2"><a href="tuesday-january-17-2023.html#cb173-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span> <span class="sc">&amp;</span> Wind <span class="sc">&lt;</span> <span class="dv">5</span>)</span>
-<span id="cb173-3"><a href="tuesday-january-17-2023.html#cb173-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
-<pre><code>## # A tibble: 8 × 6
-##   Ozone Solar.R  Wind  Temp Month   Day
-##   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1   135     269   4.1    84     7     1
-## 2    64     175   4.6    83     7     5
-## 3    66      NA   4.6    87     8     6
-## 4   122     255   4      89     8     7
-## 5   168     238   3.4    81     8    25
-## 6   118     225   2.3    94     8    29
-## 7    73     183   2.8    93     9     3
-## 8    91     189   4.6    93     9     4</code></pre>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="tuesday-january-17-2023.html#cb169-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> airquality <span class="sc">|&gt;</span> </span>
+<span id="cb169-2"><a href="tuesday-january-17-2023.html#cb169-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;=</span> <span class="dv">80</span> <span class="sc">&amp;</span> Wind <span class="sc">&lt;</span> <span class="dv">5</span>)</span>
+<span id="cb169-3"><a href="tuesday-january-17-2023.html#cb169-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<pre><code>##   Ozone Solar.R Wind Temp Month Day
+## 1   135     269  4.1   84     7   1
+## 2    64     175  4.6   83     7   5
+## 3    66      NA  4.6   87     8   6
+## 4   122     255  4.0   89     8   7
+## 5   168     238  3.4   81     8  25
+## 6   118     225  2.3   94     8  29
+## 7    73     183  2.8   93     9   3
+## 8    91     189  4.6   93     9   4</code></pre>
 <p>The function <code>arrange()</code> orders the rows by values given in a particular column.</p>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="tuesday-january-17-2023.html#cb175-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb175-2"><a href="tuesday-january-17-2023.html#cb175-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Solar.R)</span></code></pre></div>
-<pre><code>## # A tibble: 153 × 6
-##    Ozone Solar.R  Wind  Temp Month   Day
-##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-##  1    16       7   6.9    74     7    21
-##  2     1       8   9.7    59     5    21
-##  3    23      13  12      67     5    28
-##  4    23      14   9.2    71     9    22
-##  5     8      19  20.1    61     5     9
-##  6    14      20  16.6    63     9    25
-##  7     9      24  13.8    81     8     2
-##  8     9      24  10.9    71     9    14
-##  9     4      25   9.7    61     5    23
-## 10    13      27  10.3    76     9    18
-## # … with 143 more rows</code></pre>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="tuesday-january-17-2023.html#cb171-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb171-2"><a href="tuesday-january-17-2023.html#cb171-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Solar.R)</span></code></pre></div>
+<pre><code>##     Ozone Solar.R Wind Temp Month Day
+## 1      16       7  6.9   74     7  21
+## 2       1       8  9.7   59     5  21
+## 3      23      13 12.0   67     5  28
+## 4      23      14  9.2   71     9  22
+## 5       8      19 20.1   61     5   9
+## 6      14      20 16.6   63     9  25
+## 7       9      24 13.8   81     8   2
+## 8       9      24 10.9   71     9  14
+## 9       4      25  9.7   61     5  23
+## 10     13      27 10.3   76     9  18
+## 11     NA      31 14.9   77     6  29
+## 12      9      36 14.3   72     8  22
+## 13     20      37  9.2   65     6  18
+## 14     11      44  9.7   62     5  20
+## 15     NA      47 10.3   73     6  27
+## 16      7      48 14.3   80     7  15
+## 17      7      49 10.3   69     9  24
+## 18     59      51  6.3   79     8  17
+## 19     NA      59  1.7   76     6  22
+## 20     NA      64 11.5   79     8  15
+## 21     18      65 13.2   58     5  15
+## 22     NA      66 16.6   57     5  25
+## 23     22      71 10.3   77     8  16
+## 24     16      77  7.4   82     8   3
+## 25      6      78 18.4   57     5  18
+## 26     20      81  8.6   82     7  26
+## 27     52      82 12.0   86     7  27
+## 28     39      83  6.9   81     8   1
+## 29     NA      91  4.6   76     6  23
+## 30     32      92 12.0   61     5  24
+## 31     32      92 15.5   84     9   6
+## 32     47      95  7.4   87     9   5
+## 33     NA      98 11.5   80     6  28
+## 34     19      99 13.8   59     5   8
+## 35     NA     101 10.9   84     7   4
+## 36     13     112 11.5   71     9  15
+## 37     23     115  7.4   76     8  18
+## 38     36     118  8.0   72     5   2
+## 39     12     120 11.5   73     6  19
+## 40     29     127  9.7   82     6   7
+## 41     NA     127  8.0   78     6  26
+## 42     18     131  8.0   76     9  29
+## 43     NA     135  8.0   75     6  25
+## 44     13     137 10.3   76     6  20
+## 45     NA     137 11.5   86     8  11
+## 46     NA     138  8.0   83     6  30
+## 47     NA     139  8.6   82     7  11
+## 48     36     139 10.3   81     9  23
+## 49     NA     145 13.2   77     9  27
+## 50     23     148  8.0   82     6  13
+## 51     12     149 12.6   74     5   3
+## 52     NA     150  6.3   77     6  21
+## 53     NA     153  5.7   88     8  27
+## 54     65     157  9.7   80     8  14
+## 55     96     167  6.9   91     9   1
+## 56     64     175  4.6   83     7   5
+## 57     85     175  7.4   89     7  10
+## 58     27     175 14.9   81     7  13
+## 59     73     183  2.8   93     9   3
+## 60     NA     186  9.2   84     6   4
+## 61     79     187  5.1   87     7  19
+## 62     85     188  6.3   94     8  31
+## 63     91     189  4.6   93     9   4
+## 64     41     190  7.4   67     5   1
+## 65     44     190 10.3   78     8  20
+## 66     21     191 14.9   77     6  16
+## 67     14     191 14.3   75     9  28
+## 68     44     192 11.5   86     8  12
+## 69     30     193  6.9   70     9  26
+## 70     NA     194  8.6   69     5  10
+## 71     78     197  5.1   92     9   2
+## 72     16     201  8.0   82     9  20
+## 73     76     203  9.7   97     8  28
+## 74    110     207  8.0   90     8   9
+## 75     45     212  9.7   79     8  24
+## 76     82     213  7.4   88     7  28
+## 77     73     215  8.0   86     8  26
+## 78     NA     220  8.6   85     6   5
+## 79     63     220 11.5   85     7  20
+## 80     23     220 10.3   78     9   8
+## 81     NA     222  8.6   92     8  10
+## 82    115     223  5.7   79     5  30
+## 83    108     223  8.0   85     7  25
+## 84     20     223 11.5   68     9  30
+## 85     18     224 13.8   67     9  17
+## 86    118     225  2.3   94     8  29
+## 87     89     229 10.3   90     8   8
+## 88     21     230 10.9   75     9   9
+## 89     32     236  9.2   81     7   3
+## 90     44     236 14.9   81     9  11
+## 91     84     237  6.3   96     8  30
+## 92     46     237  6.9   78     9  16
+## 93    168     238  3.4   81     8  25
+## 94     28     238  6.3   77     9  13
+## 95     24     238 10.3   68     9  19
+## 96     13     238 12.6   64     9  21
+## 97     NA     242 16.1   67     6   3
+## 98     31     244 10.9   78     8  19
+## 99     49     248  9.2   85     7   2
+## 100    NA     250  9.2   92     6  12
+## 101    NA     250  6.3   76     6  24
+## 102    45     252 14.9   81     5  29
+## 103    20     252 10.9   80     9   7
+## 104    64     253  7.4   83     7  30
+## 105    59     254  9.2   81     7  31
+## 106   122     255  4.0   89     8   7
+## 107    NA     255 12.6   75     8  23
+## 108    16     256  9.7   69     5  12
+## 109    NA     258  9.7   81     7  22
+## 110    NA     259 10.9   93     6  11
+## 111    21     259 15.5   77     8  21
+## 112    24     259  9.7   73     9  10
+## 113    21     259 15.5   76     9  12
+## 114    48     260  6.9   81     7  16
+## 115    NA     264 14.3   79     6   6
+## 116    10     264 14.3   73     7  12
+## 117    NA     266 14.9   58     5  26
+## 118    97     267  6.3   92     7   8
+## 119   135     269  4.1   84     7   1
+## 120    97     272  5.7   92     7   9
+## 121    NA     273  6.9   87     6   8
+## 122    28     273 11.5   82     8  13
+## 123    14     274 10.9   68     5  14
+## 124    35     274 10.3   82     7  17
+## 125    50     275  7.4   86     7  29
+## 126    77     276  5.1   88     7   7
+## 127    37     279  7.4   76     5  31
+## 128    37     284 20.7   72     6  17
+## 129    61     285  6.3   84     7  18
+## 130    NA     286  8.6   78     6   1
+## 131    NA     287  9.7   74     6   2
+## 132    11     290  9.2   66     5  13
+## 133    71     291 13.8   90     6   9
+## 134    NA     291 14.9   91     7  14
+## 135    80     294  8.6   86     7  24
+## 136    NA     295 11.5   82     7  23
+## 137    23     299  8.6   65     5   7
+## 138    34     307 12.0   66     5  17
+## 139    18     313 11.5   62     5   4
+## 140    40     314 10.9   83     7   6
+## 141    11     320 16.6   73     5  22
+## 142    30     322 11.5   68     5  19
+## 143    NA     322 11.5   79     6  15
+## 144    39     323 11.5   87     6  10
+## 145    NA     332 13.8   80     6  14
+## 146    14     334 11.5   64     5  16
+## 147    NA      NA 14.3   56     5   5
+## 148    28      NA 14.9   66     5   6
+## 149     7      NA  6.9   74     5  11
+## 150    NA      NA  8.0   57     5  27
+## 151    78      NA  6.9   86     8   4
+## 152    35      NA  7.4   85     8   5
+## 153    66      NA  4.6   87     8   6</code></pre>
 <p>The ordering is done from the lowest value of radiation to highest value. Here you see the first 10 rows. Note <code>Month</code> and <code>Day</code> are no longer chronological</p>
 <p>Repeat, but order by the value of air temperature</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="tuesday-january-17-2023.html#cb177-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb177-2"><a href="tuesday-january-17-2023.html#cb177-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
-<pre><code>## # A tibble: 153 × 6
-##    Ozone Solar.R  Wind  Temp Month   Day
-##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-##  1    NA      NA  14.3    56     5     5
-##  2     6      78  18.4    57     5    18
-##  3    NA      66  16.6    57     5    25
-##  4    NA      NA   8      57     5    27
-##  5    18      65  13.2    58     5    15
-##  6    NA     266  14.9    58     5    26
-##  7    19      99  13.8    59     5     8
-##  8     1       8   9.7    59     5    21
-##  9     8      19  20.1    61     5     9
-## 10     4      25   9.7    61     5    23
-## # … with 143 more rows</code></pre>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="tuesday-january-17-2023.html#cb173-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb173-2"><a href="tuesday-january-17-2023.html#cb173-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
+<pre><code>##     Ozone Solar.R Wind Temp Month Day
+## 1      NA      NA 14.3   56     5   5
+## 2       6      78 18.4   57     5  18
+## 3      NA      66 16.6   57     5  25
+## 4      NA      NA  8.0   57     5  27
+## 5      18      65 13.2   58     5  15
+## 6      NA     266 14.9   58     5  26
+## 7      19      99 13.8   59     5   8
+## 8       1       8  9.7   59     5  21
+## 9       8      19 20.1   61     5   9
+## 10      4      25  9.7   61     5  23
+## 11     32      92 12.0   61     5  24
+## 12     18     313 11.5   62     5   4
+## 13     11      44  9.7   62     5  20
+## 14     14      20 16.6   63     9  25
+## 15     14     334 11.5   64     5  16
+## 16     13     238 12.6   64     9  21
+## 17     23     299  8.6   65     5   7
+## 18     20      37  9.2   65     6  18
+## 19     28      NA 14.9   66     5   6
+## 20     11     290  9.2   66     5  13
+## 21     34     307 12.0   66     5  17
+## 22     41     190  7.4   67     5   1
+## 23     23      13 12.0   67     5  28
+## 24     NA     242 16.1   67     6   3
+## 25     18     224 13.8   67     9  17
+## 26     14     274 10.9   68     5  14
+## 27     30     322 11.5   68     5  19
+## 28     24     238 10.3   68     9  19
+## 29     20     223 11.5   68     9  30
+## 30     NA     194  8.6   69     5  10
+## 31     16     256  9.7   69     5  12
+## 32      7      49 10.3   69     9  24
+## 33     30     193  6.9   70     9  26
+## 34      9      24 10.9   71     9  14
+## 35     13     112 11.5   71     9  15
+## 36     23      14  9.2   71     9  22
+## 37     36     118  8.0   72     5   2
+## 38     37     284 20.7   72     6  17
+## 39      9      36 14.3   72     8  22
+## 40     11     320 16.6   73     5  22
+## 41     12     120 11.5   73     6  19
+## 42     NA      47 10.3   73     6  27
+## 43     10     264 14.3   73     7  12
+## 44     24     259  9.7   73     9  10
+## 45     12     149 12.6   74     5   3
+## 46      7      NA  6.9   74     5  11
+## 47     NA     287  9.7   74     6   2
+## 48     16       7  6.9   74     7  21
+## 49     NA     135  8.0   75     6  25
+## 50     NA     255 12.6   75     8  23
+## 51     21     230 10.9   75     9   9
+## 52     14     191 14.3   75     9  28
+## 53     37     279  7.4   76     5  31
+## 54     13     137 10.3   76     6  20
+## 55     NA      59  1.7   76     6  22
+## 56     NA      91  4.6   76     6  23
+## 57     NA     250  6.3   76     6  24
+## 58     23     115  7.4   76     8  18
+## 59     21     259 15.5   76     9  12
+## 60     13      27 10.3   76     9  18
+## 61     18     131  8.0   76     9  29
+## 62     21     191 14.9   77     6  16
+## 63     NA     150  6.3   77     6  21
+## 64     NA      31 14.9   77     6  29
+## 65     22      71 10.3   77     8  16
+## 66     21     259 15.5   77     8  21
+## 67     28     238  6.3   77     9  13
+## 68     NA     145 13.2   77     9  27
+## 69     NA     286  8.6   78     6   1
+## 70     NA     127  8.0   78     6  26
+## 71     31     244 10.9   78     8  19
+## 72     44     190 10.3   78     8  20
+## 73     23     220 10.3   78     9   8
+## 74     46     237  6.9   78     9  16
+## 75    115     223  5.7   79     5  30
+## 76     NA     264 14.3   79     6   6
+## 77     NA     322 11.5   79     6  15
+## 78     NA      64 11.5   79     8  15
+## 79     59      51  6.3   79     8  17
+## 80     45     212  9.7   79     8  24
+## 81     NA     332 13.8   80     6  14
+## 82     NA      98 11.5   80     6  28
+## 83      7      48 14.3   80     7  15
+## 84     65     157  9.7   80     8  14
+## 85     20     252 10.9   80     9   7
+## 86     45     252 14.9   81     5  29
+## 87     32     236  9.2   81     7   3
+## 88     27     175 14.9   81     7  13
+## 89     48     260  6.9   81     7  16
+## 90     NA     258  9.7   81     7  22
+## 91     59     254  9.2   81     7  31
+## 92     39      83  6.9   81     8   1
+## 93      9      24 13.8   81     8   2
+## 94    168     238  3.4   81     8  25
+## 95     44     236 14.9   81     9  11
+## 96     36     139 10.3   81     9  23
+## 97     29     127  9.7   82     6   7
+## 98     23     148  8.0   82     6  13
+## 99     NA     139  8.6   82     7  11
+## 100    35     274 10.3   82     7  17
+## 101    NA     295 11.5   82     7  23
+## 102    20      81  8.6   82     7  26
+## 103    16      77  7.4   82     8   3
+## 104    28     273 11.5   82     8  13
+## 105    16     201  8.0   82     9  20
+## 106    NA     138  8.0   83     6  30
+## 107    64     175  4.6   83     7   5
+## 108    40     314 10.9   83     7   6
+## 109    64     253  7.4   83     7  30
+## 110    NA     186  9.2   84     6   4
+## 111   135     269  4.1   84     7   1
+## 112    NA     101 10.9   84     7   4
+## 113    61     285  6.3   84     7  18
+## 114    32      92 15.5   84     9   6
+## 115    NA     220  8.6   85     6   5
+## 116    49     248  9.2   85     7   2
+## 117    63     220 11.5   85     7  20
+## 118   108     223  8.0   85     7  25
+## 119    35      NA  7.4   85     8   5
+## 120    80     294  8.6   86     7  24
+## 121    52      82 12.0   86     7  27
+## 122    50     275  7.4   86     7  29
+## 123    78      NA  6.9   86     8   4
+## 124    NA     137 11.5   86     8  11
+## 125    44     192 11.5   86     8  12
+## 126    73     215  8.0   86     8  26
+## 127    NA     273  6.9   87     6   8
+## 128    39     323 11.5   87     6  10
+## 129    79     187  5.1   87     7  19
+## 130    66      NA  4.6   87     8   6
+## 131    47      95  7.4   87     9   5
+## 132    77     276  5.1   88     7   7
+## 133    82     213  7.4   88     7  28
+## 134    NA     153  5.7   88     8  27
+## 135    85     175  7.4   89     7  10
+## 136   122     255  4.0   89     8   7
+## 137    71     291 13.8   90     6   9
+## 138    89     229 10.3   90     8   8
+## 139   110     207  8.0   90     8   9
+## 140    NA     291 14.9   91     7  14
+## 141    96     167  6.9   91     9   1
+## 142    NA     250  9.2   92     6  12
+## 143    97     267  6.3   92     7   8
+## 144    97     272  5.7   92     7   9
+## 145    NA     222  8.6   92     8  10
+## 146    78     197  5.1   92     9   2
+## 147    NA     259 10.9   93     6  11
+## 148    73     183  2.8   93     9   3
+## 149    91     189  4.6   93     9   4
+## 150   118     225  2.3   94     8  29
+## 151    85     188  6.3   94     8  31
+## 152    84     237  6.3   96     8  30
+## 153    76     203  9.7   97     8  28</code></pre>
 <p>Importantly you can string the functions together. For example select the variables radiation, wind, and temperature then filter by temperatures above 90 F and arrange by temperature</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="tuesday-january-17-2023.html#cb179-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb179-2"><a href="tuesday-january-17-2023.html#cb179-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Solar.R, Wind, Temp) <span class="sc">|&gt;</span></span>
-<span id="cb179-3"><a href="tuesday-january-17-2023.html#cb179-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;</span> <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
-<span id="cb179-4"><a href="tuesday-january-17-2023.html#cb179-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
-<pre><code>## # A tibble: 14 × 3
-##    Solar.R  Wind  Temp
-##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt;
-##  1     291  14.9    91
-##  2     167   6.9    91
-##  3     250   9.2    92
-##  4     267   6.3    92
-##  5     272   5.7    92
-##  6     222   8.6    92
-##  7     197   5.1    92
-##  8     259  10.9    93
-##  9     183   2.8    93
-## 10     189   4.6    93
-## 11     225   2.3    94
-## 12     188   6.3    94
-## 13     237   6.3    96
-## 14     203   9.7    97</code></pre>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="tuesday-january-17-2023.html#cb175-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb175-2"><a href="tuesday-january-17-2023.html#cb175-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Solar.R, Wind, Temp) <span class="sc">|&gt;</span></span>
+<span id="cb175-3"><a href="tuesday-january-17-2023.html#cb175-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&gt;</span> <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
+<span id="cb175-4"><a href="tuesday-january-17-2023.html#cb175-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Temp)</span></code></pre></div>
+<pre><code>##    Solar.R Wind Temp
+## 1      291 14.9   91
+## 2      167  6.9   91
+## 3      250  9.2   92
+## 4      267  6.3   92
+## 5      272  5.7   92
+## 6      222  8.6   92
+## 7      197  5.1   92
+## 8      259 10.9   93
+## 9      183  2.8   93
+## 10     189  4.6   93
+## 11     225  2.3   94
+## 12     188  6.3   94
+## 13     237  6.3   96
+## 14     203  9.7   97</code></pre>
 <p>The result is a data frame with three columns and 14 rows arranged by increasing temperatures above 90 F</p>
 <p>The <code>mutate()</code> function adds new columns to the data frame. For example, create a new column called <code>TempC</code> as the temperature in degrees Celsius. Also create a column called <code>WindMS</code> as the wind speed in meters per second</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="tuesday-january-17-2023.html#cb181-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb181-2"><a href="tuesday-january-17-2023.html#cb181-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempC =</span> (Temp <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">9</span>,</span>
-<span id="cb181-3"><a href="tuesday-january-17-2023.html#cb181-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">WindMS =</span> Wind <span class="sc">*</span> .<span class="dv">44704</span>) </span></code></pre></div>
-<pre><code>## # A tibble: 153 × 8
-##    Ozone Solar.R  Wind  Temp Month   Day TempC WindMS
-##    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
-##  1    41     190   7.4    67     5     1  19.4   3.31
-##  2    36     118   8      72     5     2  22.2   3.58
-##  3    12     149  12.6    74     5     3  23.3   5.63
-##  4    18     313  11.5    62     5     4  16.7   5.14
-##  5    NA      NA  14.3    56     5     5  13.3   6.39
-##  6    28      NA  14.9    66     5     6  18.9   6.66
-##  7    23     299   8.6    65     5     7  18.3   3.84
-##  8    19      99  13.8    59     5     8  15     6.17
-##  9     8      19  20.1    61     5     9  16.1   8.99
-## 10    NA     194   8.6    69     5    10  20.6   3.84
-## # … with 143 more rows</code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="tuesday-january-17-2023.html#cb177-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb177-2"><a href="tuesday-january-17-2023.html#cb177-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempC =</span> (Temp <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">9</span>,</span>
+<span id="cb177-3"><a href="tuesday-january-17-2023.html#cb177-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">WindMS =</span> Wind <span class="sc">*</span> .<span class="dv">44704</span>) </span></code></pre></div>
+<pre><code>##     Ozone Solar.R Wind Temp Month Day    TempC   WindMS
+## 1      41     190  7.4   67     5   1 19.44444 3.308096
+## 2      36     118  8.0   72     5   2 22.22222 3.576320
+## 3      12     149 12.6   74     5   3 23.33333 5.632704
+## 4      18     313 11.5   62     5   4 16.66667 5.140960
+## 5      NA      NA 14.3   56     5   5 13.33333 6.392672
+## 6      28      NA 14.9   66     5   6 18.88889 6.660896
+## 7      23     299  8.6   65     5   7 18.33333 3.844544
+## 8      19      99 13.8   59     5   8 15.00000 6.169152
+## 9       8      19 20.1   61     5   9 16.11111 8.985504
+## 10     NA     194  8.6   69     5  10 20.55556 3.844544
+## 11      7      NA  6.9   74     5  11 23.33333 3.084576
+## 12     16     256  9.7   69     5  12 20.55556 4.336288
+## 13     11     290  9.2   66     5  13 18.88889 4.112768
+## 14     14     274 10.9   68     5  14 20.00000 4.872736
+## 15     18      65 13.2   58     5  15 14.44444 5.900928
+## 16     14     334 11.5   64     5  16 17.77778 5.140960
+## 17     34     307 12.0   66     5  17 18.88889 5.364480
+## 18      6      78 18.4   57     5  18 13.88889 8.225536
+## 19     30     322 11.5   68     5  19 20.00000 5.140960
+## 20     11      44  9.7   62     5  20 16.66667 4.336288
+## 21      1       8  9.7   59     5  21 15.00000 4.336288
+## 22     11     320 16.6   73     5  22 22.77778 7.420864
+## 23      4      25  9.7   61     5  23 16.11111 4.336288
+## 24     32      92 12.0   61     5  24 16.11111 5.364480
+## 25     NA      66 16.6   57     5  25 13.88889 7.420864
+## 26     NA     266 14.9   58     5  26 14.44444 6.660896
+## 27     NA      NA  8.0   57     5  27 13.88889 3.576320
+## 28     23      13 12.0   67     5  28 19.44444 5.364480
+## 29     45     252 14.9   81     5  29 27.22222 6.660896
+## 30    115     223  5.7   79     5  30 26.11111 2.548128
+## 31     37     279  7.4   76     5  31 24.44444 3.308096
+## 32     NA     286  8.6   78     6   1 25.55556 3.844544
+## 33     NA     287  9.7   74     6   2 23.33333 4.336288
+## 34     NA     242 16.1   67     6   3 19.44444 7.197344
+## 35     NA     186  9.2   84     6   4 28.88889 4.112768
+## 36     NA     220  8.6   85     6   5 29.44444 3.844544
+## 37     NA     264 14.3   79     6   6 26.11111 6.392672
+## 38     29     127  9.7   82     6   7 27.77778 4.336288
+## 39     NA     273  6.9   87     6   8 30.55556 3.084576
+## 40     71     291 13.8   90     6   9 32.22222 6.169152
+## 41     39     323 11.5   87     6  10 30.55556 5.140960
+## 42     NA     259 10.9   93     6  11 33.88889 4.872736
+## 43     NA     250  9.2   92     6  12 33.33333 4.112768
+## 44     23     148  8.0   82     6  13 27.77778 3.576320
+## 45     NA     332 13.8   80     6  14 26.66667 6.169152
+## 46     NA     322 11.5   79     6  15 26.11111 5.140960
+## 47     21     191 14.9   77     6  16 25.00000 6.660896
+## 48     37     284 20.7   72     6  17 22.22222 9.253728
+## 49     20      37  9.2   65     6  18 18.33333 4.112768
+## 50     12     120 11.5   73     6  19 22.77778 5.140960
+## 51     13     137 10.3   76     6  20 24.44444 4.604512
+## 52     NA     150  6.3   77     6  21 25.00000 2.816352
+## 53     NA      59  1.7   76     6  22 24.44444 0.759968
+## 54     NA      91  4.6   76     6  23 24.44444 2.056384
+## 55     NA     250  6.3   76     6  24 24.44444 2.816352
+## 56     NA     135  8.0   75     6  25 23.88889 3.576320
+## 57     NA     127  8.0   78     6  26 25.55556 3.576320
+## 58     NA      47 10.3   73     6  27 22.77778 4.604512
+## 59     NA      98 11.5   80     6  28 26.66667 5.140960
+## 60     NA      31 14.9   77     6  29 25.00000 6.660896
+## 61     NA     138  8.0   83     6  30 28.33333 3.576320
+## 62    135     269  4.1   84     7   1 28.88889 1.832864
+## 63     49     248  9.2   85     7   2 29.44444 4.112768
+## 64     32     236  9.2   81     7   3 27.22222 4.112768
+## 65     NA     101 10.9   84     7   4 28.88889 4.872736
+## 66     64     175  4.6   83     7   5 28.33333 2.056384
+## 67     40     314 10.9   83     7   6 28.33333 4.872736
+## 68     77     276  5.1   88     7   7 31.11111 2.279904
+## 69     97     267  6.3   92     7   8 33.33333 2.816352
+## 70     97     272  5.7   92     7   9 33.33333 2.548128
+## 71     85     175  7.4   89     7  10 31.66667 3.308096
+## 72     NA     139  8.6   82     7  11 27.77778 3.844544
+## 73     10     264 14.3   73     7  12 22.77778 6.392672
+## 74     27     175 14.9   81     7  13 27.22222 6.660896
+## 75     NA     291 14.9   91     7  14 32.77778 6.660896
+## 76      7      48 14.3   80     7  15 26.66667 6.392672
+## 77     48     260  6.9   81     7  16 27.22222 3.084576
+## 78     35     274 10.3   82     7  17 27.77778 4.604512
+## 79     61     285  6.3   84     7  18 28.88889 2.816352
+## 80     79     187  5.1   87     7  19 30.55556 2.279904
+## 81     63     220 11.5   85     7  20 29.44444 5.140960
+## 82     16       7  6.9   74     7  21 23.33333 3.084576
+## 83     NA     258  9.7   81     7  22 27.22222 4.336288
+## 84     NA     295 11.5   82     7  23 27.77778 5.140960
+## 85     80     294  8.6   86     7  24 30.00000 3.844544
+## 86    108     223  8.0   85     7  25 29.44444 3.576320
+## 87     20      81  8.6   82     7  26 27.77778 3.844544
+## 88     52      82 12.0   86     7  27 30.00000 5.364480
+## 89     82     213  7.4   88     7  28 31.11111 3.308096
+## 90     50     275  7.4   86     7  29 30.00000 3.308096
+## 91     64     253  7.4   83     7  30 28.33333 3.308096
+## 92     59     254  9.2   81     7  31 27.22222 4.112768
+## 93     39      83  6.9   81     8   1 27.22222 3.084576
+## 94      9      24 13.8   81     8   2 27.22222 6.169152
+## 95     16      77  7.4   82     8   3 27.77778 3.308096
+## 96     78      NA  6.9   86     8   4 30.00000 3.084576
+## 97     35      NA  7.4   85     8   5 29.44444 3.308096
+## 98     66      NA  4.6   87     8   6 30.55556 2.056384
+## 99    122     255  4.0   89     8   7 31.66667 1.788160
+## 100    89     229 10.3   90     8   8 32.22222 4.604512
+## 101   110     207  8.0   90     8   9 32.22222 3.576320
+## 102    NA     222  8.6   92     8  10 33.33333 3.844544
+## 103    NA     137 11.5   86     8  11 30.00000 5.140960
+## 104    44     192 11.5   86     8  12 30.00000 5.140960
+## 105    28     273 11.5   82     8  13 27.77778 5.140960
+## 106    65     157  9.7   80     8  14 26.66667 4.336288
+## 107    NA      64 11.5   79     8  15 26.11111 5.140960
+## 108    22      71 10.3   77     8  16 25.00000 4.604512
+## 109    59      51  6.3   79     8  17 26.11111 2.816352
+## 110    23     115  7.4   76     8  18 24.44444 3.308096
+## 111    31     244 10.9   78     8  19 25.55556 4.872736
+## 112    44     190 10.3   78     8  20 25.55556 4.604512
+## 113    21     259 15.5   77     8  21 25.00000 6.929120
+## 114     9      36 14.3   72     8  22 22.22222 6.392672
+## 115    NA     255 12.6   75     8  23 23.88889 5.632704
+## 116    45     212  9.7   79     8  24 26.11111 4.336288
+## 117   168     238  3.4   81     8  25 27.22222 1.519936
+## 118    73     215  8.0   86     8  26 30.00000 3.576320
+## 119    NA     153  5.7   88     8  27 31.11111 2.548128
+## 120    76     203  9.7   97     8  28 36.11111 4.336288
+## 121   118     225  2.3   94     8  29 34.44444 1.028192
+## 122    84     237  6.3   96     8  30 35.55556 2.816352
+## 123    85     188  6.3   94     8  31 34.44444 2.816352
+## 124    96     167  6.9   91     9   1 32.77778 3.084576
+## 125    78     197  5.1   92     9   2 33.33333 2.279904
+## 126    73     183  2.8   93     9   3 33.88889 1.251712
+## 127    91     189  4.6   93     9   4 33.88889 2.056384
+## 128    47      95  7.4   87     9   5 30.55556 3.308096
+## 129    32      92 15.5   84     9   6 28.88889 6.929120
+## 130    20     252 10.9   80     9   7 26.66667 4.872736
+## 131    23     220 10.3   78     9   8 25.55556 4.604512
+## 132    21     230 10.9   75     9   9 23.88889 4.872736
+## 133    24     259  9.7   73     9  10 22.77778 4.336288
+## 134    44     236 14.9   81     9  11 27.22222 6.660896
+## 135    21     259 15.5   76     9  12 24.44444 6.929120
+## 136    28     238  6.3   77     9  13 25.00000 2.816352
+## 137     9      24 10.9   71     9  14 21.66667 4.872736
+## 138    13     112 11.5   71     9  15 21.66667 5.140960
+## 139    46     237  6.9   78     9  16 25.55556 3.084576
+## 140    18     224 13.8   67     9  17 19.44444 6.169152
+## 141    13      27 10.3   76     9  18 24.44444 4.604512
+## 142    24     238 10.3   68     9  19 20.00000 4.604512
+## 143    16     201  8.0   82     9  20 27.77778 3.576320
+## 144    13     238 12.6   64     9  21 17.77778 5.632704
+## 145    23      14  9.2   71     9  22 21.66667 4.112768
+## 146    36     139 10.3   81     9  23 27.22222 4.604512
+## 147     7      49 10.3   69     9  24 20.55556 4.604512
+## 148    14      20 16.6   63     9  25 17.22222 7.420864
+## 149    30     193  6.9   70     9  26 21.11111 3.084576
+## 150    NA     145 13.2   77     9  27 25.00000 5.900928
+## 151    14     191 14.3   75     9  28 23.88889 6.392672
+## 152    18     131  8.0   76     9  29 24.44444 3.576320
+## 153    20     223 11.5   68     9  30 20.00000 5.140960</code></pre>
 <p>The resulting data frame has 8 columns (two new ones) labeled <code>TempC</code> and <code>WindMS</code></p>
 <p>On days when the temperature is below 60 F add a column giving the apparent temperature based on the cooling effect of the wind (wind chill) and then arrange from coldest to warmest apparent temperature</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="tuesday-january-17-2023.html#cb183-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb183-2"><a href="tuesday-january-17-2023.html#cb183-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
-<span id="cb183-3"><a href="tuesday-january-17-2023.html#cb183-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempAp =</span> <span class="fl">35.74</span> <span class="sc">+</span> .<span class="dv">6215</span> <span class="sc">*</span> Temp <span class="sc">-</span> <span class="fl">35.75</span> <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span> <span class="sc">+</span> .<span class="dv">4275</span> <span class="sc">*</span> Temp <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span>) <span class="sc">|&gt;</span></span>
-<span id="cb183-4"><a href="tuesday-january-17-2023.html#cb183-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(TempAp)</span></code></pre></div>
-<pre><code>## # A tibble: 8 × 7
-##   Ozone Solar.R  Wind  Temp Month   Day TempAp
-##   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
-## 1    NA      NA  14.3    56     5     5   52.5
-## 2     6      78  18.4    57     5    18   53.0
-## 3    NA      66  16.6    57     5    25   53.3
-## 4    NA     266  14.9    58     5    26   54.9
-## 5    18      65  13.2    58     5    15   55.2
-## 6    NA      NA   8      57     5    27   55.3
-## 7    19      99  13.8    59     5     8   56.4
-## 8     1       8   9.7    59     5    21   57.3</code></pre>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="tuesday-january-17-2023.html#cb179-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb179-2"><a href="tuesday-january-17-2023.html#cb179-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Temp <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
+<span id="cb179-3"><a href="tuesday-january-17-2023.html#cb179-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TempAp =</span> <span class="fl">35.74</span> <span class="sc">+</span> .<span class="dv">6215</span> <span class="sc">*</span> Temp <span class="sc">-</span> <span class="fl">35.75</span> <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span> <span class="sc">+</span> .<span class="dv">4275</span> <span class="sc">*</span> Temp <span class="sc">*</span> Wind<span class="sc">^</span>.<span class="dv">16</span>) <span class="sc">|&gt;</span></span>
+<span id="cb179-4"><a href="tuesday-january-17-2023.html#cb179-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(TempAp)</span></code></pre></div>
+<pre><code>##   Ozone Solar.R Wind Temp Month Day   TempAp
+## 1    NA      NA 14.3   56     5   5 52.46794
+## 2     6      78 18.4   57     5  18 53.02670
+## 3    NA      66 16.6   57     5  25 53.32303
+## 4    NA     266 14.9   58     5  26 54.90895
+## 5    18      65 13.2   58     5  15 55.23295
+## 6    NA      NA  8.0   57     5  27 55.28983
+## 7    19      99 13.8   59     5   8 56.38690
+## 8     1       8  9.7   59     5  21 57.26561</code></pre>
 <p>The <code>summarize()</code> function reduces the data frame based on a function that computes a statistic. For example, to compute the average wind speed during July or the average temperature during June type</p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="tuesday-january-17-2023.html#cb185-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb185-2"><a href="tuesday-january-17-2023.html#cb185-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">7</span>) <span class="sc">|&gt;</span></span>
-<span id="cb185-3"><a href="tuesday-january-17-2023.html#cb185-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wavg =</span> <span class="fu">mean</span>(Wind))</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 1
-##    Wavg
-##   &lt;dbl&gt;
-## 1  8.94</code></pre>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="tuesday-january-17-2023.html#cb187-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb187-2"><a href="tuesday-january-17-2023.html#cb187-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">6</span>) <span class="sc">|&gt;</span></span>
-<span id="cb187-3"><a href="tuesday-january-17-2023.html#cb187-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Tavg =</span> <span class="fu">mean</span>(Temp))</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 1
-##    Tavg
-##   &lt;dbl&gt;
-## 1  79.1</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="tuesday-january-17-2023.html#cb181-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb181-2"><a href="tuesday-january-17-2023.html#cb181-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb181-3"><a href="tuesday-january-17-2023.html#cb181-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wavg =</span> <span class="fu">mean</span>(Wind))</span></code></pre></div>
+<pre><code>##       Wavg
+## 1 8.941935</code></pre>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="tuesday-january-17-2023.html#cb183-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb183-2"><a href="tuesday-january-17-2023.html#cb183-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb183-3"><a href="tuesday-january-17-2023.html#cb183-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Tavg =</span> <span class="fu">mean</span>(Temp))</span></code></pre></div>
+<pre><code>##   Tavg
+## 1 79.1</code></pre>
 <p>You’ve seen functions that compute statistics including <code>sum()</code>, <code>sd()</code>, <code>min()</code>, <code>max()</code>, <code>var()</code>, <code>range()</code>, <code>median()</code>. Others include</p>
 <table>
 <thead>
@@ -1178,33 +1918,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>Find the maximum and median wind speed and maximum ozone concentration values during the month of May. Also determine the number of observations during May</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="tuesday-january-17-2023.html#cb189-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb189-2"><a href="tuesday-january-17-2023.html#cb189-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
-<span id="cb189-3"><a href="tuesday-january-17-2023.html#cb189-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
-<span id="cb189-4"><a href="tuesday-january-17-2023.html#cb189-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
-<span id="cb189-5"><a href="tuesday-january-17-2023.html#cb189-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone),</span>
-<span id="cb189-6"><a href="tuesday-january-17-2023.html#cb189-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 4
-##    Wmax  Wmed OzoneMax NumDays
-##   &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;   &lt;int&gt;
-## 1  20.1  11.5       NA      31</code></pre>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="tuesday-january-17-2023.html#cb185-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb185-2"><a href="tuesday-january-17-2023.html#cb185-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb185-3"><a href="tuesday-january-17-2023.html#cb185-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
+<span id="cb185-4"><a href="tuesday-january-17-2023.html#cb185-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
+<span id="cb185-5"><a href="tuesday-january-17-2023.html#cb185-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone),</span>
+<span id="cb185-6"><a href="tuesday-january-17-2023.html#cb185-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<pre><code>##   Wmax Wmed OzoneMax NumDays
+## 1 20.1 11.5       NA      31</code></pre>
 <p>The result gives an <code>NA</code> for the maximum value of ozone (<code>OzoneMax</code>) because there is at least one missing value in the <code>Ozone</code> column. You fix this with the <code>na.rm = TRUE</code> argument in the function <code>max()</code></p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="tuesday-january-17-2023.html#cb191-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb191-2"><a href="tuesday-january-17-2023.html#cb191-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
-<span id="cb191-3"><a href="tuesday-january-17-2023.html#cb191-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
-<span id="cb191-4"><a href="tuesday-january-17-2023.html#cb191-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
-<span id="cb191-5"><a href="tuesday-january-17-2023.html#cb191-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb191-6"><a href="tuesday-january-17-2023.html#cb191-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 4
-##    Wmax  Wmed OzoneMax NumDays
-##   &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;   &lt;int&gt;
-## 1  20.1  11.5      115      31</code></pre>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="tuesday-january-17-2023.html#cb187-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb187-2"><a href="tuesday-january-17-2023.html#cb187-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb187-3"><a href="tuesday-january-17-2023.html#cb187-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Wmax =</span> <span class="fu">max</span>(Wind),</span>
+<span id="cb187-4"><a href="tuesday-january-17-2023.html#cb187-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Wmed =</span> <span class="fu">median</span>(Wind),</span>
+<span id="cb187-5"><a href="tuesday-january-17-2023.html#cb187-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">OzoneMax =</span> <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb187-6"><a href="tuesday-january-17-2023.html#cb187-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<pre><code>##   Wmax Wmed OzoneMax NumDays
+## 1 20.1 11.5      115      31</code></pre>
 <p>If you want to summarize separately for each month you use the <code>group_by()</code> function. You split the data frame by some variable (e.g., <code>Month</code>), apply a function to the individual data frames, and then combine the output</p>
 <p>Find the highest ozone concentration by month. Include the number of observations (days) in the month</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="tuesday-january-17-2023.html#cb193-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb193-2"><a href="tuesday-january-17-2023.html#cb193-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Month) <span class="sc">|&gt;</span></span>
-<span id="cb193-3"><a href="tuesday-january-17-2023.html#cb193-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneMax =</span>  <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb193-4"><a href="tuesday-january-17-2023.html#cb193-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="tuesday-january-17-2023.html#cb189-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb189-2"><a href="tuesday-january-17-2023.html#cb189-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Month) <span class="sc">|&gt;</span></span>
+<span id="cb189-3"><a href="tuesday-january-17-2023.html#cb189-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneMax =</span>  <span class="fu">max</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb189-4"><a href="tuesday-january-17-2023.html#cb189-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 5 × 3
 ##   Month OzoneMax NumDays
 ##   &lt;int&gt;    &lt;int&gt;   &lt;int&gt;
@@ -1214,10 +1950,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4     8      168      31
 ## 5     9       96      30</code></pre>
 <p>Find the average ozone concentration when temperatures are above and below 70 F. Include the number of observations (days) in the two groups</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="tuesday-january-17-2023.html#cb195-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb195-2"><a href="tuesday-january-17-2023.html#cb195-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Temp <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span></span>
-<span id="cb195-3"><a href="tuesday-january-17-2023.html#cb195-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneAvg =</span>  <span class="fu">mean</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb195-4"><a href="tuesday-january-17-2023.html#cb195-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="tuesday-january-17-2023.html#cb191-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb191-2"><a href="tuesday-january-17-2023.html#cb191-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Temp <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span></span>
+<span id="cb191-3"><a href="tuesday-january-17-2023.html#cb191-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">OzoneAvg =</span>  <span class="fu">mean</span>(Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb191-4"><a href="tuesday-january-17-2023.html#cb191-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NumDays =</span> dplyr<span class="sc">::</span><span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 3
 ##   `Temp &gt;= 70` OzoneAvg NumDays
 ##   &lt;lgl&gt;           &lt;dbl&gt;   &lt;int&gt;
