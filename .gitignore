@@ -7,3 +7,7 @@ Julia.Rmd
 .DS_Store
 Answers
 Assignments
+docs/
+Other_Rmds
+packages/
+References.bib
