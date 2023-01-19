@@ -1,4 +1,4 @@
-# Thursday January 19, 2023 {.unnumbered}
+# Thursday January 19, 2023 {-}
 
 **"When I'm explaining some of the tidy verse principles and philosophy in R statistics, I often break down a home baked chunk of code and illustrate that 'it says what it does and it does what it says.'** --- Diane Beldame
 
@@ -43,7 +43,7 @@ To create a subset of the data frame that contains only tornadoes in years (`yr`
 Torn2.df <- Torn.df[Torn.df$yr >= 2001, ]
 ```
 
-You see that there are fewer rows (tornado reports) in this new data frame assigned the object name `Torn2.df`.
+You see that there are fewer rows (tornado reports) in this new data frame assigned the object name `Torn2.df` as expected since you created a subset
 
 You subset again, keeping only tornadoes with EF ratings (`mag` variable) greater than zero. Here you *recycle* the name `Torn2.df`
 
@@ -57,28 +57,26 @@ Now you compute the correlation between EF rating (`mag`) and path length (`len`
 cor(Torn2.df$mag, Torn2.df$len)
 ```
 
-Path length is recorded in miles and path width in yards and the EF damage rating variable `mag` is numeric. Here you convert path length to kilometers, path width to meters, and the EF rating to a factor and include these changes as new columns in the data frame.
+Longer tornadoes tend to be associated with worse damage. Why do you think that is the case?
+
+Path length is recorded in miles and path width in yards and the EF damage rating variable `mag` is numeric. Since as a scientist you do all calculations using the metric system, you convert path length and width to meters, and the EF rating to a factor and include these changes as new columns in the data frame
 
 ```{r}
-Torn2.df$Length <- Torn2.df$len * 1609.34
-Torn2.df$Width <- Torn2.df$wid * .9144
+Torn2.df$Length_m <- Torn2.df$len * 1609.34
+Torn2.df$Width_m <- Torn2.df$wid * .9144
 Torn2.df$EF <- factor(Torn2.df$mag)
 ```
 
-Create side-by-side box plots of path length (in kilometers) by EF rating.
+Create side-by-side box plots of path length by EF rating. Here you include a division by 1000 so the vertical scale has units of kilometers
 
 ```{r}
 plot(x = Torn2.df$EF, 
-     y = Torn2.df$Length/1000)
+     y = Torn2.df$Length_m/1000)
 ```
 
-Another example: Statewide average rainfall in Florida. Work through it on your own
+Another example: Statewide average rainfall in Florida. The data are monthly statewide average rainfall (in inches) for Florida starting in 1895. The data were obtained from <http://www.esrl.noaa.gov/psd/data/timeseries/>. I put values into a text editor and then uploaded the file to <http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt>
 
-The data are monthly statewide average rainfall (in inches) for Florida starting in 1895. The data were obtained from <http://www.esrl.noaa.gov/psd/data/timeseries/>
-
-I put values into a text editor and then uploaded the file to <http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt>
-
-You get the data into R with the `readr::read_table()` function. You assign the data object the name `FLp.df`. You type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns
+You read the data and assign the data object the name `FLp.df`. You type the name of the object to see that it is a tabled data frame (tibble) with 117 rows and 13 columns
 
 ```{r}
 loc <- "http://myweb.fsu.edu/jelsner/temp/data/FLprecip.txt"
@@ -86,17 +84,15 @@ FLp.df <- readr::read_table(file = loc)
 FLp.df
 ```
 
-The first column is the year and the next 12 columns are the months.
+The first column is the year and the next 12 columns are the months
 
-What was the statewide rainfall during June of 1900?
-
-What happens when you check the column (vector) labeled `Year` to see what elements are equal to 1900?
+What was the statewide rainfall during June of 1900? Start by asking what happens when you check the column (vector) labeled `Year` to see what elements are equal to 1900?
 
 ```{r}
 FLp.df$Year == 1900
 ```
 
-Returns a vector with one element equal to `TRUE`. What happens when you use this vector to select the vector of June rainfall values?
+Returns a vector with one element equal to `TRUE`. Next, what happens when you use this vector to select the vector of June rainfall values?
 
 ```{r}
 FLp.df$Jun[FLp.df$Year == 1900]
@@ -152,9 +148,7 @@ airquality |> summary()
 
 You read the pipe as THEN. "take the `airquality` data frame THEN summarize the columns"
 
-The pipe operator allows you to string together functions that when read by a human makes it easy to understand what is being done
-
-Think of it this way: suppose the object of interest is called `me` and there is a function called `wake_up()`. I could apply this function called `wake_up()` in two ways
+The pipe operator allows you to string together functions that when read by a human makes it easy to understand what is being done. Think of it this way: suppose the object of interest is called `me` and there is a function called `wake_up()`. I could apply this function called `wake_up()` in two ways
 
 ```{r, eval=FALSE}
 wake_up(me)  # classic
@@ -191,20 +185,18 @@ me |>
   leave_house()
 ```
 
-Which is much better in terms of 'readability' then `leave_house(drink_coffee(make_coffee(get_dressed(get_out_of_bed(wake_up(me))))))`.
+Which is much better in terms of 'readability' then `leave_house(drink_coffee(make_coffee(get_dressed(get_out_of_bed(wake_up(me))))))`
 
-Now lets look at some of the commonly used verbs and to see how to apply them to a data frame
-
-The function `select()` chooses variables by name. For example, choose the month (`Month`), day (`Day`), and temperature (`Temp`) columns.
+Now lets apply the verbs to a data frame. The function `select()` chooses variables by name. For example, choose the month (`Month`), day (`Day`), and temperature (`Temp`) columns
 
 ```{r}
 airquality |>
   dplyr::select(Month, Day, Temp)
 ```
 
-The result is a data frame containing only the three columns with column names listed in the `select()` function.
+The result is a data frame containing only the three columns with column names listed in the `select()` function
 
-Suppose you want a new data frame with only the temperature and ozone concentrations. You include an assignment operator (`<-`) and an object name (here `df`).
+Suppose you want a new data frame with only the temperature and ozone concentrations. You include an assignment operator (`<-`) and an object name (here `df`)
 
 ```{r}
 df <- airquality |>
@@ -231,7 +223,7 @@ df <- airquality |>
 df
 ```
 
-The function `arrange()` orders the rows by values given in a particular column.
+The function `arrange()` orders the rows by values given in a particular column
 
 ```{r}
 airquality |>
@@ -373,12 +365,12 @@ Working with data frames is part of the cycle of data science, along with visual
 
 Questions are tools to guide your investigation. When you ask a question, the question focuses your attention on a specific part of the data and helps you decide what to do next
 
-For more practice working with data frames using functions from the {tidyverse} set of packages.
+For more practice working with data frames using functions from the {tidyverse} set of packages
 
 -   See <http://r4ds.had.co.nz/index.html>
 -   Cheat sheets <https://www.rstudio.com/resources/cheatsheets/>
 
-## Making graphs {.unnumbered}
+## Making graphs {-}
 
 The {ggplot2} package is a popular graphics tool among data scientists (e.g., New York Times and 538). Functionality is built on principles of good data visualization
 
