@@ -1,552 +1,360 @@
-# Tuesday January 24, 2023 {.unnumbered}
+# Tuesday January 24, 2023 {-}
 
 **"Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."** --- Hadley Wickham
 
-Before moving on lets review what you learned last time.
+First lab on Thursday
 
-Working with data frames is part of the cycle of data science, along with visualizing, and modeling. The cycle of data science:
+## Making graphs (continued) {-}
+## Introduction to simple features {-}
 
-1.  Generate questions about your data.
-2.  Look for answers by visualizing and modeling the data after the data are in suitably arranged data frames.
-3.  Use what you learn to refine your questions and/or ask new ones.
+The vector model for data (vector data) represents things in the world using points, lines and polygons. These objects have discrete, well-defined borders and a high level of precision. Precision does not imply accurate.
 
-Questions are tools to guide your investigation. When you ask a question, the question focuses your attention on a specific part of the data and helps you decide what to do next.
+The raster model for data (raster data) represents continuous fields (like elevation and rainfall) using a grid of cells (raster). A raster aggregates fields to a given resolution, meaning that they are consistent over space and scale-able. The smallest features within the field are blurred or lost.
 
-Example: Penguins in the Antarctic. The data frame contains observations on Palmer penguins and is available from <https://education.rstudio.com/blog/2020/07/palmerpenguins-cran/>.
+The choice data model depends on the application: Vector data dominates the social sciences because human settlements and boundaries have discrete borders. Raster data (e.g., remotely sensed imagery) dominates the environmental sciences because environmental conditions are typically continuous. Geographers, ecologists, demographers use vector and raster data.
 
-Import the data frame using the `read_csv()` function.
+Here we will use functions from the {sf} package to work with vector data and functions in the {terra} and {raster} packages to work with raster data sets. We will also look at functions from the new {stars} package that work with both vector and raster data models.
 
-```{r}
-loc <- "https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv"
+R's spatial ecosystem continues to evolve. Most changes build on previous work. Occasionally there is a significant change that builds from scratch. The introduction of the {sf} package in about 2018 is a significant change.
 
-( penguins <- readr::read_csv(file = loc) )
-```
+sf for simple features
 
-The observations are 344 individual penguins each described by species (Adelie, Chinstrap, Gentoo), where it was found (island name), length of bill (mm), depth of bill (mm), body mass (g), male or female, and year.
+Simple features is a standard from the Open ('open source') Geospatial Consortium (OGC) to represent geographic information. It condenses geographic forms into a single geometry class.
 
-Each penguin belongs to one of three species. To see how many of the 344 penguins are in each species you use the `table()` function.
+The standard is used in spatial databases (e.g., PostGIS), commercial GIS (e.g., ESRI) and forms the vector data basis for libraries such as [GDAL](http://www.gdal.org/). A subset of simple features forms the [GeoJSON](http://geojson.org/) standard. The {sf} package supports these classes and includes plotting and other methods.
 
-```{r}
-table(penguins$species)
-```
+Functions in the {sf} package work with all common vector geometry types: points, lines, polygons and their respective 'multi' versions (which group together features of the same type into a single feature). The functions also work with geometry collections, which contain multiple geometry types in a single object. The `raster` data classes are not supported.
 
-There are 152 Adelie, 68 Chinstrap, and 124 Gentoo penguins.
+The {sf} package incorporates the three main packages of the spatial R ecosystem: {sp} for the class system, {rgdal} for reading and writing data, and {rgeos} for spatial operations done with GEOS.
 
-To create a data frame that includes only the female penguins type
+Simple features are data frames with a column for storing the spatial information. The spatial column is called `geometry` (or `geom`). The geometry column is referenced like a regular column but it has special features.
 
-```{r}
-( df <- penguins |> 
-          dplyr::filter(sex == "female") )
-```
+The geometry column is a 'list column' of class `sfc` (simple feature column). And the `sfc` is a set of objects of class `sfg` (simple feature geometries).
 
-To create a data frame that includes only penguins that are not of species Adalie you type
+![Simple Feature Anatomy](figures/sf_anatomy.png)
 
-```{r}
-( df <- penguins |> 
-          dplyr::filter(species != "Adelie") )
-```
+-   green box is a simple feature: a single record (observation), or `data.frame` row, consisting of attributes and geometry
+-   blue box is a single simple feature geometry (an object of class `sfg`)
+-   red box a simple feature column as a list (an object of class `sfc`, which is a column in the `data.frame`)
+-   the geometries are given in well-known text (WKT) format
 
-To create a data frame containing only penguins that weigh more than 6000 grams you type
+Geometries are the building blocks of simple features. Well-known text (WKT) is the way simple feature geometries are coded. Well-known binaries (WKB) are hexadecimal strings readable by computers. GIS and spatial databases use WKB to transfer and store geometry objects. WKT is a human-readable text description of simple features. The two formats are exchangeable.
 
-```{r}
-( df <- penguins |> 
-          dplyr::filter(body_mass_g > 6000) )
-```
+See: <https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry>
 
-To create a data frame with female penguins that have flippers longer than 220 mm type
+In WKT format a point is a coordinate in 2D, 3D or 4D space (see `vignette("sf1")` for more information) such as:
 
-```{r}
-( df <- penguins |> 
-          dplyr::filter(flipper_length_mm > 220 &
-                        sex == "female") )
-```
+-   `POINT (5 2)`
 
-To create a data frame containing rows where the bill length value is NOT missing type
+The first number is the x coordinate and the second number is the y coordinate.
 
-```{r}
-( df <- penguins |> 
-          dplyr::filter(!is.na(bill_length_mm)) )
-```
+A line string is a sequence of points with a straight line connecting the points, for example:
 
-Note that this filtering will keep rows with other column values missing values but there will be no penguins where the `bill_length` value is `NA`.
+-   `LINESTRING (1 5, 4 4, 4 1, 2 2, 3 2)`
 
-Finally, to compute the average bill length for each species type
+Each pair of x and y coordinates is separated by a comma.
 
-```{r}
-penguins |>
-  dplyr::group_by(species) |>
-  dplyr::summarize(AvgBL = mean(bill_length_mm, na.rm = TRUE))
-```
+A polygon is a sequence of points that form a closed, non-intersecting ring. Closed means that the first and the last point of a polygon have the same coordinates. A polygon has one exterior boundary (outer ring) but it can have interior boundaries (inner rings). An inner ring is called a 'hole'.
 
-For more practice working with data frames using functions from the {tidyverse} set of packages.
+-   Polygon without a hole - `POLYGON ((1 5, 2 2, 4 1, 4 4, 1 5))`
 
--   See <http://r4ds.had.co.nz/index.html>
--   Cheat sheets <https://www.rstudio.com/resources/cheatsheets/>
+Here there are two parentheses to start and two to end the string of coordinates.
 
-## Making graphs {.unnumbered}
+-   Polygon with one hole - `POLYGON ((1 5, 2 2, 4 1, 4 4, 1 5), (2 4, 3 4, 3 3, 2 3, 2 4))`
 
-The {ggplot2} package is a popular graphics tool among data scientists (e.g., New York Times and 538). Functionality is built on principles of good data visualization.
+Here the first set of coordinates defines the outer edge of the polygon and the next set of coordinates defines the hole. The outer edge vertexes are connected in a counterclockwise direction. The inner edge vertexes (defining the hole in the polygon) are connected in a clockwise direction.
 
-1.  Map data to aesthetics
-2.  Layer
-3.  Build in steps
+Simple features allow multiple geometries (hence the term 'geometry collection') using 'multi' version of each geometry type:
 
-You make the functions available to your current working directory by typing
+-   Multi-point - `MULTIPOINT (5 2, 1 3, 3 4, 3 2)`
+-   Multi-string - `MULTILINESTRING ((1 5, 4 4, 4 1, 2 2, 3 2), (1 2, 2 4))`
+-   Multi-polygon - `MULTIPOLYGON (((1 5, 2 2, 4 1, 4 4, 1 5), (0 2, 1 2, 1 3, 0 3, 0 2)))`
 
-```{r}
-library(ggplot2)
-```
+The difference between a multi-point and multi-string is an extra set of parentheses. The difference between a polygon with a hole and a multi-polygon is that the vertexes of each polygon are connected in a counterclockwise direction.
 
-Consider the following numeric vectors (`foo`, `bar` and `zaz`). Create a data frame `df` using the `data.frame()` function.
+A collection of these is made:
 
-```{r}
-foo <- c(-122.419416,-121.886329,-71.05888,-74.005941,-118.243685,-117.161084,-0.127758,-77.036871,
-         116.407395,-122.332071,-87.629798,-79.383184,-97.743061,121.473701,72.877656,2.352222,
-         77.594563,-75.165222,-112.074037,37.6173)
+-   Geometry collection - `GEOMETRYCOLLECTION (MULTIPOINT (5 2, 1 3, 3 4, 3 2), LINESTRING (1 5, 4 4, 4 1, 2 2, 3 2)))`
 
-bar <- c(37.77493,37.338208,42.360083,40.712784,34.052234,32.715738,51.507351,38.907192,39.904211,
-         47.60621,41.878114,43.653226,30.267153,31.230416,19.075984,48.856614,12.971599,39.952584,
-         33.448377,55.755826)
+Simple feature geometry (`sfg`)
 
-zaz <- c(6471,4175,3144,2106,1450,1410,842,835,758,727,688,628,626,510,497,449,419,413,325,318)
+The `sfg` class represents the simple feature geometry types: point, line string, polygon (and their 'multi' equivalents, such as multi points) or geometry collection.
 
-df <- data.frame(foo, bar, zaz)
+Usually you don't need to create geometries. Geometries are part of the spatial data you import. However, there are a set of functions to create simple feature geometry objects (`sfg`) from scratch, if needed. The names of these functions are simple and consistent, as they all start with the `st_` prefix and end with the name of the geometry type in lowercase letters:
 
-head(df)
-```
+-   A point - `st_point()`
+-   A linestring - `st_linestring()`
+-   A polygon - `st_polygon()`
+-   A multipoint - `st_multipoint()`
+-   A multilinestring - `st_multilinestring()`
+-   A multipolygon - `st_multipolygon()`
+-   A geometry collection - `st_geometrycollection()`
 
-To make a scatter plot you use the `ggplot()` function. Note that the package name is {ggplot2} but the function is `ggplot()` (without the 2).
+An `sfg` object can be created from three data types:
 
-Inside the `ggplot()` function you first specify the data frame with the `data =` argument. You next specify what columns from the data frame are to be mapped to what 'aesthetics' with the `aes()` function using the `mapping =` argument. The `aes()` function is nested inside the `ggplot()` function or inside a layer function.
+-   A numeric vector - a single point
+-   A matrix - a set of points, where each row contains a point - a multi-point or line string
+-   A list - any other set, e.g. a multi-line string or geometry collection
 
-For a scatter plot the aesthetics must include the x and y coordinates. For this example they are in the columns labeled `foo` and `bar` respectively.
-
-Then to render the scatter plot you include the function `geom_point()` as a layer with the `+` symbol. Numeric values are specified using the arguments `x =` and `y =` in the `aes()` function and are rendered as points on a plot.
+To create point objects, you use the `st_point()` function from the {sf} package applied to a numeric vector.
 
 ```{r}
-ggplot(data = df, 
-       mapping = aes(x = foo, y = bar)) +
-  geom_point()
+sf::st_point(c(5, 2)) # XY point
+sf::st_point(c(5, 2, 3)) # XYZ point
 ```
 
-You map data values to aesthetic attributes. The *points* in the scatter plot are geometric objects that get drawn. In {ggplot2} lingo, the points are *geoms*. More specifically, the points are point *geoms* that are denoted syntactically with the function `geom_point()`.
-
-All geometric objects have aesthetic attributes (aesthetics):
-
--   x-position
--   y-position
--   color
--   size
--   transparency
-
-You create a mapping between variables from your data frame to the aesthetic attributes of geometric objects. In the scatter plot you mapped `foo` to the x-position aesthetic and `bar` to the y-position aesthetic. This may seem trivial `foo` is the x-axis and `bar` is on the y-axis. You certainly can do that in Excel.
-
-Here there is a deeper structure. Theoretically, geometric objects (i.e., the things you draw in a plot, like points) don't just have attributes like position. They have a color, size, etc.
-
-For example here you map a new variable to the size aesthetic.
+To create multi-point objects, you use matrices here constructed from the `rbind()` function.
 
 ```{r}
-ggplot2::ggplot(data = df, 
-                mapping = ggplot2::aes(x = foo, y = bar)) +
-  ggplot2::geom_point(mapping = ggplot2::aes(size = zaz))
+mp.matrix <- rbind(c(5, 2), c(1, 3), c(3, 4), c(3, 2))
+mp.matrix
+sf::st_multipoint(mp.matrix)
+
+ls.matrix <- rbind(c(1, 5), c(4, 4), c(4, 1), c(2, 2), c(3, 2))
+sf::st_linestring(ls.matrix)
+sf::st_linestring(ls.matrix)
+
+plot(sf::st_multipoint(mp.matrix))
+plot(sf::st_linestring(ls.matrix))
 ```
 
-You changed the scatter plot to a bubble chart by mapping a new variable to the size aesthetic. Any visualization can be deconstructed into *geom* specifications and a mapping from data to aesthetic attributes of the geometric objects.
-
-The principle of layering is also important. To create good visualizations you often need to:
-
--   Plot multiple data sets, or
--   Plot data with additional contextual information contained in other data, or
--   Plot summaries or statistical transformations from the data
-
-Let's modify the bubble chart by getting additional data and plotting it as a new layer below the bubbles. First get the data from the {ggplot2} package using the `map_data()` function and specifying the name of the map (here `"world"`) and assigning it to a data frame with the name `df2`.
+To create a polygon, you use lists.
 
 ```{r}
-df2 <- ggplot2::map_data(map = "world") |>
-  dplyr::glimpse()
+poly.list <- list(rbind(c(1, 5), c(2, 2), c(4, 1), c(4, 4), c(1, 5)))
+sf::st_polygon(poly.list)
+
+poly.border <- rbind(c(1, 5), c(2, 2), c(4, 1), c(4, 4), c(1, 5))
+poly.hole <- rbind(c(2, 4), c(3, 4), c(3, 3), c(2, 3), c(2, 4))
+poly.with.hole.list <- list(poly.border, poly.hole)
+sf::st_polygon(poly.with.hole.list)
+
+plot(sf::st_polygon(poly.list))
+plot(sf::st_polygon(poly.with.hole.list))
 ```
 
-Plot the new data as a new layer underneath the bubbles.
+Simple feature geometry column
+
+One `sfg` object contains a single simple feature geometry. A simple feature geometry column (`sfc`) is a list of `sfg` objects together with information about the coordinate reference system.
+
+For example, to combine two simple features into one object with two features, you use the `st_sfc()` function. This is important since `sfg` represents the geometry column in `sf` data frames.
 
 ```{r}
-ggplot(data = df, 
-       mapping = aes(x = foo, y = bar)) +
-  geom_polygon(data = df2, 
-               mapping = aes(x = long, y = lat, group = group)) +
-  geom_point(mapping = aes(size = zaz), color = "red")
+point1 <- sf::st_point(c(5, 2))
+point2 <- sf::st_point(c(1, 3))
+sf::st_sfc(point1, point2)
 ```
 
-This is the same bubble chart but now with a new layer added. You changed the bubble chart into a new visualization called a dot distribution map, which is more insightful and visually interesting.
+In most cases, a `sfc` object contains objects of the same geometry type. Thus, when you convert `sfg` objects of type `polygon` into a simple feature geometry column, you end up with an `sfc` object of type `polygon`. A geometry column of multiple line strings would result in an `sfc` object of type `multilinestring`.
 
-The bubble chart is a modified scatter plot and the dot distribution map is a modified bubble chart.
-
-You used two of the data visualization principles (mapping & layering) to build this plot:
-
--   To create the scatter plot, you mapped `foo` to the x-aesthetic and mapped `bar` to the y-aesthetic
--   To create the bubble chart, you mapped a `zaz` to the size-aesthetic
--   To create the dot distribution map, you added a layer of polygon data under the bubbles.
-
-The third principle is about process. The graphing process begins with mapping and layering but ends with iteration when you add layers that modify scales, legends, colors, etc. The syntax of `ggplot` *layerability* enables and rewards iteration.
-
-Instead of plotting the result of the above code for making a bubble chart, assign the result to an object called `p1`. Coping/paste the code from above but then include the assignment operator `p1 <-`.
+An example with polygons.
 
 ```{r}
-p1 <- ggplot(data = df, 
-             mapping = aes(x = foo, y = bar)) +
-        geom_polygon(data = df2, 
-                     mapping = aes(x = long, y = lat, 
-                                   group = group)) +
-        geom_point(mapping = aes(size = zaz), color = "red")
+poly.list1 <- list(rbind(c(1, 5), c(2, 2), c(4, 1), c(4, 4), c(1, 5)))
+polygon1 <- sf::st_polygon(poly.list1)
+poly.list2 <- list(rbind(c(0, 2), c(1, 2), c(1, 3), c(0, 3), c(0, 2)))
+polygon2 <- sf::st_polygon(poly.list2)
+sf::st_sfc(polygon1, polygon2)
+
+plot(sf::st_sfc(polygon1, polygon2))
 ```
 
-Now modify the axes labels saving the new plot to an object called `p2`.
+An example with line strings.
 
 ```{r}
-( p2 <- p1 + xlab("Longitude") + ylab("Latitude") )
+mls.list1 <- list(rbind(c(1, 5), c(4, 4), c(4, 1), c(2, 2), c(3, 2)), 
+                  rbind(c(1, 2), c(2, 4)))
+mls1 <- sf::st_multilinestring((mls.list1))
+mls.list2 <- list(rbind(c(2, 9), c(7, 9), c(5, 6), c(4, 7), c(2, 7)), 
+                  rbind(c(1, 7), c(3, 8)))
+mls2 <- sf::st_multilinestring((mls.list2))
+sf::st_sfc(mls1, mls2)
+
+plot(sf::st_sfc(mls1, mls2))
 ```
 
-Next modify the scale label.
+An example with a geometry collection.
 
 ```{r}
-p2 + scale_size_continuous(name = "Venture Capital Investment\n(USD, Millions)\n")
+sf::st_sfc(point1, mls1)
 ```
 
-Of course you can do these steps together.
+A `sfc` object also stores information on the coordinate reference systems (CRS). To specify a certain CRS, you use the `epsg` or `proj4string` attributes. The default value of `epsg` and `proj4string` is `NA` (Not Available).
 
 ```{r}
-p1 + xlab("Longitude") + 
-     ylab("Latitude") +
-     scale_size_continuous(name = "Venture Capital Investment\n(USD, Millions)\n")
+sf::st_sfc(point1, point2)
 ```
 
-The `facet_wrap()` function is a layer to iterate (repeat) the entire plot conditional on another variable. It is like the `dplyr::group_by()` function in the data grammar.
-
-Example: U.S. tornadoes: Consider the tornado records in the file `Tornadoes.csv`. Import the data using the `readr::read_csv()` function then create new columns called `Year`, `Month` and `EF` using the `dplyr::mutate()` function.
+All geometries in an `sfc` object must have the same CRS. You add coordinate reference system as a `crs =` argument in `st_sfc()`. The argument accepts an integer with the epsg (European Petroleum Survey Group) code (for example, 4326).
 
 ```{r}
-( Torn.df <- readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
-  dplyr::mutate(Year = yr,
-                Month = as.integer(mo),
-                EF = mag) )
+( sfc1 <- sf::st_sfc(point1, point2, 
+                     crs = 4326) )
 ```
 
-Next create a new data frame (`df`) that contains the number of tornadoes by year for the state of Kansas.
-  
-```{r}
-( df <- Torn.df |>
-  dplyr::filter(st == "KS") |>
-  dplyr::group_by(Year) |>
-  dplyr::summarize(nT = dplyr::n()) )
-```
-
-Then use the functions from the {ggplot2} package to plot the number of tornadoes by year using lines to connect the values in order of the variable on the x-axis.
+The epsg code is translated to a well-known text (WKT) representation of the CRS.
 
 ```{r}
-ggplot(data = df,
-       mapping = aes(x = Year, y = nT)) +
-  geom_line() +
-  geom_point()
+sf::st_crs(sfc1)
 ```
 
-Note: In the early production stage of research, I like to break the code into steps as above: (1) Import the data, (2) manipulate the data, and (3) plot the data. It is easier to document but it  introduces the potential for mistakes because of the intermediary objects in the environment (e.g., `Torn.df`, `df`).
+Here the WKT describes a two-dimensional geographic coordinate reference system (GEOCRS) with a latitude axis first, then a longitude axis. The coordinate system is related to Earth by the WGS84 geodetic datum.
 
-Below you bring together the above code to create the time series of Kansas tornado frequency without creating intermediary objects.
+See: <https://en.wikipedia.org/wiki/Well-known_text_representation_of_coordinate_reference_systems>
 
-```{r, eval=FALSE}
-readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
-  dplyr::mutate(Year = yr,
-                Month = as.integer(mo),
-                EF = mag) |>
-  dplyr::filter(st == "KS") |>
-  dplyr::group_by(Year) |>
-  dplyr::summarize(nT = dplyr::n()) |>
-ggplot(mapping = aes(x = Year, y = nT)) +
-  geom_line() +
-  geom_point()
-```
+Simple feature data frames
 
-Recall that the `group_by()` function allows you to repeat an operation depending on the value (or level) of some variable. For example to count the number of tornadoes by EF damage rating since 2007 and ignoring missing ratings
+Features (geometries) typically come with attributes. The attributes might represent the name of the geometry, measured values, groups to which the geometry belongs, etc.
+
+The simple feature class, `sf`, is a combination of an attribute table (`data.frame`) and a simple feature geometry column (`sfc`). Simple feature objects are created using the `st_sf()` function.
+
+Objects of class `sf` behave like regular data frames.
 
 ```{r}
-Torn.df |>
-  dplyr::filter(Year >= 2007, EF != -9) |>
-  dplyr::group_by(EF) |>
-  dplyr::summarize(Count = dplyr::n()) 
+methods(class = "sf")
 ```
 
-The result is a table listing the number of tornadoes grouped by EF rating.
+Simple features have two classes, `sf` and `data.frame`. This is central to the concept of simple features: most of the time a `sf` can be treated as, and behaves like, a `data.frame`. Simple features are, in essence, data frames but with a column containing the geometric information (`sfc`)
 
-Instead of printing the table, you create a bar chart using the `geom_col()` function.
+I refer to simple feature objects as 'simple feature data frames' to distinguish them from S4 class spatial data frames.
+
+Many of these functions were developed for data frames including `rbind()` (for binding rows of data together) and `$` (for creating new columns). The key feature of `sf` objects is that they store spatial and non-spatial data in the same way, as columns in a `data.frame`.
+
+The geometry column of {sf} objects is typically called `geometry` but any name can be used.
+
+Thus `sf` objects take advantage of R's data analysis capabilities to be used on geographic data. It's worth reviewing how to discover basic properties of vector data objects.
+
+For example, you get information about the size and breadth of the `world` simple feature data frame from the {spData} package using `dim()`, `nrow()`, etc.
 
 ```{r}
-Torn.df |>
-  dplyr::filter(Year >= 2007, EF != -9) |>
-  dplyr::group_by(EF) |>
-  dplyr::summarize(Count = dplyr::n()) |>
-ggplot(mapping = aes(x = EF, y = Count)) +
-  geom_col()
+library(spData)
+
+dim(world)
+nrow(world)
+ncol(world)
 ```
 
-The `geom_bar()` function counts the number of cases at each x position so you don't need the `group_by()` and `summarize()` functions.
+The data contains ten non-geographic columns (and one geometry column) with 177 rows each one representing a country.
+
+Extracting the attribute data from an `sf` object is the same as dropping its geometry.
 
 ```{r}
-Torn.df |>
-  dplyr::filter(Year >= 2007, EF != -9) |>
-ggplot(mapping = aes(x = EF)) +
-  geom_bar()
+world.df <- world |>
+  sf::st_drop_geometry()
+class(world.df)
 ```
 
-Improve the bar chart and to make it ready for publication.
+Example: Temperatures at FSU and at the airport
+
+Suppose you measure a temperature of 25C at FSU and 22C at the airport at 9a on September 6, 2022. Thus, you have specific points in space (the coordinates), the name of the locations (FSU, Airport), temperature values and the date of the measurement. Other attributes might include a urbanity category (campus or city), or a remark if the measurement was made with an automatic station.
+
+Start by creating to `sfg` (simple feature geometry) point objects.
 
 ```{r}
-Torn.df |>
-  dplyr::filter(Year >= 2007, EF != -9) |>
-  dplyr::group_by(EF) |>
-  dplyr::summarize(Count = dplyr::n()) |>
-ggplot(mapping = aes(x = factor(EF), y = Count, fill = Count)) +
-  geom_bar(stat = "identity") +
-  xlab("EF Rating") + 
-  ylab("Number of Tornadoes") +
-  scale_fill_continuous(low = 'green', high = 'orange') +
-  geom_text(aes(label = Count), vjust = -.5, size = 3) +
-  theme_minimal() +
-  theme(legend.position = 'none') 
+FSU.point <- sf::st_point(c(-84.29849, 30.44188))
+TLH.point <- sf::st_point(c(-84.34505, 30.39541))
 ```
 
-You create a set of plots with the `facet_wrap()` function. Here you create a set of bar charts showing the frequency of tornadoes by EF rating for each year in the data set since 2004.
-
-You add the function after the `geom_bar()` layer and use the formula syntax (`~ Year`) inside the parentheses. You interpret the syntax as "plot bar charts conditioned on the variable year."
+Then combine the point objects into a `sfc` (simple feature column) object.
 
 ```{r}
-Torn.df |>
-  dplyr::filter(Year >= 2004, EF != -9) |>
-ggplot(mapping = aes(x = factor(EF))) +
-  geom_bar() +
-  facet_wrap(~ Year)
+our.geometry <- sf::st_sfc(FSU.point, TLH.point, 
+                           crs = 4326)
 ```
 
-Example: Comparing hot days in Tallahassee and Las Vegas. The data are [daily weather observations](http://www.ncdc.noaa.gov/cdo-web/datasets) from the Tallahassee International Airport.
-
-Import the data.
+Then create a data frame of attributes.
 
 ```{r}
-loc <- "http://myweb.fsu.edu/jelsner/temp/data/TLH_Daily1940-2021.csv"
-TLH.df <- readr::read_csv(file = loc)
+our.attributes <- data.frame(name = c("FSU", "Airport"),
+                             temperature = c(25, 22),
+                             date = c(as.Date("2022-09-06"), as.Date("2022-09-06")),
+                             category = c("campus", "airport"),
+                             automatic = c(TRUE, FALSE))
 ```
 
-The variables of interest are the daily high (and low) temperature in the column labeled `TMAX` (`TMIN`). The values are in degrees F.
-
-Rename the columns then select only the date and temperature columns.
+Finally create a simple feature data frame.
 
 ```{r}
-TLH.df <- TLH.df |>
-  dplyr::rename(TmaxF = TMAX,
-                TminF = TMIN,
-                Date = DATE) |>
-  dplyr::select(Date, TmaxF, TminF) |>
-  dplyr::glimpse()
+( sfdf <- sf::st_sf(our.attributes, 
+                  geometry = our.geometry) )
 ```
 
-Q: Based on these data, is it getting hotter in Tallahassee? Let's compute the annual average high temperature and create a time series graph.
-
-You use the `year()` function from the {lubridate} package to get a column called `Year`. Since the data only has values through mid May 2022 you keep all observations with the `Year` column value less than 2021. You then use the `group_by()` function to group by `Year`, and the `summarize()` function to get the average daily maximum temperature for each year.
+The example illustrates the components of `sf` objects. First, you use coordinates to define the geometry of the simple feature geometry (`sfg`). Second, you can combine the geometries into a simple feature geometry column (`sfc`) which also stores the CRS. Third, you store the attribute information on the geometries in a `data.frame`. Fourth, you use the `st_sf()` function to combine the attribute table and the `sfc` object into a `sf` object.
 
 ```{r}
-df <- TLH.df |>
-  dplyr::mutate(Year = lubridate::year(Date)) |>
-  dplyr::filter(Year < 2022) |>
-  dplyr::group_by(Year) |>
-  dplyr::summarize(AvgT = mean(TmaxF, na.rm = TRUE)) |>
-dplyr::glimpse()
+sfdf
+class(sfdf)
 ```
 
-You now have a data frame with two columns: `Year` and `AvgT` (annual average daily high temperature in degrees F). If a day is missing a value it is skipped when computing the average because of the `na.rm = TRUE` argument in the `mean()` function.
-
-Next you use functions from the {ggplot2} package to make a time series graph. You specify the x aesthetic as `Year` and the y aesthetic as the `AvgT` and include point and line layers.
+Given a simple feature data frame you create a non-spatial data frame with a geometry list-column but that is not of class `sf` using the `as.data.frame()` function.
 
 ```{r}
-ggplot(data = df, 
-       mapping = aes(x = Year, y = AvgT)) +
-  geom_point(size = 3) +
-  geom_line() +
-  ylab("Average Annual Temperature in Tallahassee, FL (F)")
+df <- sfdf |>
+  as.data.frame()
+class(df)
 ```
 
-You can go directly to the graph without saving the resulting data frame. That is, you pipe `|>` the resulting data frame after applying the {dplyr} verbs to the `ggplot()` function. The object in the first argument of the `ggplot()` function is the result (data frame) from the code above. Here you also add a smooth curve through the set of averages with the `geom_smooth()` layer.
+In this case the `geometry` column is
+
+-   no longer a `sfc`.
+-   no longer has a plot method, and
+-   lacks all dedicated methods listed above for class `sf`
+
+In order to avoid any confusion it might be better to use the `st_drop_geometry()` column instead.
 
 ```{r}
-TLH.df |>
-  dplyr::mutate(Year = lubridate::year(Date)) |>
-  dplyr::filter(Year < 2022) |>
-  dplyr::group_by(Year) |>
-  dplyr::summarize(AvgT = mean(TmaxF, na.rm = TRUE)) |>
-ggplot(mapping = aes(x = Year, y = AvgT)) +
-  geom_point(size = 3) +
-  geom_line() +
-  ylab("Average Annual Temperature in Tallahassee, FL (F)") +
-  geom_smooth() +
-  theme_minimal()
+df <- sfdf |>
+  sf::st_drop_geometry()
 ```
 
-Q: Is the frequency of extremely hot days increasing over time? Let's consider a daily high temperature of 100 F and above as extremely hot.
+Example: US states
 
-Here you count the number of days at or above 100F using the `summarize()` function together with the `sum()` function on the logical operator `>=`. If a day is missing a temperature, you remove it with the `na.rm = TRUE` argument in the `sum()` function.
+The object `us_states` from the {spData} package is a simple feature data frame from the U.S. Census Bureau. The variables include the name, region, area, and population.
+
+Simple feature data frames can be treated as regular data frames. But the geometry is "sticky". For example when we create a new data frame containing only the population information the geometry column is included in the new data frame.
 
 ```{r}
-TLH.df |>
-  dplyr::mutate(Year = lubridate::year(Date)) |>
-  dplyr::filter(Year < 2022) |>
-  dplyr::group_by(Year) |>
-  dplyr::summarize(N100 = sum(TmaxF >= 100, na.rm = TRUE)) |>
-ggplot(mapping = aes(x = Year, y = N100, fill = N100)) + 
-  geom_bar(stat = 'identity') + 
-  scale_fill_continuous(low = 'orange', high = 'red') +
-  geom_text(aes(label = N100), vjust = 1.5, size = 3) +
-  scale_x_continuous(breaks = seq(1940, 2020, 10)) +
-  labs(title = expression(paste("Number of days in Tallahassee, Florida at or above 100", {}^o, " F")),
-       subtitle = "",
-       x = "", y = "") +
-#  ylab(expression(paste("Number of days in Tallahassee, FL at or above 100", {}^o, " F"))) +
-  theme_minimal() +
-  theme(axis.text.x  = element_text(size = 11), legend.position = "none")
+df1 <- us_states |> 
+  dplyr::select(starts_with("total")) 
+head(df1)
 ```
 
-What does the histogram of daily high temperatures look like?
+The resulting data frame has the two population columns but also a column labeled `geometry`.
+
+When you use the `summarize()` function, a union of the geometries across rows is made.
 
 ```{r}
-( gTLH <- ggplot(data = TLH.df, 
-               mapping = aes(x = TmaxF)) + 
-  geom_histogram(binwidth = 1, aes(fill = ..count..)) +
-  scale_fill_continuous(low = 'green', high = 'blue') +
-  scale_x_continuous() +
-  scale_y_continuous() +
-  ylab("Number of Days") + 
-  xlab(expression(paste("Daily High Temperature in Tallahassee, FL (", {}^o, " F)"))) +
-  theme_minimal() +
-  theme(legend.position = "none") )
+df2 <- us_states |> 
+  dplyr::filter(REGION == "Midwest") |> 
+  dplyr::summarize(TotalPop2010 = sum(total_pop_10),
+                   TotalPop2015 = sum(total_pop_15))
+head(df2)
 ```
 
-Q: The most common high temperatures are in the low 90s, but there are relatively few 100+ days. Why?
+Why use the {sf} package when {sp} is already tried and tested?
 
-Compare the histogram of daily high temperatures in Tallahassee with a histogram of daily high temperatures in Las Vegas, Nevada. Here you repeat the code above but for the data frame `LVG.df`.
+-   Fast reading and writing of data
+-   Enhanced plotting performance
+-   `sf` objects are treated as data frames in most operations
+-   `sf` functions are combined using `|>` operator and they work well with the {tidyverse} packages
+-   `sf` function names are consistent and intuitive (all begin with `st_`)
+
+These advantages led to the development of spatial packages (including {tmap}, {mapview} and {tidycensus}) that now support simple feature objects.
+
+It is easy to convert between the two classes. Consider the `world` S3 spatial data frame from the {spData} package. You convert it to a S4 spatial data frame with the `as()` method.
 
 ```{r}
-LVG.df <- readr::read_csv(file = "http://myweb.fsu.edu/jelsner/temp/data/LV_DailySummary.csv",
-                          na = "-9999")
-
-LVG.df <- LVG.df |>
-  dplyr::mutate(TmaxF = round(9/5 * TMAX/10 + 32),
-                TminF = round(9/5 * TMIN/10 + 32),
-                Date = as.Date(as.character(DATE), 
-                               format = "%Y%m%d")) |>
-  dplyr::select(Date, TmaxF, TminF)
-
-gLVG <- ggplot(data = LVG.df, 
-               mapping = aes(x = TmaxF)) + 
-  geom_histogram(binwidth = 1, aes(fill = ..count..)) +
-  scale_fill_continuous(low = 'green', high = 'blue') +
-  scale_x_continuous() +
-  scale_y_continuous() +
-  ylab("Number of Days") + 
-  xlab(expression(paste("Daily High Temperature in Las Vegas, NV (", {}^o, " F)"))) +
-  theme_minimal() +
-  theme(legend.position = "none")
+world.sp <- world |>
+  as(Class = "Spatial")
 ```
 
-Then use the operators from the {patchwork} package to plot them side by side.
+The method coerces simple features to `Spatial*` and `Spatial*DataFrame` objects.
+
+You convert a S4 spatial data frame into a simple feature data frame with the `st_as_sf()` function.
 
 ```{r}
-if(!require(patchwork)) install.packages(pkgs = "patchwork", repos = "http://cran.us.r-project.org")
-
-library(patchwork)
-
-gTLH / gLVG
+world.sf <- world.sp |>
+  sf::st_as_sf()
 ```
 
-Example: US population and area by state. The object `us_states` from the {spData} package is a data frame from the U.S. Census Bureau. The variables include the state `GEOID` and `NAME`, the `REGION` (`South`, `West`, etc), `AREA` (in square km), and total population in 2010 (`total_pop_10`) and in 2015 (`total_pop_15`).
-
-```{r}
-us_states <- spData::us_states
-class(us_states)
-head(us_states)
-```
-
-The object `us_states` has two classes: simple feature and data frame. It is a data frame that has spatial information stored in the column labeled `geometry`. More about this next lesson.
-
-Note also that the variable `AREA` is numeric with units (km\^2). Thus in order to perform some operations you need to specify units or convert the column using `as.numeric()`. For example, if you want to filter by area keeping only states with an area greater than 300,000 square km you could do the following
-
-```{r, eval = FALSE}
-us_states |> 
-  dplyr::mutate(Area = as.numeric(AREA)) |>
-  dplyr::filter(Area > 300000)
-```
-
-For now, suppose you want to plot area versus population for each state including state names on the plot. You note large differences between the minimum and maximum values for both variables.
-
-```{r}
-us_states |>
-  dplyr::summarize(rA = range(AREA),
-                   rP = range(total_pop_15))
-```
-
-Start with a simple scatter plot using logarithmic scales. The variable `AREA` has units so you convert it to a numeric with the `as.numeric()` function.
-
-```{r}
-ggplot(data = us_states,
-       mapping = aes(x = as.numeric(AREA),
-                     y = total_pop_15)) +
-  geom_point() +
-  scale_x_log10() +
-  scale_y_log10()
-```
-
-Next use the {scales} package so the tic labels can be expressed in whole numbers with commas.
-
-```{r}
-ggplot(data = us_states,
-       mapping = aes(x = as.numeric(AREA),
-                     y = total_pop_15)) +
-  geom_point() +
-  scale_x_log10(labels = scales::comma) +
-  scale_y_log10(labels = scales::comma)
-```
-
-Next add text labels. You can do this with `geom_text()` or `geom_label()`
-
-```{r}
-ggplot(data = us_states,
-       mapping = aes(x = as.numeric(AREA),
-                     y = total_pop_15)) +
-  geom_point() +
-  geom_text(aes(label = NAME)) +
-  scale_x_log10(labels = scales::comma) +
-  scale_y_log10(labels = scales::comma)
-```
-
-The labels are centered on top of the points. To fix this you use functions from the {grepel} package.
-
-```{r}
-ggplot(data = us_states,
-       mapping = aes(x = as.numeric(AREA),
-                     y = total_pop_15)) +
-  geom_point() +
-  ggrepel::geom_text_repel(aes(label = NAME)) +
-  scale_x_log10(labels = scales::comma) +
-  scale_y_log10(labels = scales::comma)
-```
-
-Finally, since the data object is a simple feature data frame you can make a map.
-
-```{r}
-ggplot() + 
-  geom_sf(data = spData::us_states, 
-          mapping = aes(fill = total_pop_15)) +
-  scale_fill_continuous(labels = scales::comma) +
-  theme_void()
-```
-
-More resources and additional examples
-
--   ggplot extensions <https://exts.ggplot2.tidyverse.org/>
--   Cheat sheets: <https://rstudio.com/resources/cheatsheets/>
--   More examples: <https://geocompr.robinlovelace.net/> {spData} package.
+You can create basic maps from simple feature data frames with the base `plot()` method (`plot.sf()`). The function creates a multi-panel one sub-plot for each variable.

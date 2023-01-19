@@ -1,4 +1,4 @@
-# Tuesday January 31, 2023 {.unnumbered}
+# Tuesday January 31, 2023 {-}
 
 **"An awful lot of time I spend"coding" is actually spent copying and pasting (And much of the rest is spent googling)."** -- Meghan Duffy
 
@@ -7,7 +7,7 @@ Today
 -   Introduction to simple features
 -   Geo-computation on simple features
 
-## Introduction to simple features {.unnumbered}
+## Introduction to simple features {-}
 
 The vector model for data (vector data) represents things in the world using points, lines and polygons. These objects have discrete, well-defined borders and a high level of precision. Precision does not imply accurate.
 
@@ -361,7 +361,7 @@ world.sf <- world.sp |>
 
 You can create basic maps from simple feature data frames with the base `plot()` method (`plot.sf()`). The function creates a multi-panel one sub-plot for each variable.
 
-## Geo-computation on simple features {.unnumbered}
+## Geo-computation on simple features {-}
 
 Geo-computation on simple features is done with routines in the geometry engine-open source (GEOS) library that the functions in the {sf} package make use of.
 
