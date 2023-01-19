@@ -72,37 +72,6 @@ plot(x = Torn2.df$EF,
      y = Torn2.df$Length/1000)
 ```
 
-Another example: Annual U.S. hurricane counts
-
-Here you import the data directly from the Web by specifying the URL as a character string using the `file =` argument
-
-```{r}
-loc <- "http://myweb.fsu.edu/jelsner/temp/data/US.txt"
-USHur.df <- readr::read_table(file = loc)
-```
-
-The `dim()` function returns the size of the data frame defined as the number of rows and the number of columns
-
-```{r}
-dim(USHur.df)
-```
-
-There are 166 rows and 6 columns in the data frame. Each row is a year and the columns include `Year`, number of hurricanes (`All`), number of major hurricanes (`MUS`), number of Gulf coast hurricanes (`G`), number of Florida hurricanes (`FL`), and number of East coast hurricanes (`E`) in that order
-
-To get a glimpse of the data values you list the first six lines of the data frame using the `head()` function
-
-```{r}
-head(USHur.df)
-```
-
-The distribution of Florida hurricane counts by year is obtained using the `table()` function and specifying the `FL` column with `df$FL`
-
-```{r}
-table(USHur.df$FL)
-```
-
-There are 93 years without a FL hurricane, 43 years with exactly one hurricane, 24 years with two hurricanes, and so on
-
 Another example: Statewide average rainfall in Florida. Work through it on your own
 
 The data are monthly statewide average rainfall (in inches) for Florida starting in 1895. The data were obtained from <http://www.esrl.noaa.gov/psd/data/timeseries/>
@@ -127,9 +96,7 @@ What happens when you check the column (vector) labeled `Year` to see what eleme
 FLp.df$Year == 1900
 ```
 
-Returns a vector with one element equal to `TRUE`.
-
-What happens when you use this vector to select the vector of June rainfall values?
+Returns a vector with one element equal to `TRUE`. What happens when you use this vector to select the vector of June rainfall values?
 
 ```{r}
 FLp.df$Jun[FLp.df$Year == 1900]
@@ -398,79 +365,13 @@ The syntax of the functions are all the same
 
 These properties make it easy to chain together many simple lines of code to do complex data manipulations and summaries all while making it easy to read by humans
 
-Working with data frames is part of the cycle of data science, along with visualizing, and modeling. The cycle of data science:
+Working with data frames is part of the cycle of data science, along with visualizing, and modeling. The cycle of data science
 
-1.  Generate questions about your data.
-2.  Look for answers by visualizing and modeling the data after the data are in suitably arranged data frames.
-3.  Use what you learn to refine your questions and/or ask new ones.
+1.  Generate questions about your data
+2.  Look for answers by visualizing and modeling the data after the data are in suitably arranged data frames
+3.  Use what you learn to refine your questions and/or ask new ones
 
-Questions are tools to guide your investigation. When you ask a question, the question focuses your attention on a specific part of the data and helps you decide what to do next.
-
-Example: Penguins in the Antarctic. The data frame contains observations on Palmer penguins and is available from <https://education.rstudio.com/blog/2020/07/palmerpenguins-cran/>.
-
-Import the data frame using the `read_csv()` function.
-
-```{r}
-loc <- "https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv"
-
-( penguins <- readr::read_csv(file = loc) )
-```
-
-The observations are 344 individual penguins each described by species (Adelie, Chinstrap, Gentoo), where it was found (island name), length of bill (mm), depth of bill (mm), body mass (g), male or female, and year.
-
-Each penguin belongs to one of three species. To see how many of the 344 penguins are in each species you use the `table()` function.
-
-```{r}
-table(penguins$species)
-```
-
-There are 152 Adelie, 68 Chinstrap, and 124 Gentoo penguins.
-
-To create a data frame that includes only the female penguins type
-
-```{r}
-( df <- penguins |> 
-          dplyr::filter(sex == "female") )
-```
-
-To create a data frame that includes only penguins that are not of species Adalie you type
-
-```{r}
-( df <- penguins |> 
-          dplyr::filter(species != "Adelie") )
-```
-
-To create a data frame containing only penguins that weigh more than 6000 grams you type
-
-```{r}
-( df <- penguins |> 
-          dplyr::filter(body_mass_g > 6000) )
-```
-
-To create a data frame with female penguins that have flippers longer than 220 mm type
-
-```{r}
-( df <- penguins |> 
-          dplyr::filter(flipper_length_mm > 220 &
-                        sex == "female") )
-```
-
-To create a data frame containing rows where the bill length value is NOT missing type
-
-```{r}
-( df <- penguins |> 
-          dplyr::filter(!is.na(bill_length_mm)) )
-```
-
-Note that this filtering will keep rows with other column values missing values but there will be no penguins where the `bill_length` value is `NA`.
-
-Finally, to compute the average bill length for each species type
-
-```{r}
-penguins |>
-  dplyr::group_by(species) |>
-  dplyr::summarize(AvgBL = mean(bill_length_mm, na.rm = TRUE))
-```
+Questions are tools to guide your investigation. When you ask a question, the question focuses your attention on a specific part of the data and helps you decide what to do next
 
 For more practice working with data frames using functions from the {tidyverse} set of packages.
 
@@ -479,7 +380,7 @@ For more practice working with data frames using functions from the {tidyverse} 
 
 ## Making graphs {.unnumbered}
 
-The {ggplot2} package is a popular graphics tool among data scientists (e.g., New York Times and 538). Functionality is built on principles of good data visualization.
+The {ggplot2} package is a popular graphics tool among data scientists (e.g., New York Times and 538). Functionality is built on principles of good data visualization
 
 1.  Map data to aesthetics
 2.  Layer
@@ -491,7 +392,7 @@ You make the functions available to your current working directory by typing
 library(ggplot2)
 ```
 
-Consider the following numeric vectors (`foo`, `bar` and `zaz`). Create a data frame `df` using the `data.frame()` function.
+Consider the following numeric vectors (`foo`, `bar` and `zaz`). Create a data frame `df` using the `data.frame()` function
 
 ```{r}
 foo <- c(-122.419416,-121.886329,-71.05888,-74.005941,-118.243685,-117.161084,-0.127758,-77.036871,
@@ -509,13 +410,13 @@ df <- data.frame(foo, bar, zaz)
 head(df)
 ```
 
-To make a scatter plot you use the `ggplot()` function. Note that the package name is {ggplot2} but the function is `ggplot()` (without the 2).
+To make a scatter plot you use the `ggplot()` function. Note that the package name is {ggplot2} but the function is `ggplot()` (without the 2)
 
-Inside the `ggplot()` function you first specify the data frame with the `data =` argument. You next specify what columns from the data frame are to be mapped to what 'aesthetics' with the `aes()` function using the `mapping =` argument. The `aes()` function is nested inside the `ggplot()` function or inside a layer function.
+Inside the `ggplot()` function you first specify the data frame with the `data =` argument. You next specify what columns from the data frame are to be mapped to what 'aesthetics' with the `aes()` function using the `mapping =` argument. The `aes()` function is nested inside the `ggplot()` function or inside a layer function
 
-For a scatter plot the aesthetics must include the x and y coordinates. For this example they are in the columns labeled `foo` and `bar` respectively.
+For a scatter plot the aesthetics must include the x and y coordinates. For this example they are in the columns labeled `foo` and `bar` respectively
 
-Then to render the scatter plot you include the function `geom_point()` as a layer with the `+` symbol. Numeric values are specified using the arguments `x =` and `y =` in the `aes()` function and are rendered as points on a plot.
+Then to render the scatter plot you include the function `geom_point()` as a layer with the `+` symbol. Numeric values are specified using the arguments `x =` and `y =` in the `aes()` function and are rendered as points on a plot
 
 ```{r}
 ggplot(data = df, 
@@ -523,21 +424,15 @@ ggplot(data = df,
   geom_point()
 ```
 
-You map data values to aesthetic attributes. The *points* in the scatter plot are geometric objects that get drawn. In {ggplot2} lingo, the points are *geoms*. More specifically, the points are point *geoms* that are denoted syntactically with the function `geom_point()`.
+You map data values to aesthetic attributes. The *points* in the scatter plot are geometric objects that get drawn. In {ggplot2} lingo, the points are *geoms*. More specifically, the points are point *geoms* that are denoted syntactically with the function `geom_point()`
 
-All geometric objects have aesthetic attributes (aesthetics):
+All geometric objects have aesthetic attributes (aesthetics): x-position, y-position, color, size, transparency
 
--   x-position
--   y-position
--   color
--   size
--   transparency
+You create a mapping between variables in your data frame to the aesthetic attributes of geometric objects. In the scatter plot you mapped `foo` to the x-position aesthetic and `bar` to the y-position aesthetic. This may seem trivial `foo` is the x-axis and `bar` is on the y-axis
 
-You create a mapping between variables from your data frame to the aesthetic attributes of geometric objects. In the scatter plot you mapped `foo` to the x-position aesthetic and `bar` to the y-position aesthetic. This may seem trivial `foo` is the x-axis and `bar` is on the y-axis. You certainly can do that in Excel.
+Here there is a deeper structure. Geometric objects (i.e., the things you draw in a plot, like points) don't just have position attributes, they also have a color, size, etc
 
-Here there is a deeper structure. Theoretically, geometric objects (i.e., the things you draw in a plot, like points) don't just have attributes like position. They have a color, size, etc.
-
-For example here you map a new variable to the size aesthetic.
+Here you map a new variable to the size aesthetic.
 
 ```{r}
 ggplot2::ggplot(data = df, 
@@ -547,10 +442,10 @@ ggplot2::ggplot(data = df,
 
 You changed the scatter plot to a bubble chart by mapping a new variable to the size aesthetic. Any visualization can be deconstructed into *geom* specifications and a mapping from data to aesthetic attributes of the geometric objects.
 
-The principle of layering is also important. To create good visualizations you often need to:
+The principle of layering is important. To create good visualizations you often need to:
 
--   Plot multiple data sets, or
--   Plot data with additional contextual information contained in other data, or
+-   Plot multiple data sets
+-   Plot data with additional contextual information contained in other data
 -   Plot summaries or statistical transformations from the data
 
 Let's modify the bubble chart by getting additional data and plotting it as a new layer below the bubbles. First get the data from the {ggplot2} package using the `map_data()` function and specifying the name of the map (here `"world"`) and assigning it to a data frame with the name `df2`.
@@ -570,19 +465,19 @@ ggplot(data = df,
   geom_point(mapping = aes(size = zaz), color = "red")
 ```
 
-This is the same bubble chart but now with a new layer added. You changed the bubble chart into a new visualization called a dot distribution map, which is more insightful and visually interesting.
+This is the same bubble chart but now with a new layer added. You changed the bubble chart into a new visualization called a dot distribution map, which is more insightful and visually more interesting
 
-The bubble chart is a modified scatter plot and the dot distribution map is a modified bubble chart.
+The bubble chart is a modified scatter plot and the dot distribution map is a modified bubble chart
 
-You used two of the data visualization principles (mapping & layering) to build this plot:
+You used two of the data visualization principles (mapping & layering) to build this plot
 
 -   To create the scatter plot, you mapped `foo` to the x-aesthetic and mapped `bar` to the y-aesthetic
 -   To create the bubble chart, you mapped a `zaz` to the size-aesthetic
--   To create the dot distribution map, you added a layer of polygon data under the bubbles.
+-   To create the dot distribution map, you added a layer of polygon data under the bubbles
 
-The third principle is about process. The graphing process begins with mapping and layering but ends with iteration when you add layers that modify scales, legends, colors, etc. The syntax of `ggplot` *layerability* enables and rewards iteration.
+The third principle is about process. The graphing process begins with mapping and layering but ends with iteration when you add layers that modify scales, legends, colors, etc. The syntax of `ggplot` *layerability* enables and rewards iteration
 
-Instead of plotting the result of the above code for making a bubble chart, assign the result to an object called `p1`. Coping/paste the code from above but then include the assignment operator `p1 <-`.
+Instead of plotting the result of the above code for making a bubble chart, assign the result to an object called `p1`. Coping/paste the code from above but then include the assignment operator `p1 <-`
 
 ```{r}
 p1 <- ggplot(data = df, 
@@ -593,19 +488,19 @@ p1 <- ggplot(data = df,
         geom_point(mapping = aes(size = zaz), color = "red")
 ```
 
-Now modify the axes labels saving the new plot to an object called `p2`.
+Now modify the axes labels saving the new plot to an object called `p2`
 
 ```{r}
 ( p2 <- p1 + xlab("Longitude") + ylab("Latitude") )
 ```
 
-Next modify the scale label.
+Next modify the scale label
 
 ```{r}
 p2 + scale_size_continuous(name = "Venture Capital Investment\n(USD, Millions)\n")
 ```
 
-Of course you can do these steps together.
+Of course you can do these steps together
 
 ```{r}
 p1 + xlab("Longitude") + 
@@ -613,9 +508,9 @@ p1 + xlab("Longitude") +
      scale_size_continuous(name = "Venture Capital Investment\n(USD, Millions)\n")
 ```
 
-The `facet_wrap()` function is a layer to iterate (repeat) the entire plot conditional on another variable. It is like the `dplyr::group_by()` function in the data grammar.
+The `facet_wrap()` function is a layer to iterate (repeat) the entire plot conditional on another variable. It is like the `dplyr::group_by()` function in the data grammar
 
-Example: U.S. tornadoes: Consider the tornado records in the file `Tornadoes.csv`. Import the data using the `readr::read_csv()` function then create new columns called `Year`, `Month` and `EF` using the `dplyr::mutate()` function.
+Example: U.S. tornadoes: Consider the tornado records in the file `Tornadoes.csv`. Import the data using the `readr::read_csv()` function then create new columns called `Year`, `Month` and `EF` using the `dplyr::mutate()` function
 
 ```{r}
 ( Torn.df <- readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
@@ -624,7 +519,7 @@ Example: U.S. tornadoes: Consider the tornado records in the file `Tornadoes.csv
                 EF = mag) )
 ```
 
-Next create a new data frame (`df`) that contains the number of tornadoes by year for the state of Kansas.
+Next create a new data frame (`df`) that contains the number of tornadoes by year for the state of Kansas
   
 ```{r}
 ( df <- Torn.df |>
@@ -633,7 +528,7 @@ Next create a new data frame (`df`) that contains the number of tornadoes by yea
   dplyr::summarize(nT = dplyr::n()) )
 ```
 
-Then use the functions from the {ggplot2} package to plot the number of tornadoes by year using lines to connect the values in order of the variable on the x-axis.
+Then use the functions from the {ggplot2} package to plot the number of tornadoes by year using lines to connect the values in order of the variable on the x-axis
 
 ```{r}
 ggplot(data = df,
@@ -642,9 +537,9 @@ ggplot(data = df,
   geom_point()
 ```
 
-Note: In the early production stage of research, I like to break the code into steps as above: (1) Import the data, (2) manipulate the data, and (3) plot the data. It is easier to document but it  introduces the potential for mistakes because of the intermediary objects in the environment (e.g., `Torn.df`, `df`).
+Note: In the early production stage of research, I like to break the code into steps as above: (1) Import the data, (2) manipulate the data, and (3) plot the data. It is easier to document but it  introduces the potential for mistakes because of the intermediary objects in the environment (e.g., `Torn.df`, `df`)
 
-Below you bring together the above code to create the time series of Kansas tornado frequency without creating intermediary objects.
+Below you bring together the above code to create the time series of Kansas tornado frequency without creating intermediary objects
 
 ```{r, eval=FALSE}
 readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
@@ -668,7 +563,7 @@ Torn.df |>
   dplyr::summarize(Count = dplyr::n()) 
 ```
 
-The result is a table listing the number of tornadoes grouped by EF rating.
+The result is a table listing the number of tornadoes grouped by EF rating
 
 Instead of printing the table, you create a bar chart using the `geom_col()` function.
 
@@ -681,7 +576,7 @@ ggplot(mapping = aes(x = EF, y = Count)) +
   geom_col()
 ```
 
-The `geom_bar()` function counts the number of cases at each x position so you don't need the `group_by()` and `summarize()` functions.
+The `geom_bar()` function counts the number of cases at each x position so you don't need the `group_by()` and `summarize()` functions
 
 ```{r}
 Torn.df |>
@@ -690,7 +585,7 @@ ggplot(mapping = aes(x = EF)) +
   geom_bar()
 ```
 
-Improve the bar chart and to make it ready for publication.
+Improve the bar chart and to make it ready for publication
 
 ```{r}
 Torn.df |>
@@ -707,9 +602,9 @@ ggplot(mapping = aes(x = factor(EF), y = Count, fill = Count)) +
   theme(legend.position = 'none') 
 ```
 
-You create a set of plots with the `facet_wrap()` function. Here you create a set of bar charts showing the frequency of tornadoes by EF rating for each year in the data set since 2004.
+You create a set of plots with the `facet_wrap()` function. Here you create a set of bar charts showing the frequency of tornadoes by EF rating for each year in the data set since 2004
 
-You add the function after the `geom_bar()` layer and use the formula syntax (`~ Year`) inside the parentheses. You interpret the syntax as "plot bar charts conditioned on the variable year."
+You add the function after the `geom_bar()` layer and use the formula syntax (`~ Year`) inside the parentheses. You interpret the syntax as "plot bar charts conditioned on the variable year"
 
 ```{r}
 Torn.df |>
@@ -719,18 +614,18 @@ ggplot(mapping = aes(x = factor(EF))) +
   facet_wrap(~ Year)
 ```
 
-Example: Comparing hot days in Tallahassee and Las Vegas. The data are [daily weather observations](http://www.ncdc.noaa.gov/cdo-web/datasets) from the Tallahassee International Airport.
+Example: Comparing hot days in Tallahassee and Las Vegas. The data are [daily weather observations](http://www.ncdc.noaa.gov/cdo-web/datasets) from the Tallahassee International Airport
 
-Import the data.
+Import the data
 
 ```{r}
 loc <- "http://myweb.fsu.edu/jelsner/temp/data/TLH_Daily1940-2021.csv"
 TLH.df <- readr::read_csv(file = loc)
 ```
 
-The variables of interest are the daily high (and low) temperature in the column labeled `TMAX` (`TMIN`). The values are in degrees F.
+The variables of interest are the daily high (and low) temperature in the column labeled `TMAX` (`TMIN`). The values are in degrees F
 
-Rename the columns then select only the date and temperature columns.
+Rename the columns then select only the date and temperature columns
 
 ```{r}
 TLH.df <- TLH.df |>
@@ -741,9 +636,9 @@ TLH.df <- TLH.df |>
   dplyr::glimpse()
 ```
 
-Q: Based on these data, is it getting hotter in Tallahassee? Let's compute the annual average high temperature and create a time series graph.
+Q: Based on these data, is it getting hotter in Tallahassee? Let's compute the annual average high temperature and create a time series graph
 
-You use the `year()` function from the {lubridate} package to get a column called `Year`. Since the data only has values through mid May 2022 you keep all observations with the `Year` column value less than 2021. You then use the `group_by()` function to group by `Year`, and the `summarize()` function to get the average daily maximum temperature for each year.
+You use the `year()` function from the {lubridate} package to get a column called `Year`. Since the data only has values through mid May 2022 you keep all observations with the `Year` column value less than 2021. You then use the `group_by()` function to group by `Year`, and the `summarize()` function to get the average daily maximum temperature for each year
 
 ```{r}
 df <- TLH.df |>
@@ -754,9 +649,9 @@ df <- TLH.df |>
 dplyr::glimpse()
 ```
 
-You now have a data frame with two columns: `Year` and `AvgT` (annual average daily high temperature in degrees F). If a day is missing a value it is skipped when computing the average because of the `na.rm = TRUE` argument in the `mean()` function.
+You now have a data frame with two columns: `Year` and `AvgT` (annual average daily high temperature in degrees F). If a day is missing a value it is skipped when computing the average because of the `na.rm = TRUE` argument in the `mean()` function
 
-Next you use functions from the {ggplot2} package to make a time series graph. You specify the x aesthetic as `Year` and the y aesthetic as the `AvgT` and include point and line layers.
+Next you use functions from the {ggplot2} package to make a time series graph. You specify the x aesthetic as `Year` and the y aesthetic as the `AvgT` and include point and line layers
 
 ```{r}
 ggplot(data = df, 
@@ -766,7 +661,7 @@ ggplot(data = df,
   ylab("Average Annual Temperature in Tallahassee, FL (F)")
 ```
 
-You can go directly to the graph without saving the resulting data frame. That is, you pipe `|>` the resulting data frame after applying the {dplyr} verbs to the `ggplot()` function. The object in the first argument of the `ggplot()` function is the result (data frame) from the code above. Here you also add a smooth curve through the set of averages with the `geom_smooth()` layer.
+You can go directly to the graph without saving the resulting data frame. That is, you pipe `|>` the resulting data frame after applying the {dplyr} verbs to the `ggplot()` function. The object in the first argument of the `ggplot()` function is the result (data frame) from the code above. Here you also add a smooth curve through the set of averages with the `geom_smooth()` layer
 
 ```{r}
 TLH.df |>
@@ -784,7 +679,7 @@ ggplot(mapping = aes(x = Year, y = AvgT)) +
 
 Q: Is the frequency of extremely hot days increasing over time? Let's consider a daily high temperature of 100 F and above as extremely hot.
 
-Here you count the number of days at or above 100F using the `summarize()` function together with the `sum()` function on the logical operator `>=`. If a day is missing a temperature, you remove it with the `na.rm = TRUE` argument in the `sum()` function.
+Here you count the number of days at or above 100F using the `summarize()` function together with the `sum()` function on the logical operator `>=`. If a day is missing a temperature, you remove it with the `na.rm = TRUE` argument in the `sum()` function
 
 ```{r}
 TLH.df |>
@@ -822,7 +717,7 @@ What does the histogram of daily high temperatures look like?
 
 Q: The most common high temperatures are in the low 90s, but there are relatively few 100+ days. Why?
 
-Compare the histogram of daily high temperatures in Tallahassee with a histogram of daily high temperatures in Las Vegas, Nevada. Here you repeat the code above but for the data frame `LVG.df`.
+Compare the histogram of daily high temperatures in Tallahassee with a histogram of daily high temperatures in Las Vegas, Nevada. Here you repeat the code above but for the data frame `LVG.df`
 
 ```{r}
 LVG.df <- readr::read_csv(file = "http://myweb.fsu.edu/jelsner/temp/data/LV_DailySummary.csv",
@@ -847,7 +742,7 @@ gLVG <- ggplot(data = LVG.df,
   theme(legend.position = "none")
 ```
 
-Then use the operators from the {patchwork} package to plot them side by side.
+Then use the operators from the {patchwork} package to plot them side by side
 
 ```{r}
 if(!require(patchwork)) install.packages(pkgs = "patchwork", repos = "http://cran.us.r-project.org")
@@ -857,7 +752,7 @@ library(patchwork)
 gTLH / gLVG
 ```
 
-Example: US population and area by state. The object `us_states` from the {spData} package is a data frame from the U.S. Census Bureau. The variables include the state `GEOID` and `NAME`, the `REGION` (`South`, `West`, etc), `AREA` (in square km), and total population in 2010 (`total_pop_10`) and in 2015 (`total_pop_15`).
+Example: US population and area by state. The object `us_states` from the {spData} package is a data frame from the U.S. Census Bureau. The variables include the state `GEOID` and `NAME`, the `REGION` (`South`, `West`, etc), `AREA` (in square km), and total population in 2010 (`total_pop_10`) and in 2015 (`total_pop_15`)
 
 ```{r}
 us_states <- spData::us_states
@@ -865,7 +760,7 @@ class(us_states)
 head(us_states)
 ```
 
-The object `us_states` has two classes: simple feature and data frame. It is a data frame that has spatial information stored in the column labeled `geometry`. More about this next lesson.
+The object `us_states` has two classes: simple feature and data frame. It is a data frame that has spatial information stored in the column labeled `geometry`
 
 Note also that the variable `AREA` is numeric with units (km\^2). Thus in order to perform some operations you need to specify units or convert the column using `as.numeric()`. For example, if you want to filter by area keeping only states with an area greater than 300,000 square km you could do the following
 
@@ -875,7 +770,7 @@ us_states |>
   dplyr::filter(Area > 300000)
 ```
 
-For now, suppose you want to plot area versus population for each state including state names on the plot. You note large differences between the minimum and maximum values for both variables.
+For now, suppose you want to plot area versus population for each state including state names on the plot. You note large differences between the minimum and maximum values for both variables
 
 ```{r}
 us_states |>
@@ -883,7 +778,7 @@ us_states |>
                    rP = range(total_pop_15))
 ```
 
-Start with a simple scatter plot using logarithmic scales. The variable `AREA` has units so you convert it to a numeric with the `as.numeric()` function.
+Start with a simple scatter plot using logarithmic scales. The variable `AREA` has units so you convert it to a numeric with the `as.numeric()` function
 
 ```{r}
 ggplot(data = us_states,
@@ -894,7 +789,7 @@ ggplot(data = us_states,
   scale_y_log10()
 ```
 
-Next use the {scales} package so the tic labels can be expressed in whole numbers with commas.
+Next use the {scales} package so the tic labels can be expressed in whole numbers with commas
 
 ```{r}
 ggplot(data = us_states,
@@ -917,7 +812,7 @@ ggplot(data = us_states,
   scale_y_log10(labels = scales::comma)
 ```
 
-The labels are centered on top of the points. To fix this you use functions from the {grepel} package.
+The labels are centered on top of the points. To fix this you use functions from the {grepel} package
 
 ```{r}
 ggplot(data = us_states,
@@ -929,7 +824,7 @@ ggplot(data = us_states,
   scale_y_log10(labels = scales::comma)
 ```
 
-Finally, since the data object is a simple feature data frame you can make a map.
+Finally, since the data object is a simple feature data frame you can make a map
 
 ```{r}
 ggplot() + 
