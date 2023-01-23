@@ -4,7 +4,112 @@
 
 First lab on Thursday
 
-## Making graphs (continued) {-}
+## Making graphs {-}
+
+Example: U.S. tornadoes: Consider the tornado records in the file `Tornadoes.csv`. Import the data using the `readr::read_csv()` function then create new columns called `Year`, `Month` and `EF` using the `dplyr::mutate()` function
+
+```{r}
+( Torn.df <- readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
+  dplyr::mutate(Year = yr,
+                Month = as.integer(mo),
+                EF = mag) )
+```
+
+Next create a new data frame (`df`) that contains the number of tornadoes by year for the state of Kansas
+  
+```{r}
+( df <- Torn.df |>
+  dplyr::filter(st == "KS") |>
+  dplyr::group_by(Year) |>
+  dplyr::summarize(nT = dplyr::n()) )
+```
+
+Then use the functions from the {ggplot2} package to plot the number of tornadoes by year using lines to connect the values in order of the variable on the x-axis
+
+```{r}
+ggplot(data = df,
+       mapping = aes(x = Year, y = nT)) +
+  geom_line() +
+  geom_point()
+```
+
+Note: In the early production stage of research, I like to break the code into steps as above: (1) Import the data, (2) manipulate the data, and (3) plot the data. It is easier to document but it  introduces the potential for mistakes because of the intermediary objects in the environment (e.g., `Torn.df`, `df`)
+
+Below you bring together the above code to create the time series of Kansas tornado frequency without creating intermediary objects
+
+```{r, eval=FALSE}
+readr::read_csv(file = here::here("data", "Tornadoes.csv")) |>
+  dplyr::mutate(Year = yr,
+                Month = as.integer(mo),
+                EF = mag) |>
+  dplyr::filter(st == "KS") |>
+  dplyr::group_by(Year) |>
+  dplyr::summarize(nT = dplyr::n()) |>
+ggplot(mapping = aes(x = Year, y = nT)) +
+  geom_line() +
+  geom_point()
+```
+
+Recall that the `group_by()` function allows you to repeat an operation depending on the value (or level) of some variable. For example to count the number of tornadoes by EF damage rating since 2007 and ignoring missing ratings
+
+```{r}
+Torn.df |>
+  dplyr::filter(Year >= 2007, EF != -9) |>
+  dplyr::group_by(EF) |>
+  dplyr::summarize(Count = dplyr::n()) 
+```
+
+The result is a table listing the number of tornadoes grouped by EF rating
+
+Instead of printing the table, you create a bar chart using the `geom_col()` function.
+
+```{r}
+Torn.df |>
+  dplyr::filter(Year >= 2007, EF != -9) |>
+  dplyr::group_by(EF) |>
+  dplyr::summarize(Count = dplyr::n()) |>
+ggplot(mapping = aes(x = EF, y = Count)) +
+  geom_col()
+```
+
+The `geom_bar()` function counts the number of cases at each x position so you don't need the `group_by()` and `summarize()` functions
+
+```{r}
+Torn.df |>
+  dplyr::filter(Year >= 2007, EF != -9) |>
+ggplot(mapping = aes(x = EF)) +
+  geom_bar()
+```
+
+Improve the bar chart and to make it ready for publication
+
+```{r}
+Torn.df |>
+  dplyr::filter(Year >= 2007, EF != -9) |>
+  dplyr::group_by(EF) |>
+  dplyr::summarize(Count = dplyr::n()) |>
+ggplot(mapping = aes(x = factor(EF), y = Count, fill = Count)) +
+  geom_bar(stat = "identity") +
+  xlab("EF Rating") + 
+  ylab("Number of Tornadoes") +
+  scale_fill_continuous(low = 'green', high = 'orange') +
+  geom_text(aes(label = Count), vjust = -.5, size = 3) +
+  theme_minimal() +
+  theme(legend.position = 'none') 
+```
+
+You create a set of plots with the `facet_wrap()` function. Here you create a set of bar charts showing the frequency of tornadoes by EF rating for each year in the data set since 2004
+
+You add the function after the `geom_bar()` layer and use the formula syntax (`~ Year`) inside the parentheses. You interpret the syntax as "plot bar charts conditioned on the variable year"
+
+```{r}
+Torn.df |>
+  dplyr::filter(Year >= 2004, EF != -9) |>
+ggplot(mapping = aes(x = factor(EF))) +
+  geom_bar() +
+  facet_wrap(~ Year)
+```
+
 ## Introduction to simple features {-}
 
 The vector model for data (vector data) represents things in the world using points, lines and polygons. These objects have discrete, well-defined borders and a high level of precision. Precision does not imply accurate.
@@ -147,7 +252,7 @@ sf::st_sfc(point1, point2)
 
 In most cases, a `sfc` object contains objects of the same geometry type. Thus, when you convert `sfg` objects of type `polygon` into a simple feature geometry column, you end up with an `sfc` object of type `polygon`. A geometry column of multiple line strings would result in an `sfc` object of type `multilinestring`.
 
-An example with polygons.
+An example with polygons
 
 ```{r}
 poly.list1 <- list(rbind(c(1, 5), c(2, 2), c(4, 1), c(4, 4), c(1, 5)))
@@ -335,9 +440,10 @@ Why use the {sf} package when {sp} is already tried and tested?
 
 -   Fast reading and writing of data
 -   Enhanced plotting performance
--   `sf` objects are treated as data frames in most operations
--   `sf` functions are combined using `|>` operator and they work well with the {tidyverse} packages
--   `sf` function names are consistent and intuitive (all begin with `st_`)
+-   {sf} objects are treated as data frames in most operations
+-   {sf} functions are combined using `|>` operator and they work well with the {tidyverse} packages
+-   {sf} function names are consistent and intuitive (all begin with `st_`)
+-   {sp} will be deprecated in the near future
 
 These advantages led to the development of spatial packages (including {tmap}, {mapview} and {tidycensus}) that now support simple feature objects.
 
@@ -358,3 +464,125 @@ world.sf <- world.sp |>
 ```
 
 You can create basic maps from simple feature data frames with the base `plot()` method (`plot.sf()`). The function creates a multi-panel one sub-plot for each variable.
+
+## Geo-computation on simple features {-}
+
+Geo-computation on simple features is done with routines in the geometry engine-open source (GEOS) library that the functions in the {sf} package make use of.
+
+As an example, consider the file `police.zip` on my website that contains shapefiles in a folder called `police`. The variables include police expenditures (POLICE), crime (CRIME), income (INC), unemployment (UNEMP) and other socio-economic variables for counties in Mississippi.
+
+Input the data using the `st_read()` function from the {sf} package and then assign a geographic coordinate reference system (CRS) to it using the EPSG number 4326.
+
+```{r}
+download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/police.zip",
+              destfile = here::here("data", "police.zip"))
+unzip(here::here("data", "police.zip"),
+      exdir = here::here("data"))
+
+sfdf <- sf::st_read(dsn = here::here("data", "police"), 
+                    layer = "police") 
+sf::st_crs(sfdf) <- 4326
+```
+
+The geometries are polygons and there are 82 of them, one for each county.
+
+You transform the geographic coordinate system of the polygons to a specific projected CRS as suggested by the function `suggest_crs()` from the {crsuggest} package.
+
+```{r}
+crsuggest::suggest_crs(sfdf)
+```
+
+The function for transforming the CRS is `st_transform()` from the {sf} package.
+
+```{r}
+sfdf <- sfdf |>
+    sf::st_transform(crs = 6508)
+```
+
+The `st_centroid()` function computes the geographic center of each polygon in the spatial data frame.
+
+```{r}
+countyCenters.sf <- sfdf |>
+    sf::st_centroid()
+```
+
+The warning lets you know that the attributes attached to each polygon might result in misleading information when attached to the new geometry (points). Different geometries can mean different interpretations of the attribute.
+
+```{r}
+sf::st_geometry(countyCenters.sf)
+```
+
+To get a geographic center location for the state, you first join all the counties using the `st_union()` function, then use the `st_centroid()` function.
+
+```{r}
+stateCenter.sfc <- sfdf |>
+  sf::st_union() |>
+  sf::st_centroid()
+```
+
+The result is a simple feature geometry column (`sfc`) with a single row where the geometry contains the center location.
+
+Which county contains the geographic center of the state? Here you use the geometric binary predicate `st_contains()`.
+
+```{r}
+( Contains <- sfdf |>
+    sf::st_contains(stateCenter.sfc,
+                    sparse = FALSE) )
+```
+
+You include the `sparse = FALSE` argument so the result is a matrix containing `TRUE`s and `FALSE`s. Since there are 82 counties and one centroid the matrix has 82 rows and 1 column. All matrix entries are `FALSE` except the one containing the center.
+
+To map the result you first plot the county polygons with the `geom_sf()` function (layer), then add the county geometry for the center county and fill it red. You use the matrix that you called `Contains` to subset this county. Finally you add the location of the state centroid to the plot.
+
+```{r}
+library(ggplot2)
+
+ggplot(data = sfdf) +
+  geom_sf() +
+  geom_sf(data = sfdf[Contains, ], col = "red") +
+  geom_sf(data = stateCenter.sfc) +
+  theme_void()
+```
+
+The function `st_area()` returns a vector of the geographical area (in sq. units) of each of the spatial objects. Here county boundaries as polygons.
+
+```{r}
+sfdf |>
+  sf::st_area()
+```
+
+The vector values have units of square meters (m\^2), which are derived from the CRS.
+
+There is an attribute called `AREA` in the data frame but it is better to calculate it from the spatial polygons because then you are sure of the units.
+
+What happens when you apply the area function on the centroid object?
+
+```{r}
+countyCenters.sf |>
+  sf::st_area()
+```
+
+Compute a 10 km buffer around the state and show the result with a plot. First use `st_union()`, then `st_buffer()`, then pipe the output (a simple feature data frame to `ggplot()`).
+
+```{r}
+sfdf |>
+  sf::st_union() |>
+  sf::st_buffer(dist = 10000) |>
+ggplot() +
+  geom_sf() +
+  geom_sf(data = sfdf) +
+  theme_void()
+```
+
+Length of boundary lines for U.S. states. Transform the CRS to 2163 (US National Atlas Equal Area). Note that the geometry is multi-polygons. Convert the polygons to multi-linestrings, then use `st_length()` to get the total length of the lines.
+
+```{r}
+states <- spData::us_states |>
+  sf::st_transform(crs = 2163)
+
+sf::st_length(states) # returns zeroes because geometry is polygon
+
+states |>
+  sf::st_cast(to = "MULTILINESTRING") |>
+  sf::st_length()
+```
