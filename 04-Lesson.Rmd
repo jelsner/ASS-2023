@@ -2,7 +2,7 @@
 
 **"Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."** --- Hadley Wickham
 
-First lab on Thursday
+First lab on Thursday covering the material in lessons 1-4
 
 ## Making graphs {-}
 
