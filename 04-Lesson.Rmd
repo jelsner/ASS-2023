@@ -36,17 +36,32 @@ Next create a data frame (`df`) that contains the number of tornadoes by year fo
   dplyr::summarize(nT = dplyr::n()) )
 ```
 
-Then use the functions from {ggplot2} to graph the number of tornadoes by year using lines to connect the values neighboring values of the variable on the x-axis (`Year`)
+Then use the functions from {ggplot2} to graph the number of tornadoes by year using lines to connect the neighboring values of the variable on the x-axis (`Year`)
 
 ```{r}
 ggplot(data = df,
        mapping = aes(y = nT, x = Year)) +
   geom_line() +
-  geom_point()
+  geom_point() +
+  ylab("Number of tornadoes in Kansas")
 ```
 
 -   Add another aesthetic by mapping the number of tornadoes to color
+```{r}
+ggplot(data = df,
+       mapping = aes(y = nT, x = Year, color = nT)) +
+  geom_line() +
+  geom_point() +
+  ylab("Number of tornadoes in Kansas")
+```
 -   Add color separately
+```{r}
+ggplot(data = df,
+       mapping = aes(y = nT, x = Year)) +
+  geom_line() +
+  geom_point(color = "green") +
+  ylab("Number of tornadoes in Kansas")
+```
 
 Early in the research, I like to break the code into steps as above: (1) Import the data, (2) manipulate the data, and (3) plot the data
 
