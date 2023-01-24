@@ -375,7 +375,7 @@ For more practice working with data frames using functions from the {tidyverse} 
 The {ggplot2} package is a popular graphics tool among data scientists (e.g., New York Times and 538). Functionality is built on principles of good data visualization
 
 1.  Map data to aesthetics
-2.  Layer
+2.  Add layers
 3.  Build in steps
 
 You make the functions available to your current working directory by typing
