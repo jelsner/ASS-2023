@@ -1,0 +1,39 @@
+---
+title: "Lab 1"
+author: "Your Name"
+date: January 26, 2023
+---
+
+Due: 3 p.m.
+
+Total Points: 75
+
+**1** Assign to the vector object `rn` 100 random numbers from the standard normal distribution using the code below then answer the questions using {base} R code.
+
+```{r}
+rn <- rnorm(n = 100)
+```
+
+a. What is the value in the 25th element? (2)
+b. What are the highest and lowest values? (2)
+c. What are the mean and median values? (2)
+d. How many values are less than 0? (2)
+e. How many values are between 1 and 2? (2)
+
+**2** The Palmer penguins data set is available at https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv
+
+a. Import the csv file as a data frame with the name `penguins` using the `readr::read_csv()` function (5)
+b. Print the number of rows and columns in the data frame (5)
+c. Print the column names (5)
+d. How many missing values are there in the vector of bill lengths (`bill_length_mm`)? (5)
+e. Compute the average bill length (in mm) for all penguins in the data frame (5)
+
+**3** The object `us_states` from the {spData} package is a data frame from the U.S. Census Bureau. The variables include the state `GEOID` and `NAME`, the `REGION` (`South`, `West`, etc), `AREA` (in square km), and total population in 2010 (`total_pop_10`) and in 2015 (`total_pop_15`). 
+
+a. Create a new data frame called `df` containing only the population columns. Note: you might need to load the `sf` package for this to work. (5) 
+b. Create a new data frame containing only states from the South region. (5)
+c. Create a new data frame containing only states from the West region with a 2015 population of more than 6 million people. (5)
+d. What was the total population of the Midwest region in 2010 and 2015? (5)
+e. How many states are in each region and what is the _average_ statewide 2015 population in each region? Hint: Use the `dplyr::group_by()` function. (5)
+
+**4** Use the file `Tornadoes.csv` in the directory `data` and create a time series plot of the annual number of tornadoes occurring in Florida since 1950. Use a point and a line layer (15).
