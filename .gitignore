@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.DS_Store
 data/FL_Fires/
 Julia.Rmd
 .DS_Store
