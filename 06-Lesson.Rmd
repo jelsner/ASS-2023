@@ -1,509 +1,591 @@
-# Thursday February 2, 2023 {.unnumbered}
+# Thursday February 2, 2023 {-}
 
 **"Hell isn't other people's code. Hell is your own code from 3 years ago."** -- Jeff Atwood
 
-Today
+## S4 spatial data objects {-}
 
--   Spatial data subsets and joins
--   Interpolating variables using areal weights
+The {sp} package has methods for working with spatial data as S4 objects (reference classes). A few of the packages we will use this semester for analyzing/modeling spatial data work only with {sp} objects so it is helpful to see how they are structured.
 
-## Spatial data subsets and joins {.unnumbered}
-
-Variables (stored as column vectors) in spatial data frames are referred to as 'attributes'. The simple feature column in a simple feature data frame stores the spatial information as well-known text.
-
-With simple feature data frames you can create data subsets using `[`, `subset()` and `$` from the {base} R packages and `select()` and `filter()` from the {dplyr} package.
-
-The `[` operator subsets rows and columns. Indexes specify the elements you wish to extract from an object, e.g. object[i, j], with i and j typically being numbers representing rows and columns. Leaving i or j empty returns all rows or columns, so `world[1:5, ]` returns the first five rows and all columns of the simple feature data frame `world` (from the {spData} package).
-
-Examples:
+Load the package (install if needed).
 
 ```{r}
-world <- spData::world
-world[c(1, 5, 9), ] # subset rows by row position
-world[, 1:3] # subset columns by column position
-world[, c("name_long", "lifeExp")] # subset columns by name
+if(!require(sp)) install.packages(pkgs = "sp", repos = "http://cran.us.r-project.org")
+
+library(sp)
 ```
 
-Here you create a logical vector (`sel_area`) and then subset selecting only cases from `world` corresponding to the `sel_area` vector elements that are `TRUE`.
+Spatial objects from the {sp} package fall into two types:
+
+-   spatial-only information (the geometry). Geometries include `SpatialPoints`, `SpatialLines`, `SpatialPolygons`, etc, and
+-   extensions to these types where attribute information is available and stored in a data frame. These include `SpatialPointsDataFrame`, `SpatialLinesDataFrame`, etc.
+
+The typical situation nowadays is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled.
+
+Consider again the the tornado tracks that you import as a simple feature data frame. Here you filter on the attribute `st` keeping only tornadoes that originated in Florida.
 
 ```{r}
-sel_area <- world$area_km2 < 10000
-head(sel_area)
-summary(sel_area)
+FL_Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-aspath"), 
+                          layer = "1950-2020-torn-aspath") |>
+  dplyr::filter(st == "FL")
 
-( small_countries <- world[sel_area, ] )
+class(FL_Torn.sf)
 ```
 
-Since you used the assignment operator the last line creates a new simple feature data frame, `small_countries`, containing nations whose surface area is smaller than 10,000 square kilometers.
-
-Note: the geometry column remains fixed to the resulting data frame. 
-
-An operation on a {sf} data frame only changes the geometry when appropriate (e.g. by dissolving borders between adjacent polygons following aggregation). This means that the speed of operations with attribute data in {sf} data frames is the same as with columns in a data frames.
-
-The {base} R function `subset()` provides another way to get the same result.
+The object `FL_Torn.sf` is a simple feature data frame (S3 spatial data object). You convert the simple feature data frame to an S4 spatial data object using the `sf::as_Spatial()` function.
 
 ```{r}
-small_countries <- subset(world, 
-                          area_km2 < 10000)
+FL_Torn.sp <- FL_Torn.sf |>
+  sf::as_Spatial()
 
-small_countries <- world |>
-  subset(area_km2 < 10000)
+class(FL_Torn.sp)
 ```
 
-The {dplyr} verbs work on {sf} spatial data frames. The functions include `dplyr::select()` and `dplyr::filter()`.
+The file `FL_Torn.sp` is a spatial object of class `SpatialLinesDataFrame`.
 
-CAUTION! The {dplyr} and {raster} packages have a `select()` function. When using both packages in the same session, the function in the most recently attached package will be used, 'masking' the other function. This will generate error messages containing text like: unable to find an inherited method for function 'select' for signature "sf".
-
-To avoid this error message, and prevent ambiguity, you should use the long-form function name, prefixed by the package name and two colons `dplyr::select()`.
-
-The `dplyr::select()` function picks the columns by name or position. For example, you can select only two columns, `name_long` and `pop`, with the following command.
+Information in S4 spatial objects is stored in slots. Slot names are listed with the `slotNames()` function.
 
 ```{r}
-world1 <- world |>
-  dplyr::select(name_long, pop)
-names(world1)
+FL_Torn.sp |>
+  slotNames()
 ```
 
-The result is a simple feature data frame with the geometry column.
+The `data` slot contains the data frame (attribute table), the `lines` slot contains the spatial geometries (in this case lines), the `bbox` slot is the boundary box and the `proj4string` slot is the CRS.
 
-With the `dplyr::select()` function you can subset and rename columns at the same time. Here you select the columns with names `name_long` and `pop` and give the `pop` column a new name (`population`).
+The object name followed by the `@` symbol allows access to information in the slot. The `@` symbol is similar to the `$` symbol for regular data frames. For example to see the first three rows of the data frame type
 
 ```{r}
-world |>
-  dplyr::select(name_long, 
-                population = pop)
+FL_Torn.sp@data[1:3, ]
 ```
 
-The `dplyr::pull()` function returns a single vector without the geometry.
+You recognize this as observations from the first three tornadoes in the data set. In fact, the object name together with the slot name `data` has class `data.frame`.
 
 ```{r}
-world |>
-  dplyr::pull(pop)
+class(FL_Torn.sp@data)
 ```
 
-The `dplyr::filter()` function keeps only rows matching given criteria, e.g., only countries with a very high average life expectancy.
+When using the `$` symbol on S4 spatial objects, you access the columns (attributes) as you would a data frame. For example, to list the EF rating (column labeled `mag`) of the first 3 tornadoes.
 
 ```{r}
-world |>
-  sf::st_drop_geometry() |>
-  dplyr::filter(lifeExp > 82)
+FL_Torn.sp$mag[1:3]
 ```
 
-Aggregation summarizes a data frame by a grouping variable. An example of aggregation is to calculate the number of people per continent based on country-level data (one row per country).
-
-This is done with the `dplyr::group_by()` and `dplyr::summarize()` functions.
+Selecting, retrieving, or replacing attributes in S4 spatial data frames is done with methods in {base} R package. For example `[]` is used to select rows and/or columns. To select `mag` of the 7th tornado type
 
 ```{r}
-world |>
-  dplyr::group_by(continent) |>
-  dplyr::summarize(Population = sum(pop, na.rm = TRUE),
-                   nCountries = dplyr::n())
+FL_Torn.sp$mag[7]
 ```
 
-The two columns in the resulting table are `Population` and `nCountries`. The functions `sum()` and `dplyr::n()` were the aggregating functions.
+Other methods include: `plot()`, `summary()`,`dim()` and `names()` (operate on the data slot), `as.data.frame()`, `as.matrix()` and `image()` (for spatial data on a grid), and `length()` (number of cases).
 
-The result is a simple feature data frame with a single row representing attributes of the world and the geometry as a single multi-polygon through the geometric *union* operator.
+You can't use the {dplyr} verbs on S4 data frames. To convert from an S4 spatial data frame to a simple feature data frame use `sf::st_as_sf()`.
 
-You can chain together functions to find the world's three most populous continents and the number of countries they contain with the `dplyr::top_n()` function.
+The first spatial geometry is given as the first element of the lines list.
 
 ```{r}
-world |> 
-  dplyr::select(pop, continent) |> 
-  dplyr::group_by(continent) |> 
-  dplyr::summarize(Population = sum(pop, na.rm = TRUE), 
-                   nCountries = dplyr::n()) |> 
-  dplyr::top_n(n = 3, wt = Population) 
+FL_Torn.sp@lines[1]
 ```
 
-If you want to create a new column based on existing columns use `dplyr::mutate()`. For example, if you want to calculate population density for each country divide the population column, here `pop`, by an area column, here `area_km2` with unit area in square kilometers.
+It is an object of class `Lines`. The line is identified by a matrix indicating the longitude and latitude of the start point in row one and the longitude and latitude of the end point in row two.
+
+The `bbox` slot is an object of class `matrix` and `array` and the `proj4string` slot is of class `CRS`. The coordinate reference system is specified as a character string.
 
 ```{r}
-world |> 
-  dplyr::mutate(Population_Density = pop / area_km2)
-
-world |>
-  dplyr::transmute(Population_Density = pop / area_km2)
+proj4string(FL_Torn.sp)
 ```
 
-The `dplyr::transmute()` function performs the same computation but also removes the other columns (except the geometry column).
+The interface to the geometry engine-open source (GEOS) is through the {rgeos} package.
 
-Subsetting (filtering) your data based on geographic boundaries.
+## Working with raster data {-}
 
-The {USAboundaries} package has historical and contemporary boundaries for the United States provided by the U.S. Census Bureau.
+The *raster data model* divides geographic space into a grid of cells of constant size (resolution) and we use classes from the {terra} package to work with raster data.
 
-Individual states are extracted using the `us_states()` function. CAUTION: this function has the same name as the object `us_states` from the {spData} package.
+A raster is a data structure that divides space into rectangles called 'cells' (or 'pixels'). Each cell has an attribute value.
 
-Here you use the argument `states =` to get only the state of Kansas. You then make a plot of the boundary and check the native coordinate reference system (CRS).
+The {raster} package has functions for working with raster data using the S4 reference classes.
+
+The {terra} package has functions for creating, reading, manipulating, and writing raster data using S3 objects `SpatRaster` and `SpatVect`.
+
+To see what methods (functions) for class `SpatRaster` are available use the `methods()` function.
 
 ```{r}
-KS.sf <- USAboundaries::us_states(states = "Kansas")
+library(terra)
+
+methods(class = "SpatRaster")
+```
+
+The list includes {base} R and {sf} methods.
+
+The `terra::rast()` function creates a raster with a geographic (longitude/latitude) CRS and a 1 by 1 degree grid of cells across the globe.
+
+```{r}
+r <- terra::rast()
+r
+```
+
+Arguments including `xmin`, `nrows`, `ncols`, and `crs` are used to change these default settings.
+
+The object has class `SpatRaster` with geographic coordinates spanning the globe at one-degree resolution in the north-south and the east-west directions.
+
+To create a raster with 36 longitudes -100 and 0 degrees East longitude and 18 latitudes between the equator and 50 degrees N latitude we specify the number of columns, the number of rows and the extent as follows.
+
+```{r}
+r <- terra::rast(ncols = 36, nrows = 18, 
+                 xmin = -100, xmax = 0, 
+                 ymin = 0, ymax = 50)
+r
+terra::res(r)
+```
+
+This results in raster with cell resolution of 2.7 degrees of longitude and 2.7 degrees of latitude.
+
+The structure of the raster can be changed after created. Here you change the resolution to 3 degrees. This induces changes to the number of rows and columns.
+
+```{r}
+terra::res(r) <- 3
+ncol(r)
+nrow(r)
+```
+
+The `SpatRaster` object `r` is a template with no values assigned to the cells and by default it will have an extent that spans the globe.
+
+```{r}
+r <- terra::rast(ncol = 10, nrow = 10)
+terra::ncell(r)
+terra::hasValues(r)
+```
+
+Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells.
+
+The `terra::values()` function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. Here you first assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1.
+
+```{r}
+v <- runif(terra::ncell(r))
+head(v)
+terra::values(r) <- v
+head(r)
+```
+
+The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with values from the vector in this order.
+
+The `terra::plot()` function creates a choropleth map of the values in cells.
+
+```{r}
+terra::plot(r)
+```
+
+The default CRS is geographic.
+
+```{r}
+terra::crs(r)
+```
+
+To re-project the raster use the function `terra::project()`.
+
+Here you create a new raster with cell numbers as values using the `terra::setValues()` function to place the numbers in the cells.
+
+```{r}
+r <- terra::rast(xmin = -110, xmax = -90, 
+                 ymin = 40, ymax = 60, 
+                 ncols = 10, nrows = 10)
+r <- terra::setValues(r, 1:terra::ncell(r))
+terra::plot(r)
+```
+
+The values increase starting from top left to bottom right as dictated by the sequence `1:terra::ncell(r)` and the lexicographic order in which the raster grids are filled.
+
+The `terra::rast()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Most formats that can import a raster can also be used to export a raster.
+
+Consider the `Meuse` dataset (from the {sp} package), using a file in the native 'raster- file' format.
+
+```{r}
+f <- system.file("external/test.grd", 
+                 package = "raster")
+r <- terra::rast(f)
+```
+
+Do the cells contain values? Is the raster stored in memory? Create a plot.
+
+```{r}
+terra::hasValues(r)
+terra::inMemory(r)
+terra::plot(r, main = "Raster layer from file")
+```
+
+Note the raster is a set of cells arranged in a rectangular array. Values that are coded as `NA` are not plotted.
+
+`SpatRaster` objects can have more than one raster. These are called layers.
+
+```{r}
+r
+```
+
+The dimensions are nrow = 115 by ncol = 80 and nlyr = 1.
+
+You can add layers to the object. Here you create three rasters and assign random values to the cells.
+
+```{r}
+r1 <- terra::rast(nrow = 10, ncol = 10)
+terra::values(r1) <- runif(terra::ncell(r1))
+r2 <- terra::rast(nrow = 10, ncol = 10)
+terra::values(r2) <- runif(terra::ncell(r2))
+r3 <- terra::rast(nrow = 10, ncol = 10)
+terra::values(r3) <- runif(terra::ncell(r3))
+```
+
+You combine the rasters into a single `SpatRaster` object with the concatenate function `c()`.
+
+```{r}
+s <- c(r1, r2, r3)
+s
+dim(s)
+terra::nlyr(s)
+terra::plot(s)
+```
+
+Each raster is a separate layer.
+
+Here you import a set of raster layers from a file.
+
+```{r}
+f <- system.file("external/rlogo.grd", 
+                 package = "raster")
+b <- terra::rast(f)
+b
+terra::plot(b)
+```
+
+Most {base} R functions (`+`, `*`, `round()`, `ceiling()`, `log()`, etc) work on raster objects. Operations are done on all cells at once.
+
+Here you place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root.
+
+```{r}
+r <- terra::rast(ncol = 10, nrow = 10)
+terra::values(r) <- 1:terra::ncell(r)
+s <- r + 100
+s <- sqrt(s)
+terra::plot(s)
+```
+
+Here you replace the cell values with random uniform numbers between 0 and 1. Then round to the nearest integer and add one.
+
+```{r}
+r <- terra::rast(ncol = 10, nrow = 10)
+terra::values(r) <- runif(terra::ncell(r))
+r <- round(r)
+r <- r + 1
+terra::plot(r)
+```
+
+Replace only certain values with the subset function `[]`.
+
+```{r}
+r <- terra::rast(xmin = -90, xmax = 90, ymin = -30, ymax = 30)
+terra::values(r) <- rnorm(terra::ncell(r))
+terra::plot(r)
+r[r > 2] <- 0
+terra::plot(r)
+```
+
+Functions for manipulating a raster
+
+The `terra::crop()` function takes a geographic subset of a larger raster object. A raster is cropped by providing an extent object or other spatial object from which an extent can be extracted (objects from classes deriving from raster and from spatial in the {sp} package).
+
+The `terra::trim()` function crops a raster layer by removing the outer rows and columns that only contain `NA` values. The `terra::extend()` function adds new rows and/or columns with `NA` values.
+
+The `terra::merge()` function combines two or more rasters into a single raster. The input objects must have the same resolution and origin (such that their cells fit into a single larger raster). If this is not the case, first adjust one of the objects with the functions `aggregate()` or `resample()`.
+
+The `terra::aggregate()` and `terra::disagg()` functions change the resolution (cell size) of a raster object.
+
+As an example here you crop the raster into two pieces and then merge the two pieces into one. The `terra::merge()` function has the argument `filename =` that allows you to export to a file (here `test.grd` in the folder `outputs`).
+
+```{r}
+r1 <- terra::crop(r, terra::ext(-180, 0, 0, 30)) 
+r2 <- terra::crop(r, terra::ext(-10, 180, -20, 10))
+m <- terra::merge(r1, r2, 
+                  filename = here::here('outputs', 'test.grd'), 
+                  overwrite = TRUE)
+terra::plot(m)
+```
+
+The `terra::flip()` function flips the data (reverse order) in the horizontal or vertical direction. The `terra::rotate()` function rotates a raster that have longitudes from 0 to 360 degrees (often used by climatologists) to the standard -180 to 180 degrees system.
+
+You extract values from a raster for a set of locations with the `terra::extract()` function. The locations can be a vector object (points, lines, polygons), a matrix with (x, y) or (longitude, latitude -- in that order!) coordinates, or a vector with cell numbers.
+
+```{r}
+r <- terra::rast(ncols = 5, nrows = 5, 
+                 xmin = 0, xmax = 5, 
+                 ymin = 0, ymax = 5)
+terra::values(r) <- 1:25
+
+xy <- rbind(c(.5, .5), c(2.5, 2.5))
+p <- terra::vect(xy, crs="+proj=longlat +datum=WGS84")
+
+terra::extract(r, xy)
+terra::extract(r, p)
+```
+
+To convert the values of a raster layer to points or polygons we use `as.points()` and `as.polygons()`. These functions return a `SpatVector` object for cells that are not missing value.
+
+Vector data is converted to a raster with the `terra::rasterize()` function. Polygon to raster conversion is often done to create a mask (i.e. to set to `NA` a set of cells of a raster object, or to summarize values on a raster by zone. For example a country polygon is converted to a raster that is used to set all the cells outside that country to `NA`. Also polygons representing administrative regions such as states can be converted to a raster to summarize values by region. Point to raster conversion is often done to analyze location data (location of a specific species of tree in a forest).
+
+Example: create a raster containing the number of tornadoes passing through each grid cell.
+
+Here you use a latitude/longitude grid (1/2 degree latitude by 1/2 degree longitude) with each cell in the grid containing the number of tornadoes that went through it since 2003.
+
+First import the tornado (initial track point) data as a simple feature data frame.
+
+```{r}
+if(!"1950-2020-torn-initpoint" %in% list.files(here::here("data"))) {
+download.file(url = "http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-initpoint.zip",
+              destfile = here::here("data", "1950-2020-torn-initpoint.zip"))
+unzip(here::here("data", "1950-2020-torn-initpoint.zip"), 
+      exdir = here::here("data"))
+}
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint"), 
+                       layer = "1950-2020-torn-initpoint") |>
+  dplyr::filter(yr >= 2003)
+```
+
+Note the extent of the bounding box and check the native CRS.
+
+```{r}
+sf::st_crs(Torn.sf)
+```
+
+The CRS is geographic.
+
+Next create a raster (called `frame`) with a domain that covers the area of interest and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the `terra::ext()` function.
+
+```{r}
+frame <- terra::rast(xmin = -106, xmax = -67, 
+                     ymin = 24, ymax = 50)
+terra::res(frame) <- .5
+terra::ext(frame)
+```
+
+Next use the `terra::rasterize()` function to count the number of times each raster cell contains a tornado. The first argument is the spatial data frame and the second is the raster without values. The argument `field =` specifies a column name in the spatial data frame (here just an identifier) and the argument `fun =` specifies what to do. Here you want a count of the unique instances of the field in each cell and this is done with setting `fun = "length"`. Raster cells without tornadoes are given a value of 0 based on the `background =` argument.
+
+```{r}
+Torn.v <- terra::vect(Torn.sf)
+
+Torn.r <- terra::rasterize(x = Torn.v, 
+                           y = frame, 
+                           field = "om", 
+                           fun = "length",
+                           background = 0)
+class(Torn.r)
+dim(Torn.r)
+```
+
+The result is a raster layer. The number of tornadoes occurring in each cell are the values.
+
+Print the first 200 values (lexicographical order).
+
+```{r}
+terra::values(Torn.r)[1:200]
+```
+
+To visualize the raster use the `plot()` method.
+
+```{r}
+terra::plot(Torn.r)
+```
+
+You can recognize the broad shape of the eastern 2/3rds of the United States. Some cells across the Plains and the South have quite a few tornadoes and very few tornadoes in cells over the Appalachian Mountains.
+
+Indeed tornado activity appears in distinct clusters (or groups). A statistic that estimates the amount of cluster is called Moran's I. It is a global measure of clustering with high values indicated by high values nearby to other high values and low values nearby to other low values.
+
+Values of Moran's I range from -1 to +1 where positive values indicate clustering and negative values indicate regularity (e.g., chessboard). It is implemented on a raster with the `raster::Moran()` function.
+
+The function works only with S4 raster objects. So you need to first convert `Torn.r` from a `SpatRaster` to a `RasterLayer`. You do this with `raster()` function after loading the {raster} package.
+
+```{r}
+library(raster)
+
+Torn.r2 <- raster::raster(Torn.r)
+class(Torn.r2)
+str(Torn.r2)
+```
+
+The object `Torn.r2` is a `RasterLayer` as an S4 data class. Note the use of slots for storing the information.
+
+You can use the `raster::Moran()` function on the `RasterLayer` object.
+
+```{r}
+raster::Moran(Torn.r2)
+```
+
+The value of .75 indicates high level of tornado clustering at this scale.
+
+Under the null hypothesis of no spatial autocorrelation the expected value for Moran's I is close to zero [-1/(n-1), where n is the number of cells].
+
+Clusters at a local level can be found using a local indicator of spatial autocorrelation. One such indicator is local Moran's I, which is computed at each cell (using the `MoranLocal()` function) so the result is a raster.
+
+```{r}
+Torn_lmi.r <- raster::MoranLocal(Torn.r2)
+plot(Torn_lmi.r)
+```
+
+This type of plot makes is easy to identify the hot spots of tornadoes over parts of the South and the Central Plains.
+
+To convert the local Moran raster to a S4 spatial data frame with polygon geometries use the `rasterToPolygons()` function.
+
+```{r}
+Torn_lmi.sp <- raster::rasterToPolygons(Torn_lmi.r)
+class(Torn_lmi.sp)
+```
+
+Then convert the `SpatialPolygonsDataFrame` to a simple features data frame and make a plot.
+
+```{r}
+Torn_lmi.sf <- sf::st_as_sf(Torn_lmi.sp)
 
 library(ggplot2)
 
-ggplot(data = KS.sf) +
-  geom_sf()
-
-sf::st_crs(KS.sf)
+ggplot(data = Torn_lmi.sf) +
+  geom_sf(mapping = aes(fill = layer, color = layer))
 ```
 
-The polygon geometry includes the border and the area inside the border. The CRS is described by the 4326 EPSG code and implemented using well-known text.
-
-You use a geometric operation to subset spatial data geographically (rather than on some attribute). For example here you will subset the tornado tracks as line strings, keeping only those line strings that fall within the Kansas border defined by a polygon geometry.
-
-First import the tornado data. Note here you check to see if the tornado data file is in your list of files with the `if()` conditional and the `list.files()` function. You only download the data file if the file is not (`!`) in (`%in%`) the list.
-
-Consider `r x <- 1:10` then `r 5 %in% x`, `r 11 %in% x`, `r !11 %in% x`, `r 1:2 %in% x`.
+Or using functions from the {tmap} package you map the raster layer directly.
 
 ```{r}
-loc <- "http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-aspath.zip"
-
-if(!"1950-2020-torn-aspath" %in% list.files(here::here("data"))) {
-download.file(url = loc,
-              destfile = here::here("data", "1950-2020-torn-aspath.zip"))
-unzip(zipfile = here::here("data", "1950-2020-torn-aspath.zip"), 
-      exdir = here::here("data"))
-}
-
-Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-aspath"), 
-                       layer = "1950-2020-torn-aspath") 
-```
-
-The geometries are line strings representing the straight-line approximate track of each tornado. The CRS has EPSG code of 4326, same as the Kansas polygon.
-
-To keep only the tracks that fall within the border of Kansas you use the `sf::st_intersection()` function. The first argument (`x =`) is the simple feature data frame that you want to subset and the second argument (`y =`) defines the geometry over which the subset occurs.
-
-```{r}
-KS_Torn.sf <- sf::st_intersection(x = Torn.sf, 
-                                  y = KS.sf)
-```
-
-You can use the pipe operator (`|>`) to pass the first argument to the function.
-
-```{r}
-KS_Torn.sf <- Torn.sf |>
-  sf::st_intersection(y = KS.sf)
-```
-
-Make a plot to check if things appear as you expect. Start with the state border as a polygon layer then add the tracks as a line string layer.
-
-```{r}
-ggplot() +
-  geom_sf(data = KS.sf) +
-  geom_sf(data = KS_Torn.sf)
-```
-
-Note that no tornado track lies outside the state border. Line strings that lie outside the border are clipped at the border. However the attribute values represent the entire track.
-
-If you want the entire tornado track for all tornadoes that passed into (or through) the state, then you first use the geometric binary predicate function `sf::st_intersects()`. With the argument `sparse = FALSE` a matrix with a single column of `TRUE`s and `FALSE`s is returned. Here you use the piping operator to implicitly specify the `x =` argument as the `Torn.sf` data frame.
-
-```{r}
-Intersects <- Torn.sf |>
-  sf::st_intersects(y = KS.sf, 
-                    sparse = FALSE)
-
-head(Intersects)
-sum(Intersects)
-```
-
-Next you create a new data frame from the original data frame keeping only observations (rows) where `Interects` is TRUE.
-
-```{r}
-KS_Torn2.sf <- Torn.sf[Intersects, ]
-
-ggplot() +
-  geom_sf(data = KS.sf) +
-  geom_sf(data = KS_Torn2.sf)
-```
-
-Are tornadoes more common in some parts of Kansas than others? One way to answer this question is to see how far away the center of tornado activity is from the center of the state.
-
-Start by finding the center of the state using the `sf::st_centroid()` function.
-
-```{r}
-geocenterKS <- KS.sf |>
-  sf::st_centroid()
-```
-
-Next combine the line strings representing the tornado tracks into a geometry collection with the `sf::st_combine()` function and then find the centroid of this collection using the `sf::st_centroid()` function.
-
-```{r}
-centerKStornadoes <- KS_Torn.sf |>
-  sf::st_combine() |>
-  sf::st_centroid()
-```
-
-Draw a map.
-
-```{r}
-ggplot() +
-  geom_sf(data = KS.sf) +
-  geom_sf(data = geocenterKS, col = "blue") +
-  geom_sf(data = centerKStornadoes, col = "red")
-```
-
-Compute the distance between the to geometry points in meters using the `sf::st_distance()` function
-
-```{r}
-geocenterKS |>
-  sf::st_distance(centerKStornadoes)
-```
-
-Less than 3 km!
-
-More examples: <https://www.jla-data.net/eng/spatial-aggregation/>
-
-Mutating data frames with joins
-
-Combining data from different sources based on a shared variable is a common GIS operation. The {dplyr} package has join functions that follow naming conventions used in database languages.
-
-Given two data frames labeled `x` and `y`, the join functions add columns *from y* *to x*, matching rows based on the function name.
-
--   `inner_join()`: includes all rows in `x` *and* `y`
--   `left_join()`: includes all rows in `x`
--   `full_join()`: includes all rows in `x` *or* `y`
-
-Join functions work the same on data frames and on simple feature data frames. The most common type of attribute join on spatial data takes a simple feature data frame as the first argument and adds columns to it from a data a frame specified as the second argument.
-
-For example, you combine data on coffee production with the `spData::world` simple feature data frame. Coffee production by country is in the data frame called `spData::coffee_data`.
-
-```{r}
-spData::coffee_data |>
-  dplyr::glimpse()
-```
-
-It has 3 columns: `name_long` names of the major coffee-producing nations and `coffee_production_2016` and `coffee_production_2017` contain estimated values for coffee production in units of 60-kg bags per year.
-
-The GDP (per capita) is in the `spData::world` simple feature data frame.
-
-```{r}
-spData::world |>
-  dplyr::glimpse()
-```
-
-Select the columns `name_long` and `gdpPercap` and assign these columns to a new simple feature data frame called `world.sf`.
-
-```{r}
-( world.sf <- spData::world |>
-    dplyr::select(name_long, gdpPercap) )
-```
-
-The `dplyr::left_join()` function takes the data frame named by the argument `x =` and joins it to the data frame named by the argument `y =` using a common variable name.
-
-```{r}
-( world_coffee.sf <- dplyr::left_join(x = world.sf, 
-                                      y = spData::coffee_data) )
-```
-
-Because the two data frames share a common variable name (`name_long`) the join works without using the `by =` argument. The result is a simple feature data frame identical to the `world.sf` object but with two new variables indicating coffee production in 2016 and 2017.
-
-```{r}
-names(world_coffee.sf)
-```
-
-For a join to work there must be at least one variable name in common.
-
-Since the object listed in the `x =` argument is a simple feature data frame, the join function returns a simple feature data frame with the same number of rows (observations).
-
-Although there are only 47 rows of data in `spData::coffee_data`, all 177 of the country records in `world.sf` are kept intact in `world_coffee.sf`. Rows in the first dataset with no match are assigned `NA` values for the new coffee production variables.
-
-If you want to keep only countries that have a match in the key variable then use `dplyr::inner_join()`. Here you use the piping operator to implicitly specify the `x =` argument as the `world.sf` data frame.
-
-```{r}
-world.sf |>
-  dplyr::inner_join(spData::coffee_data)
-```
-
-You can join in the other direction as well, starting with a regular data frame and adding variables from a simple features object.
-
-More information on attribute data operations such as these is given here: <https://geocompr.robinlovelace.net/attr.html>
-
-## Interpolation using areal weights {.unnumbered}
-
-Areal-weighted interpolation estimates the value of some variable from a set of polygons to an overlapping but incongruent set of target polygons.
-
-For example, suppose you want demographic information given at the Census tract level to be estimated within the tornado damage path. Damage paths do not align with census tract boundaries so areal weighted interpolation is needed to get demographic estimates at the tornado level.
-
-The function `sf::st_interpolate_aw()` performs areal-weighted interpolation of polygon data. As an example, consider the number of births by county in North Carolina in over the period 1970 through 1974 (`BIR74`).
-
-The data are available as a shapefile as part of the {sf} package system file. Use the `sf::st_read()` function together with the `system.file()` function to import the data.
-
-```{r}
-nc.sf <- sf::st_read(system.file("shape/nc.shp", 
-                                  package = "sf"))
-plot(nc.sf$geometry)
-```
-
-Each polygon is a county. The union of all polygons defines the areal extent of the simple feature column and is retrieved as a `bbox` (bounding box) object with the `sf::st_bbox()` function.
-
-```{r}
-nc.sf |>
-  sf::st_bbox()
-```
-
-The domain extends from 84.32W to 75.46W and from 33.88N to 36.59N.
-
-Create a map filling the counties by the values in the variable `BIR74` (number of births in 1974) with the `fill =` aesthetic.
-
-```{r}
-ggplot(data = nc.sf) +
-  geom_sf(mapping = aes(fill = BIR74))
-```
-
-Next construct a 20 by 10 grid of polygons that overlap the state using the `sf::st_make_grid()` function. The function takes the bounding box from the `nc.sf` simple feature data frame and constructs a two-dimension grid using the dimensions specified with the `n =` argument.
-
-```{r}
-g.sfc <- sf::st_make_grid(nc.sf, 
-                          n = c(20, 10))
-
-ggplot() +
-  geom_sf(data = g.sfc, col = "red") +
-  geom_sf(data = nc.sf, fill = "transparent")
-```
-
-The result is an overlapping, but incongruent, grid of polygons as a `sfc` (simple feature column).
-
-Use the `sf::st_interpolate_aw()` function with the first argument a simple feature data frame for which you want to aggregate a particular variable and the argument `to =` to the set of polygons for which you want the variable to be aggregated.
-
-The name of the variable must be in quotes inside the subset operator `[]`. The argument `extensive =` if `FALSE` (default) assumes the variable is intensive and the mean is preserved.
-
-```{r}
-a1.sf <- sf::st_interpolate_aw(nc.sf["BIR74"], 
-                               to = g.sfc,
-                               extensive = FALSE)
-```
-
-The result is a simple feature data frame with the same polygons geometry as the `sfc` grid and a single variable called (`BIR74`).
-
-```{r}
-( p1 <- ggplot() +  
-    geom_sf(data = a1.sf, mapping = aes(fill = BIR74)) +
-    scale_fill_continuous(limits = c(0, 18000)) +
-    labs(title = "Assuming the variable is intensive") )
-```
-
-Note that the average number of births across the state at the county level matches (roughly) the average number of births across the grid of polygons, but the sums do not match.
-
-```{r}
-mean(a1.sf$BIR74) / mean(nc.sf$BIR74)
-
-sum(a1.sf$BIR74) / sum(nc.sf$BIR74)
-```
-
-An *intensive* variable is independent of the spatial units (e.g., population density, percentages); a variable that has been normalized in some fashion. An *extensive* variable depends on the spatial unit (e.g., population totals). Assuming a uniform population density, the number of people will depend on the size of the spatial area.
-
-Since the number of births in each county is an extensive variable, you change the `extensive =` argument to `TRUE`.
-
-```{r}
-a2.sf <- sf::st_interpolate_aw(nc.sf["BIR74"], 
-                               to = g.sfc, 
-                               extensive = TRUE)
-( p2 <- ggplot(a2.sf) +  
-    geom_sf(mapping = aes(fill = BIR74)) +
-    scale_fill_continuous(limits = c(0, 18000)) +
-    labs(title = "Assuming the variable is extensive") )
-```
-
-In this case you preserve the total number of births across the domain. You verify this 'mass preservation' property (pycnophylactic property) by showing that the ratio of the sums is one.
-
-```{r}
-sum(a2.sf$BIR74) / sum(nc.sf$BIR74)
-```
-
-Here you create a plot of both interpolations side-by-side
-
-```{r}
-library(patchwork)
-
-p1 / p2
-```
-
-Example: tornado paths and housing units
-
-Here you are interested in the number of houses (housing units) affected by tornadoes occurring in Florida 2014-2020. You begin by creating a polygon geometry for each tornado record.
-
-Import the data, filter on `yr` (year) and `st` (state) and transform the native CRS to 6439 (Florida Albers).
-
-```{r}
-FL_Torn.sf <- Torn.sf |>
-  dplyr::filter(yr >= 2014, 
-                st == "FL") |>
-  sf::st_transform(crs = 6439)
-```
-
-Next change the geometries from line strings representing tracks to polygons representing the tornado path ('damage footprint' length times width). Damage path width is an attribute variable labeled `wid`.
-
-First create new a new variable with the width in units of meters and then use the `st_buffer()` function with the `dist =` argument set to 1/2 the width.
-
-```{r}
-FL_Torn.sf <- FL_Torn.sf |>
-  dplyr::mutate(Width = wid * .9144)
-
-FL_TornPath.sf <- FL_Torn.sf |>
-  sf::st_buffer(dist = FL_Torn.sf$Width / 2)
-```
-
-To see the change from line string track to a polygon path plot both together for one of the tornadoes.
-
-```{r}
-ggplot() + 
-  geom_sf(data = FL_TornPath.sf[10, ]) +
-  geom_sf(data = FL_Torn.sf[10, ], col = "red")
-```
-
-Now you want the number of houses within this path. The housing units are from the census data. You can access these data with the `tidycensus::get_acs()` function. The {tidycensus} package is an interface to the decennial US Census and American Community Survey APIs and the US Census Bureau's geographic boundary files. Functions return Census and ACS data as simple feature data frames for all Census geographies.
-
-Note: You need to get an API key from U.S. Census. Then
-
-```{r, eval=FALSE}
-file.create("CensusAPI") # open then copy/paste your API key
-```
-
-To ensure the file is only readable by you, not by any other user on the system use the function `Sys.chmod()` then read the key and install it.
-
-```{r, eval=FALSE}
-Sys.chmod("CensusAPI", mode = "0400")
-key <- readr::read_file("CensusAPI")
-tidycensus::census_api_key(key, install = TRUE, overwrite = TRUE)
-readRenviron("~/.Renviron")
-```
-
-If you are using GitHub, make sure the file is listed in the file `.gitignore` so it doesn't get included in your git public repository.
-
-The geometry is the tract level and the variable is the un-weighted sample housing units (B00002_001). Transform the CRS to that of the tornadoes with the `crs =` argument.
-
-```{r}
-Census.sf <- tidycensus::get_acs(geography = "tract", 
-                                 variables = "B00002_001",
-                                 state = "FL",
-                                 year = 2015,
-                                 geometry = TRUE) |>
-  sf::st_transform(crs = sf::st_crs(FL_TornPath.sf))
-
-head(Census.sf)
-```
-
-The column labeled `estimate` is the estimate of the number of housing units within the census tract.
-
-Finally you use the `sf::st_interpolate_aw()` function to spatially interpolate the housing units to the tornado path.
-
-```{r}
-awi.sf <- sf::st_interpolate_aw(Census.sf["estimate"],
-                                to = FL_TornPath.sf, 
-                                extensive = TRUE)
-head(awi.sf)
-range(awi.sf$estimate, 
-      na.rm = TRUE)
-```
-
-The tornado that hit the most houses occurred just east of downtown Orlando.
-
-```{r}
-awi.sf2 <- awi.sf |>
-  dplyr::filter(estimate > 175)
-
 tmap::tmap_mode("view")
-tmap::tm_shape(awi.sf2) +
-  tmap::tm_borders(col = "red")
+tmap::tm_shape(Torn_lmi.r) +
+  tmap::tm_raster(alpha = .7)
 ```
 
-We will learn how to make maps in Lesson 8. In Lesson 7 we are introduced to the S4 spatial data class and how to work with raster data.
+Focal (neighborhood) functions
+
+The function `terra::focal()` computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The `terra::distance()` function computes the shortest distance to cells that are not NA. The `terra::direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `terra::adjacent()` function determines which cells are adjacent to other cells.
+
+Functions from the {raster} package require data objects to be in the S4 reference class. S4 reference classes allow rich data representations at the expense of flexibility. The S3 reference class objects are more flexible, easier to maintain, and allow for new dialects (e.g., {dplyr}, {ggplot2}). Most packages on CRAN use S3 reference class objects.
+
+Consider a multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a *GeoTIFF* file labeled `L7_ETMs.tif`. You import the image as a raster stack.
+
+```{r}
+if(!require(stars)) install.packages("stars", repos = "http://cran.us.r-project.org")
+library(stars)
+
+f <- system.file("tif/L7_ETMs.tif",
+                  package = "stars")
+
+library(raster)
+L7.rs <- stack(f)
+
+class(L7.rs)
+```
+
+The data `L7.rs` is a `RasterStack` object as a S4 reference class.
+
+You list the slot names and extract the extent and CRS using the `@` syntax.
+
+```{r}
+L7.rs@extent
+L7.rs@crs
+```
+
+You extract a single band (layer) from the stack with the `layer =` argument in the `raster()` function. You then plot the raster values with the `plot()` method and compute the spatial autocorrelation with the `raster::Moran()` function.
+
+```{r}
+L7.rB3 <- raster::raster(L7.rs, layer = 3)
+plot(L7.rB3)
+raster::Moran(L7.rB3)
+```
+
+You convert the raster to an S3 reference class data frame with the `as.data.frame()` method. Here you do that and then compute the normalized difference vegetation index (NDVI) using columns `L7_ETMs.4` and `L7_ETMs.3` and the `mutate()` function from the {dplyr} package.
+
+NDVI indicates live green vegetation from satellite images. Higher values indicate more green vegetation, negative values indicate water.
+
+```{r}
+L7.df <- as.data.frame(L7.rs) |>
+  dplyr::mutate(NDVI = (L7_ETMs.4 - L7_ETMs.3)/(L7_ETMs.4 + L7_ETMs.3))
+```
+
+More examples and other functions for working with raster data using functions from the {terra} package are illustrated in <https://geocompr.robinlovelace.net/raster-vector.html>. I encourage you to take a look.
+
+## Working with space-time data {-}
+
+Space-time data arrive in the form of multi-dimensional arrays. Examples include:
+
+-   raster images
+-   socio-economic or demographic data
+-   environmental variables monitored at fixed stations
+-   time series of satellite images with multiple spectral bands
+-   spatial simulations
+-   climate and weather model output
+
+The {stars} package provides functions and methods for working with space-time data as multi-dimensional S3 reference class arrays.
+
+To see what methods (functions) for class `stars` are available use the `methods()` function.
+
+```{r}
+methods(class = "stars")
+```
+
+The list includes {base} R and {tidyverse} methods.
+
+The typical data array is that where two dimensions represent spatial raster dimensions and the third dimensions is a band (or time). [Data array](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube1.png)
+
+But arrays can have more dimensions. For example, time, space, spectral band, and sensor type. [Data cube](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube2.png)
+
+You import a set of rasters (raster stack) as a {stars} object using the `stars::read_stars()` function. Consider the multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a *GeoTIFF* file labeled `L7_ETMs.tif`.
+
+```{r}
+f <- system.file("tif/L7_ETMs.tif",
+                  package = "stars")
+L7.stars <- stars::read_stars(f)
+L7.stars
+
+dim(L7.stars)
+```
+
+There are three dimensions to this {stars} object, two spatial (`x` and `y`), and the third across six bands (`band`). Values across the six bands and space are summarized as a single attribute with name `L7_ETMs.tif`.
+
+The data are stored in a four dimensional array. The first index is the attribute, the second and third indexes are the spatial coordinates, and the fourth index is the band.
+
+Here you plot bands 3 and 4 by sequencing on the fourth index and using the `plot()` method.
+
+```{r}
+plot(L7.stars[,,,3:4])
+```
+
+Since the data object is S3 you use functions from the `ggplot2()` package together with the `geom_stars()` layer from the {stars} package to plot all 6 bands with a common color scale bar.
+
+```{r}
+library(ggplot2)
+
+ggplot() +
+  stars::geom_stars(data = L7.stars) +
+  facet_wrap(~ band)
+```
+
+You create a new {stars} object by applying a function to the band values. For example here you compute normalized difference vegetation index (NDVI) through a function applied across the `x` and `y` spatial dimensions using the `stars::st_apply()` method after creating the function `NDVI()`.
+
+```{r}
+NDVI <- function(z) (z[4] - z[3]) / (z[4] + z[3])
+
+( NDVI.stars <- stars::st_apply(L7.stars, 
+                                MARGIN = c("x", "y"), 
+                                FUN = NDVI) )
+ggplot() +
+  stars::geom_stars(data = NDVI.stars) 
+```
+
+The stars data frame can also be split, here on the band dimension, to yield a representation as six rasters in the list form.
+
+```{r}
+( L7split.stars <- split(L7.stars, 
+                         f = "band") )
+```
+
+Now the bands are given as columns in the data frame part of the {stars} object and there are only two dimensions (`x` and `y`).
+
+Raster data do not need to be regular or aligned along the cardinal directions. Functions in the {stars} package supports rotated, sheared, rectilinear and curvi-linear grids. [Grids](https://raw.githubusercontent.com/r-spatial/stars/master/man/figures/README-plot2-1.png)
+
+Functions in the {stars} package also support the vector data model. Vector data cubes arise when you have a single dimension that points to distinct spatial feature geometry, such as polygons (e.g. denoting administrative regions). [Vector data cube polygons](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube3.png)
+
+Or points (e.g., denoting sensor locations). [Vector data cube points](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube4.png)
+
+For more see: <https://github.com/r-spatial/stars/tree/master/vignettes> and <https://awesomeopensource.com/project/r-spatial/stars>
+
+Also you can check out some rough code that I've been working on to take advantage of the {stars} functionality including plotting daily temperatures across the U.S. and creating a vector data cube of COVID19 data in the `stars.Rmd` file on course GitHub site in the folder `Other_Rmds`.

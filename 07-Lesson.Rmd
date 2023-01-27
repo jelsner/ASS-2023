@@ -2,13 +2,7 @@
 
 **"Measuring programming progress by lines of code is like measuring aircraft building progress by weight."** -- Bill Gates
 
-Today
-
--   S4 spatial data objects
--   Working with raster data
--   Working with space-time data
-
-## S4 spatial data objects {.unnumbered}
+## S4 spatial data objects {-}
 
 The {sp} package has methods for working with spatial data as S4 objects (reference classes). A few of the packages we will use this semester for analyzing/modeling spatial data work only with {sp} objects so it is helpful to see how they are structured.
 
@@ -101,7 +95,7 @@ proj4string(FL_Torn.sp)
 
 The interface to the geometry engine-open source (GEOS) is through the {rgeos} package.
 
-## Working with raster data {.unnumbered}
+## Working with raster data {-}
 
 The *raster data model* divides geographic space into a grid of cells of constant size (resolution) and we use classes from the {terra} package to work with raster data.
 
@@ -509,7 +503,7 @@ L7.df <- as.data.frame(L7.rs) |>
 
 More examples and other functions for working with raster data using functions from the {terra} package are illustrated in <https://geocompr.robinlovelace.net/raster-vector.html>. I encourage you to take a look.
 
-## Working with space-time data {.unnumbered}
+## Working with space-time data {-}
 
 Space-time data arrive in the form of multi-dimensional arrays. Examples include:
 
