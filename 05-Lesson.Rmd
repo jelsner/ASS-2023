@@ -2,6 +2,8 @@
 
 **"An awful lot of time I spend"coding" is actually spent copying and pasting (And much of the rest is spent googling)."** -- Meghan Duffy
 
+Lab 1 answers are on GitHub
+
 ## Filtering, selecting, and conditioning on attributes {-}
 
 Variables (stored as column vectors) in spatial data frames are called 'attributes'. The simple feature column in a simple feature spatial data frame stores the spatial information as well-known text
@@ -567,11 +569,11 @@ library(sp)
 Spatial objects from the {sp} package fall into two types:
 
 -   spatial-only information (the geometry). Geometries include `SpatialPoints`, `SpatialLines`, `SpatialPolygons`, etc, and
--   extensions to these types where attribute information is available and stored in a data frame. These include `SpatialPointsDataFrame`, `SpatialLinesDataFrame`, etc.
+-   extensions to these types where attribute information is available and stored in a data frame. These include `SpatialPointsDataFrame`, `SpatialLinesDataFrame`, etc
 
-The typical situation nowadays is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled.
+The typical situation nowadays is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled
 
-Consider again the the tornado tracks that you import as a simple feature data frame. Here you filter on the attribute `st` keeping only tornadoes that originated in Florida.
+Consider again the the tornado tracks that you import as a simple feature data frame. Here you filter on the attribute `st` keeping only tornadoes that originated in Florida
 
 ```{r}
 FL_Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2021-torn-aspath"), 
@@ -581,7 +583,7 @@ FL_Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2021-torn-aspath"),
 class(FL_Torn.sf)
 ```
 
-The object `FL_Torn.sf` is a simple feature data frame (S3 spatial data object). You convert the simple feature data frame to an S4 spatial data object using the `sf::as_Spatial()` function.
+The object `FL_Torn.sf` is a simple feature data frame (S3 spatial data object). You convert the simple feature data frame to an S4 spatial data object using the `sf::as_Spatial()` function
 
 ```{r}
 FL_Torn.sp <- FL_Torn.sf |>
@@ -590,16 +592,16 @@ FL_Torn.sp <- FL_Torn.sf |>
 class(FL_Torn.sp)
 ```
 
-The file `FL_Torn.sp` is a spatial object of class `SpatialLinesDataFrame`.
+The file `FL_Torn.sp` is a spatial object of class `SpatialLinesDataFrame`
 
-Information in S4 spatial objects is stored in slots. Slot names are listed with the `slotNames()` function.
+Information in S4 spatial objects is stored in slots. Slot names are listed with the `slotNames()` function
 
 ```{r}
 FL_Torn.sp |>
   slotNames()
 ```
 
-The `data` slot contains the data frame (attribute table), the `lines` slot contains the spatial geometries (in this case lines), the `bbox` slot is the boundary box and the `proj4string` slot is the CRS.
+The `data` slot contains the data frame (attribute table), the `lines` slot contains the spatial geometries (in this case lines), the `bbox` slot is the boundary box and the `proj4string` slot is the CRS
 
 The object name followed by the `@` symbol allows access to information in the slot. The `@` symbol is similar to the `$` symbol for regular data frames. For example to see the first three rows of the data frame type
 
@@ -607,13 +609,13 @@ The object name followed by the `@` symbol allows access to information in the s
 FL_Torn.sp@data[1:3, ]
 ```
 
-You recognize this as observations from the first three tornadoes in the data set. In fact, the object name together with the slot name `data` has class `data.frame`.
+You recognize this as observations from the first three tornadoes in the data set. In fact, the object name together with the slot name `data` has class `data.frame`
 
 ```{r}
 class(FL_Torn.sp@data)
 ```
 
-When using the `$` symbol on S4 spatial objects, you access the columns (attributes) as you would a data frame. For example, to list the EF rating (column labeled `mag`) of the first 3 tornadoes.
+When using the `$` symbol on S4 spatial objects, you access the columns (attributes) as you would a data frame. For example, to list the EF rating (column labeled `mag`) of the first 3 tornadoes
 
 ```{r}
 FL_Torn.sp$mag[1:3]
@@ -625,9 +627,9 @@ Selecting, retrieving, or replacing attributes in S4 spatial data frames is done
 FL_Torn.sp$mag[7]
 ```
 
-Other methods include: `plot()`, `summary()`,`dim()` and `names()` (operate on the data slot), `as.data.frame()`, `as.matrix()` and `image()` (for spatial data on a grid), and `length()` (number of cases).
+Other methods include: `plot()`, `summary()`,`dim()` and `names()` (operate on the data slot), `as.data.frame()`, `as.matrix()` and `image()` (for spatial data on a grid), and `length()` (number of cases)
 
-You can't use the {dplyr} verbs on S4 data frames. To convert from an S4 spatial data frame to a simple feature data frame use `sf::st_as_sf()`.
+You can't use the {dplyr} verbs on S4 data frames. To convert from an S4 spatial data frame to a simple feature data frame use `sf::st_as_sf()`
 
 The first spatial geometry is given as the first element of the lines list.
 
@@ -635,12 +637,12 @@ The first spatial geometry is given as the first element of the lines list.
 FL_Torn.sp@lines[1]
 ```
 
-It is an object of class `Lines`. The line is identified by a matrix indicating the longitude and latitude of the start point in row one and the longitude and latitude of the end point in row two.
+It is an object of class `Lines`. The line is identified by a matrix indicating the longitude and latitude of the start point in row one and the longitude and latitude of the end point in row two
 
-The `bbox` slot is an object of class `matrix` and `array` and the `proj4string` slot is of class `CRS`. The coordinate reference system is specified as a character string.
+The `bbox` slot is an object of class `matrix` and `array` and the `proj4string` slot is of class `CRS`. The coordinate reference system is specified as a character string
 
 ```{r}
 proj4string(FL_Torn.sp)
 ```
 
-The interface to the geometry engine-open source (GEOS) is through the {rgeos} package.
+The interface to the geometry engine-open source (GEOS) is through the {rgeos} package
