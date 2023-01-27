@@ -465,9 +465,9 @@ p1 / p2
 
 Example: tornado paths and housing units
 
-Here you are interested in the number of houses (housing units) affected by tornadoes occurring in Florida 2014-2021. You begin by creating a polygon geometry for each tornado record.
+Here you are interested in the number of houses (housing units) affected by tornadoes occurring in Florida 2014-2021. You begin by creating a polygon geometry for each tornado record
 
-Import the data, filter on `yr` (year) and `st` (state) and transform the native CRS to 6439 (Florida Albers).
+Import the data, filter on `yr` (year) and `st` (state) and transform the native CRS to 6439 (Florida Albers)
 
 ```{r}
 FL_Torn.sf <- Torn.sf |>
@@ -476,7 +476,7 @@ FL_Torn.sf <- Torn.sf |>
   sf::st_transform(crs = 6439)
 ```
 
-Next change the geometries from line strings representing tracks to polygons representing the tornado path ('damage footprint' length times width). Damage path width is an attribute variable labeled `wid`.
+Next change the geometries from line strings representing tracks to polygons representing the tornado path ('damage footprint' length times width). Damage path width is an attribute variable labeled `wid`
 
 First create new a new variable with the width in units of meters and then use the `st_buffer()` function with the `dist =` argument set to 1/2 the width.
 
@@ -488,7 +488,7 @@ FL_TornPath.sf <- FL_Torn.sf |>
   sf::st_buffer(dist = FL_Torn.sf$Width / 2)
 ```
 
-To see the change from line string track to a polygon path plot both together for one of the tornadoes.
+To see the change from line string track to a polygon path plot both together for one of the tornadoes
 
 ```{r}
 ggplot() + 
@@ -496,7 +496,7 @@ ggplot() +
   geom_sf(data = FL_Torn.sf[10, ], col = "red")
 ```
 
-Now you want the number of houses within this path. The housing units are from the census data. You can access these data with the `tidycensus::get_acs()` function. The {tidycensus} package is an interface to the decennial US Census and American Community Survey APIs and the US Census Bureau's geographic boundary files. Functions return Census and ACS data as simple feature data frames for all Census geographies.
+Now you want the number of houses within this path. The housing units are from the census data. You can access these data with the `tidycensus::get_acs()` function. The {tidycensus} package is an interface to the decennial US Census and American Community Survey APIs and the US Census Bureau's geographic boundary files. Functions return Census and ACS data as simple feature data frames for all Census geographies
 
 Note: You need to get an API key from U.S. Census. Then
 
@@ -513,7 +513,7 @@ tidycensus::census_api_key(key, install = TRUE, overwrite = TRUE)
 readRenviron("~/.Renviron")
 ```
 
-If you are using GitHub, make sure the file is listed in the file `.gitignore` so it doesn't get included in your git public repository.
+If you are using GitHub, make sure the file is listed in the file `.gitignore` so it doesn't get included in your git public repository
 
 The geometry is the tract level and the variable is the un-weighted sample housing units (B00002_001). Transform the CRS to that of the tornadoes with the `crs =` argument
 
@@ -528,9 +528,9 @@ Census.sf <- tidycensus::get_acs(geography = "tract",
 head(Census.sf)
 ```
 
-The column labeled `estimate` is the estimate of the number of housing units within the census tract.
+The column labeled `estimate` is the estimate of the number of housing units within the census tract
 
-Finally you use the `sf::st_interpolate_aw()` function to spatially interpolate the housing units to the tornado path.
+Finally you use the `sf::st_interpolate_aw()` function to spatially interpolate the housing units to the tornado path
 
 ```{r}
 awi.sf <- sf::st_interpolate_aw(Census.sf["estimate"],
@@ -541,7 +541,7 @@ range(awi.sf$estimate,
       na.rm = TRUE)
 ```
 
-The tornado that hit the most houses occurred just east of downtown Orlando.
+The tornado that hit the most houses occurred just east of downtown Orlando
 
 ```{r}
 awi.sf2 <- awi.sf |>
