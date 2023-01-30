@@ -328,6 +328,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="tuesday-january-31-2023" class="section level1 unnumbered hasAnchor">
 <h1>Tuesday January 31, 2023<a href="tuesday-january-31-2023.html#tuesday-january-31-2023" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><strong>“An awful lot of time I spend”coding” is actually spent copying and pasting (And much of the rest is spent googling).”</strong> – Meghan Duffy</p>
+<p>Lab 1 answers are on GitHub</p>
 <div id="filtering-selecting-and-conditioning-on-attributes" class="section level2 unnumbered hasAnchor">
 <h2>Filtering, selecting, and conditioning on attributes<a href="tuesday-january-31-2023.html#filtering-selecting-and-conditioning-on-attributes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Variables (stored as column vectors) in spatial data frames are called ‘attributes’. The simple feature column in a simple feature spatial data frame stores the spatial information as well-known text</p>
@@ -974,7 +975,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb42-10"><a href="tuesday-january-31-2023.html#cb42-10" aria-hidden="true" tabindex="-1"></a>Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2021-torn-aspath&quot;</span>), </span>
 <span id="cb42-11"><a href="tuesday-january-31-2023.html#cb42-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;1950-2021-torn-aspath&quot;</span>) </span></code></pre></div>
 <pre><code>## Reading layer `1950-2021-torn-aspath&#39; from data source 
-##   `/Users/jelsner/Desktop/ClassNotes/ASS-2023/data/1950-2021-torn-aspath&#39; 
+##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2023/data/1950-2021-torn-aspath&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 67558 features and 22 fields
 ## Geometry type: LINESTRING
@@ -1190,7 +1191,7 @@ This looks correct</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="tuesday-january-31-2023.html#cb78-1" aria-hidden="true" tabindex="-1"></a>nc.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="fu">system.file</span>(<span class="st">&quot;shape/nc.shp&quot;</span>, </span>
 <span id="cb78-2"><a href="tuesday-january-31-2023.html#cb78-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">package =</span> <span class="st">&quot;sf&quot;</span>))</span></code></pre></div>
 <pre><code>## Reading layer `nc&#39; from data source 
-##   `/Library/Frameworks/R.framework/Versions/4.2/Resources/library/sf/shape/nc.shp&#39; 
+##   `/Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library/sf/shape/nc.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 100 features and 14 fields
 ## Geometry type: MULTIPOLYGON
@@ -1299,144 +1300,620 @@ This looks correct</p>
 <pre><code>## Getting data from the 2011-2015 5-year ACS</code></pre>
 <pre><code>## Downloading feature geometry from the Census website.  To cache shapefiles for use in future sessions, set `options(tigris_use_cache = TRUE)`.</code></pre>
 <pre><code>## 
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |                                                                      |   1%
-  |                                                                            
-  |=                                                                     |   1%
-  |                                                                            
-  |=                                                                     |   2%
-  |                                                                            
-  |==                                                                    |   2%
-  |                                                                            
-  |==                                                                    |   3%
-  |                                                                            
-  |==                                                                    |   4%
-  |                                                                            
-  |===                                                                   |   4%
-  |                                                                            
-  |===                                                                   |   5%
-  |                                                                            
-  |====                                                                  |   5%
-  |                                                                            
-  |====                                                                  |   6%
-  |                                                                            
-  |=====                                                                 |   6%
-  |                                                                            
-  |=====                                                                 |   7%
-  |                                                                            
-  |=====                                                                 |   8%
-  |                                                                            
-  |======                                                                |   8%
-  |                                                                            
-  |======                                                                |   9%
-  |                                                                            
-  |=======                                                               |   9%
-  |                                                                            
-  |=======                                                               |  10%
-  |                                                                            
-  |=========                                                             |  13%
-  |                                                                            
-  |==========                                                            |  14%
-  |                                                                            
-  |==========                                                            |  15%
-  |                                                                            
-  |===========                                                           |  15%
-  |                                                                            
-  |===========                                                           |  16%
-  |                                                                            
-  |============                                                          |  17%
-  |                                                                            
-  |=============                                                         |  19%
-  |                                                                            
-  |==============                                                        |  19%
-  |                                                                            
-  |==============                                                        |  20%
-  |                                                                            
-  |===============                                                       |  21%
-  |                                                                            
-  |===============                                                       |  22%
-  |                                                                            
-  |================                                                      |  23%
-  |                                                                            
-  |=================                                                     |  24%
-  |                                                                            
-  |==================                                                    |  25%
-  |                                                                            
-  |===================                                                   |  27%
-  |                                                                            
-  |====================                                                  |  28%
-  |                                                                            
-  |=====================                                                 |  29%
-  |                                                                            
-  |=====================                                                 |  30%
-  |                                                                            
-  |======================                                                |  31%
-  |                                                                            
-  |=======================                                               |  32%
-  |                                                                            
-  |========================                                              |  34%
-  |                                                                            
-  |========================                                              |  35%
-  |                                                                            
-  |=========================                                             |  36%
-  |                                                                            
-  |==========================                                            |  37%
-  |                                                                            
-  |===========================                                           |  39%
-  |                                                                            
-  |============================                                          |  40%
-  |                                                                            
-  |=============================                                         |  41%
-  |                                                                            
-  |=============================                                         |  42%
-  |                                                                            
-  |==============================                                        |  42%
-  |                                                                            
-  |==============================                                        |  43%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |=================================                                     |  47%
-  |                                                                            
-  |==================================                                    |  48%
-  |                                                                            
-  |===================================                                   |  49%
-  |                                                                            
-  |=====================================                                 |  53%
-  |                                                                            
-  |======================================                                |  54%
-  |                                                                            
-  |=======================================                               |  55%
-  |                                                                            
-  |=======================================                               |  56%
-  |                                                                            
-  |=========================================                             |  58%
-  |                                                                            
-  |===========================================                           |  62%
-  |                                                                            
-  |============================================                          |  63%
-  |                                                                            
-  |=============================================                         |  65%
-  |                                                                            
-  |===============================================                       |  67%
-  |                                                                            
-  |================================================                      |  68%
-  |                                                                            
-  |=================================================                     |  71%
-  |                                                                            
-  |=========================================================             |  81%
-  |                                                                            
-  |============================================================          |  86%
-  |                                                                            
-  |===============================================================       |  90%
-  |                                                                            
-  |=================================================================     |  94%
-  |                                                                            
-  |===================================================================   |  95%
-  |                                                                            
-  |======================================================================| 100%</code></pre>
+Downloading: 11 kB     
+Downloading: 11 kB     
+Downloading: 15 kB     
+Downloading: 15 kB     
+Downloading: 20 kB     
+Downloading: 20 kB     
+Downloading: 20 kB     
+Downloading: 20 kB     
+Downloading: 25 kB     
+Downloading: 25 kB     
+Downloading: 25 kB     
+Downloading: 25 kB     
+Downloading: 32 kB     
+Downloading: 32 kB     
+Downloading: 32 kB     
+Downloading: 32 kB     
+Downloading: 36 kB     
+Downloading: 36 kB     
+Downloading: 41 kB     
+Downloading: 41 kB     
+Downloading: 44 kB     
+Downloading: 44 kB     
+Downloading: 44 kB     
+Downloading: 44 kB     
+Downloading: 49 kB     
+Downloading: 49 kB     
+Downloading: 52 kB     
+Downloading: 52 kB     
+Downloading: 60 kB     
+Downloading: 60 kB     
+Downloading: 64 kB     
+Downloading: 64 kB     
+Downloading: 68 kB     
+Downloading: 68 kB     
+Downloading: 72 kB     
+Downloading: 72 kB     
+Downloading: 77 kB     
+Downloading: 77 kB     
+Downloading: 85 kB     
+Downloading: 85 kB     
+Downloading: 89 kB     
+Downloading: 89 kB     
+Downloading: 98 kB     
+Downloading: 98 kB     
+Downloading: 110 kB     
+Downloading: 110 kB     
+Downloading: 120 kB     
+Downloading: 120 kB     
+Downloading: 120 kB     
+Downloading: 120 kB     
+Downloading: 130 kB     
+Downloading: 130 kB     
+Downloading: 130 kB     
+Downloading: 130 kB     
+Downloading: 140 kB     
+Downloading: 140 kB     
+Downloading: 150 kB     
+Downloading: 150 kB     
+Downloading: 150 kB     
+Downloading: 150 kB     
+Downloading: 150 kB     
+Downloading: 150 kB     
+Downloading: 160 kB     
+Downloading: 160 kB     
+Downloading: 170 kB     
+Downloading: 170 kB     
+Downloading: 170 kB     
+Downloading: 170 kB     
+Downloading: 180 kB     
+Downloading: 180 kB     
+Downloading: 190 kB     
+Downloading: 190 kB     
+Downloading: 190 kB     
+Downloading: 190 kB     
+Downloading: 190 kB     
+Downloading: 190 kB     
+Downloading: 200 kB     
+Downloading: 200 kB     
+Downloading: 210 kB     
+Downloading: 210 kB     
+Downloading: 210 kB     
+Downloading: 210 kB     
+Downloading: 220 kB     
+Downloading: 220 kB     
+Downloading: 230 kB     
+Downloading: 230 kB     
+Downloading: 230 kB     
+Downloading: 230 kB     
+Downloading: 240 kB     
+Downloading: 240 kB     
+Downloading: 240 kB     
+Downloading: 240 kB     
+Downloading: 250 kB     
+Downloading: 250 kB     
+Downloading: 250 kB     
+Downloading: 250 kB     
+Downloading: 260 kB     
+Downloading: 260 kB     
+Downloading: 260 kB     
+Downloading: 260 kB     
+Downloading: 270 kB     
+Downloading: 270 kB     
+Downloading: 270 kB     
+Downloading: 270 kB     
+Downloading: 270 kB     
+Downloading: 270 kB     
+Downloading: 280 kB     
+Downloading: 280 kB     
+Downloading: 290 kB     
+Downloading: 290 kB     
+Downloading: 300 kB     
+Downloading: 300 kB     
+Downloading: 300 kB     
+Downloading: 300 kB     
+Downloading: 300 kB     
+Downloading: 300 kB     
+Downloading: 310 kB     
+Downloading: 310 kB     
+Downloading: 310 kB     
+Downloading: 310 kB     
+Downloading: 330 kB     
+Downloading: 330 kB     
+Downloading: 330 kB     
+Downloading: 330 kB     
+Downloading: 340 kB     
+Downloading: 340 kB     
+Downloading: 350 kB     
+Downloading: 350 kB     
+Downloading: 360 kB     
+Downloading: 360 kB     
+Downloading: 370 kB     
+Downloading: 370 kB     
+Downloading: 370 kB     
+Downloading: 370 kB     
+Downloading: 380 kB     
+Downloading: 380 kB     
+Downloading: 390 kB     
+Downloading: 390 kB     
+Downloading: 390 kB     
+Downloading: 390 kB     
+Downloading: 400 kB     
+Downloading: 400 kB     
+Downloading: 400 kB     
+Downloading: 400 kB     
+Downloading: 410 kB     
+Downloading: 410 kB     
+Downloading: 410 kB     
+Downloading: 410 kB     
+Downloading: 420 kB     
+Downloading: 420 kB     
+Downloading: 430 kB     
+Downloading: 430 kB     
+Downloading: 440 kB     
+Downloading: 440 kB     
+Downloading: 440 kB     
+Downloading: 440 kB     
+Downloading: 450 kB     
+Downloading: 450 kB     
+Downloading: 460 kB     
+Downloading: 460 kB     
+Downloading: 460 kB     
+Downloading: 460 kB     
+Downloading: 460 kB     
+Downloading: 460 kB     
+Downloading: 470 kB     
+Downloading: 470 kB     
+Downloading: 480 kB     
+Downloading: 480 kB     
+Downloading: 480 kB     
+Downloading: 480 kB     
+Downloading: 490 kB     
+Downloading: 490 kB     
+Downloading: 500 kB     
+Downloading: 500 kB     
+Downloading: 500 kB     
+Downloading: 500 kB     
+Downloading: 510 kB     
+Downloading: 510 kB     
+Downloading: 520 kB     
+Downloading: 520 kB     
+Downloading: 520 kB     
+Downloading: 520 kB     
+Downloading: 530 kB     
+Downloading: 530 kB     
+Downloading: 530 kB     
+Downloading: 530 kB     
+Downloading: 540 kB     
+Downloading: 540 kB     
+Downloading: 540 kB     
+Downloading: 540 kB     
+Downloading: 550 kB     
+Downloading: 550 kB     
+Downloading: 560 kB     
+Downloading: 560 kB     
+Downloading: 560 kB     
+Downloading: 560 kB     
+Downloading: 560 kB     
+Downloading: 560 kB     
+Downloading: 560 kB     
+Downloading: 560 kB     
+Downloading: 570 kB     
+Downloading: 570 kB     
+Downloading: 600 kB     
+Downloading: 600 kB     
+Downloading: 610 kB     
+Downloading: 610 kB     
+Downloading: 620 kB     
+Downloading: 620 kB     
+Downloading: 620 kB     
+Downloading: 620 kB     
+Downloading: 630 kB     
+Downloading: 630 kB     
+Downloading: 630 kB     
+Downloading: 630 kB     
+Downloading: 640 kB     
+Downloading: 640 kB     
+Downloading: 640 kB     
+Downloading: 640 kB     
+Downloading: 650 kB     
+Downloading: 650 kB     
+Downloading: 650 kB     
+Downloading: 650 kB     
+Downloading: 660 kB     
+Downloading: 660 kB     
+Downloading: 670 kB     
+Downloading: 670 kB     
+Downloading: 680 kB     
+Downloading: 680 kB     
+Downloading: 680 kB     
+Downloading: 680 kB     
+Downloading: 680 kB     
+Downloading: 680 kB     
+Downloading: 690 kB     
+Downloading: 690 kB     
+Downloading: 700 kB     
+Downloading: 700 kB     
+Downloading: 700 kB     
+Downloading: 700 kB     
+Downloading: 700 kB     
+Downloading: 700 kB     
+Downloading: 710 kB     
+Downloading: 710 kB     
+Downloading: 710 kB     
+Downloading: 710 kB     
+Downloading: 720 kB     
+Downloading: 720 kB     
+Downloading: 730 kB     
+Downloading: 730 kB     
+Downloading: 730 kB     
+Downloading: 730 kB     
+Downloading: 730 kB     
+Downloading: 730 kB     
+Downloading: 740 kB     
+Downloading: 740 kB     
+Downloading: 740 kB     
+Downloading: 740 kB     
+Downloading: 740 kB     
+Downloading: 740 kB     
+Downloading: 750 kB     
+Downloading: 750 kB     
+Downloading: 750 kB     
+Downloading: 750 kB     
+Downloading: 750 kB     
+Downloading: 750 kB     
+Downloading: 760 kB     
+Downloading: 760 kB     
+Downloading: 760 kB     
+Downloading: 760 kB     
+Downloading: 760 kB     
+Downloading: 760 kB     
+Downloading: 770 kB     
+Downloading: 770 kB     
+Downloading: 780 kB     
+Downloading: 780 kB     
+Downloading: 780 kB     
+Downloading: 780 kB     
+Downloading: 790 kB     
+Downloading: 790 kB     
+Downloading: 790 kB     
+Downloading: 790 kB     
+Downloading: 800 kB     
+Downloading: 800 kB     
+Downloading: 800 kB     
+Downloading: 800 kB     
+Downloading: 810 kB     
+Downloading: 810 kB     
+Downloading: 810 kB     
+Downloading: 810 kB     
+Downloading: 820 kB     
+Downloading: 820 kB     
+Downloading: 820 kB     
+Downloading: 820 kB     
+Downloading: 830 kB     
+Downloading: 830 kB     
+Downloading: 830 kB     
+Downloading: 830 kB     
+Downloading: 830 kB     
+Downloading: 830 kB     
+Downloading: 840 kB     
+Downloading: 840 kB     
+Downloading: 850 kB     
+Downloading: 850 kB     
+Downloading: 850 kB     
+Downloading: 850 kB     
+Downloading: 860 kB     
+Downloading: 860 kB     
+Downloading: 870 kB     
+Downloading: 870 kB     
+Downloading: 870 kB     
+Downloading: 870 kB     
+Downloading: 880 kB     
+Downloading: 880 kB     
+Downloading: 880 kB     
+Downloading: 880 kB     
+Downloading: 890 kB     
+Downloading: 890 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 910 kB     
+Downloading: 910 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 920 kB     
+Downloading: 930 kB     
+Downloading: 930 kB     
+Downloading: 940 kB     
+Downloading: 940 kB     
+Downloading: 950 kB     
+Downloading: 950 kB     
+Downloading: 960 kB     
+Downloading: 960 kB     
+Downloading: 970 kB     
+Downloading: 970 kB     
+Downloading: 970 kB     
+Downloading: 970 kB     
+Downloading: 970 kB     
+Downloading: 970 kB     
+Downloading: 980 kB     
+Downloading: 980 kB     
+Downloading: 980 kB     
+Downloading: 980 kB     
+Downloading: 990 kB     
+Downloading: 990 kB     
+Downloading: 990 kB     
+Downloading: 990 kB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.2 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.4 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.6 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.8 MB     
+Downloading: 1.8 MB     
+Downloading: 1.8 MB     
+Downloading: 1.8 MB</code></pre>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="tuesday-january-31-2023.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Census.sf)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
@@ -1489,8 +1966,8 @@ This looks correct</p>
 <pre><code>## tmap mode set to interactive viewing</code></pre>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="tuesday-january-31-2023.html#cb117-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(awi.sf2) <span class="sc">+</span></span>
 <span id="cb117-2"><a href="tuesday-january-31-2023.html#cb117-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3235ead355374cd7d187" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-3235ead355374cd7d187">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[-81.3659308927062,-81.3659389012192,-81.3659404989808,-81.3659356815925,-81.3659244622396,-81.3659068716545,-81.3658829580337,-81.3658527869051,-81.3658164409487,-81.3657740197706,-81.3657256396298,-81.3656714331197,-81.3656115488051,-81.3655461508145,-81.3654754183913,-81.3653995454016,-81.3653187398036,-81.3652332230773,-81.3651432296176,-81.3650490060918,-81.3649508107637,-81.3648489127851,-81.3647435914586,-81.3646351354718,-81.3645238421059,-81.3644100164206,-81.3642939704181,-81.3641760221876,-81.3640564950332,-81.3639357165878,-81.3638140179148,-81.3636917326003,-81.3635691958389,-81.3634467435143,-81.363324711279,-81.3632034336335,-81.3630832430098,-81.3629644688597,-81.3628474367517,-81.3627324674784,-81.362619876177,-81.3625099714657,-81.3624030545973,-81.3622994186334,-81.3621993476413,-81.362103115915,-81.3620109872233,-81.3619232140872,-81.3618400370871,-81.361761684204,-81.3616883701942,-81.3616202960008,-81.3615576482031,-81.3615005985054,-81.3614493032661,-81.3614039030693,-81.3613645223401,-81.3613312690031,-81.3613042341872,-81.3612834919755,-81.3612690992032,-81.3535706710546,-81.3535626802247,-81.3535610958401,-81.3535659222244,-81.3535771461298,-81.3535947367736,-81.3536186459228,-81.3536488080264,-81.3536851403955,-81.3537275434297,-81.353775900891,-81.3538300802216,-81.3538899329083,-81.3539552948889,-81.3540259870027,-81.3541018154811,-81.354182572479,-81.3542680366447,-81.3543579737264,-81.3544521372141,-81.354550269016,-81.3546521001649,-81.354757351556,-81.3548657347117,-81.3549769525721,-81.3550907003091,-81.3552066661621,-81.3553245322917,-81.3554439756514,-81.3555646688725,-81.3556862811611,-81.3558084792051,-81.3559309280869,-81.3560532922018,-81.3561752361774,-81.3562964257922,-81.3564165288924,-81.3565352163013,-81.3566521627218,-81.3567670476274,-81.3568795561413,-81.3569893798986,-81.3570962178914,-81.3571997772944,-81.3572997742665,-81.3573959347294,-81.3574879951184,-81.3575757031049,-81.3576588182878,-81.3577371128527,-81.3578103721962,-81.3578783955141,-81.3579409963519,-81.3579980031159,-81.3580492595438,-81.3580946251328,-81.3581339755252,-81.3581672028492,-81.3581942160147,-81.3582149409632,-81.3582293208712,-81.3659308927062],"lat":[28.5437117757689,28.5438193119199,28.5439270692854,28.5440347525102,28.5441420664415,28.5442487169375,28.5443544116743,28.5444588609468,28.5445617784628,28.5446628821275,28.5447618948176,28.5448585451398,28.5449525681758,28.5450437062075,28.5451317094244,28.5452163366079,28.5452973557923,28.5453745449014,28.5454476923569,28.545516597658,28.5455810719319,28.5456409384508,28.5456960331171,28.5457462049126,28.5457913163129,28.5458312436645,28.5458658775233,28.5458951229553,28.5459188997962,28.5459371428718,28.5459498021763,28.5459568430093,28.5459582460715,28.5459540075167,28.5459441389634,28.5459286674621,28.5459076354214,28.545881100492,28.5458491354083,28.5458118277892,28.5457692798978,28.545721608361,28.54566894385,28.5456114307217,28.5455492266233,28.5454825020597,28.5454114399268,28.5453362350091,28.5452570934467,28.5451742321696,28.545087878303,28.544998268545,28.5449056485175,28.5448102720931,28.5447124006989,28.5446123025999,28.5445102521641,28.5444065291096,28.5443014177386,28.5441952061577,28.5440881854882,28.4702880566111,28.4701805202646,28.4700727632713,28.4699650809861,28.4698577685579,28.469751120121,28.4696454279891,28.4695409818536,28.4694380679902,28.4693369684738,28.4692379604056,28.4691413151538,28.4690472976096,28.4689561654613,28.4688681684882,28.468783547876,28.4687025355556,28.4686253535678,28.4685522134546,28.4684833156796,28.4684188490786,28.4683589903417,28.4683039035301,28.4682537396252,28.468208636116,28.4681687166215,28.4681340905527,28.4681048528119,28.4680810835333,28.4680628478634,28.4680501957819,28.4680431619654,28.4680417656919,28.4680460107885,28.4680558856201,28.4680713631221,28.4680924008742,28.4681189412166,28.468150911408,28.4681882238252,28.4682307762029,28.4682784519142,28.4683311202899,28.4683886369768,28.4684508443334,28.4685175718616,28.4685886366739,28.4686638439953,28.4687429876959,28.4688258508569,28.4689122063644,28.4690018175319,28.4690944387495,28.469189816156,28.4692876883358,28.4693877870343,28.4694898378937,28.469593561205,28.4696986726741,28.4698048842014,28.4699119046714,28.5437117757689]}]]],"X1","awi.sf2",{"interactive":false,"className":"","pane":"tmap401","stroke":true,"color":"#FF0000","weight":1,"opacity":1,"fill":true,"fillOpacity":0,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"awi.sf2",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[28.4680417656919,28.5459582460715],"lng":[-81.3659404989808,-81.3535610958401]},"fitBounds":[28.4680417656919,-81.3659404989808,28.5459582460715,-81.3535610958401,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1e73892b2df03b1855af" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-1e73892b2df03b1855af">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[-81.3659308927062,-81.3659389012192,-81.3659404989808,-81.3659356815925,-81.3659244622396,-81.3659068716545,-81.3658829580337,-81.3658527869051,-81.3658164409487,-81.3657740197706,-81.3657256396298,-81.3656714331197,-81.3656115488051,-81.3655461508145,-81.3654754183913,-81.3653995454016,-81.3653187398036,-81.3652332230773,-81.3651432296176,-81.3650490060918,-81.3649508107637,-81.3648489127851,-81.3647435914586,-81.3646351354718,-81.3645238421059,-81.3644100164206,-81.3642939704181,-81.3641760221876,-81.3640564950332,-81.3639357165878,-81.3638140179148,-81.3636917326003,-81.3635691958389,-81.3634467435143,-81.363324711279,-81.3632034336335,-81.3630832430098,-81.3629644688597,-81.3628474367517,-81.3627324674784,-81.362619876177,-81.3625099714657,-81.3624030545973,-81.3622994186334,-81.3621993476413,-81.362103115915,-81.3620109872233,-81.3619232140872,-81.3618400370871,-81.361761684204,-81.3616883701942,-81.3616202960008,-81.3615576482031,-81.3615005985054,-81.3614493032661,-81.3614039030693,-81.3613645223401,-81.3613312690031,-81.3613042341872,-81.3612834919755,-81.3612690992032,-81.3535706710546,-81.3535626802247,-81.3535610958401,-81.3535659222244,-81.3535771461298,-81.3535947367736,-81.3536186459228,-81.3536488080264,-81.3536851403955,-81.3537275434297,-81.353775900891,-81.3538300802216,-81.3538899329083,-81.3539552948889,-81.3540259870027,-81.3541018154811,-81.354182572479,-81.3542680366447,-81.3543579737264,-81.3544521372141,-81.354550269016,-81.3546521001649,-81.354757351556,-81.3548657347117,-81.3549769525721,-81.3550907003091,-81.3552066661621,-81.3553245322917,-81.3554439756514,-81.3555646688725,-81.3556862811611,-81.3558084792051,-81.3559309280869,-81.3560532922018,-81.3561752361774,-81.3562964257922,-81.3564165288924,-81.3565352163013,-81.3566521627218,-81.3567670476274,-81.3568795561413,-81.3569893798986,-81.3570962178914,-81.3571997772944,-81.3572997742665,-81.3573959347294,-81.3574879951184,-81.3575757031049,-81.3576588182878,-81.3577371128527,-81.3578103721962,-81.3578783955141,-81.3579409963519,-81.3579980031159,-81.3580492595438,-81.3580946251328,-81.3581339755252,-81.3581672028492,-81.3581942160147,-81.3582149409632,-81.3582293208712,-81.3659308927062],"lat":[28.5437117757689,28.5438193119199,28.5439270692854,28.5440347525102,28.5441420664415,28.5442487169375,28.5443544116743,28.5444588609468,28.5445617784628,28.5446628821275,28.5447618948176,28.5448585451398,28.5449525681758,28.5450437062075,28.5451317094244,28.5452163366079,28.5452973557923,28.5453745449014,28.5454476923569,28.545516597658,28.5455810719319,28.5456409384508,28.5456960331171,28.5457462049126,28.5457913163129,28.5458312436645,28.5458658775233,28.5458951229553,28.5459188997962,28.5459371428718,28.5459498021763,28.5459568430093,28.5459582460715,28.5459540075167,28.5459441389634,28.5459286674621,28.5459076354214,28.545881100492,28.5458491354083,28.5458118277892,28.5457692798978,28.545721608361,28.54566894385,28.5456114307217,28.5455492266233,28.5454825020597,28.5454114399268,28.5453362350091,28.5452570934467,28.5451742321696,28.545087878303,28.544998268545,28.5449056485175,28.5448102720931,28.5447124006989,28.5446123025999,28.5445102521641,28.5444065291096,28.5443014177386,28.5441952061577,28.5440881854882,28.4702880566111,28.4701805202646,28.4700727632713,28.4699650809861,28.4698577685579,28.469751120121,28.4696454279891,28.4695409818536,28.4694380679902,28.4693369684738,28.4692379604056,28.4691413151538,28.4690472976096,28.4689561654613,28.4688681684882,28.468783547876,28.4687025355556,28.4686253535678,28.4685522134546,28.4684833156796,28.4684188490786,28.4683589903417,28.4683039035301,28.4682537396252,28.468208636116,28.4681687166215,28.4681340905527,28.4681048528118,28.4680810835333,28.4680628478634,28.4680501957819,28.4680431619654,28.4680417656919,28.4680460107885,28.4680558856201,28.4680713631221,28.4680924008742,28.4681189412166,28.468150911408,28.4681882238252,28.4682307762029,28.4682784519142,28.4683311202899,28.4683886369768,28.4684508443334,28.4685175718616,28.4685886366739,28.4686638439953,28.4687429876959,28.4688258508569,28.4689122063644,28.4690018175319,28.4690944387495,28.469189816156,28.4692876883358,28.4693877870343,28.4694898378937,28.469593561205,28.4696986726741,28.4698048842014,28.4699119046714,28.5437117757689]}]]],"X1","awi.sf2",{"interactive":false,"className":"","pane":"tmap401","stroke":true,"color":"#FF0000","weight":1,"opacity":1,"fill":true,"fillOpacity":0,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"awi.sf2",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[28.4680417656919,28.5459582460715],"lng":[-81.3659404989808,-81.3535610958401]},"fitBounds":[28.4680417656919,-81.3659404989808,28.5459582460715,-81.3535610958401,[]]},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="s4-spatial-data-objects" class="section level2 unnumbered hasAnchor">
 <h2>S4 spatial data objects<a href="tuesday-january-31-2023.html#s4-spatial-data-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -1502,15 +1979,15 @@ This looks correct</p>
 <p>Spatial objects from the {sp} package fall into two types:</p>
 <ul>
 <li>spatial-only information (the geometry). Geometries include <code>SpatialPoints</code>, <code>SpatialLines</code>, <code>SpatialPolygons</code>, etc, and</li>
-<li>extensions to these types where attribute information is available and stored in a data frame. These include <code>SpatialPointsDataFrame</code>, <code>SpatialLinesDataFrame</code>, etc.</li>
+<li>extensions to these types where attribute information is available and stored in a data frame. These include <code>SpatialPointsDataFrame</code>, <code>SpatialLinesDataFrame</code>, etc</li>
 </ul>
-<p>The typical situation nowadays is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled.</p>
-<p>Consider again the the tornado tracks that you import as a simple feature data frame. Here you filter on the attribute <code>st</code> keeping only tornadoes that originated in Florida.</p>
+<p>The typical situation nowadays is that you have a simple feature data frame (an S3 spatial object) and you need to convert it to an {sp} spatial data frame before the data can be analyzed or modeled</p>
+<p>Consider again the the tornado tracks that you import as a simple feature data frame. Here you filter on the attribute <code>st</code> keeping only tornadoes that originated in Florida</p>
 <div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="tuesday-january-31-2023.html#cb121-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;1950-2021-torn-aspath&quot;</span>), </span>
 <span id="cb121-2"><a href="tuesday-january-31-2023.html#cb121-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">layer =</span> <span class="st">&quot;1950-2021-torn-aspath&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb121-3"><a href="tuesday-january-31-2023.html#cb121-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(st <span class="sc">==</span> <span class="st">&quot;FL&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `1950-2021-torn-aspath&#39; from data source 
-##   `/Users/jelsner/Desktop/ClassNotes/ASS-2023/data/1950-2021-torn-aspath&#39; 
+##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2023/data/1950-2021-torn-aspath&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 67558 features and 22 fields
 ## Geometry type: LINESTRING
@@ -1519,7 +1996,7 @@ This looks correct</p>
 ## Geodetic CRS:  WGS 84</code></pre>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="tuesday-january-31-2023.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sf)</span></code></pre></div>
 <pre><code>## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
-<p>The object <code>FL_Torn.sf</code> is a simple feature data frame (S3 spatial data object). You convert the simple feature data frame to an S4 spatial data object using the <code>sf::as_Spatial()</code> function.</p>
+<p>The object <code>FL_Torn.sf</code> is a simple feature data frame (S3 spatial data object). You convert the simple feature data frame to an S4 spatial data object using the <code>sf::as_Spatial()</code> function</p>
 <div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="tuesday-january-31-2023.html#cb125-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp <span class="ot">&lt;-</span> FL_Torn.sf <span class="sc">|&gt;</span></span>
 <span id="cb125-2"><a href="tuesday-january-31-2023.html#cb125-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">as_Spatial</span>()</span>
 <span id="cb125-3"><a href="tuesday-january-31-2023.html#cb125-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1527,12 +2004,12 @@ This looks correct</p>
 <pre><code>## [1] &quot;SpatialLinesDataFrame&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;sp&quot;</code></pre>
-<p>The file <code>FL_Torn.sp</code> is a spatial object of class <code>SpatialLinesDataFrame</code>.</p>
-<p>Information in S4 spatial objects is stored in slots. Slot names are listed with the <code>slotNames()</code> function.</p>
+<p>The file <code>FL_Torn.sp</code> is a spatial object of class <code>SpatialLinesDataFrame</code></p>
+<p>Information in S4 spatial objects is stored in slots. Slot names are listed with the <code>slotNames()</code> function</p>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="tuesday-january-31-2023.html#cb127-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp <span class="sc">|&gt;</span></span>
 <span id="cb127-2"><a href="tuesday-january-31-2023.html#cb127-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slotNames</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;data&quot;        &quot;lines&quot;       &quot;bbox&quot;        &quot;proj4string&quot;</code></pre>
-<p>The <code>data</code> slot contains the data frame (attribute table), the <code>lines</code> slot contains the spatial geometries (in this case lines), the <code>bbox</code> slot is the boundary box and the <code>proj4string</code> slot is the CRS.</p>
+<p>The <code>data</code> slot contains the data frame (attribute table), the <code>lines</code> slot contains the spatial geometries (in this case lines), the <code>bbox</code> slot is the boundary box and the <code>proj4string</code> slot is the CRS</p>
 <p>The object name followed by the <code>@</code> symbol allows access to information in the slot. The <code>@</code> symbol is similar to the <code>$</code> symbol for regular data frames. For example to see the first three rows of the data frame type</p>
 <div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="tuesday-january-31-2023.html#cb129-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">@</span>data[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div>
 <pre><code>##    om   yr mo dy       date     time tz st stf stn mag inj fat loss closs  slat
@@ -1543,17 +2020,17 @@ This looks correct</p>
 ## 1 -81.22 29.6501 -81.2199 1.5 150  0
 ## 2 -81.37 28.5801 -81.3699 0.1  10  0
 ## 3 -81.37 28.5001 -81.3699 0.1  10  0</code></pre>
-<p>You recognize this as observations from the first three tornadoes in the data set. In fact, the object name together with the slot name <code>data</code> has class <code>data.frame</code>.</p>
+<p>You recognize this as observations from the first three tornadoes in the data set. In fact, the object name together with the slot name <code>data</code> has class <code>data.frame</code></p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="tuesday-january-31-2023.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(FL_Torn.sp<span class="sc">@</span>data)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>When using the <code>$</code> symbol on S4 spatial objects, you access the columns (attributes) as you would a data frame. For example, to list the EF rating (column labeled <code>mag</code>) of the first 3 tornadoes.</p>
+<p>When using the <code>$</code> symbol on S4 spatial objects, you access the columns (attributes) as you would a data frame. For example, to list the EF rating (column labeled <code>mag</code>) of the first 3 tornadoes</p>
 <div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="tuesday-january-31-2023.html#cb133-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">$</span>mag[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
 <pre><code>## [1] 2 1 2</code></pre>
 <p>Selecting, retrieving, or replacing attributes in S4 spatial data frames is done with methods in {base} R package. For example <code>[]</code> is used to select rows and/or columns. To select <code>mag</code> of the 7th tornado type</p>
 <div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="tuesday-january-31-2023.html#cb135-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">$</span>mag[<span class="dv">7</span>]</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<p>Other methods include: <code>plot()</code>, <code>summary()</code>,<code>dim()</code> and <code>names()</code> (operate on the data slot), <code>as.data.frame()</code>, <code>as.matrix()</code> and <code>image()</code> (for spatial data on a grid), and <code>length()</code> (number of cases).</p>
-<p>You can’t use the {dplyr} verbs on S4 data frames. To convert from an S4 spatial data frame to a simple feature data frame use <code>sf::st_as_sf()</code>.</p>
+<p>Other methods include: <code>plot()</code>, <code>summary()</code>,<code>dim()</code> and <code>names()</code> (operate on the data slot), <code>as.data.frame()</code>, <code>as.matrix()</code> and <code>image()</code> (for spatial data on a grid), and <code>length()</code> (number of cases)</p>
+<p>You can’t use the {dplyr} verbs on S4 data frames. To convert from an S4 spatial data frame to a simple feature data frame use <code>sf::st_as_sf()</code></p>
 <p>The first spatial geometry is given as the first element of the lines list.</p>
 <div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="tuesday-january-31-2023.html#cb137-1" aria-hidden="true" tabindex="-1"></a>FL_Torn.sp<span class="sc">@</span>lines[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
@@ -1570,11 +2047,11 @@ This looks correct</p>
 ## 
 ## Slot &quot;ID&quot;:
 ## [1] &quot;1&quot;</code></pre>
-<p>It is an object of class <code>Lines</code>. The line is identified by a matrix indicating the longitude and latitude of the start point in row one and the longitude and latitude of the end point in row two.</p>
-<p>The <code>bbox</code> slot is an object of class <code>matrix</code> and <code>array</code> and the <code>proj4string</code> slot is of class <code>CRS</code>. The coordinate reference system is specified as a character string.</p>
+<p>It is an object of class <code>Lines</code>. The line is identified by a matrix indicating the longitude and latitude of the start point in row one and the longitude and latitude of the end point in row two</p>
+<p>The <code>bbox</code> slot is an object of class <code>matrix</code> and <code>array</code> and the <code>proj4string</code> slot is of class <code>CRS</code>. The coordinate reference system is specified as a character string</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="tuesday-january-31-2023.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(FL_Torn.sp)</span></code></pre></div>
 <pre><code>## [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
-<p>The interface to the geometry engine-open source (GEOS) is through the {rgeos} package.</p>
+<p>The interface to the geometry engine-open source (GEOS) is through the {rgeos} package</p>
 
 </div>
 </div>
