@@ -4,131 +4,155 @@
 
 ## Working with raster data {-}
 
-The *raster data model* divides geographic space into a grid of cells of constant size (resolution) and we use classes from the {terra} package to work with raster data.
+The *raster data model* divides geographic space into a grid of cells (or pixels) of constant size (resolution). A cell may have an attribute value
 
-A raster is a data structure that divides space into rectangles called 'cells' (or 'pixels'). Each cell has an attribute value.
+The {raster} package has functions for working with raster data using S4 objects (reference class). The {terra} package has functions for creating, reading, manipulating, and writing raster data using S3 objects `SpatRaster` and `SpatVect`
 
-The {raster} package has functions for working with raster data using the S4 reference classes.
-
-The {terra} package has functions for creating, reading, manipulating, and writing raster data using S3 objects `SpatRaster` and `SpatVect`.
-
-To see what methods (functions) for class `SpatRaster` are available use the `methods()` function.
+To see what methods (functions) for class `SpatRaster` are available use the `methods()` function
 
 ```{r}
 library(terra)
-
 methods(class = "SpatRaster")
 ```
 
-The list includes {base} R and {sf} methods.
+The list includes {base} R and {sf} methods
 
-The `terra::rast()` function creates a raster with a geographic (longitude/latitude) CRS and a 1 by 1 degree grid of cells across the globe.
+The `terra::rast()` function creates a raster with a geographic (longitude/latitude) CRS and a 1 by 1 degree grid of cells across the globe
 
 ```{r}
 r <- terra::rast()
 r
 ```
 
-Arguments including `xmin`, `nrows`, `ncols`, and `crs` are used to change these default settings.
+Arguments including `xmin`, `nrows`, `ncols`, and `crs` are used to change the default settings
 
-The object has class `SpatRaster` with geographic coordinates spanning the globe at one-degree resolution in the north-south and the east-west directions.
+The object has class `SpatRaster` with geographic coordinates spanning the globe at one-degree resolution in the north-south and the east-west directions
 
-To create a raster with 36 longitudes -100 and 0 degrees East longitude and 18 latitudes between the equator and 50 degrees N latitude we specify the number of columns, the number of rows and the extent as follows.
+To create a raster with 36 longitudes -100 and 0 degrees East longitude and 18 latitudes between the equator and 50 degrees N latitude you specify the number of columns, the number of rows and the extent as follows
 
 ```{r}
 r <- terra::rast(ncols = 36, nrows = 18, 
                  xmin = -100, xmax = 0, 
                  ymin = 0, ymax = 50)
 r
-terra::res(r)
 ```
 
-This results in raster with cell resolution of 2.7 degrees of longitude and 2.7 degrees of latitude.
+This results in raster with cell resolution of 2.7 degrees of longitude and 2.7 degrees of latitude
 
-The structure of the raster can be changed after created. Here you change the resolution to 3 degrees. This induces changes to the number of rows and columns.
+Extract only the resolution
+
+```{r}
+r |>
+  terra::res()
+```
+
+The structure of the raster can be changed after created. Here you change the resolution to 3 degrees. This induces changes to the number of rows and columns
 
 ```{r}
 terra::res(r) <- 3
-ncol(r)
-nrow(r)
+
+r |>
+  ncol()
+
+r |>
+  nrow()
 ```
 
-The `SpatRaster` object `r` is a template with no values assigned to the cells and by default it will have an extent that spans the globe.
+The `SpatRaster` object `r` is a template with no values assigned to the cells and by default it will have an extent that spans the globe
 
 ```{r}
 r <- terra::rast(ncol = 10, nrow = 10)
-terra::ncell(r)
-terra::hasValues(r)
+
+r |>
+  terra::ncell()
+
+r |>
+  terra::hasValues()
 ```
 
-Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells.
+Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells
 
-The `terra::values()` function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. Here you first assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1.
+The `terra::values()` function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. Here you first assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1
 
 ```{r}
-v <- runif(terra::ncell(r))
-head(v)
+v <- r |>
+  terra::ncell() |>
+  runif()
+
 terra::values(r) <- v
-head(r)
+
+r |>
+  head()
 ```
 
-The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with values from the vector in this order.
+The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with values from the vector in this order
 
-The `terra::plot()` function creates a choropleth map of the values in cells.
+The `terra::plot()` function creates a choropleth map of the values in cells
 
 ```{r}
-terra::plot(r)
+r |>
+ terra::plot()
 ```
 
-The default CRS is geographic.
+The default CRS is geographic
 
 ```{r}
-terra::crs(r)
+r |>
+  terra::crs()
 ```
 
 To re-project the raster use the function `terra::project()`.
 
-Here you create a new raster with cell numbers as values using the `terra::setValues()` function to place the numbers in the cells.
+Here you create a new raster with cell numbers as values using the `terra::setValues()` function to place the numbers in the cells
 
 ```{r}
 r <- terra::rast(xmin = -110, xmax = -90, 
                  ymin = 40, ymax = 60, 
                  ncols = 10, nrows = 10)
-r <- terra::setValues(r, 1:terra::ncell(r))
-terra::plot(r)
+
+r <- r |>
+  terra::setValues(1:terra::ncell(r))
+
+r |>
+  plot()
 ```
 
-The values increase starting from top left to bottom right as dictated by the sequence `1:terra::ncell(r)` and the lexicographic order in which the raster grids are filled.
+The values increase starting from top left to bottom right as dictated by the sequence `1:terra::ncell(r)` and the lexicographic order in which the raster grids are filled
 
-The `terra::rast()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Most formats that can import a raster can also be used to export a raster.
+The `terra::rast()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Most formats that can import a raster can also be used to export a raster
 
-Consider the `Meuse` dataset (from the {sp} package), using a file in the native 'raster- file' format.
+Consider the `Meuse` dataset (from the {sp} package), using a file in the native 'raster- file' format
 
 ```{r}
-f <- system.file("external/test.grd", 
-                 package = "raster")
-r <- terra::rast(f)
+r <- system.file("external/test.grd", 
+                 package = "raster") |>
+ terra::rast(f)
 ```
 
-Do the cells contain values? Is the raster stored in memory? Create a plot.
+Do the cells contain values? Is the raster stored in memory? Create a plot
 
 ```{r}
-terra::hasValues(r)
-terra::inMemory(r)
-terra::plot(r, main = "Raster layer from file")
+r |>
+  terra::hasValues()
+
+r |>
+  terra::inMemory()
+
+r |>
+  terra::plot(main = "Raster layer from file")
 ```
 
-Note the raster is a set of cells arranged in a rectangular array. Values that are coded as `NA` are not plotted.
+The cells are always in a rectangular arrangement. Values outside an irregular domain are set to `NA` and are not plotted
 
-`SpatRaster` objects can have more than one raster. These are called layers.
+`SpatRaster` objects can have more than one attribute called layers
 
 ```{r}
 r
 ```
 
-The dimensions are nrow = 115 by ncol = 80 and nlyr = 1.
+The dimensions are nrow = 115 by ncol = 80 and nlyr = 1
 
-You can add layers to the object. Here you create three rasters and assign random values to the cells.
+Here you create three rasters and assign random values to the cells
 
 ```{r}
 r1 <- terra::rast(nrow = 10, ncol = 10)
@@ -139,7 +163,7 @@ r3 <- terra::rast(nrow = 10, ncol = 10)
 terra::values(r3) <- runif(terra::ncell(r3))
 ```
 
-You combine the rasters into a single `SpatRaster` object with the concatenate function `c()`.
+You combine the rasters into a single `SpatRaster` raster with three layers using the concatenate function `c()`
 
 ```{r}
 s <- c(r1, r2, r3)
@@ -149,74 +173,87 @@ terra::nlyr(s)
 terra::plot(s)
 ```
 
-Each raster is a separate layer.
-
-Here you import a set of raster layers from a file.
+Here you import a raster with multiple layers from a file. The layers are values corresponding to the RBG color scheme
 
 ```{r}
-f <- system.file("external/rlogo.grd", 
-                 package = "raster")
-b <- terra::rast(f)
-b
-terra::plot(b)
+b <- system.file("external/rlogo.grd", 
+                 package = "raster") |>
+  terra::rast()
+
+b |>
+  terra::plot()
 ```
 
-Most {base} R functions (`+`, `*`, `round()`, `ceiling()`, `log()`, etc) work on raster objects. Operations are done on all cells at once.
+Most {base} R functions (`+`, `*`, `round()`, `ceiling()`, `log()`, etc) work on raster objects. Operations are done on all cells at once
 
-Here you place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root.
+Here you place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root
 
 ```{r}
 r <- terra::rast(ncol = 10, nrow = 10)
 terra::values(r) <- 1:terra::ncell(r)
 s <- r + 100
 s <- sqrt(s)
-terra::plot(s)
+
+s |>
+  terra::plot()
 ```
 
-Here you replace the cell values with random uniform numbers between 0 and 1. Then round to the nearest integer and add one.
+Here you replace the cell values with random uniform numbers between 0 and 1. Then round to the nearest integer and add one
 
 ```{r}
 r <- terra::rast(ncol = 10, nrow = 10)
 terra::values(r) <- runif(terra::ncell(r))
 r <- round(r)
 r <- r + 1
-terra::plot(r)
+
+r |>
+  terra::plot()
 ```
 
-Replace only certain values with the subset function `[]`.
+Replace only certain values with the subset function `[]`
 
 ```{r}
 r <- terra::rast(xmin = -90, xmax = 90, ymin = -30, ymax = 30)
 terra::values(r) <- rnorm(terra::ncell(r))
 terra::plot(r)
 r[r > 2] <- 0
-terra::plot(r)
+
+r |>
+  terra::plot()
 ```
 
 Functions for manipulating a raster
 
-The `terra::crop()` function takes a geographic subset of a larger raster object. A raster is cropped by providing an extent object or other spatial object from which an extent can be extracted (objects from classes deriving from raster and from spatial in the {sp} package).
+The `terra::crop()` function takes a geographic subset of a larger raster object. A raster is cropped by providing an extent object or other spatial object from which an extent can be extracted (objects from classes deriving from raster and from spatial in the {sp} package)
 
-The `terra::trim()` function crops a raster layer by removing the outer rows and columns that only contain `NA` values. The `terra::extend()` function adds new rows and/or columns with `NA` values.
+The `terra::trim()` function crops a raster layer by removing the outer rows and columns that only contain `NA` values. The `terra::extend()` function adds new rows and/or columns with `NA` values
 
-The `terra::merge()` function combines two or more rasters into a single raster. The input objects must have the same resolution and origin (such that their cells fit into a single larger raster). If this is not the case, first adjust one of the objects with the functions `aggregate()` or `resample()`.
+The `terra::merge()` function combines two or more rasters into a single raster. The input objects must have the same resolution and origin (such that their cells fit into a single larger raster). If this is not the case, first adjust one of the objects with the functions `aggregate()` or `resample()`
 
-The `terra::aggregate()` and `terra::disagg()` functions change the resolution (cell size) of a raster object.
+The `terra::aggregate()` and `terra::disagg()` functions change the resolution (cell size) of a raster object
 
-As an example here you crop the raster into two pieces and then merge the two pieces into one. The `terra::merge()` function has the argument `filename =` that allows you to export to a file (here `test.grd` in the folder `outputs`).
+As an example here you crop the raster into two pieces and then merge the two pieces into one. The `terra::merge()` function has the argument `filename =` that allows you to export to a file (here `test.grd` in the folder `outputs`)
 
 ```{r}
-r1 <- terra::crop(r, terra::ext(-180, 0, 0, 30)) 
-r2 <- terra::crop(r, terra::ext(-10, 180, -20, 10))
-m <- terra::merge(r1, r2, 
-                  filename = here::here('outputs', 'test.grd'), 
-                  overwrite = TRUE)
-terra::plot(m)
+r1 <- r |>
+  terra::crop(terra::ext(-180, 0, 0, 30)) 
+
+r2 <- r |>
+  terra::crop(terra::ext(-10, 180, -20, 10))
+
+m <- r1 |>
+  terra::merge(r2, 
+               filename = here::here("data", "test.grd"), 
+               overwrite = TRUE)
+m |>
+  plot()
 ```
 
-The `terra::flip()` function flips the data (reverse order) in the horizontal or vertical direction. The `terra::rotate()` function rotates a raster that have longitudes from 0 to 360 degrees (often used by climatologists) to the standard -180 to 180 degrees system.
+The `terra::flip()` function flips the data (reverse order) in the horizontal or vertical direction. The `terra::rotate()` function rotates a raster that have longitudes from 0 to 360 degrees (often used by climatologists) to the standard -180 to 180 degrees system
 
-You extract values from a raster for a set of locations with the `terra::extract()` function. The locations can be a vector object (points, lines, polygons), a matrix with (x, y) or (longitude, latitude -- in that order!) coordinates, or a vector with cell numbers.
+You extract values from a raster for a set of locations with the `terra::extract()` function. The locations can be a vector object (points, lines, polygons), a matrix with (x, y) or (longitude, latitude -- in that order) coordinates, or a vector with cell numbers
+
+First create a raster layer with integer values from 1 to 25 and specify two locations within the raster extent first as a matrix array and the second as a `SpatVector` object
 
 ```{r}
 r <- terra::rast(ncols = 5, nrows = 5, 
@@ -225,66 +262,95 @@ r <- terra::rast(ncols = 5, nrows = 5,
 terra::values(r) <- 1:25
 
 xy <- rbind(c(.5, .5), c(2.5, 2.5))
-p <- terra::vect(xy, crs="+proj=longlat +datum=WGS84")
-
-terra::extract(r, xy)
-terra::extract(r, p)
+p <- xy |>
+  terra::vect(crs = 'epsg:4326')
 ```
 
-To convert the values of a raster layer to points or polygons we use `as.points()` and `as.polygons()`. These functions return a `SpatVector` object for cells that are not missing value.
-
-Vector data is converted to a raster with the `terra::rasterize()` function. Polygon to raster conversion is often done to create a mask (i.e. to set to `NA` a set of cells of a raster object, or to summarize values on a raster by zone. For example a country polygon is converted to a raster that is used to set all the cells outside that country to `NA`. Also polygons representing administrative regions such as states can be converted to a raster to summarize values by region. Point to raster conversion is often done to analyze location data (location of a specific species of tree in a forest).
-
-Example: create a raster containing the number of tornadoes passing through each grid cell.
-
-Here you use a latitude/longitude grid (1/2 degree latitude by 1/2 degree longitude) with each cell in the grid containing the number of tornadoes that went through it since 2003.
-
-First import the tornado (initial track point) data as a simple feature data frame.
+Next use the `terra::extract()` function with the first argument the raster layer and the second the locations from which you extract the values
 
 ```{r}
-if(!"1950-2020-torn-initpoint" %in% list.files(here::here("data"))) {
-download.file(url = "http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2020-torn-initpoint.zip",
-              destfile = here::here("data", "1950-2020-torn-initpoint.zip"))
-unzip(here::here("data", "1950-2020-torn-initpoint.zip"), 
+values1 <- r |>
+  terra::extract(xy)
+
+values2 <- r |>
+  terra::extract(p)
+```
+
+In both cases the values are returned as a data frame. In the second case an `ID` variable is included
+
+To convert the values of a raster layer to points or polygons you use `as.points()` and `as.polygons()`
+
+```{r}
+valuesAll <- r |>
+  as.points()
+
+```
+
+These functions return a `SpatVector` object only for cells with values
+
+```{r}
+valuesAll |>
+  plot()
+```
+
+Converting vector data to rasters
+
+Vector data is converted to a raster with the `terra::rasterize()` function. Polygon to raster conversion is often done to create a mask (i.e. to set to `NA` a set of cells of a raster object, or to summarize values on a raster by zone. For example a country polygon is converted to a raster that is used to set all the cells outside that country to `NA`
+
+Also polygons representing administrative regions such as states can be converted to a raster to summarize values by region. Point to raster conversion is often done to analyze location data (location of a specific species of tree in a forest)
+
+Example: create a raster containing the number of tornadoes passing through each grid cell
+
+Here you use a latitude/longitude grid (1/2 degree latitude by 1/2 degree longitude) with each cell in the grid containing the number of tornadoes that went through it since 2003
+
+First import the tornado (initial track point) data as a simple feature data frame
+
+```{r}
+if(!"1950-2021-torn-initpoint" %in% list.files(here::here("data"))) {
+download.file(url = "http://www.spc.noaa.gov/gis/svrgis/zipped/1950-2021-torn-initpoint.zip",
+              destfile = here::here("data", "1950-2021-torn-initpoint.zip"))
+unzip(here::here("data", "1950-2021-torn-initpoint.zip"), 
       exdir = here::here("data"))
 }
-Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint"), 
-                       layer = "1950-2020-torn-initpoint") |>
+
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2021-torn-initpoint"), 
+                       layer = "1950-2021-torn-initpoint") |>
   dplyr::filter(yr >= 2003)
 ```
 
-Note the extent of the bounding box and check the native CRS.
+Note the extent of the bounding box and check the CRS
 
 ```{r}
-sf::st_crs(Torn.sf)
+Torn.sf |>
+  sf::st_crs()
 ```
 
-The CRS is geographic.
-
-Next create a raster (called `frame`) with a domain that covers the area of interest and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the `terra::ext()` function.
+Next create a raster (called `frame`) with a domain that covers the area of interest and assign a resolution of one degree in longitude and one degree in latitude. Check the extent of the raster with the `terra::ext()` function
 
 ```{r}
 frame <- terra::rast(xmin = -106, xmax = -67, 
                      ymin = 24, ymax = 50)
 terra::res(frame) <- .5
-terra::ext(frame)
+
+frame |>
+  terra::ext()
 ```
 
-Next use the `terra::rasterize()` function to count the number of times each raster cell contains a tornado. The first argument is the spatial data frame and the second is the raster without values. The argument `field =` specifies a column name in the spatial data frame (here just an identifier) and the argument `fun =` specifies what to do. Here you want a count of the unique instances of the field in each cell and this is done with setting `fun = "length"`. Raster cells without tornadoes are given a value of 0 based on the `background =` argument.
+Next use the `terra::rasterize()` function to count the number of times each raster cell contains a tornado. The first argument is the spatial data frame and the second is the raster without values. The argument `field =` specifies a column name in the spatial data frame (here just an identifier) and the argument `fun =` specifies what to do
+
+Here you want a count of the unique instances of the field in each cell and this is done with setting `fun = "length"`. Raster cells without tornadoes are given a value of 0 based on the `background =` argument
 
 ```{r}
-Torn.v <- terra::vect(Torn.sf)
+Torn.v <- Torn.sf |>
+  terra::vect()
 
-Torn.r <- terra::rasterize(x = Torn.v, 
-                           y = frame, 
-                           field = "om", 
-                           fun = "length",
-                           background = 0)
-class(Torn.r)
-dim(Torn.r)
+( Torn.r <- Torn.v |>
+  terra::rasterize(y = frame, 
+                   fun = "length",
+                   background = 0) )
 ```
 
-The result is a raster layer. The number of tornadoes occurring in each cell are the values.
+The result is a raster layer. The number of tornadoes occurring in each cell are the values
 
 Print the first 200 values (lexicographical order).
 
@@ -292,60 +358,69 @@ Print the first 200 values (lexicographical order).
 terra::values(Torn.r)[1:200]
 ```
 
-To visualize the raster use the `plot()` method.
+Use the `plot()` method to visualize the raster layer
 
 ```{r}
-terra::plot(Torn.r)
+Torn.r |>
+  plot()
 ```
 
-You can recognize the broad shape of the eastern 2/3rds of the United States. Some cells across the Plains and the South have quite a few tornadoes and very few tornadoes in cells over the Appalachian Mountains.
+You can recognize the broad shape of the eastern 2/3rds of the United States. Some cells across the Plains and the South have quite a few tornadoes and very few tornadoes in cells over the Appalachian Mountains
 
-Indeed tornado activity appears in distinct clusters (or groups). A statistic that estimates the amount of cluster is called Moran's I. It is a global measure of clustering with high values indicated by high values nearby to other high values and low values nearby to other low values.
+Indeed tornado activity appears in distinct clusters. A statistic that estimates the amount of clustering is called Moran's I. It is a global measure of clustering with high values indicated by high values nearby to other high values and low values nearby to other low values
 
-Values of Moran's I range from -1 to +1 where positive values indicate clustering and negative values indicate regularity (e.g., chessboard). It is implemented on a raster with the `raster::Moran()` function.
+Values of Moran's I range from -1 to +1 where positive values indicate clustering and negative values indicate regularity (e.g., chessboard). It is implemented on a raster with the `raster::Moran()` function
 
-The function works only with S4 raster objects. So you need to first convert `Torn.r` from a `SpatRaster` to a `RasterLayer`. You do this with `raster()` function after loading the {raster} package.
+The function works only with S4 raster objects. So you need to first convert `Torn.r` from a `SpatRaster` to a `RasterLayer`. You do this with `raster()` function after loading the {raster} package
 
 ```{r}
-library(raster)
-
-Torn.r2 <- raster::raster(Torn.r)
-class(Torn.r2)
-str(Torn.r2)
+Torn.r2 <- Torn.r |>
+  raster::raster()
 ```
 
-The object `Torn.r2` is a `RasterLayer` as an S4 data class. Note the use of slots for storing the information.
+You check the structure of the object with the `str()` function
+```{r}
+Torn.r2 |>
+  str()
+```
 
-You can use the `raster::Moran()` function on the `RasterLayer` object.
+The object `Torn.r2` is a `RasterLayer` as an S4 data class. Note the use of slots for storing the information
+
+You can use the `raster::Moran()` function on the `RasterLayer` object
 
 ```{r}
-raster::Moran(Torn.r2)
+Torn.r2 |>
+  raster::Moran()
 ```
 
-The value of .75 indicates high level of tornado clustering at this scale.
+The value of .75 indicates high level of tornado clustering at the 1 degree lat/lon resolution
 
-Under the null hypothesis of no spatial autocorrelation the expected value for Moran's I is close to zero [-1/(n-1), where n is the number of cells].
+Under the null hypothesis of no spatial autocorrelation the expected value for Moran's I is close to zero [-1/(n-1), where n is the number of cells]
 
-Clusters at a local level can be found using a local indicator of spatial autocorrelation. One such indicator is local Moran's I, which is computed at each cell (using the `MoranLocal()` function) so the result is a raster.
+Clusters at a local level can be found using a local indicator of spatial autocorrelation. One such indicator is local Moran's I, which is computed at each cell (using the `MoranLocal()` function) so the result is a raster
 
 ```{r}
-Torn_lmi.r <- raster::MoranLocal(Torn.r2)
-plot(Torn_lmi.r)
+Torn_lmi.r <- Torn.r2 |>
+  raster::MoranLocal()
+
+Torn_lmi.r |>
+  plot()
 ```
 
-This type of plot makes is easy to identify the hot spots of tornadoes over parts of the South and the Central Plains.
+This type of plot makes is easy to identify the "hot" spots of tornadoes over parts of the South and the Central Plains
 
 To convert the local Moran raster to a S4 spatial data frame with polygon geometries use the `rasterToPolygons()` function.
 
 ```{r}
-Torn_lmi.sp <- raster::rasterToPolygons(Torn_lmi.r)
-class(Torn_lmi.sp)
+( Torn_lmi.sp <- Torn_lmi.r |>
+  raster::rasterToPolygons() )
 ```
 
-Then convert the `SpatialPolygonsDataFrame` to a simple features data frame and make a plot.
+Then convert the `SpatialPolygonsDataFrame` to a simple features data frame and make a plot
 
 ```{r}
-Torn_lmi.sf <- sf::st_as_sf(Torn_lmi.sp)
+Torn_lmi.sf <- Torn_lmi.sp |>
+  sf::st_as_sf()
 
 library(ggplot2)
 
@@ -357,17 +432,17 @@ Or using functions from the {tmap} package you map the raster layer directly.
 
 ```{r}
 tmap::tmap_mode("view")
-tmap::tm_shape(Torn_lmi.r) +
-  tmap::tm_raster(alpha = .7)
+
+Torn_lmi.r |>
+  tmap::tm_shape() +
+    tmap::tm_raster(alpha = .7)
 ```
 
 Focal (neighborhood) functions
 
-The function `terra::focal()` computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The `terra::distance()` function computes the shortest distance to cells that are not NA. The `terra::direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `terra::adjacent()` function determines which cells are adjacent to other cells.
+The function `terra::focal()` computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The `terra::distance()` function computes the shortest distance to cells that are not NA. The `terra::direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `terra::adjacent()` function determines which cells are adjacent to other cells
 
-Functions from the {raster} package require data objects to be in the S4 reference class. S4 reference classes allow rich data representations at the expense of flexibility. The S3 reference class objects are more flexible, easier to maintain, and allow for new dialects (e.g., {dplyr}, {ggplot2}). Most packages on CRAN use S3 reference class objects.
-
-Consider a multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a *GeoTIFF* file labeled `L7_ETMs.tif`. You import the image as a raster stack.
+Consider a multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a *GeoTIFF* file labeled `L7_ETMs.tif`. You import the image as a raster stack
 
 ```{r}
 if(!require(stars)) install.packages("stars", repos = "http://cran.us.r-project.org")
@@ -376,13 +451,10 @@ library(stars)
 f <- system.file("tif/L7_ETMs.tif",
                   package = "stars")
 
-library(raster)
-L7.rs <- stack(f)
-
-class(L7.rs)
+( L7.rs <- raster::stack(f) )
 ```
 
-The data `L7.rs` is a `RasterStack` object as a S4 reference class.
+The data `L7.rs` is a `RasterStack` object as a S4 reference class
 
 You list the slot names and extract the extent and CRS using the `@` syntax.
 
@@ -391,24 +463,31 @@ L7.rs@extent
 L7.rs@crs
 ```
 
-You extract a single band (layer) from the stack with the `layer =` argument in the `raster()` function. You then plot the raster values with the `plot()` method and compute the spatial autocorrelation with the `raster::Moran()` function.
+You extract a single band (layer) from the stack with the `layer =` argument in the `raster()` function. You then plot the raster values with the `plot()` method and compute the spatial autocorrelation with the `raster::Moran()` function
 
 ```{r}
-L7.rB3 <- raster::raster(L7.rs, layer = 3)
-plot(L7.rB3)
-raster::Moran(L7.rB3)
+L7.rB3 <- L7.rs |>
+  raster::raster(layer = 3)
+
+
+L7.rB3 |>
+  plot()
+
+L7.rB3 |>
+  raster::Moran()
 ```
 
-You convert the raster to an S3 reference class data frame with the `as.data.frame()` method. Here you do that and then compute the normalized difference vegetation index (NDVI) using columns `L7_ETMs.4` and `L7_ETMs.3` and the `mutate()` function from the {dplyr} package.
+You convert the raster to an S3 reference class data frame with the `as.data.frame()` method. Here you do that and then compute the normalized difference vegetation index (NDVI) using columns `L7_ETMs.4` and `L7_ETMs.3` and the `mutate()` function from the {dplyr} package
 
 NDVI indicates live green vegetation from satellite images. Higher values indicate more green vegetation, negative values indicate water.
 
 ```{r}
-L7.df <- as.data.frame(L7.rs) |>
-  dplyr::mutate(NDVI = (L7_ETMs.4 - L7_ETMs.3)/(L7_ETMs.4 + L7_ETMs.3))
+L7.df <- L7.rs |>
+  as.data.frame() |>
+  dplyr::mutate(NDVI = (L7_ETMs_4 - L7_ETMs_3)/(L7_ETMs_4 + L7_ETMs_3))
 ```
 
-More examples and other functions for working with raster data using functions from the {terra} package are illustrated in <https://geocompr.robinlovelace.net/raster-vector.html>. I encourage you to take a look.
+More examples and other functions for working with raster data using functions from the {terra} package are illustrated in <https://geocompr.robinlovelace.net/raster-vector.html>. Again, I encourage you to take a look at this valuable resource
 
 ## Working with space-time data {-}
 
@@ -438,56 +517,52 @@ But arrays can have more dimensions. For example, time, space, spectral band, an
 You import a set of rasters (raster stack) as a {stars} object using the `stars::read_stars()` function. Consider the multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a *GeoTIFF* file labeled `L7_ETMs.tif`.
 
 ```{r}
-f <- system.file("tif/L7_ETMs.tif",
-                  package = "stars")
-L7.stars <- stars::read_stars(f)
-L7.stars
-
-dim(L7.stars)
+( L7.stars <- system.file("tif/L7_ETMs.tif",
+                        package = "stars") |>
+  stars::read_stars() )
 ```
 
-There are three dimensions to this {stars} object, two spatial (`x` and `y`), and the third across six bands (`band`). Values across the six bands and space are summarized as a single attribute with name `L7_ETMs.tif`.
+There are three dimensions to this {stars} object, two spatial (`x` and `y`), and the third across six bands (`band`). Values across the six bands and space are summarized as a single attribute with name `L7_ETMs.tif`
 
-The data are stored in a four dimensional array. The first index is the attribute, the second and third indexes are the spatial coordinates, and the fourth index is the band.
+The data are stored in a four dimensional array. The first index is the attribute, the second and third indexes are the spatial coordinates, and the fourth index is the band
 
-Here you plot bands 3 and 4 by sequencing on the fourth index and using the `plot()` method.
+Here you plot bands 3 and 4 by sequencing on the fourth index and using the `plot()` method
 
 ```{r}
 plot(L7.stars[,,,3:4])
 ```
 
-Since the data object is S3 you use functions from the `ggplot2()` package together with the `geom_stars()` layer from the {stars} package to plot all 6 bands with a common color scale bar.
+Since the data object is S3 you use functions from the `ggplot2()` package together with the `geom_stars()` layer from the {stars} package to plot all 6 bands with a common color scale bar
 
 ```{r}
-library(ggplot2)
-
 ggplot() +
   stars::geom_stars(data = L7.stars) +
   facet_wrap(~ band)
 ```
 
-You create a new {stars} object by applying a function to the band values. For example here you compute normalized difference vegetation index (NDVI) through a function applied across the `x` and `y` spatial dimensions using the `stars::st_apply()` method after creating the function `NDVI()`.
+You create a new {stars} object by applying a function to the band values. For example here you compute normalized difference vegetation index (NDVI) through a function applied across the `x` and `y` spatial dimensions using the `stars::st_apply()` method after creating the function `NDVI()`
 
 ```{r}
 NDVI <- function(z) (z[4] - z[3]) / (z[4] + z[3])
 
-( NDVI.stars <- stars::st_apply(L7.stars, 
-                                MARGIN = c("x", "y"), 
-                                FUN = NDVI) )
+( NDVI.stars <- L7.stars |>
+    stars::st_apply(MARGIN = c("x", "y"), 
+                    FUN = NDVI) )
 ggplot() +
   stars::geom_stars(data = NDVI.stars) 
 ```
 
-The stars data frame can also be split, here on the band dimension, to yield a representation as six rasters in the list form.
+The stars data frame can also be split, here on the band dimension, to yield a representation as six rasters in the list form
 
 ```{r}
 ( L7split.stars <- split(L7.stars, 
                          f = "band") )
 ```
 
-Now the bands are given as columns in the data frame part of the {stars} object and there are only two dimensions (`x` and `y`).
+Now the bands are given as columns in the data frame part of the {stars} object and there are only two dimensions (`x` and `y`)
 
-Raster data do not need to be regular or aligned along the cardinal directions. Functions in the {stars} package supports rotated, sheared, rectilinear and curvi-linear grids. [Grids](https://raw.githubusercontent.com/r-spatial/stars/master/man/figures/README-plot2-1.png)
+Raster data do not need to be regular or aligned along the cardinal directions. Functions in the {stars} package supports rotated, sheared, rectilinear and curvi-linear grids
+[Grids](https://raw.githubusercontent.com/r-spatial/stars/master/man/figures/README-plot2-1.png)
 
 Functions in the {stars} package also support the vector data model. Vector data cubes arise when you have a single dimension that points to distinct spatial feature geometry, such as polygons (e.g. denoting administrative regions). [Vector data cube polygons](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube3.png)
 
