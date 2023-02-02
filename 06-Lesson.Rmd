@@ -2,6 +2,49 @@
 
 **"Hell isn't other people's code. Hell is your own code from 3 years ago."** -- Jeff Atwood
 
+| Lab | Date                  | Lessons covered |
+|-----|-----------------------|-----------------|
+| 1   | Thursday January 26   | 1-4             |
+| 2   | Thursday February 9   | 5-7             |
+| 3   | Tuesday February 28   | 8-11            |
+| 4   | Thursday April 6      | 12-18           |
+| 5   | Thursday April 27     | 19-22           |
+
+| Date     | Lesson/Lab|
+|----------|-----------|
+|January 10 | Syllabus |
+|January 12 | Lesson 1 |
+|January 17 | Lesson 2 |
+|January 19 | Lesson 3 |
+|January 24 | Lesson 4 |
+|January 26 | Lab 1 |
+|January 31 | Lesson 5 |
+|February 2 | Lesson 6 |
+|February 7 | Lesson 7 |
+|February 9 | Lab 2 |
+|February 14 | Lesson 8 |
+|February 16 | Lesson 9 |
+|February 21 | Lesson 10 |
+|February 23 | Lesson 11 |
+|February 28 | Lab 3 |
+|March 2 | Lesson 12 |
+|March 7 | Lesson 13 |
+|March 9 | Lesson 14 |
+|March 14 | Spring Break |
+|March 16 | Spring Break |
+|March 21 | Lesson 15 |
+|March 23 | FREE |
+|March 28 | Lesson 16 |
+|March 30 | Lesson 17 |
+|April 4 | Lesson 18 |
+|April 6 | Lab 4 |
+|April 11 | Lesson 19 |
+|April 13 | Lesson 20 |
+|April 18 | Lesson 21 |
+|April 20 | FREE |
+|April 25 | Lesson 22 |
+|April 27 | Lab 5 |
+
 ## Working with raster data {-}
 
 The *raster data model* divides geographic space into a grid of cells (or pixels) of constant size (resolution). A cell may have an attribute value
