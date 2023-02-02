@@ -4,7 +4,7 @@
 
 | Lab | Date                  | Lessons covered |
 |-----|-----------------------|-----------------|
-| 1   | Thursday January 26   | 1-4             |
+| 1   | Thursday January 26   | 1-4             | *
 | 2   | Thursday February 9   | 5-7             |
 | 3   | Tuesday February 28   | 8-11            |
 | 4   | Thursday April 6      | 12-18           |
@@ -12,14 +12,14 @@
 
 | Date     | Lesson/Lab|
 |----------|-----------|
-|January 10 | Syllabus |
-|January 12 | Lesson 1 |
-|January 17 | Lesson 2 |
-|January 19 | Lesson 3 |
-|January 24 | Lesson 4 |
-|January 26 | Lab 1 |
-|January 31 | Lesson 5 |
-|February 2 | Lesson 6 |
+|January 10 | Syllabus | *
+|January 12 | Lesson 1 | *
+|January 17 | Lesson 2 | *
+|January 19 | Lesson 3 | *
+|January 24 | Lesson 4 | *
+|January 26 | Lab 1 |    *
+|January 31 | Lesson 5 | *
+|February 2 | Lesson 6 | 
 |February 7 | Lesson 7 |
 |February 9 | Lab 2 |
 |February 14 | Lesson 8 |
@@ -58,26 +58,24 @@ library(terra)
 methods(class = "SpatRaster")
 ```
 
-The list includes {base} R and {sf} methods
+The list includes {base} R and {sf} functions and methods
 
-The `terra::rast()` function creates a raster with a geographic (longitude/latitude) CRS and a 1 by 1 degree grid of cells across the globe
+The `terra::rast()` function defaults to a raster with a geographic (longitude/latitude) CRS and a 1 by 1 degree grid of cells across the globe
 
 ```{r}
-r <- terra::rast()
-r
+( r <- terra::rast() )
 ```
 
-Arguments including `xmin`, `nrows`, `ncols`, and `crs` are used to change the default settings
-
 The object has class `SpatRaster` with geographic coordinates spanning the globe at one-degree resolution in the north-south and the east-west directions
+
+Arguments including `xmin`, `nrows`, `ncols`, and `crs` are used to change the default settings
 
 To create a raster with 36 longitudes -100 and 0 degrees East longitude and 18 latitudes between the equator and 50 degrees N latitude you specify the number of columns, the number of rows and the extent as follows
 
 ```{r}
-r <- terra::rast(ncols = 36, nrows = 18, 
+( r <- terra::rast(ncols = 36, nrows = 18, 
                  xmin = -100, xmax = 0, 
-                 ymin = 0, ymax = 50)
-r
+                 ymin = 0, ymax = 50) )
 ```
 
 This results in raster with cell resolution of 2.7 degrees of longitude and 2.7 degrees of latitude
@@ -101,7 +99,7 @@ r |>
   nrow()
 ```
 
-The `SpatRaster` object `r` is a template with no values assigned to the cells and by default it will have an extent that spans the globe
+The `SpatRaster` object `r` has no values assigned to the cells
 
 ```{r}
 r <- terra::rast(ncol = 10, nrow = 10)
@@ -115,7 +113,7 @@ r |>
 
 Here there are 100 cells in a 10 by 10 arrangement with no values in any of the cells
 
-The `terra::values()` function is used to place values in the cells. The function is specified on the left-hand side of the assignment operator. Here you first assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1
+The `terra::values()` function places values in the cells. The function is specified on the left-hand side of the assignment operator. Here you first assign to a vector of length `terra::ncell(r)` random numbers from a uniform distribution with the `runif()` function. The default is that the random numbers are between 0 and 1. Then you place those values in the grid cells
 
 ```{r}
 v <- r |>
@@ -128,7 +126,7 @@ r |>
   head()
 ```
 
-The cells are arranged in lexicographical order (upper left to lower right) and the cells are populated with values from the vector in this order
+The cells are arranged in lexicographical order (upper left to lower right) and the cells receive values from the vector in this order
 
 The `terra::plot()` function creates a choropleth map of the values in cells
 
@@ -144,9 +142,9 @@ r |>
   terra::crs()
 ```
 
-To re-project the raster use the function `terra::project()`.
+To re-project the raster use the function `terra::project()`
 
-Here you create a new raster with cell numbers as values using the `terra::setValues()` function to place the numbers in the cells
+Here you create another raster with cell numbers as values using the `terra::setValues()` function to place the numbers in the cells. This function receives the values on the right-hand side of the assignment operator allowing you to use the pipe operator
 
 ```{r}
 r <- terra::rast(xmin = -110, xmax = -90, 
@@ -162,14 +160,14 @@ r |>
 
 The values increase starting from top left to bottom right as dictated by the sequence `1:terra::ncell(r)` and the lexicographic order in which the raster grids are filled
 
-The `terra::rast()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Most formats that can import a raster can also be used to export a raster
+The `terra::rast()` function imports data with functions from the {rgdal} package. Supported formats include `GeoTIFF`, `ESRI`, `ENVI`, and `ERDAS`. Formats that can be imported as a raster can also be used to export a raster
 
 Consider the `Meuse` dataset (from the {sp} package), using a file in the native 'raster- file' format
 
 ```{r}
-r <- system.file("external/test.grd", 
+( r <- system.file("external/test.grd", 
                  package = "raster") |>
- terra::rast()
+ terra::rast() )
 ```
 
 Do the cells contain values? Is the raster stored in memory? Create a plot
@@ -185,7 +183,7 @@ r |>
   terra::plot(main = "Raster layer from file")
 ```
 
-The cells are always in a rectangular arrangement. Values outside an irregular domain are set to `NA` and are not plotted
+Cells are always in a rectangular arrangement. Cells that lie outside a non-rectangular boundary inside the rectangular extent are set to `NA` and are not plotted
 
 `SpatRaster` objects can have more than one attribute called layers
 
@@ -193,7 +191,7 @@ The cells are always in a rectangular arrangement. Values outside an irregular d
 r
 ```
 
-The dimensions are nrow = 115 by ncol = 80 and nlyr = 1
+The dimensions are `nrow` = 115 by `ncol` = 80 and `nlyr` = 1
 
 Here you create three rasters and assign random values to the cells
 
@@ -209,11 +207,20 @@ terra::values(r3) <- runif(terra::ncell(r3))
 You combine the rasters into a single `SpatRaster` raster with three layers using the concatenate function `c()`
 
 ```{r}
-s <- c(r1, r2, r3)
-s
-dim(s)
-terra::nlyr(s)
-terra::plot(s)
+( s <- c(r1, r2, r3) )
+```
+
+Extract dimensions and then plot
+
+```{r}
+s |>
+  dim()
+
+s |>
+  terra::nlyr()
+
+s |> 
+  terra::plot()
 ```
 
 Here you import a raster with multiple layers from a file. The layers are values corresponding to the RBG color scheme
@@ -227,15 +234,18 @@ b |>
   terra::plot()
 ```
 
-Most {base} R functions (`+`, `*`, `round()`, `ceiling()`, `log()`, etc) work on raster objects. Operations are done on all cells at once
+Most {base} R functions (`+`, `*`, `round()`, `ceiling()`, `log()`, etc) work on raster objects. Operations are done on each cell
 
 Here you place the numbers from 1 to 100 sequentially in the cells, then add 100 to these values and take the square root
 
 ```{r}
 r <- terra::rast(ncol = 10, nrow = 10)
 terra::values(r) <- 1:terra::ncell(r)
+
 s <- r + 100
-s <- sqrt(s)
+
+s <- s |>
+  sqrt()
 
 s |>
   terra::plot()
@@ -246,7 +256,9 @@ Here you replace the cell values with random uniform numbers between 0 and 1. Th
 ```{r}
 r <- terra::rast(ncol = 10, nrow = 10)
 terra::values(r) <- runif(terra::ncell(r))
-r <- round(r)
+r <- r |>
+  round()
+
 r <- r + 1
 
 r |>

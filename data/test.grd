@@ -4,8 +4,8 @@ datatype=FLT4S
 nodatavalue=nan
 byteorder=little
 nbands=1
-minvalue=-3.40235737661259668e+38
-maxvalue=3.31609791116103442e+38
+minvalue=-3.3993636929550977e+38
+maxvalue=3.38168371932769057e+38
 categorical=FALSE
 [description]
 layername=lyr.1
