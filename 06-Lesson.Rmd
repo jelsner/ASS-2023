@@ -2,6 +2,8 @@
 
 **"Hell isn't other people's code. Hell is your own code from 3 years ago."** -- Jeff Atwood
 
+* What we've covered thus far
+
 | Lab | Date                  | Lessons covered |
 |-----|-----------------------|-----------------|
 | 1   | Thursday January 26   | 1-4             | *
@@ -166,7 +168,7 @@ Consider the `Meuse` dataset (from the {sp} package), using a file in the native
 
 ```{r}
 ( r <- system.file("external/test.grd", 
-                 package = "raster") |>
+                   package = "raster") |>
  terra::rast() )
 ```
 
@@ -271,6 +273,7 @@ Replace only certain values with the subset function `[]`
 r <- terra::rast(xmin = -90, xmax = 90, ymin = -30, ymax = 30)
 terra::values(r) <- rnorm(terra::ncell(r))
 terra::plot(r)
+
 r[r > 2] <- 0
 
 r |>
@@ -317,6 +320,7 @@ r <- terra::rast(ncols = 5, nrows = 5,
 terra::values(r) <- 1:25
 
 xy <- rbind(c(.5, .5), c(2.5, 2.5))
+
 p <- xy |>
   terra::vect(crs = 'epsg:4326')
 ```
@@ -448,7 +452,7 @@ Torn.r2 |>
   raster::Moran()
 ```
 
-The value of .75 indicates high level of tornado clustering at the 1 degree lat/lon resolution
+The value of .75 indicates high level of tornado clustering at the .5 degree lat/lon resolution
 
 Under the null hypothesis of no spatial autocorrelation the expected value for Moran's I is close to zero [-1/(n-1), where n is the number of cells]
 
@@ -495,12 +499,13 @@ Torn_lmi.r |>
 
 Focal (neighborhood) functions
 
-The function `terra::focal()` computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The `terra::distance()` function computes the shortest distance to cells that are not NA. The `terra::direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `terra::adjacent()` function determines which cells are adjacent to other cells
+The function `terra::focal()` computes statistics in a neighborhood of cells around a focal cell, putting the result in the focal cell of an output raster. The `terra::distance()` function computes the shortest distance to cells that are not `NA`. The `terra::direction()` function computes the direction towards (or from) the nearest cell that is not `NA`. The `terra::adjacent()` function determines which cells are adjacent to other cells
 
 Consider a multi-band image taken from a Landsat 7 view of a small part of the Brazilian coast. It is included in the {stars} package and stored as a *GeoTIFF* file labeled `L7_ETMs.tif`. You import the image as a raster stack
 
 ```{r}
-if(!require(stars)) install.packages("stars", repos = "http://cran.us.r-project.org")
+if(!require(stars)) install.packages("stars", 
+                                     repos = "http://cran.us.r-project.org")
 library(stars)
 
 f <- system.file("tif/L7_ETMs.tif",
