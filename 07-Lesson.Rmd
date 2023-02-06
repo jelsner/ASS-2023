@@ -146,7 +146,7 @@ Functions in the {tmap} use the 'grammar of graphics' philosophy that separates 
 
 A map made with functions from {tmap} starts with the `tmap::tm_shape()` function that takes as input a spatial data frame. The function is followed by one or more layers such as `tmap::tm_fill()`, `tmap::tm_dots()`, `tmap::tm_raster()`, etc that defines how a property in the data gets translated to a visual component
 
-Consider the New Zealand simple feature data frame (`nz`). To make a map of the region borders you first identify the spatial data frame with the `tmap::tm_shape()` function and then add a borders layer with the `tmap::tm_borders()` layer
+Consider again the New Zealand simple feature data frame (`nz`). To make a map of the region borders you first identify the spatial data frame with the `tmap::tm_shape()` function and then add a borders layer with the `tmap::tm_borders()` layer
 
 ```{r}
 tmap::tm_shape(shp = spData::nz) +
