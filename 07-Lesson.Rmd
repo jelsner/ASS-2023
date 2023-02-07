@@ -4,7 +4,7 @@
 
 ## Mapping using functions from the {ggplot2} package {-}
 
-The {ggplot2} package has supports `sf` objects for making maps through the function `geom_sf()`. An initial `ggplot()` function is followed by one or more layers that are added with `+` symbol. The layers begin with `geom_` (or `stat_`)
+The {ggplot2} package has supports `sf` objects for making maps through the function `geom_sf()`. An initial `ggplot()` function is followed by one or more layers that are added with `+` symbol
 
 For example, consider the objects `nz` and `nz_height` from the {spData} package, where `nz` is a simple feature data frame from the New Zealand census with information about the area, population, and income in the country's 16 administrative regions
 
@@ -36,9 +36,9 @@ ggplot() +
 
 The first use of `geom_sf()` takes the geometry column of the simple feature data frame `spData::nz` together with the `mapping =` argument and specifies filling the interior of the polygons with the values from the column labeled `Medium_income` in the simple feature data frame. The second use of `geom_sf()` takes the geometry column of `spData::nz_height` and maps the geometry type as points indicating the location of the highest peaks
 
-The `geom_sf()` function automatically plots the graticule (grid of latitude and longitude) with labels. The default ranges for the graticule can be overridden using `scale_x_continuous()`, `scale_y_continuous()` or `coord_sf(datum = NA)`
+The `geom_sf()` function automatically plots the graticule (grid of latitude and longitude) with labels. The default ranges can be overridden using `scale_x_continuous()`, `scale_y_continuous()` or `coord_sf(datum = NA)`
 
-A big advantage of using functions from {ggplot2} for mapping include a large community of users and many add-on packages
+An advantage of using functions from {ggplot2} for mapping include a large community of users and many add-on packages
 
 Another example: the county land area by state in the U.S. The data is a simple feature data frame available in the {USAboundariesData} package at `ropensci.org` (not on CRAN)
 
@@ -138,9 +138,7 @@ ggplot(data = Liberty.sf) +
 
 ## Mapping using functions from the {tmap} package {-}
 
-There are other packages for making quick, nice maps in R
-
-I particularly like {tmap} because it is agnostic to the type of spatial data object. Simple feature data frames as well as {sp} and {terra} objects can be combined on a single map
+There are other packages for making quick, nice maps in R. I particularly like {tmap} because it is agnostic to the type of spatial data object. Simple feature data frames as well as {sp} and {terra} objects can be combined on a single map
 
 Functions in the {tmap} use the 'grammar of graphics' philosophy that separates the data frame from the aesthetics (how data are made visible). Functions translate the data into aesthetics. The aesthetics can include the location on a geographic map (defined by the geometry), color, and other visual components
 
@@ -442,9 +440,9 @@ The {isoband} package has functions to generate contour lines (isolines) and con
 library(isoband)
 ```
 
-The two main functions are `isolines()` and `isobands()`. They return a list of isolines/isobands for each isolevel specified
+The two main functions are `isolines()` and `isobands()`. They return a list of isolines/isobands for each level specified
 
-Each isoline/isoband consists of vectors of x and y coordinates, as well as a vector of ids specifying which sets of coordinates should be connected. This format can be handed directly to `grid.polyline()`/`grid.path()` for drawing. However, you can also convert the output to spatial features and draw with functions from {ggplot2}.
+Each isoline/isoband consists of vectors of x and y coordinates, as well as a vector of ids specifying which sets of coordinates should be connected. This format can be handed directly to `grid.polyline()`/`grid.path()` for drawing. However, you can also convert the output to spatial features and draw with functions from {ggplot2}
 
 Consider the following matrix
 
@@ -475,7 +473,7 @@ Apply the function `isobands()` specifying the x locations, y locations, the low
                     levels_high = 1.5) )
 ```
 
-The function `plot_iso()` is a convenience function for debugging and testing
+The function `plot_iso()` is convenient for debugging and testing
 
 ```{r}
 plot_iso(m, vlo = .5, vhi = 1.5)
@@ -485,7 +483,7 @@ Let’s calculate isolines and isobands for the volcano dataset, convert to {sf}
 
 ```{r}
 library(ggplot2)
-suppressWarnings(library(sf))
+library(sf)
 
 m <- volcano
 b <- isobands((1:ncol(m))/(ncol(m)+1), (nrow(m):1)/(nrow(m)+1), m, 10*(9:19), 10*(10:20))
@@ -511,33 +509,32 @@ ggplot() +
 
 ## Hillshape and colors with tidyterra {-}
 
-<https://dieghernan.github.io/202210_tidyterra-hillshade/#r_bloggers>
+Adapted from <https://dieghernan.github.io/202210_tidyterra-hillshade/#r_bloggers>
 
-Get the data. Bulgarian elevation
+Get Bulgarian elevation into your current R session as a `SpatRaster` object
 
 ```{r}
 mydir <- here::here("data")
 
-r_init <- geodata::elevation_30s("BGR", 
-                                 path = mydir)
-r_init
+( r_init <- geodata::elevation_30s("BGR", 
+                                   path = mydir) )
 ```
 
-Rename `BGR_elv_msk` to `alt` and set the minimum to zero using the parallel max function `pmax()`
+Rename `BGR_elv_msk` to `altitude` and set the minimum to zero using the parallel max function `pmax()`
 
 ```{r}
-names(r_init) <- "alt"
+names(r_init) <- "altitude"
 
 r <- r_init |>
-  tidyterra::mutate(alt = pmax(0, alt))
+  tidyterra::mutate(altitude = pmax(0, altitude))
 r
 ```
 
 Quick plot
 
 ```{r}
-library(ggplot2)
-autoplot(r) +
+r |>
+  autoplot() +
   theme_minimal()
 ```
 
@@ -546,28 +543,27 @@ autoplot(r) +
 ```{r}
 grad_hypso <- tidyterra::hypso.colors2(10, "dem_poster")
 
-autoplot(r) +
+r |>
+  autoplot() +
   scale_fill_gradientn(colours = grad_hypso, 
                        na.value = NA)
 ```
 
-In contrast, a regular gradient would just interpolate colors assuming that the distance among colors is the same
+In contrast, a regular gradient interpolates colors assuming that the distance among thevcolors is the same
 
 Next step is to calculate the hillshade. You want to create is a layer that approximates the potential 'texture' of the surface based on the elevation and the sun position. This is done with the `terra::terrain()` and `terra::shade()` functions
 
 ```{r}
 slope <- r |>
  terra::terrain("slope", unit = "radians")
-
 aspect <- r |>
   terra::terrain("aspect", unit = "radians")
 
 hill <- terra::shade(slope, aspect, 30, 270)
-
 names(hill) <- "shades"
 ```
 
-Start with a gray palette.
+Start with a gray palette
 
 ```{r}
 library(tidyterra)
@@ -584,7 +580,8 @@ pal_greys <- hcl.colors(1000, "Grays")
 Now blend the hillshade layer with the altitude layer using some level of alpha on the upper layer
 
 ```{r}
-r_limits <- terra::minmax(r) |> 
+r_limits <- r |> 
+  terra::minmax() |> 
   as.vector()
 
 # Rounded to lower and upper 500
