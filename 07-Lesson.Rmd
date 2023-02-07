@@ -304,9 +304,9 @@ tmap::tm_shape(urb_1970_2030) +
   tmap::tm_symbols(col = "black", 
                    border.col = "white",
                    size = "population_millions") +
-  tmap::tm_facets(by = "year", 
-                  nrow = 2, 
-                  free.coords = FALSE)
+tmap::tm_facets(by = "year", 
+                nrow = 2, 
+                free.coords = FALSE)
 ```
 
 The above code chunk demonstrates key features of faceted maps created with functions from the {tmap} package
@@ -549,7 +549,7 @@ r |>
                        na.value = NA)
 ```
 
-In contrast, a regular gradient interpolates colors assuming that the distance among thevcolors is the same
+In contrast, a regular gradient interpolates colors assuming that the distance among the colors is the same
 
 Next step is to calculate the hillshade. You want to create is a layer that approximates the potential 'texture' of the surface based on the elevation and the sun position. This is done with the `terra::terrain()` and `terra::shade()` functions
 
@@ -625,28 +625,30 @@ nz_region <- sf::st_bbox(c(xmin = 1340000, xmax = 1450000,
 Next create a base map showing New Zealand's Southern Alps area. This is the closeup view of where the most important message is stated. The region is clipped to the simple feature column `nz_region` created above. The layers include a raster of elevations and locations of high points. A scale bar is included
 
 ```{r}
-( nz_height_map <- tmap::tm_shape(spDataLarge::nz_elev, 
-                                  bbox = nz_region) +
+( nz_height_map <- 
+tmap::tm_shape(spDataLarge::nz_elev, 
+               bbox = nz_region) +
   tmap::tm_raster(style = "cont", 
                   palette = "YlGn", 
                   legend.show = TRUE) +
-  tmap::tm_shape(spData::nz_height) + 
+tmap::tm_shape(spData::nz_height) + 
   tmap::tm_symbols(shape = 2, 
                    col = "red", 
                    size = 1) +
-  tmap::tm_scale_bar(position = c("left", "bottom")) )
+tmap::tm_scale_bar(position = c("left", "bottom")) )
 ```
 
 Next create the inset map, which gives the spatial context and helps to locate the area of interest
 
 ```{r}
-( nz_map <- tmap::tm_shape(spData::nz) + 
+( nz_map <- 
+tmap::tm_shape(spData::nz) + 
   tmap::tm_polygons() +
-  tmap::tm_shape(spData::nz_height) + 
+tmap::tm_shape(spData::nz_height) + 
   tmap::tm_symbols(shape = 2, 
                    col = "red", 
                    size = .1) + 
-  tmap::tm_shape(nz_region) + 
+tmap::tm_shape(nz_region) + 
   tmap::tm_borders(lwd = 3) )
 ```
 
