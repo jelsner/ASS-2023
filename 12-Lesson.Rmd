@@ -175,6 +175,26 @@ Also, when fitting a regression model to data that vary spatially you are assumi
 
 So a way to check the assumption of a stationary process is to use geographic regression. If the coefficients from the geographic regressions match closely the global coefficients then you can assume a stationary process.
 
+## Multiscale GWR
+
+https://www.rdocumentation.org/packages/GWmodel/versions/2.0-8/topics/gwr.multiscale
+
+Example: London house prices. Hedonic relationship. What variables influence price (or demand) for that good
+
+```{r}
+library(GWmodel)
+```
+
+The function `gwr.multiscale()` from the {GWmodel} package implements multiscale GWR to detect variations in regression relationships across different spatial scales. It can find a different bandwidth for each relationship and simultaneously find a different distance metric for each relationship
+
+Only works with S4 spatial data objects
+
+Example: Watershed soil data: response variables; soil total nitrogen percentage (TNPC), soil total phosphorus percentage (TPPC), and predictor variables; soil organic carbon (SOCgkg), nitrate nitrogen (NO3Ngkg), ammonium (NH4Ngkg), percentage clay (ClayPC), silt (SiltPC), sand (SandPC) content, vegetation coverage (CoveragePC), Slope, Aspect, Altitude_m, SoilType, LandUse and Position
+
+Comparisons of OLS regression, standard GWR, and multiscale GWR
+
+https://rpubs.com/lexcomber/INIA_Session7
+
 ## Mapping incidence and risk with a spatial regression model {-}
 
 Note: This material is quite advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate the spatial regression framework from a Bayesian perspective. I do not expect you to understand all the details nor will I ask you to reproduce any of this as a lab exercise.
