@@ -4,3 +4,4 @@ making-maps-with-rdeck
 section-1
 r-markdown
 including-plots
+multiscale-gwr
