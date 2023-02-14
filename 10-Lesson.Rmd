@@ -1,16 +1,10 @@
-# Tuesday February 21, 2023 {.unnumbered}
+# Tuesday February 21, 2023 {-}
 
 **"Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!"** --- Vanessa Hurst
 
 Lab 3 will be next Tuesday
 
-Today
-
-- Estimating spatial autocorrelation in model residuals
-- Choosing a spatial regression model
-- Fitting and interpreting spatial regression models
-
-## Estimating spatial autocorrelation in model residuals {.unnumbered}
+## Estimating spatial autocorrelation in model residuals {-}
 
 A spatial regression model should be entertained for your data whenever the residuals from an ordinary-least-squares (OLS) regression model exhibit significant spatial autocorrelation. 
 
@@ -105,7 +99,7 @@ The $p$-value on I of .002, thus you reject the null hypothesis of no spatial au
 
 Given significant spatial autocorrelation in the model residuals, the next step is to choose the type of spatial regression model.
 
-## Choosing a spatial regression model {.unnumbered}
+## Choosing a spatial regression model {-}
 
 Ordinary least-squares regression models fit to spatial data can lead to improper inference because observations are not independent. This might lead to poor policy decisions. If the residuals from an OLS model are strongly correlated the model is not specified properly.
 

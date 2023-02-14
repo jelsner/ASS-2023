@@ -1,11 +1,6 @@
-# Thursday February 23, 2023 {.unnumbered}
+# Thursday February 23, 2023 {-}
 
 **"We build our computer systems the way we build or cities; over time, without plan, on top of ruins."** – Ellen Ullman
-
-Today
-
-- Fitting and interpreting geographic regression
-- Mapping incidence and risk with a spatial regression model
 
 ## Fitting and interpreting geographic regression {-}
 

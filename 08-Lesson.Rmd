@@ -80,7 +80,9 @@ The 'nb' in the function names stands for neighbor (list) object. The function b
 ```{r}
 if(!require(spdep)) install.packages("spdep", repos = "http://cran.us.r-project.org")
 
-( nbs <- spdep::poly2nb(CC.sf) )
+( nbs <- CC.sf |>
+    spdep::poly2nb() )
+
 ```
 
 The output tells you there are 49 tracts (polygons). Each tract is bordered by at least one other tract. The average number of neighbors is 4.8. The total number of neighbors over all tracts is 236. This represents 9.8% of all possible connections (if every tract is a neighbor of itself and every other tract 49 * 49)
@@ -379,7 +381,7 @@ The column `SIDR79` contains the death rate (per 1000 live births) (1979-84) fro
 tmap::tm_shape(SIDS.sf) +
   tmap::tm_fill("SIDR79", title = "") +
   tmap::tm_borders(col = "gray70") +
-  tmap::tm_layout(title = "SIDS Rates 1979-84 [per 1000]",
+  tmap::tm_layout(title = "SIDS Rates 1974-79 [per 1000]",
                   legend.outside = TRUE)
 ```
 
@@ -431,146 +433,3 @@ Wsids <- spdep::lag.listw(wts,
 ```
 
 For each value in the vector `sids` there is a corresponding value in the object `Wsids` representing the neighborhood average SIDS rate
-
-## Other neighbor definitions {-}
-
-Other neighbor definitions are possible and the choice will influence the value of any statistic of spatial autocorrelation
-
-Let's consider the historical demographic data in Mississippi counties. Import the data as a simple feature data frame and assign the geometry a geographic CRS
-
-```{r}
-if(!"police" %in% list.files(here::here("data"))) {
-download.file(url = "http://myweb.fsu.edu/jelsner/temp/data/police.zip",
-              destfile = here::here("data", "police.zip"))
-unzip(here::here("data", "police.zip"),
-      exdir = here::here("data"))
-}
-
-( PE.sf <- sf::st_read(dsn = here::here("data", "police"), 
-                 layer = "police") |>
-  sf::st_set_crs(4326) )
-```
-
-Variables in the simple feature data frame include police expenditures (`POLICE`), crime (`CRIME`), income (`INC`), unemployment (`UNEMP`) and other socio-economic characteristics across Mississippi at the county level. Police expenditures are per person 1982 (dollars per person). Personal income is per person in 1982 (dollars per person). Crime is the number of serious crimes per 100,000 person in 1981. Unemployment is percent of people looking for work in 1980
-
-The geometries are polygons that define the county borders
-
-```{r}
-ggplot(data = PE.sf) +
-  geom_sf()
-```
-
-To estimate autocorrelation for any variable in the data frame, you need to first assign the neighbors and weights for each region
-
-The default options in the `spdep::poly2nb()` and `spdep::nb2listw()` result in neighbors defined by 'queen' contiguity (polygon intersections can include a single point) and weights defined by row standardization (the sum of the weights equals the number of regions)
-
-```{r}
-nbs <- PE.sf |>
-  spdep::poly2nb()
-wts <- nbs |>
-  spdep::nb2listw()
-```
-
-Alternatively you can specify the number of neighbors and then assign neighbors based on proximity (closeness). Here you first extract the coordinates of the polygon centroids as a matrix
-
-```{r}
-coords <- PE.sf |>
-  sf::st_centroid() |>
-  sf::st_coordinates()
-head(coords)
-```
-
-Then use the `spdep::knearneigh()` function on the coordinate matrix and specify the number of neighbors with the `k =` argument. Here you set it to six. That is, allow each county to have 6 closest neighbors
-
-Since the CRS is geographic you need to include the `longlat = TRUE` argument so distances are calculated using great circles
-
-```{r}
-knn <- spdep::knearneigh(coords, 
-                         k = 6, 
-                         longlat = TRUE)
-names(knn)
-head(knn$nn)
-```
-
-The output is a list of five elements with the first element a matrix with the row dimension the number of counties and the column dimension the number of neighbors
-
-Note that by using distance to define neighbors the matrix is not symmetric. For example, county 3 is a neighbor of county 2, but county 2 is not a neighbor of county 3
-
-Certain spatial regression models require the neighbor matrix to be symmetric. That is if region X is a neighbor of region Y then region Y must be a neighbor of region X
-
-You turn this matrix into a neighbor object (class `nb`) with the `spdep::knn2nb()` function
-
-```{r}
-nbs2 <- knn |>
-  spdep::knn2nb()
-
-summary(nbs2)
-```
-
-If you include the argument `sym = TRUE` in the `knn2nb()` function then it forces the neighbor matrix to be symmetric
-
-```{r}
-nbs3 <- spdep::knn2nb(knn,
-                      sym = TRUE)
-summary(nbs3)
-```
-
-The result shows that six is now the minimum number of nearest neighbors with some counties having has many as 10 neighbors to guarantee symmetry
-
-Compare the default adjacency neighborhoods with the nearest-neighbor neighborhoods
-
-```{r}
-plot(sf::st_geometry(PE.sf), border = "grey")
-plot(nbs, coords, add = TRUE)
-
-plot(sf::st_geometry(PE.sf), border = "grey")
-plot(nbs2, coords, add = TRUE)
-```
-
-A difference between the two neighborhoods is the number of links on counties along the borders. The nearest-neighbor defined neighborhoods have more links. Note: when neighbors are defined by proximity counties can share a border but they still may not be neighbors
-
-Your choice of neighbors is based on domain specific knowledge. If the process you are interested in can be described by a dispersal mechanism then proximity definition might be the right choice for defining neighbors. If the process can be described by a border diffusion mechanism then contiguity might be the right choice
-
-Create weight matrices for these alternative neighborhoods using the same `spdep::nb2listw()` function
-
-```{r}
-wts2 <- nbs2 |>
-  spdep::nb2listw()
-wts3 <- nbs3 |>
-  spdep::nb2listw()
-```
-
-You compute Moran's I for the percentage of white people variable (`WHITE`) with the `moran()` function separately for the three different weight matrices
-
-```{r}
-spdep::moran(PE.sf$WHITE,
-             listw = wts,
-             n = length(nbs),
-             S0 = spdep::Szero(wts))
-
-spdep::moran(PE.sf$WHITE,
-             listw = wts2,
-             n = length(nbs2),
-             S0 = spdep::Szero(wts2))
-
-spdep::moran(PE.sf$WHITE,
-             listw = wts3,
-             n = length(nbs3),
-             S0 = spdep::Szero(wts3))
-```
-
-Values of Moran's I are constrained between -1 and +1. In this case the neighborhood definition has little or no impact on inferences made about spatial autocorrelation. The kurtosis is between 2 and 4 consistent with a set of values from a normal distribution
-
-In a similar way you compute the Geary's C statistic
-
-```{r}
-spdep::geary(PE.sf$WHITE, 
-             listw = wts,
-             n = length(nbs), 
-             S0 = spdep::Szero(wts), 
-             n1 = length(nbs) - 1)
-```
-
-Values of Geary's C range between 0 and 2 with values less than one indicating positive autocorrelation
-
-If the values of Moran's I and Geary's C result in different interpretations about the amount of clustering then it is a good idea to examine *local* variations in autocorrelation
