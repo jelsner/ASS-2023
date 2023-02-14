@@ -2,29 +2,29 @@
 
 **"You haven't mastered a tool until you understand when it should not be used."** -- Kelsey Hightower
 
-This lesson marks a departure. You will continue to learn how to code in R, but you will do it in the context of statistical analysis and modeling of spatial data
+This lesson marks a departure. You will continue to learn coding skills, but you will do it in the context of statistical analysis and modeling of spatial data
 
 ## Defining spatial neighborhoods and spatial weights {-}
 
 Autocorrelation plays a central role in spatial statistics. It quantifies the degree to which things nearby tend to cluster. Things include values of variables (attributes) aggregated to polygons (or raster cells) as well as the spatial locations of objects. How autocorrelation gets estimated depends on the geometry of the spatial data
 
-Things tend to cluster because of:
+Things tend to cluster because association, causality, and interaction
 
 -   Association: whatever causes an attribute to have a certain value in one area causes the same attribute to have a similar value in areas nearby. Crime rates in nearby neighborhoods might tend to cluster due to similar factors
 
 -   Causality: something within a given area directly influences outcomes within nearby areas. Non-infectious diseases (e.g., lung cancer) have similar rates in neighborhoods close to an oil refinery
 
--   Interaction: the movement of people, goods or information creates relationships between areas. COVID spreads through areas through the movement of people
+-   Interaction: the movement of people, goods or information creates relationships between areas. COVID spreads through areas by movement of people
 
-Spatial statistics focuses on quantifying, and conditioning on, autocorrelation but it is silent about physical causes. Understanding the reason for autocorrelation in your data is important for inference because the causal mechanism might be confounded by its presence. Divorce rates tend to cluster high in southern states, but so does the number of Waffle Houses. Understanding causation requires domain specific knowledge
+Spatial statistics focuses on quantifying, and conditioning on, autocorrelation but it is silent about physical causes. Understanding the reason for autocorrelation in your data is important for inference because the causal mechanism might be confounded by its presence. Divorce rates tend to cluster high in the South, but so does the number of Waffle Houses. Understanding causation requires domain specific knowledge
 
-When a variable's values are aggregated (summed or averaged) to regions, autocorrelation is quantified by calculating how similar a value in region $i$ is to the value in region $j$ and weighting this similarity by how 'close' region $i$ is to region $j$. Closer regions are given greater weight
+When a variable's values are aggregated (summed or averaged) to regions (areal units), autocorrelation is quantified by calculating how similar a value in region $i$ is to the value in region $j$ and weighting this similarity by how 'close' region $i$ is to region $j$. Closer regions are given greater weight
 
-High similarities with high weight (similar values close together) yield high values of spatial autocorrelation. Low similarities with high weight (dissimilar values close together) yield low values of spatial autocorrelation.
+High similarities with high weight (similar values close together) yield high values of spatial autocorrelation. Low similarities with high weight (dissimilar values close together) yield low values of spatial autocorrelation
 
-Let $\hbox{sim}_{ij}$ denote the similarity between values $Y_i$ and $Y_j$, and let $w_{ij}$ denote a set of weights describing the 'distance' between regions $i$ and $j$, for $i$, $j$ = 1, ..., $N$
+We can formalize this. Let $\hbox{sim}_{ij}$ denote the similarity between values $Y_i$ and $Y_j$, and let $w_{ij}$ denote a set of weights describing the 'distance' between regions $i$ and $j$, for $i$, $j$ = 1, ..., $N$
 
-A general spatial autocorrelation index (SAI) is given by 
+Then a general spatial autocorrelation index (SAI) is given by 
 $$
 \hbox{SAI} = \frac{\sum_{i,j=1}^N w_{ij}\hbox{sim}_{ij}}{\sum_{i,j=1}^N w_{ij}}
 $$ 
@@ -36,7 +36,7 @@ Alternatively you can define center locations from a set of polygon regions and 
 
 You can also define neighbors by distance. For example, if $d_{ij}$ is the distance between centers $i$ and $j$, you can let $w_{ij}$ = 1 if $d_{ij}$ < $\delta$ and 0 otherwise
 
-Consider crime data at the tract level in the city of Columbus, Ohio. The tract polygons ar projected with arbitrary spatial coordinates
+Consider crime data at the tract level in the city of Columbus, Ohio. The tract polygons have arbitrary spatial coordinates
 
 ```{r}
 if(!"columbus" %in% list.files("data")) {
@@ -50,7 +50,7 @@ unzip(here::here("data", "columbus.zip"),
                        layer = "columbus") )
 ```
 
-The simple feature data frame contains housing values (`HOVAL`), income values (`INC`) and (`CRIME`) in census tracts across the city. Crime (`CRIME`) is residential burglaries and vehicle thefts per 1000 households. Income (`INC`) and housing values (`HOVAL`) are annual values with units of 1000 dollars.
+The simple feature data frame contains housing values (`HOVAL`), income values (`INC`) and (`CRIME`) in census tracts across the city. Crime (`CRIME`) is residential burglaries and vehicle thefts per 1000 households. Income (`INC`) and housing values (`HOVAL`) are annual values with units of 1000 dollars
 
 Create a choropleth map of the crime rates (`CRIME`)
 
@@ -83,7 +83,7 @@ if(!require(spdep)) install.packages("spdep", repos = "http://cran.us.r-project.
 ( nbs <- spdep::poly2nb(CC.sf) )
 ```
 
-The output tells you there are 49 tracts (polygons). Each tract is bordered by at least one other tract. The average number of neighbors is 4.8. The total number of neighbors over all tracts is 236. This represents 9.8% of all possible connections (if every tract is a neighbor of itself and every other tract 49 * 49).
+The output tells you there are 49 tracts (polygons). Each tract is bordered by at least one other tract. The average number of neighbors is 4.8. The total number of neighbors over all tracts is 236. This represents 9.8% of all possible connections (if every tract is a neighbor of itself and every other tract 49 * 49)
 
 Note that this only works for spatial data frames. It will not work for a regular data frame where the spatial coordinates are defined as variables
 
@@ -105,7 +105,7 @@ nbs |>
   summary()
 ```
 
-The list of neighboring tracts for the first two tracts.
+The list of neighboring tracts for the first two tracts
 
 ```{r}
 nbs[[1]]
@@ -235,7 +235,7 @@ The formula for Moran's I results in one value representing the magnitude of the
 
 First consider a single cell in the area ($N$ = 1). Start with the middle cell (row 3, column 3). Let $i$ = 3 in the above formula and let $j$ index the cells touching the center cell in reading order starting with cell (2, 2), then cell (2, 3), etc
 
-Assume each neighbor is given a weight of 1/8 so $W = \sum_{j=1}^8 w_j = 1$. Then the value of I for the single center cell is I\_{3, 3} = (6 - mean(y)) \* ((8 - mean(y)) + (3 - mean(y)) + (9 - mean(y)) + (12 - mean(y)) + (10 - mean(y)) + (10 - mean(y)) + (9 - mean(y))) / (6 - mean(y))\^2)
+Assume each neighbor is given a weight of 1/8 so $W = \sum_{j=1}^8 w_j = 1$. Then the value of I for the single center cell is I_{3, 3} = (6 - mean(y)) * [(8 - mean(y)) + (3 - mean(y)) + (9 - mean(y)) + (12 - mean(y)) + (10 - mean(y)) + (10 - mean(y)) + (9 - mean(y))] / (6 - mean(y))^2)
 
 ```{r}
 y <- c(3, 10, 7, 12, 5, 11, 8, 3, 9, 12, 
@@ -290,7 +290,7 @@ Another statistic that indicates the amount of spatial autocorrelation is Geary'
 $$
 \hbox{C} = \frac{(N-1) \sum_{i,j} w_{ij} (Y_i-Y_j)^2}{2 W \sum_{i}(Y_i-\bar Y)^2} 
 $$ 
-where $W$ is the sum over all weights ($w_{ij}$) and $N$ is the number of areas.
+where $W$ is the sum over all weights ($w_{ij}$) and $N$ is the number of areas
 
 The syntax of the `spdep::geary()` function is similar that of `spdep::moran()` except you also need to specify `n1` as one minus the number of areas
 
@@ -356,7 +356,7 @@ lm(Wcrime ~ crime)
 
 The coefficient on the `crime` variable in the linear regression is .5
 
-The scatter plot is called a 'Moran's scatter plot'
+The plot is called a 'Moran's scatter plot'
 
 Let's consider another spatial data set
 
@@ -383,7 +383,7 @@ tmap::tm_shape(SIDS.sf) +
                   legend.outside = TRUE)
 ```
 
-Create a neighborhood list (`nb`) and a `listw` object (`wts`) then graph the neighborhood network.
+Create a neighborhood list (`nb`) and a `listw` object (`wts`) then graph the neighborhood network
 
 ```{r}
 nbs <- SIDS.sf |>
@@ -411,7 +411,7 @@ I is .14 and K is 4.4. A normal distribution has a kurtosis of 3. Values less th
 
 Weights are specified using the `style =` argument in the `nb2listw()` function. The default "W" is row standardized (sum of the weights over all links equals the number of polygons). "B" is binary (each neighbor gets a weight of one). "S" is a variance stabilizing scheme
 
-Each style gives a somewhat different value for I.
+Each style gives a somewhat different value for I
 
 ```{r}
 x <- SIDS.sf$SIDR79
@@ -480,7 +480,7 @@ coords <- PE.sf |>
 head(coords)
 ```
 
-Then use the `spdep::knearneigh()` function on the coordinate matrix and specify the number of neighbors with the `k =` argument. Here you set it to six. That is, allow each county to have 6 closest neighbors.
+Then use the `spdep::knearneigh()` function on the coordinate matrix and specify the number of neighbors with the `k =` argument. Here you set it to six. That is, allow each county to have 6 closest neighbors
 
 Since the CRS is geographic you need to include the `longlat = TRUE` argument so distances are calculated using great circles
 
@@ -573,4 +573,4 @@ spdep::geary(PE.sf$WHITE,
 
 Values of Geary's C range between 0 and 2 with values less than one indicating positive autocorrelation
 
-If the values of Moran's I and Geary's C result in different interpretations about the amount of clustering then it is a good idea to examine *local* variations in autocorrelation.
+If the values of Moran's I and Geary's C result in different interpretations about the amount of clustering then it is a good idea to examine *local* variations in autocorrelation
