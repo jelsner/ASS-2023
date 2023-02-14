@@ -2,6 +2,8 @@
 
 **"We build our computer systems the way we build or cities; over time, without plan, on top of ruins."** – Ellen Ullman
 
+Lab 3 will be next Tuesday
+
 ## Fitting and interpreting geographic regression {-}
 
 Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit separate regression models at each geographic location. 

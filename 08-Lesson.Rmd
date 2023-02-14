@@ -8,7 +8,7 @@ This lesson marks a departure. You will continue to learn coding skills, but you
 
 Autocorrelation plays a central role in spatial statistics. It quantifies the degree to which things nearby tend to cluster. Things include values of variables (attributes) aggregated to polygons (or raster cells) as well as the spatial locations of objects. How autocorrelation gets estimated depends on the geometry of the spatial data
 
-Things tend to cluster because association, causality, and interaction
+Things tend to cluster because of association, causality, and interaction
 
 -   Association: whatever causes an attribute to have a certain value in one area causes the same attribute to have a similar value in areas nearby. Crime rates in nearby neighborhoods might tend to cluster due to similar factors
 

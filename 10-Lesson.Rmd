@@ -2,7 +2,124 @@
 
 **"Feeling a little uncomfortable with your skills is a sign of learning, and continuous learning is what the tech industry thrives on!"** --- Vanessa Hurst
 
-Lab 3 will be next Tuesday
+## Constraining group membership based on spatial autocorrelation {-}
+
+As a spatial data analyst you likely will face the situation in which there are many variables and you need to group them in a way that minimizes inter-group variation but maximizes between-group variation. If you know the number of groups before hand then a common grouping (or clustering) method is called K-means.
+
+If your data is spatial you may want the additional constraint that the resulting groups be geographically linked. There are many situations that require separating geographies into discrete but contiguous regions ("regionalization") such as designing communities, planning areas, amenity zones, logistical units, or for setting up experiments with real world geographic constraints.
+
+Optimal grouping using only traditional cluster metrics is generally sub-optimal in practice for regionalization because the metrics do not consider geographic contiguity.
+
+Unconstrained grouping on data with spatial characteristics may result in contiguous regions because of autocorrelation, but if you want to _ensure_ that all groups are spatially-contiguous you need a method specifically designed for the task. The 'skater' algorithm available in the {spdep} package is well-implemented and well-documented.
+
+The 'skater' algorithm (spatial 'k'luster analysis by tree edge removal) builds a connectivity graph to represent spatial relationships between neighboring areas, where each area is represented by a node and edges represent connections between areas. Edge costs are calculated by evaluating the dissimilarity in attribute space between neighboring areas. The connectivity graph is reduced by pruning edges with higher dissimilarity.
+
+Consider again the crime data at the tract level in the city of Columbus, Ohio. The tract polygons are projected with arbitrary spatial coordinates.
+
+```{r}
+( CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
+                       layer = "columbus") )
+```
+
+First, create choropleth maps of housing value, income, and crime.
+```{r}
+tmap::tm_shape(CC.sf) +
+  tmap::tm_fill(col = c("HOVAL", "INC", "CRIME"))
+```
+
+The maps show distinct regional patterns. Housing values and income are clustered toward the southeast and crime is clustered in the center. But although housing values are also high in the north you don't necessarily want to group that tract with those in the southeast because they are geographically distinct.
+
+To group these patterns under the constraint of spatial contiguity you first scale the attribute values and center them using the `scale()` function. Scaling and centering variables should be done before any type of clustering procedure.
+
+```{r}
+( CCs.df <- CC.sf |> 
+    dplyr::mutate(HOVALs = scale(HOVAL),
+                  INCs = scale(INC),
+                  CRIMEs = scale(CRIME)) |>
+    dplyr::select(HOVALs, INCs, CRIMEs) |>
+    sf::st_drop_geometry() )
+```
+
+Next create adjacency neighbors using queen contiguity.
+
+```{r}
+nbs <- spdep::poly2nb(CC.sf, 
+                      queen = TRUE)
+
+plot(CC.sf$geometry)
+plot(nbs, 
+     sf::st_centroid(sf::st_geometry(CC.sf)),
+     add = TRUE)
+```
+
+Next combine the contiguity graph with your scaled attribute data to calculate edge costs based on distances between each node. The function `spdep::nbcosts()` provides distance methods for Euclidean, Manhattan, Canberra, binary, Minkowski, and Mahalanobis, and defaults to Euclidean if not specified like here. Save the object of class `nbdist` with name `edge_costs`.
+
+```{r}
+edge_costs <- spdep::nbcosts(nbs, 
+                             data = CCs.df)
+```
+
+Next transform the edge costs into spatial weights using the `spdep::nb2listw()` function before constructing the minimum spanning tree with the weights list.
+
+```{r}
+wts <- spdep::nb2listw(nbs,
+                       glist = edge_costs,
+                       style = "B")
+mst <- spdep::mstree(wts)
+
+head(mst)
+```
+
+Edges with higher dissimilarity are removed leaving a set of nodes and edges that take the minimum sum of dissimilarities across all edges of the tree (a minimum spanning tree).
+
+The edge connecting node (tract) 12 with node (tract) 16 has a dissimilarity of .44 units. The edge connecting tract 16 with tract 25 has a dissimilarity of .42 units.
+
+Finally, the `spdep::skater()` function partitions the graph by identifying which edges to remove based on dissimilarity while maximizing the between-group variation. The `ncuts =` argument specifies the number of partitions to make, resulting in `ncuts` + 1 groups.
+
+```{r}
+clus5 <- spdep::skater(edges = mst[, 1:2], 
+                       data = CCs.df, 
+                       ncuts = 4)
+```
+
+Where are these groups located?
+
+```{r}
+CC.sf <- CC.sf |>
+  dplyr::mutate(Group = clus5$groups)
+
+ggplot() +
+  geom_sf(data = CC.sf,
+          mapping = aes(fill = factor(Group)))
+```
+
+The map shows five distinct regions based on the three variables of income, housing value, and crime. Importantly the regions are contiguous.
+
+Region 1 encompasses most tracts in the urban core where housing values and income are low and crime rates are highest. Regions 2 and 3 in the east and west are where housing values and income are moderately high and crime rates are lower. Region 4 is where income and housing values are highest and crime is the lowest.
+
+As a comparison, here is the result of grouping the same three variables using hierarchical clustering using the method of minimum variance (Ward) and without regard to spatial contiguity.
+
+```{r}
+dd <- dist(CCs.df)
+hc <- hclust(dd, 
+             method = "ward.D")
+hcGroup <- cutree(hc, k = 5)
+
+CC.sf <- CC.sf |>
+  dplyr::mutate(hcGroup = hcGroup)
+
+ggplot() +
+  geom_sf(data = CC.sf,
+          mapping = aes(fill = factor(hcGroup)))
+```
+
+Here the map shows five regions but the regions are not contiguous.
+
+More information: <https://www.tandfonline.com/doi/abs/10.1080/13658810600665111>
+
+Also the {motif} package has functions that implement and extend ideas of the pattern-based spatial analysis. They can be used to describe spatial patterns of categorical raster data for any defined regular and irregular areas.
+
+Patterns are represented quantitatively using built-in signatures based on co-occurrence matrices but the functions are flexible to allow for user-defined functions. Functions enable spatial analysis such as search, change detection, and clustering to be performed on spatial patterns. <https://jakubnowosad.com/motif/>
 
 ## Estimating spatial autocorrelation in model residuals {-}
 
