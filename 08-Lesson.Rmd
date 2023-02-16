@@ -310,7 +310,7 @@ Rule of thumb: If the interpretation of Geary's C is much different than the int
 
 More information on Geary's C statistic here [Wikipedia Geary's C](https://en.wikipedia.org/wiki/Geary%27s_C)
 
-## Spatial lag and its relation to autocorrelation {-}
+## Relating autocorrelation to the spatial lag variable {-}
 
 A deeper understanding of Moran's I is obtained by noting that it is the slope coefficient resulting from a regression of the average neighborhood values onto the observed values. Averages of neighborhood values is called the spatial lag variable
 

@@ -2,8 +2,12 @@
 
 **"Be curious. Read widely. Try new things. I think a lot of what people call intelligence boils down to curiosity."** - Aaron Swartz
 
+On Tuesday
+Defining spatial neighborhoods and spatial weights
+Computing autocorrelation
+Relating autocorrelation to the spatial lag variable
 
-## Other neighbor definitions {-}
+## Defining neighborhoods {-}
 
 Other neighbor definitions are possible and the neighborhood choice will influence the value of any spatial autocorrelation statistic
 
@@ -296,7 +300,7 @@ What do you do with the knowledge that the unemployment rates have significant a
 
 The knowledge is more useful after other factors are considered. In the language of statistics, knowledge of significant autocorrelation in the model residuals can help you build a better model
 
-## Bivariate spatial autocorrelation {-}
+## Computing and interpreting bivariate spatial autocorrelation {-}
 
 The idea of spatial autocorrelation can be extended to two variables. The extension is motivated by the fact that aspatial bi-variate association measures, like Pearson's correlation, do not recognize the spatial arrangement of the regions
 
@@ -359,7 +363,7 @@ spdep::lee.mc(crime, police,
 
 Based on a $p$-value that exceeds .05 you conclude that there is no significant bi-variate spatial autocorrelation between crime and police expenditure in these data
 
-## Local indicators of spatial autocorrelation {-}
+## Assessing local indicators of spatial autocorrelation {-}
 
 The Moran's I statistic was first used in the 1950s. Localization of the statistic was presented by Luc Anselin in 1995 (Anselin, L. 1995. Local indicators of spatial association, Geographical Analysis, 27, 93–115)
 
