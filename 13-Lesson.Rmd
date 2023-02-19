@@ -1,15 +1,8 @@
-# Tuesday March 7, 2023 {.unnumbered}
+# Tuesday March 7, 2023 {-}
 
 **"Give someone a program, you frustrate them for a day; teach them how to program, you frustrate them for a lifetime."** - David Leinweber
 
-Today
-
--   Spatial data as point patterns
--   Theoretical framework for analyzing/modeling point pattern data
--   Working with point pattern data
--   Quantifying the spatial intensity of events
-
-## Spatial data as point patterns {.unnumbered}
+## Spatial data as point patterns {-}
 
 We now turn our attention to analyzing and modeling point pattern data. We start with some theory, then learn how to work with functions from the {spatstat} package before focusing on estimating spatial intensity.
 
@@ -132,7 +125,7 @@ And spatial scale matters. A set of event locations can be regular on a small sc
 
 Probability models for spatial patterns motivate methods for detecting event clustering. A probability model generates a point pattern process. For example, you can think of crime as a point pattern process defined by location and influenced by environmental factors. The probability of a crime occurring at a particular location is the random variable and you can estimate the probability of a crime event at any location given factors that influence crime.
 
-## Theoretical framework for analyzing/modeling point pattern data {.unnumbered}
+## Theoretical framework for analyzing/modeling point pattern data {-}
 
 More formally, a spatial point pattern process is a *stochastic* (statistical) process where event location is the random variable. A sample of the process is a collection of events generated under the probability model.
 
@@ -183,7 +176,7 @@ The intensity (density) function is a first-order property of point pattern data
 
 It helps to visualize these concepts. We do that with functions from the {spatstat} family of packages.
 
-## Working with point pattern data using functions from the spatstat package {.unnumbered}
+## Working with point pattern data using functions from the spatstat package {-}
 
 The {spatstat} family of packages contain functions to analyze and model point pattern data. The individual packages have different namespace names beginning with `spatstat` so it is best to load the family of packages with the `library()` function before beginning.
 
@@ -277,7 +270,7 @@ LW |>
   plot()
 ```
 
-## Quantifying the spatial intensity of events {.unnumbered}
+## Quantifying the spatial intensity of events {-}
 
 The average intensity of events is defined as the number of events per unit area of the domain. The `summary()` method applied to a `ppp` object gives the average intensity.
 

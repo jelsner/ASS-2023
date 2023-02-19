@@ -5,3 +5,4 @@ section-1
 r-markdown
 including-plots
 multiscale-gwr
+using-local-spatial-autocorrelation-to-understand-the-tornado-record

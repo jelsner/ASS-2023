@@ -1,12 +1,6 @@
-# Tuesday March 21, 2023 {.unnumbered}
+# Thursday March 9, 2023 {.unnumbered}
 
 **"So much complexity in software comes from trying to make one thing do two things."** - Ryan Singer
-
-Today
-
--   Creating `ppp` and `owin` objects from simple feature data frames
--   Estimating spatial intensity as a function of distance
--   Covariate trend as a possible confounding factor
 
 Last time the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced.
 

@@ -1,2 +1,414 @@
-# Thursday March 2, 2023 {.unnumbered}
+# Tuesday February 28, 2023 {-}
 
+Lab 3 will be Thursday
+
+## Fitting and interpreting geographic regression {-}
+
+Another approach to modeling spatial data is to assume that the _relationships_ between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit separate regression models at each geographic location. 
+
+The analogy is local measures of spatial autocorrelation where you estimate the statistic at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to the response variable). 
+
+It is called geographically weighted regression (GWR) or simply geographic regression. GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs.
+
+Since GWR fits a separate regression model at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different from the spatial regression such as the spatially-lagged Y model, which are single models with spatial terms.
+
+Observations across the entire domain contribute to the model fit at a particular location, but nearby observations are given higher weights than observations farther away. The weighting is based on a Gaussian function (kernel) and a bandwidth. The bandwidth is specified as a single parameter or it is determined through a cross-validation procedure. The bandwidth can also be a function of location.
+
+Said another way, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variables. Geographic regressions show how this dependency varies by location. GWR is used as an exploratory technique for determining where local regression coefficients are different from corresponding global values.
+
+Continuing with the Columbus crime data.
+
+```{r}
+( CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
+                       layer = "columbus") )
+```
+
+Start by fitting a 'global' ordinary-least-squares (OLS) linear regression to the crime rates using income and housing values, as you did earlier.
+
+```{r}
+f <- CRIME ~ INC + HOVAL
+( model.ols <- lm(formula = f,
+                  data = CC.sf) )
+```
+
+The coefficients on the two explanatory variables indicate that crime decreases in areas of higher income and higher housing values.
+
+You compare this result to results from geographic regressions. The functions are in the {spgwr} package.
+
+```{r}
+if(!require(spgwr)) install.packages(pkgs = "spgwr", repos = "http://cran.us.r-project.org")
+```
+
+The `sp` part of the package name indicates that the functions were developed to work with S4 spatial objects. 
+
+The functions allow you to use S3 simple features by specifying the locations as a matrix. Here you extract the centroid from each census tract as a matrix.
+
+```{r}
+Locations <- CC.sf |>
+  sf::st_centroid() |>
+  sf::st_coordinates()
+
+#Locations <- sf::st_coordinates(sf::st_centroid(CC.sf))
+
+head(Locations)
+```
+
+These are the X and Y coordinate values specifying the centroid for the first six tracts (out of 49).
+
+To determine the optimal bandwidth for the Gaussian kernel (weighting function) you use the `spgwr::gwr.sel()` function. You need to specify the arguments, model formula (`formula =`), the data frame (`data =`), and the coordinates (`coords =`) as part of the function call. The argument `coords =` is the matrix of coordinates of points representing the spatial locations of the observations. It can be omitted if the data is an S4 spatial data frame from the {sp} package.
+
+```{r}
+( bw <- spgwr::gwr.sel(formula = f, 
+                       data = CC.sf,
+                       coords = Locations) )
+```
+
+The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (Gaussian by default) and that bandwidth (distance).
+
+The output shows that the first bandwidth chosen was 2.22 in arbitrary distance units. The resulting prediction skill from fitting 49 regression models with that bandwidth is 7474 units. The resulting CV score is based on cross validation whereby skill is computed at each location when data from that location is not used to fit the regression models.
+
+The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score after refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs. 
+
+The output shows that no additional improvement in skill occurs at a bandwidth distance of .404 units, and this single value is assigned to the object you called `bw`.
+
+Once the bandwidth distance is determined you use the `spgwr::gwr()` function to fit the regressions using that bandwidth. The arguments are the same as before but includes the `bandwidth =` argument where you specify the object `bw`.
+
+```{r}
+models.gwr <- spgwr::gwr(formula = f, 
+                         data = CC.sf, 
+                         coords = Locations,
+                         bandwidth = bw)
+```
+
+The model and observed data are assigned to a list object with element names listed using the `names()` function.
+
+```{r}
+names(models.gwr)
+```
+
+The first element is `SDF` containing the model output as a S4 spatial data frame.
+
+```{r}
+class(models.gwr$SDF)
+```
+
+The structure of the spatial data frame is obtained with the `str()` function and by setting the `max.level` argument to 2. 
+
+```{r}
+str(models.gwr$SDF, 
+    max.level = 2)
+```
+
+Here there are five slots with the first slot labeled `@data` indicating that it is a data frame. The number of rows and columns in the data frame are listed with the `dim()` function.
+
+```{r}
+dim(models.gwr$SDF)
+```
+
+There are 49 rows and 7 columns. Each row corresponds to a tract and information about the regressions localized to the tract is given in the columns. Column names are listed with the `names()` function.
+
+```{r}
+names(models.gwr$SDF)
+```
+
+They include the sum of the weights `sum.w` (the larger the sum the more often the tract is included in the local regressions--favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the  explanatory variables (`INC` and `HOVAL`) and an intercept term, the residual (`gwr.e`), the predicted value (`pred`) and the local goodness-of-fit (`localR2`).
+
+You create a map displaying where income has the most and least influence on crime by first attaching the income coefficient from the data frame (column labeled `INC`) to the simple feature data frame since the order of the rows in the `SDF` matches the order in the simple feature data frame and then using functions from the {ggplot2} package.
+
+```{r}
+CC.sf$INCcoef <- models.gwr$SDF$INC
+
+library(ggplot2)
+
+ggplot(CC.sf) +
+  geom_sf(aes(fill = INCcoef)) +
+  scale_fill_viridis_c()
+```
+
+Most tracts have coefficients with values less than zero. Recall the global coefficient is less than zero. But areas in yellow show where the coefficient values are greater than zero indicating a direct relationship between crime and income.
+
+How about the coefficients on housing values?
+
+```{r}
+CC.sf$HOVALcoef <- models.gwr$SDF$HOVAL
+
+ggplot(CC.sf) +
+  geom_sf(aes(fill = HOVALcoef)) +
+  scale_fill_viridis_c()
+```
+
+While the global coefficient is negative indicating crime rates tend to be lower in areas with higher housing values, the opposite is the case over much of city especially on the south side.
+
+You put the vector of GWR predictions into the `CC.sf` simple feature data frame giving it the column name `predGWR` and then map the predictions using functions from the {tmap} package.
+
+```{r}
+CC.sf$predGWR <- models.gwr$SDF$pred
+
+tmap::tm_shape(CC.sf) +
+  tmap::tm_fill("predGWR",
+                title = "Predicted crimes\nper 1000") +
+  tmap::tm_layout(legend.outside = TRUE)
+```
+
+The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also smoother than with a global OLS regression.
+
+Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models.
+
+```{r}
+CC.sf$localR2 <- models.gwr$SDF$localR2
+
+ggplot(CC.sf) +
+  geom_sf(aes(fill = localR2)) +
+  scale_fill_viridis_c()
+```
+
+Although crime rates are highest in the center, the relationship between crime and income and housing values is largest in tracts across the eastern part of the city.
+
+This type of nuanced exploratory analysis is made possible with GWR.
+
+Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables 'provoke' the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals. 
+
+So a way to check the assumption of a stationary process is to use geographic regression. If the coefficients from the geographic regressions match closely the global coefficients then you can assume a stationary process.
+
+## Multiscale GWR {-}
+
+https://www.rdocumentation.org/packages/GWmodel/versions/2.0-8/topics/gwr.multiscale
+
+Example: London house prices. Hedonic relationship. What variables influence price (or demand) for that good
+
+```{r}
+library(GWmodel)
+```
+
+The function `gwr.multiscale()` from the {GWmodel} package implements multiscale GWR to detect variations in regression relationships across different spatial scales. It can find a different bandwidth for each relationship and simultaneously find a different distance metric for each relationship
+
+Only works with S4 spatial data objects
+
+Example: Watershed soil data: response variables; soil total nitrogen percentage (TNPC), soil total phosphorus percentage (TPPC), and predictor variables; soil organic carbon (SOCgkg), nitrate nitrogen (NO3Ngkg), ammonium (NH4Ngkg), percentage clay (ClayPC), silt (SiltPC), sand (SandPC) content, vegetation coverage (CoveragePC), Slope, Aspect, Altitude_m, SoilType, LandUse and Position
+
+Comparisons of OLS regression, standard GWR, and multiscale GWR
+
+https://rpubs.com/lexcomber/INIA_Session7
+
+## Mapping incidence and risk with a spatial regression model {-}
+
+Note: This material is quite advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate the spatial regression framework from a Bayesian perspective. I do not expect you to understand all the details nor will I ask you to reproduce any of this as a lab exercise.
+
+Spatial regression models are used in disease mapping where it is common to compute standardized incidence ratios (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Some areas can give extreme SIRs due to low population sizes or small sample sizes. Extreme values of SIRs can be misleading and unreliable for reporting. This is a big issue in demography.
+
+Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. A spatial regression model incorporates information from neighboring areas as well as explanatory variables that together result in less extreme values.
+
+Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object `pennLC` with element name `spatial.polygon`. 
+
+First change the native spatial polygons S4 object to an S3 simple feature data frame using the `sf::st_as_sf()` function and display a map of the county borders.
+
+```{r}
+if(!require(SpatialEpi)) install.packages("SpatialEpi", repos = "http://cran.us.r-project.org")
+
+LC.sf <- SpatialEpi::pennLC$spatial.polygon |>
+  sf::st_as_sf()
+
+ggplot(LC.sf) +
+  geom_sf()
+```
+
+For each county $i$, $i = 1, \ldots, n$ the SIR is defined as the ratio of observed counts ($Y_i$) to the expected counts ($E_i$).
+
+$$
+\hbox{SIR}_i = Y_i/E_i.
+$$
+
+The expected count $E_i$ is the total number of cases expected if the population in county $i$ behaves the way the statewide population behaves. Ignoring differences in rates for different stratum (e.g., age groups, race, etc), you compute the expected counts as
+
+$$
+E_i = r^{(s)} n^{(i)},
+$$
+where $r^{(s)}$ is the rate in the standard population (total number of cases divided by the total population across all counties), and $n^{(i)}$ is the population of county $i$.
+
+Then $\hbox{SIR}_i$ indicates whether county $i$ has higher ($\hbox{SIR}_i > 1$), equal ($\hbox{SIR}_i = 1$) or lower ($\hbox{SIR}_i < 1$) risk than expected relative to the statewide population.
+
+When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR).
+
+The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+). 
+
+You compute the number of cases for all the strata (groups) together in each county by aggregating the rows of the data frame by county and adding up the number of cases.
+
+```{r}
+( County.df <- SpatialEpi::pennLC$data |>
+  dplyr::group_by(county) |>
+  dplyr::summarize(Y = sum(cases)) )
+```
+
+You then calculate the expected number of cases in each county using standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves.
+
+You do this by using the `SpatialEpi::expected()` function. The function has three arguments including `population` (vector of population counts for each strata in each county), `cases` (vector with the number of cases for each strata in each county), and `n.strata` (number of strata).
+
+The vectors `population` and `cases` need to be sorted by county first and then, within each county, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the `dplyr::arrange()` function.
+
+```{r}
+Strata.df <- SpatialEpi::pennLC$data |>
+  dplyr::arrange(county, race, gender, age)
+head(Strata.df)
+```
+
+Then you get the expected counts (E) in each county by calling the `SpatialEpi::expected()` function, where you set population equal to `Strata.df$population` and cases equal to `Strata.df$cases`. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16.
+
+```{r}
+( E <- SpatialEpi::expected(population = Strata.df$population,
+                            cases = Strata.df$cases, 
+                            n.strata = 16) )
+```
+
+Now you include the observed count `Y`, the expected count `E`, and the computed SIR into the simple feature data frame `LC.sf` before making a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.
+
+```{r}
+LC.sf <- LC.sf |>
+  dplyr::mutate(Y = County.df$Y,
+                E = E,
+                SIR = Y/E)
+
+ggplot(LC.sf) + 
+  geom_sf(aes(fill = SIR)) +
+  scale_fill_gradient2(midpoint = 1, 
+                       low = "blue", 
+                       mid = "white", 
+                       high = "red") +
+  theme_minimal()
+```
+
+In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. In counties with SIR > 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR < 1 (blue) have fewer cancer cases observed than expected.
+
+In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring counties and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values.
+
+Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept (that accounts for the overall disease risk level) and random effects (that account for local variability).
+
+The relative risk quantifies whether a county has a higher ($\theta > 1$) or lower ($\theta < 1$) risk than the average risk in the population. For example if $\theta_i = 2$, then the risk in county $i$ is twice the average risk in the statewide population.
+
+The model is expressed as
+
+$$
+Y \sim \hbox{Poisson}(E\theta) \\
+\log(\theta) = \alpha + u + v
+$$
+
+The parameter $\alpha$ is the overall risk in the state, $u$ is the spatially structured random effect representing the spatial autocorrelation in risk across neighboring counties, and $v$ is the uncorrelated random noise modeled as 
+
+$$
+v \sim N(0, \sigma_v^2)
+$$
+
+Note: here the approach is to _assume_ spatial autocorrelation.
+
+It is common to include explanatory variables to quantify risk factors (e.g., distance to nearest coal plant). Thus the log($\theta$) is expressed as
+
+$$
+\log(\theta) = \alpha + X\beta + u + v
+$$
+
+where $X$ are the explanatory variables and $\beta$ are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor $\exp(\beta)$, holding the other variables constant.
+
+A popular form for the spatially structured random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregression distribution to $u$ as
+
+$$
+u | u_{j \ne i} \sim N(\bar u_{\delta}, \frac{\sigma_u^2}{n_{\delta}})
+$$
+
+where 
+$$
+\bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}
+$$ 
+and where $\delta_i$ is the set of $n_{\delta_i}$ neighbors of area $i$.
+
+In words, the logarithm of the disease incidence rate in county $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution.
+
+The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk. 
+
+This is done with functions from the {INLA} package. You get the package (it is not on CRAN) as follows.
+
+```{r eval=FALSE}
+options(timeout = 120)
+
+install.packages("INLA", repos=c(getOption("repos"), INLA = "https://inla.r-inla-download.org/R/stable"), dep = TRUE)
+```
+
+The syntax for the BYM model using functions from the {INLA} package is given as
+```{r}
+f <- Y ~ 
+  f(IDu, model = "besag", graph = g, scale.model = TRUE) +
+  f(IDv, model = "iid")
+```
+
+The formula includes the response in the left-hand side, and the fixed and random effects on the right-hand side. By default, the formula includes an intercept. 
+
+The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `IDu` and equal to c(1, 2, ..., I), where I is the number of counties and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
+
+The formula also includes an uncorrelated random effect with index variable with name `IDv` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but both need to be specified separately since INLA does not allow to include two effects with `f()` that use the same index variable.
+
+The BYM model can also be specified with the model "bym" which defines both the spatially structured random effect and the uncorrelated random effect ($u$ and $v$).
+
+You include these two vectors (call them `IDu` and `IDv`) in the data frame.
+
+```{r}
+LC.sf <- LC.sf |>
+  dplyr::mutate(IDu = 1:nrow(LC.sf),
+                IDv = 1:nrow(LC.sf))
+LC.sf
+```
+
+Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function.
+
+```{r}
+nb <- spdep::poly2nb(LC.sf)
+
+spdep::nb2INLA(file = here::here("data", "map.adj"), nb)
+
+g <- INLA::inla.read.graph(filename = here::here("data", "map.adj"))
+
+class(g)
+
+str(g)
+```
+
+You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions.
+
+```{r}
+model.inla <- INLA::inla(formula = f, 
+                         family = "poisson",
+                         data = LC.sf,
+                         E = E,
+                         control.predictor = list(compute = TRUE))
+```
+
+The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object `model.inla$summary.fitted.values`. Column `mean` is the mean posterior and `0.025quant` and `0.975quant` are the 2.5 and 97.5 percentiles, respectively.
+
+You add these to the spatial data frame and then make a map of the posterior mean relative risk.
+
+```{r}
+LC.sf$RR <- model.inla$summary.fitted.values[, "mean"]
+LC.sf$LL <- model.inla$summary.fitted.values[, "0.025quant"]
+LC.sf$UL <- model.inla$summary.fitted.values[, "0.975quant"]
+
+ggplot(LC.sf) + 
+  geom_sf(aes(fill = RR)) +
+  scale_fill_gradient2(midpoint = 1, 
+                       low = "blue", 
+                       mid = "white", 
+                       high = "red") +
+  theme_minimal()
+```
+
+These relative risk values are smoother and muted (less dispersed) in absolute magnitude compared with the empirical SIR estimates. 
+
+More on this topic is available from
+
+- https://www.paulamoraga.com/book-geospatial/index.html
+
+Paula Moraga's book is an excellent resource for fitting spatial data models using R.
+
+- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895
+
+An application of the CAR model to estimate tornado risk across the United States.
+
+https://www.bayesrulesbook.com/
+
+An online book on Bayesian statistics using R.
