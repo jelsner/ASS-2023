@@ -147,7 +147,7 @@ Improvement table
 
 The final bit of output is a Lagrange multiplier test for remaining autocorrelation. The null hypothesis is there is no remaining autocorrelation since we have a lag term in the model. The result is a high $p$-value so you are satisfied that the lag term takes care of the autocorrelation
 
-Compare the spatial lag model to a spatial error model. Here you use the `spatialreg::errorsarlm()` function.
+Compare the spatial lag model to a spatial error model. Here you use the `spatialreg::errorsarlm()` function
 
 ```{r}
 model.sem <- spatialreg::errorsarlm(formula = f, 
@@ -179,9 +179,9 @@ spatialreg::Hausman.test(model.sem)
 
 The $p$-value gives inconclusive evidence that the coefficients are different and that maybe the SEM is not the right way to proceed with these data
 
-The `predict()` method implements the `predict.sarlm()` function to calculate predictions from the spatial regression model. The prediction on a spatial lag Y model is decomposed into a "trend" term (explanatory variable effect) and a "signal" term (spatial smoother). The predicted fit is the sum of the trend and the signal terms when using the spatial lag model.
+The `predict()` method implements the `predict.sarlm()` function to calculate predictions from the spatial regression model. The prediction on a spatial lag Y model is decomposed into a "trend" term (explanatory variable effect) and a "signal" term (spatial smoother). The predicted fit is the sum of the trend and the signal terms when using the spatial lag model
 
-You make predictions with the `predict()` method under the assumption that the mean response is known. You examine the structure of the corresponding predict object.
+You make predictions with the `predict()` method under the assumption that the mean response is known. You examine the structure of the corresponding predict object
 
 ```{r}
 ( predictedValues <- predict(model.slym) )
