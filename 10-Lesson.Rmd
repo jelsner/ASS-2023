@@ -4,18 +4,20 @@
 
 ## Using local spatial autocorrelation to understand the tornado record {-}
 
-Is the frequency of tornado reports correlated with the number of people in a region? Might this correlation extend to the number of people in neighboring regions?
+It is well known that the tornado record, that extends back to 1950, is incomplete
+
+Is the frequency of recent tornado reports correlated with the number of people in a region? Might this correlation extend to the number of people in neighboring regions?
 
 To answer these questions you quantify the non-spatial correlation and the bi-variate spatial autocorrelation between tornado occurrences and population. To keep this manageable you focus on one state (Iowa)
 
 Start by getting the U.S. Census data with functions from the {tidycensus} package. Downloading U.S. census data using functions from the {tidycensus} package requires you register with the Census Bureau 
 
-You can get an API key from http://api.census.gov/data/key_signup.html. Then use the `tidycensus::census_api_key()` function and put your key in quotes.
+You get an API key from http://api.census.gov/data/key_signup.html. Then use the `tidycensus::census_api_key()` function and put your key in quotes.
 ```{r, eval=FALSE}
 tidycensus::census_api_key("YOUR API KEY GOES HERE")
 ```
 
-The `get_decennial()` function grants access to the 1990, 2000, and 2010 decennial US Census data and the `get_acs()` function grants access to the 5-year American Community Survey data. For example, here is how you get county-level population for Iowa
+The `get_decennial()` function gets you access to the 1990, 2000, and 2010 decennial Census data and the `get_acs()` function gets you access to the 5-year American Community Survey data. For example, here is how you get county-level population for the state of Iowa
 
 ```{r}
 Counties.sf <- tidycensus::get_acs(geography = "county", 
@@ -49,7 +51,7 @@ Counties.sf <- Counties.sf |>
                    by = "GEOID") |>
   dplyr::mutate(nT = tidyr::replace_na(nT, 0)) |>
   dplyr::mutate(Area = sf::st_area(Counties.sf),
-                rate = nT/Area/(2020 - 2016 + 1) * 10^10,
+                rate = nT/Area/(2021 - 2016 + 1) * 10^10,
                 lpop = log10(estimate))
 ```
 
@@ -68,7 +70,7 @@ map1 <- tmap::tm_shape(Counties.sf) +
 map2 <- tmap::tm_shape(Counties.sf) +
   tmap::tm_borders(col = "gray70") +
   tmap::tm_fill(col = "rate",
-                title = "Annual Rate\n[/10,000 sq. km]",
+                title = "Annual Rate\n[/100 sq. km]",
                 palette = "Greens") +
   tmap::tm_layout(legend.outside = "TRUE")
 
@@ -188,7 +190,7 @@ edge_costs <- spdep::nbcosts(nbs,
                              data = CCs.df)
 ```
 
-Next transform the edge costs into spatial weights using the `spdep::nb2listw()` function before constructing the minimum spanning tree with the weights list.
+Next transform the edge costs into spatial weights using the `spdep::nb2listw()` function before constructing the minimum spanning tree with the weights list
 
 ```{r}
 wts <- spdep::nb2listw(nbs,
@@ -201,7 +203,7 @@ head(mst)
 
 Edges with higher dissimilarity are removed leaving a set of nodes and edges that take the minimum sum of dissimilarities across all edges of the tree (a minimum spanning tree).
 
-The edge connecting node (tract) 12 with node (tract) 16 has a dissimilarity of .44 units. The edge connecting tract 16 with tract 25 has a dissimilarity of .42 units
+The edge connecting node (tract) 41 with node (tract) 32 has a dissimilarity of .58 units. The edge connecting tract 32 with tract 23 has a dissimilarity of .56 units
 
 Finally, the `spdep::skater()` function partitions the graph by identifying which edges to remove based on dissimilarity while maximizing the between-group variation. The `ncuts =` argument specifies the number of partitions to make, resulting in `ncuts` + 1 groups
 
@@ -226,7 +228,7 @@ ggplot() +
 
 The map shows five distinct regions based on the three variables of income, housing value, and crime. Importantly the regions are contiguous
 
-Region 1 encompasses most tracts in the urban core where housing values and income are low and crime rates are highest. Regions 2 and 3 in the east and west are where housing values and income are moderately high and crime rates are lower. Region 4 is where income and housing values are highest and crime is the lowest
+Region 2 encompasses most tracts in the urban core where housing values and income are low and crime rates are highest. Regions 4 and 1 in the east and west are where housing values and income are moderately high and crime rates are lower. Region 5 is where income and housing values are highest and crime is the lowest
 
 As a comparison, here is the result of grouping the same three variables using hierarchical clustering using the method of minimum variance (Ward) and without regard to spatial contiguity
 
