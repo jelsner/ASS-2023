@@ -4,7 +4,7 @@
 
 ## Fitting and interpreting spatial regression models {-}
 
-Start with an OLS model. Staying with the crime data at the tract level in the city of Columbus, Ohio
+Always start with an OLS regression model. Returning to the crime data at the tract level in the city of Columbus, Ohio
 
 ```{r}
 CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
@@ -20,25 +20,24 @@ f <- CRIME ~ INC + HOVAL
 
 model.ols <- lm(f, 
                 data = CC.sf)
-summary(model.ols)
+
+model.ols |>
+  summary()
 ```
 
-The model statistically explains 55% of the variation in crime as is seen by looking at the multiple R-squared value
+The model explains 55% of the variation in crime as is seen by looking at the multiple R-squared value
 
 The marginal effect of income on crime is -1.6 and the marginal effect of housing value on crime is -.27
 
-A nice way to visualize the relative significance of the explanatory variables is to make a plot. Here you use the `broom::tidy()` method and then `ggplot()` as follows
+A nice way to visualize the relative significance of the explanatory variables is to make a plot. Here you use the `broom::tidy()` method and then `ggplot()` as follows. Note you don't plot the intercept term (the first row) so you use -1 in the row dimension of the subset operation
 
 ```{r}
-if(!require(broom)) install.packages(pkgs = "broom", repos = "http://cran.us.r-project.org")
-library(broom)
-
 ( d <- broom::tidy(model.ols, 
                    conf.int = TRUE) )
 
 library(ggplot2)
 
-ggplot(d[-1,], aes(x = estimate,  # we do not plot the intercept term
+ggplot(d[-1,], aes(x = estimate, 
                    y = term, 
                    xmin = conf.low, 
                    xmax = conf.high, 
@@ -48,16 +47,13 @@ ggplot(d[-1,], aes(x = estimate,  # we do not plot the intercept term
   geom_errorbarh()
 ```
 
-The maximum likelihood estimate is shown as a point and the confidence interval around the estimate is shown as a horizontal error bar. The default confidence level is 95% (`conf.level = .95`). The effects are statistically significant as the confidence intervals do not intersect the zero line (dashed-dotted)
+The maximum likelihood estimate is shown as a point and the confidence interval around the estimate is shown as a horizontal error bar. The default confidence level is 95% (`conf.level = .95`). The effects are statistically significant as the confidence intervals do not intersect the vertical line (dashed-dotted) at the value of 0
 
-You check the model residuals for spatial autocorrelation
-
-To determine the amount of autocorrelation in the residuals use the `spdep::lm.morantest()` function, passing the regression model object and the weights object to it. Note that you once again use the default neighborhood and weighting schemes to generate the weights matrix `wts`
+Next you check the model residuals for spatial autocorrelation. To determine the amount of autocorrelation in the residuals use the `spdep::lm.morantest()` function, passing the regression model object and the weights object to it. Note that here again use the default neighborhood and weighting schemes to generate the weights matrix `wts`
 
 ```{r}
-nbs <- CC.sf |>
-  spdep::poly2nb()
-wts <- nbs |>
+wts <- CC.sf |>
+  spdep::poly2nb() |>
   spdep::nb2listw()
 
 model.ols |>
@@ -77,30 +73,29 @@ where $Wy$ is the weighted average of the neighborhood response values (spatial 
 The `spatialreg::lagsarlm()` function first determines a value for $\rho$ ( with the internal `optimize()` function) and then the $\beta$'s are obtained using generalized least squares (GLS). The model formula `f` is the same as what you used to fit the OLS regression above. You save the model object as `model.slym`
 
 ```{r}
-if(!require(spatialreg)) install.packages(pkgs = "spatialreg", repos = "http://cran.us.r-project.org")
-
 model.slym <- spatialreg::lagsarlm(formula = f, 
                                    data = CC.sf, 
                                    listw = wts)
 
-summary(model.slym)
+model.slym |>
+  summary()
 ```
 
-The first batch of output concerns the model residuals and the coefficients on the explanatory variables. The model residuals are the observed crime rates minus the predicted crime rates
+The first batch of output concerns the model residuals (observed crime rates minus predicted rates). The range (maximum minus minimum) of residuals is slightly smaller than with the OLS model. 
 
-The coefficients on income and housing have the same sign (negative) and they remain statistically significant (-1.05 for income and -.27 for housing value). But you can't interpret these coefficients as the marginal effects
+Next is the table of coefficients on the explanatory variables. The coefficients on income and housing have the same sign (negative) and they remain statistically significant (-1.05 for income and -.27 for housing value). But you can't interpret these coefficients as the marginal effects
 
-The next set of output is about the coefficient of spatial autocorrelation ($\rho$). The value is .423 and a likelihood ratio test gives a value of 9.41 which translates to a $p$-value of .002. The null hypothesis is the autocorrelation is zero, so you confidently reject it. This is consistent with the significant Moran's I value that you found in the linear model residuals
+The next set of output is about the coefficient of spatial autocorrelation ($\rho$). The value is .423 and a likelihood ratio test gives a value of 9.41 which translates to a $p$-value of .002. The null hypothesis is the autocorrelation is zero, so you confidently reject it. This is consistent with the significant Moran's I value that you found in the residuals of the OLS model
 
-Two other tests are performed on the value of $\rho$ including a z-test (t-test) using the asymptotic standard error and a Wald test. Both tests confirm that the lag term should be included in the model from crime involving income and housing values
+Two other statistical tests are performed on the value of $\rho$ including a z-test (t-test) using the asymptotic standard error and a Wald test. Both tests confirm (small $p$-values) that the lag term should be included in the model from crime involving income and housing values
 
-In spatial models that contain a lagged response term, the coefficients are not marginal effects. The spatial lag model allows for 'spillover'. That is a change in an explanatory variable anywhere in the study domain will affect the value of the response variable *everywhere*. Spillover occurs even when the neighborhood weights matrix represents local contiguity. The spillover makes interpreting the coefficients more complicated
+In spatial models that contain a lagged response term, the coefficients are not marginal effects. The spatial lag model allows for 'spillover'. That is a change in an explanatory variable anywhere in the study domain will affect the value of the response variable *everywhere*. Spillover occurs even when the neighborhood weights matrix represents only local contiguity. The spillover makes interpreting the coefficients more complicated
 
 With a spatially-lagged Y model a change in the value of an explanatory variable results in both *direct* and *indirect* effects on the response variable
 
-For example, the direct effect gives the impact a change in income has on crime averaged over all tracts. It takes into account the effects that occur from a change in the $i$th tract's income on crime across neighboring tracts
+For example, the direct effect gives the impact a change in income has on crime averaged over all tracts. It takes into account the effects from a change in the $i$th tract's income on crime across neighboring tracts
 
-The indirect effect gives the impact of a change in income has on crime averaged over all *other* tracts. The indirect effect represent spillovers. The influences on the dependent variable $y$ in a region rendered by change in $x$ in some *other* region. For example, if all tracts $i \ne j$ (i not equal to j) increase their income, what will be the impact on crime in region $i$?
+The indirect effect gives the impact a change in income has on crime averaged over all *other* tracts. The indirect effect represent spillovers. The influences on the dependent variable $y$ in a region rendered by change in $x$ in some *other* region. For example, if all tracts $i \ne j$ (i not equal to j) increase their income, what will be the impact on crime in region $j$?
 
 The total effect (TE) is the sum of the direct and indirect effects. It measures the total cumulative impact on crime arising from one tract $j$ increasing its income over all other tracts (on average). It is given by 
 
