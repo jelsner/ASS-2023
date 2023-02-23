@@ -89,13 +89,22 @@ The next set of output is about the coefficient of spatial autocorrelation ($\rh
 
 Two other statistical tests are performed on the value of $\rho$ including a z-test (t-test) using the asymptotic standard error and a Wald test. Both tests confirm (small $p$-values) that the lag term should be included in the model from crime involving income and housing values
 
-In spatial models that contain a lagged response term, the coefficients are not marginal effects. The spatial lag model allows for 'spillover'. That is a change in an explanatory variable anywhere in the study domain will affect the value of the response variable *everywhere*. Spillover occurs even when the neighborhood weights matrix represents only local contiguity. The spillover makes interpreting the coefficients more complicated
+In spatial models that contain a lagged response term, the coefficients are not marginal effects. The spatial lag model allows for 'spillover'. That is a change in an explanatory variable ($X_i$) anywhere in the study domain will affect the value of the response variable *everywhere* ($y_j$)
+
+$$ \partial y_j / \partial X_i \ne 0$$
+which implies in this case a spillover/impact from housing values in region $i$ impacts the crime in region $j$
+
+Spillover occurs even when the neighborhood weights matrix represents only local contiguity. If the non-zero cross-partial derivative implies an impact on neighboring regions that do not involve endogenous feedback, then it is called a _local_ spillover
+
+In most applied regional modeling situations you know from substantive or theoretical aspects of the problem that a local spillover specification is appropriate. Examples: cross-border shopping for cigarettes to avoid local taxes, crossing school districts for 'better' schools. The key idea for local spillover is that endogenous interaction and feedbacks are not present
+
+The spillover makes interpreting the coefficients more complicated
 
 With a spatially-lagged Y model a change in the value of an explanatory variable results in both *direct* and *indirect* effects on the response variable
 
 For example, the direct effect gives the impact a change in income has on crime averaged over all tracts. It takes into account the effects from a change in the $i$th tract's income on crime across neighboring tracts
 
-The indirect effect gives the impact a change in income has on crime averaged over all *other* tracts. The indirect effect represent spillovers. The influences on the dependent variable $y$ in a region rendered by change in $x$ in some *other* region. For example, if all tracts $i \ne j$ (i not equal to j) increase their income, what will be the impact on crime in region $j$?
+The indirect effect gives the impact a change in income has on crime averaged over all *other* tracts. The indirect effect represent spillovers. The influences on the dependent variable $y$ in a region rendered by change in $X$ in some *other* region. For example, if all tracts $i \ne j$ (i not equal to j) increase their income, what will be the impact on crime in region $j$?
 
 The total effect (TE) is the sum of the direct and indirect effects. It measures the total cumulative impact on crime arising from one tract $j$ increasing its income over all other tracts (on average). It is given by 
 
@@ -166,7 +175,7 @@ With the spatial error model the coefficients can be interpreted as marginal eff
 
 If there are large differences (e.g., different signs) between the coefficient estimate from SEM and OLS, this suggests that neither model is yielding parameters estimates matching the underlying parameters of the data generating process
 
-You test whether there is a significant difference in coefficient estimates with the Hausman test under the hypothesis of no difference.
+You test whether there is a significant difference in coefficient estimates with the Hausman test under the hypothesis of no difference
 
 ```{r}
 spatialreg::Hausman.test(model.sem)
@@ -344,7 +353,9 @@ To fit a SDM use the `lagsarlm()` function but include the argument `type = "mix
                                     type = "mixed") )
 ```
 
-How to do you choose between these two models? Is the relationship between crime and income and housing values a global or local effect? Is there any reason to think that if something happens in one tract it will spillover across the entire city? If crime happens in one tract does it influence crime across the entire city? If so, then it is a global relationship. Or should it be a more local effect? If there is more crime in one tract then maybe that influences crime in the neighboring tract but not tracts farther away. If so, then it is a local relationship
+How to do you choose between these two models? Is the relationship between crime and income and housing values a global or local effect? Is there any reason to think that if something happens in one tract it will spillover across the entire city? If crime happens in one tract does it influence crime across the entire city? If so, then it is a global relationship. 
+
+Or might it be a more local effect? If there is more crime in one tract then maybe that influences crime in the neighboring tract but not tracts farther away. If so, then it is a local relationship
 
 If you think it is a local relationship, start with the spatial Durbin error model and look at the $p$-values on the direct and indirect effects
 
@@ -370,4 +381,4 @@ The relatively small $p$-value suggests you shouldn't restrict the spatial Durbi
 More information:
 
 -   <https://youtu.be/b3HtV2Mhmvk> Video explaining the types of spatial regression models and how to implement them in R
--   <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2420725> What Regional Scientists Need to Know About Spatial Econometrics
+-   <https://rrs.scholasticahq.com/article/8081-what-regional-scientists-need-to-know-about-spatial-econometrics> What Regional Scientists Need to Know About Spatial Econometrics
