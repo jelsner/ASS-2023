@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Thursday February 23, 2023 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Thursday February 23, 2023 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Thursday February 23, 2023 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Thursday February 23, 2023 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tuesday-february-21-2023.html"/>
+<link rel="next" href="tuesday-february-28-2023.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html"><i class="fa fa-check"></i>Syllabus and set up</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#getting-you-set-up"><i class="fa fa-check"></i>Getting you set up</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html"><i class="fa fa-check"></i>Thursday, January 12, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#important-points-from-the-syllabus"><i class="fa fa-check"></i>Important points from the syllabus</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#continue-with-setup"><i class="fa fa-check"></i>Continue with setup</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#completely-new-to-r"><i class="fa fa-check"></i>Completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html"><i class="fa fa-check"></i>Tuesday, January 17, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#class-notes"><i class="fa fa-check"></i>Class notes</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#using-r"><i class="fa fa-check"></i>Using R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html"><i class="fa fa-check"></i>Thursday January 19, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#getting-data-into-r"><i class="fa fa-check"></i>Getting data into R</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html"><i class="fa fa-check"></i>Tuesday January 24, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#making-graphs-1"><i class="fa fa-check"></i>Making graphs</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#introduction-to-simple-features"><i class="fa fa-check"></i>Introduction to simple features</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html"><i class="fa fa-check"></i>Tuesday January 31, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#filtering-selecting-and-conditioning-on-attributes"><i class="fa fa-check"></i>Filtering, selecting, and conditioning on attributes</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#filtering-on-geographic-boundaries"><i class="fa fa-check"></i>Filtering on geographic boundaries</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#joining-data-frames"><i class="fa fa-check"></i>Joining data frames</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#interpolating-using-areal-weights"><i class="fa fa-check"></i>Interpolating using areal weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html"><i class="fa fa-check"></i>Thursday February 2, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html"><i class="fa fa-check"></i>Tuesday February 7, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#isolines-and-isobands"><i class="fa fa-check"></i>Isolines and isobands</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#hillshape-and-colors-with-tidyterra"><i class="fa fa-check"></i>Hillshape and colors with tidyterra</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#visualizing-spatial-data"><i class="fa fa-check"></i>Visualizing spatial data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#making-maps-with-rdeck"><i class="fa fa-check"></i>Making maps with rdeck</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html"><i class="fa fa-check"></i>Tuesday February 14, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html#relating-autocorrelation-to-the-spatial-lag-variable"><i class="fa fa-check"></i>Relating autocorrelation to the spatial lag variable</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html"><i class="fa fa-check"></i>Thursday February 16, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#defining-neighborhoods"><i class="fa fa-check"></i>Defining neighborhoods</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#computing-and-interpreting-bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Computing and interpreting bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#assessing-local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Assessing local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html"><i class="fa fa-check"></i>Tuesday February 21, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#using-local-spatial-autocorrelation-to-understand-the-tornado-record"><i class="fa fa-check"></i>Using local spatial autocorrelation to understand the tornado record</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html"><i class="fa fa-check"></i>Thursday February 23, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html#fitting-and-interpreting-spatial-regression-models"><i class="fa fa-check"></i>Fitting and interpreting spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html"><i class="fa fa-check"></i>Tuesday February 28, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#fitting-and-interpreting-geographic-regression"><i class="fa fa-check"></i>Fitting and interpreting geographic regression</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#multiscale-gwr"><i class="fa fa-check"></i>Multiscale GWR</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#mapping-incidence-and-risk-with-a-spatial-regression-model"><i class="fa fa-check"></i>Mapping incidence and risk with a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html"><i class="fa fa-check"></i>Tuesday March 7, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#theoretical-framework-for-analyzingmodeling-point-pattern-data"><i class="fa fa-check"></i>Theoretical framework for analyzing/modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#working-with-point-pattern-data-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern data using functions from the spatstat package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#quantifying-the-spatial-intensity-of-events"><i class="fa fa-check"></i>Quantifying the spatial intensity of events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html"><i class="fa fa-check"></i>Thursday March 9, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html#covariate-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Covariate trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html"><i class="fa fa-check"></i>Thursday March 23, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#estimating-the-relative-risk"><i class="fa fa-check"></i>Estimating the relative risk</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#estimating-second-moment-properties-of-events"><i class="fa fa-check"></i>Estimating second-moment properties of events</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#examples-of-clustered-events"><i class="fa fa-check"></i>Examples of clustered events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html"><i class="fa fa-check"></i>Tuesday March 28, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#removing-duplicate-events-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate events and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#determining-statistical-significance-of-clustering"><i class="fa fa-check"></i>Determining statistical significance of clustering</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#estimating-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#interpolating-output-from-a-distance-function"><i class="fa fa-check"></i>Interpolating output from a distance function</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#limitations-of-the-distance-functions"><i class="fa fa-check"></i>Limitations of the distance functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html"><i class="fa fa-check"></i>Thursday March 30, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#limitations-on-interpreting-distance-functions"><i class="fa fa-check"></i>Limitations on interpreting distance functions</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#models-for-point-pattern-data"><i class="fa fa-check"></i>Models for point pattern data</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#fitting-and-interpreting-inhibition-models"><i class="fa fa-check"></i>Fitting and interpreting inhibition models</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#fitting-and-interpreting-cluster-models"><i class="fa fa-check"></i>Fitting and interpreting cluster models</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html"><i class="fa fa-check"></i>Tuesday April 4, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#fitting-a-log-gaussian-cox-model"><i class="fa fa-check"></i>Fitting a log-Gaussian Cox model</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#assessing-how-well-a-point-pattern-model-fits-the-data"><i class="fa fa-check"></i>Assessing how well a point pattern model fits the data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#an-example-of-a-point-process-model-in-the-wild"><i class="fa fa-check"></i>An example of a point process model in the wild</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html"><i class="fa fa-check"></i>Thursday April 6, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html"><i class="fa fa-check"></i>Thursday April 13, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html"><i class="fa fa-check"></i>Tuesday April 18, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#evaluating-interpolation-accuracy"><i class="fa fa-check"></i>Evaluating interpolation accuracy</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html"><i class="fa fa-check"></i>Thursday April 20, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#machine-learning-for-spatial-interpolation"><i class="fa fa-check"></i>Machine learning for spatial interpolation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thursday-february-23-2023" class="section level1 unnumbered hasAnchor">
+<h1>Thursday February 23, 2023<a href="thursday-february-23-2023.html#thursday-february-23-2023" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>“We build our computer systems the way we build or cities; over time, without plan, on top of ruins.”</strong> – Ellen Ullman</p>
+<div id="fitting-and-interpreting-spatial-regression-models" class="section level2 unnumbered hasAnchor">
+<h2>Fitting and interpreting spatial regression models<a href="thursday-february-23-2023.html#fitting-and-interpreting-spatial-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Always start with an OLS regression model. Returning to the crime data at the tract level in the city of Columbus, Ohio</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="thursday-february-23-2023.html#cb1-1" aria-hidden="true" tabindex="-1"></a>CC.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;columbus&quot;</span>),</span>
+<span id="cb1-2"><a href="thursday-february-23-2023.html#cb1-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">layer =</span> <span class="st">&quot;columbus&quot;</span>)</span></code></pre></div>
+<pre><code>## Reading layer `columbus&#39; from data source 
+##   `/Users/jameselsner/Desktop/ClassNotes/ASS-2023/data/columbus&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 49 features and 20 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 5.874907 ymin: 10.78863 xmax: 11.28742 ymax: 14.74245
+## CRS:           NA</code></pre>
+<p><code>CRIME</code> is the response variable and <code>INC</code> and <code>HOVAL</code> as the explanatory variables. How well do these two explanatory variables statistically explain the amount of crime at the tract level?</p>
+<p>Set the formula, then use the formula as the first argument in the <code>lm()</code> function. Summarize the results with the <code>summary()</code> method</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="thursday-february-23-2023.html#cb3-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> CRIME <span class="sc">~</span> INC <span class="sc">+</span> HOVAL</span>
+<span id="cb3-2"><a href="thursday-february-23-2023.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="thursday-february-23-2023.html#cb3-3" aria-hidden="true" tabindex="-1"></a>model.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(f, </span>
+<span id="cb3-4"><a href="thursday-february-23-2023.html#cb3-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> CC.sf)</span>
+<span id="cb3-5"><a href="thursday-february-23-2023.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="thursday-february-23-2023.html#cb3-6" aria-hidden="true" tabindex="-1"></a>model.ols <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="thursday-february-23-2023.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = f, data = CC.sf)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -34.418  -6.388  -1.580   9.052  28.649 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  68.6190     4.7355  14.490  &lt; 2e-16 ***
+## INC          -1.5973     0.3341  -4.780 1.83e-05 ***
+## HOVAL        -0.2739     0.1032  -2.654   0.0109 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 11.43 on 46 degrees of freedom
+## Multiple R-squared:  0.5524, Adjusted R-squared:  0.5329 
+## F-statistic: 28.39 on 2 and 46 DF,  p-value: 9.341e-09</code></pre>
+<p>The model explains 55% of the variation in crime as is seen by looking at the multiple R-squared value</p>
+<p>The marginal effect of income on crime is -1.6 and the marginal effect of housing value on crime is -.27</p>
+<p>A nice way to visualize the relative significance of the explanatory variables is to make a plot. Here you use the <code>broom::tidy()</code> method and then <code>ggplot()</code> as follows. Note you don’t plot the intercept term (the first row) so you use -1 in the row dimension of the subset operation</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="thursday-february-23-2023.html#cb5-1" aria-hidden="true" tabindex="-1"></a>( d <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(model.ols, </span>
+<span id="cb5-2"><a href="thursday-february-23-2023.html#cb5-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">conf.int =</span> <span class="cn">TRUE</span>) )</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 7
+##   term        estimate std.error statistic  p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   68.6       4.74      14.5  9.21e-19   59.1     78.2   
+## 2 INC           -1.60      0.334     -4.78 1.83e- 5   -2.27    -0.925 
+## 3 HOVAL         -0.274     0.103     -2.65 1.09e- 2   -0.482   -0.0662</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="thursday-february-23-2023.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href="thursday-february-23-2023.html#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="thursday-february-23-2023.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d[<span class="sc">-</span><span class="dv">1</span>,], <span class="fu">aes</span>(<span class="at">x =</span> estimate, </span>
+<span id="cb7-4"><a href="thursday-february-23-2023.html#cb7-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> term, </span>
+<span id="cb7-5"><a href="thursday-february-23-2023.html#cb7-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xmin =</span> conf.low, </span>
+<span id="cb7-6"><a href="thursday-february-23-2023.html#cb7-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xmax =</span> conf.high, </span>
+<span id="cb7-7"><a href="thursday-february-23-2023.html#cb7-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="thursday-february-23-2023.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="thursday-february-23-2023.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="thursday-february-23-2023.html#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbarh</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The maximum likelihood estimate is shown as a point and the confidence interval around the estimate is shown as a horizontal error bar. The default confidence level is 95% (<code>conf.level = .95</code>). The effects are statistically significant as the confidence intervals do not intersect the vertical line (dashed-dotted) at the value of 0</p>
+<p>Next you check the model residuals for spatial autocorrelation. To determine the amount of autocorrelation in the residuals use the <code>spdep::lm.morantest()</code> function, passing the regression model object and the weights object to it. Note that here again use the default neighborhood and weighting schemes to generate the weights matrix <code>wts</code></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="thursday-february-23-2023.html#cb8-1" aria-hidden="true" tabindex="-1"></a>wts <span class="ot">&lt;-</span> CC.sf <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="thursday-february-23-2023.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  spdep<span class="sc">::</span><span class="fu">poly2nb</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="thursday-february-23-2023.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  spdep<span class="sc">::</span><span class="fu">nb2listw</span>()</span>
+<span id="cb8-4"><a href="thursday-february-23-2023.html#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="thursday-february-23-2023.html#cb8-5" aria-hidden="true" tabindex="-1"></a>model.ols <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="thursday-february-23-2023.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  spdep<span class="sc">::</span><span class="fu">lm.morantest</span>(<span class="at">listw =</span> wts)</span></code></pre></div>
+<pre><code>## 
+##  Global Moran I for regression residuals
+## 
+## data:  
+## model: lm(formula = f, data = CC.sf)
+## weights: wts
+## 
+## Moran I statistic standard deviate = 2.8393, p-value = 0.00226
+## alternative hypothesis: greater
+## sample estimates:
+## Observed Moran I      Expectation         Variance 
+##      0.222109407     -0.033418335      0.008099305</code></pre>
+<p>The model residuals have significant spatial autocorrelation so reporting the marginal effects with an OLS regression model is incorrect</p>
+<p>Instead, you fit a spatially-lagged Y model using the <code>lagsarlm()</code> function from the {spatialreg} package. The model is</p>
+<p><span class="math display">\[
+y = \rho W y + X \beta + \varepsilon
+\]</span></p>
+<p>where <span class="math inline">\(Wy\)</span> is the weighted average of the neighborhood response values (spatial lag variable) with <span class="math inline">\(W\)</span> the spatial weights matrix, and <span class="math inline">\(\rho\)</span> is the autoregression coefficient</p>
+<p>The <code>spatialreg::lagsarlm()</code> function first determines a value for <span class="math inline">\(\rho\)</span> ( with the internal <code>optimize()</code> function) and then the <span class="math inline">\(\beta\)</span>’s are obtained using generalized least squares (GLS). The model formula <code>f</code> is the same as what you used to fit the OLS regression above. You save the model object as <code>model.slym</code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="thursday-february-23-2023.html#cb10-1" aria-hidden="true" tabindex="-1"></a>model.slym <span class="ot">&lt;-</span> spatialreg<span class="sc">::</span><span class="fu">lagsarlm</span>(<span class="at">formula =</span> f, </span>
+<span id="cb10-2"><a href="thursday-february-23-2023.html#cb10-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data =</span> CC.sf, </span>
+<span id="cb10-3"><a href="thursday-february-23-2023.html#cb10-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">listw =</span> wts)</span>
+<span id="cb10-4"><a href="thursday-february-23-2023.html#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="thursday-february-23-2023.html#cb10-5" aria-hidden="true" tabindex="-1"></a>model.slym <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href="thursday-february-23-2023.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## 
+## Call:spatialreg::lagsarlm(formula = f, data = CC.sf, listw = wts)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -37.652017  -5.334611   0.071473   6.107196  23.302618 
+## 
+## Type: lag 
+## Coefficients: (asymptotic standard errors) 
+##              Estimate Std. Error z value  Pr(&gt;|z|)
+## (Intercept) 45.603249   7.257404  6.2837 3.306e-10
+## INC         -1.048728   0.307406 -3.4115  0.000646
+## HOVAL       -0.266335   0.089096 -2.9893  0.002796
+## 
+## Rho: 0.42333, LR test value: 9.4065, p-value: 0.0021621
+## Asymptotic standard error: 0.11951
+##     z-value: 3.5422, p-value: 0.00039686
+## Wald statistic: 12.547, p-value: 0.00039686
+## 
+## Log likelihood: -182.674 for lag model
+## ML residual variance (sigma squared): 96.857, (sigma: 9.8416)
+## Number of observations: 49 
+## Number of parameters estimated: 5 
+## AIC: 375.35, (AIC for lm: 382.75)
+## LM test for residual autocorrelation
+## test value: 0.24703, p-value: 0.61917</code></pre>
+<p>The first batch of output concerns the model residuals (observed crime rates minus predicted rates). The range (maximum minus minimum) of residuals is slightly smaller than with the OLS model.</p>
+<p>Next is the table of coefficients on the explanatory variables. The coefficients on income and housing have the same sign (negative) and they remain statistically significant (-1.05 for income and -.27 for housing value). But you can’t interpret these coefficients as the marginal effects</p>
+<p>The next set of output is about the coefficient of spatial autocorrelation (<span class="math inline">\(\rho\)</span>). The value is .423 and a likelihood ratio test gives a value of 9.41 which translates to a <span class="math inline">\(p\)</span>-value of .002. The null hypothesis is the autocorrelation is zero, so you confidently reject it. This is consistent with the significant Moran’s I value that you found in the residuals of the OLS model</p>
+<p>Two other statistical tests are performed on the value of <span class="math inline">\(\rho\)</span> including a z-test (t-test) using the asymptotic standard error and a Wald test. Both tests confirm (small <span class="math inline">\(p\)</span>-values) that the lag term should be included in the model from crime involving income and housing values</p>
+<p>In spatial models that contain a lagged response term, the coefficients are not marginal effects. The spatial lag model allows for ‘spillover’. That is a change in an explanatory variable (<span class="math inline">\(X_i\)</span>) anywhere in the study domain will affect the value of the response variable <em>everywhere</em> (<span class="math inline">\(y_j\)</span>)</p>
+<p><span class="math display">\[ \partial y_j / \partial X_i \ne 0\]</span>
+which implies in this case a spillover/impact from housing values in region <span class="math inline">\(i\)</span> impacts the crime in region <span class="math inline">\(j\)</span></p>
+<p>Spillover occurs even when the neighborhood weights matrix represents only local contiguity. If the non-zero cross-partial derivative implies an impact on neighboring regions that do not involve endogenous feedback, then it is called a <em>local</em> spillover</p>
+<p>In most applied regional modeling situations you know from substantive or theoretical aspects of the problem that a local spillover specification is appropriate. Examples: cross-border shopping for cigarettes to avoid local taxes, crossing school districts for ‘better’ schools. The key idea for local spillover is that endogenous interaction and feedbacks are not present</p>
+<p>The spillover makes interpreting the coefficients more complicated</p>
+<p>With a spatially-lagged Y model a change in the value of an explanatory variable results in both <em>direct</em> and <em>indirect</em> effects on the response variable</p>
+<p>For example, the direct effect gives the impact a change in income has on crime averaged over all tracts. It takes into account the effects from a change in the <span class="math inline">\(i\)</span>th tract’s income on crime across neighboring tracts</p>
+<p>The indirect effect gives the impact a change in income has on crime averaged over all <em>other</em> tracts. The indirect effect represent spillovers. The influences on the dependent variable <span class="math inline">\(y\)</span> in a region rendered by change in <span class="math inline">\(X\)</span> in some <em>other</em> region. For example, if all tracts <span class="math inline">\(i \ne j\)</span> (i not equal to j) increase their income, what will be the impact on crime in region <span class="math inline">\(j\)</span>?</p>
+<p>The total effect (TE) is the sum of the direct and indirect effects. It measures the total cumulative impact on crime arising from one tract <span class="math inline">\(j\)</span> increasing its income over all other tracts (on average). It is given by</p>
+<p><span class="math display">\[
+\hbox{TE} = \left(\frac{\beta_k}{1-\rho^2}\right)\left(1 + \rho\right)
+\]</span></p>
+<p>where <span class="math inline">\(\beta_k\)</span> is the effect of variable <span class="math inline">\(k\)</span> and <span class="math inline">\(\rho\)</span> is the spatial autocorrelation coefficient. With <span class="math inline">\(\rho = 0\)</span> TE is <span class="math inline">\(\beta_k\)</span></p>
+<p>Here <span class="math inline">\(\beta_{INC}\)</span> is -1.0487 and <span class="math inline">\(\rho\)</span> is .4233, so the total effect is</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="thursday-february-23-2023.html#cb12-1" aria-hidden="true" tabindex="-1"></a>( TE_INC <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">1.0487</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> .<span class="dv">4233</span><span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> .<span class="dv">4233</span>) )</span></code></pre></div>
+<pre><code>## [1] -1.81845</code></pre>
+<p>The direct, indirect, and total effects are shown using the <code>spatialreg::impacts()</code> function</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="thursday-february-23-2023.html#cb14-1" aria-hidden="true" tabindex="-1"></a>model.slym <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="thursday-february-23-2023.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  spatialreg<span class="sc">::</span><span class="fu">impacts</span>(<span class="at">listw =</span> wts)</span></code></pre></div>
+<pre><code>## Impact measures (lag, exact):
+##           Direct   Indirect      Total
+## INC   -1.1008955 -0.7176833 -1.8185788
+## HOVAL -0.2795832 -0.1822627 -0.4618459</code></pre>
+<p>The direct effects are the changes in the response variable of a particular region arising from a one unit increase in an explanatory variable in that region</p>
+<p>The indirect effects are the changes in the response variable of a particular region arising from a one unit increase in an explanatory variable in another region. For example, due to spatial autocorrelation, a one-unit change in the income variable in region 1 affects the crime rate in regions 2 and 3</p>
+<p>The next set of output concerns the overall model fit. It includes the log likelihood value and the AIC (Akaike Information Criterion). The AIC value for the linear model is included. Here it is clear that the spatial lag model is an improvement (smaller AIC) over the aspatial model</p>
+<p>The larger the likelihood, the better the model and two times the difference in log likelihoods from two competing models divided by the number of observations gives a scale for how much improvement</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="thursday-february-23-2023.html#cb16-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="fu">logLik</span>(model.slym) <span class="sc">-</span> <span class="fu">logLik</span>(model.ols))<span class="sc">/</span><span class="dv">49</span></span>
+<span id="cb16-2"><a href="thursday-february-23-2023.html#cb16-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [1] 0.1919701</code></pre>
+<p>Improvement table</p>
+<table>
+<thead>
+<tr class="header">
+<th>Likelihood difference</th>
+<th>Qualitative improvement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>huge</td>
+</tr>
+<tr class="even">
+<td>.1</td>
+<td>large</td>
+</tr>
+<tr class="odd">
+<td>.01</td>
+<td>good</td>
+</tr>
+<tr class="even">
+<td>.001</td>
+<td>okay</td>
+</tr>
+</tbody>
+</table>
+<p>The final bit of output is a Lagrange multiplier test for remaining autocorrelation. The null hypothesis is there is no remaining autocorrelation since we have a lag term in the model. The result is a high <span class="math inline">\(p\)</span>-value so you are satisfied that the lag term takes care of the autocorrelation</p>
+<p>Compare the spatial lag model to a spatial error model. Here you use the <code>spatialreg::errorsarlm()</code> function</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="thursday-february-23-2023.html#cb18-1" aria-hidden="true" tabindex="-1"></a>model.sem <span class="ot">&lt;-</span> spatialreg<span class="sc">::</span><span class="fu">errorsarlm</span>(<span class="at">formula =</span> f, </span>
+<span id="cb18-2"><a href="thursday-february-23-2023.html#cb18-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">data =</span> CC.sf, </span>
+<span id="cb18-3"><a href="thursday-february-23-2023.html#cb18-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">listw =</span> wts)</span>
+<span id="cb18-4"><a href="thursday-february-23-2023.html#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.sem)</span></code></pre></div>
+<pre><code>## 
+## Call:spatialreg::errorsarlm(formula = f, data = CC.sf, listw = wts)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -34.65998  -6.16943  -0.70623   7.75392  23.43878 
+## 
+## Type: error 
+## Coefficients: (asymptotic standard errors) 
+##              Estimate Std. Error z value  Pr(&gt;|z|)
+## (Intercept) 60.279469   5.365594 11.2344 &lt; 2.2e-16
+## INC         -0.957305   0.334231 -2.8642 0.0041806
+## HOVAL       -0.304559   0.092047 -3.3087 0.0009372
+## 
+## Lambda: 0.54675, LR test value: 7.2556, p-value: 0.0070679
+## Asymptotic standard error: 0.13805
+##     z-value: 3.9605, p-value: 7.4786e-05
+## Wald statistic: 15.686, p-value: 7.4786e-05
+## 
+## Log likelihood: -183.7494 for error model
+## ML residual variance (sigma squared): 97.674, (sigma: 9.883)
+## Number of observations: 49 
+## Number of parameters estimated: 5 
+## AIC: 377.5, (AIC for lm: 382.75)</code></pre>
+<p>You find the coefficient of spatial autocorrelation (<span class="math inline">\(\lambda\)</span>) is significant, but the log likelihood value from the model is smaller (-183.7) and the AIC value is larger (377.5) compared with corresponding values from the lag model. This is consistent with the Lagrange multiplier (LM) tests indicating the spatial lag model is more appropriate</p>
+<p>Also you can compare the log likelihoods from the two spatial regression models that you fit</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="thursday-february-23-2023.html#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="fu">logLik</span>(model.slym) <span class="sc">-</span> <span class="fu">logLik</span>(model.sem))<span class="sc">/</span><span class="dv">49</span></span>
+<span id="cb20-2"><a href="thursday-february-23-2023.html#cb20-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [1] 0.04389617</code></pre>
+<p>With a value of .04 you conclude that there is good improvement of the lag model over the error model. Again, this is consistent with your decision above to use the lag model</p>
+<p>With the spatial error model the coefficients can be interpreted as marginal effects like with the OLS model</p>
+<p>If there are large differences (e.g., different signs) between the coefficient estimate from SEM and OLS, this suggests that neither model is yielding parameters estimates matching the underlying parameters of the data generating process</p>
+<p>You test whether there is a significant difference in coefficient estimates with the Hausman test under the hypothesis of no difference</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="thursday-february-23-2023.html#cb22-1" aria-hidden="true" tabindex="-1"></a>spatialreg<span class="sc">::</span><span class="fu">Hausman.test</span>(model.sem)</span></code></pre></div>
+<pre><code>## 
+##  Spatial Hausman test (asymptotic)
+## 
+## data:  NULL
+## Hausman test = 5.6132, df = 3, p-value = 0.132</code></pre>
+<p>The <span class="math inline">\(p\)</span>-value gives inconclusive evidence that the coefficients are different and that maybe the SEM is not the right way to proceed with these data</p>
+<p>The <code>predict()</code> method implements the <code>predict.sarlm()</code> function to calculate predictions from the spatial regression model. The prediction on a spatial lag Y model is decomposed into a “trend” term (explanatory variable effect) and a “signal” term (spatial smoother). The predicted fit is the sum of the trend and the signal terms when using the spatial lag model</p>
+<p>You make predictions with the <code>predict()</code> method under the assumption that the mean response is known. You examine the structure of the corresponding predict object</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="thursday-february-23-2023.html#cb24-1" aria-hidden="true" tabindex="-1"></a>( predictedValues <span class="ot">&lt;-</span> <span class="fu">predict</span>(model.slym) )</span></code></pre></div>
+<pre><code>## This method assumes the response is known - see manual page</code></pre>
+<pre><code>##          fit     trend    signal
+## 1  14.151553  3.689375 10.462178
+## 2  22.577864 11.466909 11.110955
+## 3  34.302562 21.851820 12.450742
+## 4  46.732511 32.065777 14.666734
+## 5  44.747335 27.617334 17.130002
+## 6  38.333111 21.136061 17.197050
+## 7  37.830286 16.778970 21.051316
+## 8  41.393775 23.826138 17.567637
+## 9  28.792040 13.151105 15.640935
+## 10 16.390116  5.667967 10.722149
+## 11 53.631524 32.525600 21.105925
+## 12 48.074429 29.765566 18.308863
+## 13 40.608933 24.482782 16.126151
+## 14 41.856029 23.729006 18.127022
+## 15 51.665885 30.455129 21.210756
+## 16 54.767238 32.599603 22.167635
+## 17 31.866731 24.208332  7.658399
+## 18 37.461970 15.795680 21.666290
+## 19 44.929428 25.269280 19.660148
+## 20  5.110404 -8.624965 13.735370
+## 21 47.617356 29.109013 18.508344
+## 22 40.412907 25.213796 15.199111
+## 23 18.640125 10.704444  7.935681
+## 24 39.747461 16.504543 23.242918
+## 25 53.116667 31.962567 21.154100
+## 26 52.303708 31.717685 20.586023
+## 27 39.228077 25.171896 14.056181
+## 28 51.354572 31.278690 20.075882
+## 29 49.767662 27.843359 21.924303
+## 30 45.589426 25.027102 20.562325
+## 31 27.465213 19.368346  8.096867
+## 32 20.869990 15.004949  5.865041
+## 33 44.697299 28.916462 15.780838
+## 34 31.720867 22.349635  9.371232
+## 35 38.985264 24.973806 14.011458
+## 36 24.222607 16.283179  7.939428
+## 37 37.811894 16.224745 21.587149
+## 38 46.388525 27.909225 18.479300
+## 39 22.524680 15.679042  6.845638
+## 40  6.730001 -2.182900  8.912901
+## 41 20.020878 11.101447  8.919432
+## 42 14.764446  6.662085  8.102360
+## 43 40.034408 24.726461 15.307947
+## 44 34.026283 18.893554 15.132729
+## 45 36.970894 23.393213 13.577681
+## 46 13.189170  6.118277  7.070893
+## 47 21.849812 14.410620  7.439192
+## 48 38.162352 26.076851 12.085502
+## 49 27.876102 16.356569 11.519534</code></pre>
+<p>The predicted values are in the column labeled <code>fit</code>. The predicted values are a sum of the trend term (<span class="math inline">\(X\beta\)</span>) and the signal term (<span class="math inline">\(\rho W y\)</span>). The signal term is called the spatial smoother</p>
+<p>As a first-order check if things are what you think they are, compare the first five predicted values with the corresponding observed values</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="thursday-february-23-2023.html#cb27-1" aria-hidden="true" tabindex="-1"></a>predictedValues[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>##        1        2        3        4        5 
+## 14.15155 22.57786 34.30256 46.73251 44.74734</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="thursday-february-23-2023.html#cb29-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>CRIME[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>## [1] 15.72598 18.80175 30.62678 32.38776 50.73151</code></pre>
+<p>Some predicted values are lower than the corresponding observed values and some are higher</p>
+<p>The predicted values along with the values for the trend and signal are added to the simple features data frame</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="thursday-february-23-2023.html#cb31-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>fit <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(predictedValues)</span>
+<span id="cb31-2"><a href="thursday-february-23-2023.html#cb31-2" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>trend <span class="ot">&lt;-</span> <span class="fu">attr</span>(predictedValues, <span class="st">&quot;trend&quot;</span>)</span>
+<span id="cb31-3"><a href="thursday-february-23-2023.html#cb31-3" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>signal <span class="ot">&lt;-</span> <span class="fu">attr</span>(predictedValues, <span class="st">&quot;signal&quot;</span>)</span></code></pre></div>
+<p>You plot the observed versus the predicted as a scatter plot with a y = x line and a best-fit regression line</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="thursday-february-23-2023.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> CC.sf,</span>
+<span id="cb32-2"><a href="thursday-february-23-2023.html#cb32-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> CRIME, <span class="at">y =</span> fit)) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="thursday-february-23-2023.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb32-4"><a href="thursday-february-23-2023.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="thursday-february-23-2023.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>() <span class="sc">+</span></span>
+<span id="cb32-6"><a href="thursday-february-23-2023.html#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">70</span>)) <span class="sc">+</span></span>
+<span id="cb32-7"><a href="thursday-february-23-2023.html#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">70</span>)) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="thursday-february-23-2023.html#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Observed Crime&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-9"><a href="thursday-february-23-2023.html#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Predicted Crime&quot;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>The components of the predictions are mapped and placed on the same plot</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="thursday-february-23-2023.html#cb34-1" aria-hidden="true" tabindex="-1"></a>( g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb34-2"><a href="thursday-february-23-2023.html#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> CC.sf, <span class="fu">aes</span>(<span class="at">fill =</span> fit)) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="thursday-february-23-2023.html#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb34-4"><a href="thursday-february-23-2023.html#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">&quot;Predicted Crime&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="thursday-february-23-2023.html#cb35-1" aria-hidden="true" tabindex="-1"></a>( g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb35-2"><a href="thursday-february-23-2023.html#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> CC.sf, <span class="fu">aes</span>(<span class="at">fill =</span> trend)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="thursday-february-23-2023.html#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb35-4"><a href="thursday-february-23-2023.html#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">&quot;Trend (Explanatory Variables)&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="thursday-february-23-2023.html#cb36-1" aria-hidden="true" tabindex="-1"></a>( g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb36-2"><a href="thursday-february-23-2023.html#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> CC.sf, <span class="fu">aes</span>(<span class="at">fill =</span> signal)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="thursday-february-23-2023.html#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb36-4"><a href="thursday-february-23-2023.html#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">&quot;Signal&quot;</span>) )</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="thursday-february-23-2023.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb37-2"><a href="thursday-february-23-2023.html#cb37-2" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> g2 <span class="sc">+</span> g3</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-4.png" width="672" /></p>
+<p>The trend term and the spatial smoother have similar ranges indicating nearly equal contributions to the predictions. The largest difference between the two terms occurs in the city’s east side</p>
+<p>A map of the difference makes this clear</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="thursday-february-23-2023.html#cb38-1" aria-hidden="true" tabindex="-1"></a>CC.sf <span class="ot">&lt;-</span> CC.sf <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="thursday-february-23-2023.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">CovMinusSmooth =</span> trend <span class="sc">-</span> signal)</span>
+<span id="cb38-3"><a href="thursday-february-23-2023.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="thursday-february-23-2023.html#cb38-4" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb38-5"><a href="thursday-february-23-2023.html#cb38-5" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;CovMinusSmooth&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Currect projection of shape CC.sf unknown. Long-lat (WGS84) is
+## assumed.</code></pre>
+<pre><code>## Variable(s) &quot;CovMinusSmooth&quot; contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>How many tracts have a smaller residual with the lag model versus the OLS model?</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="thursday-february-23-2023.html#cb41-1" aria-hidden="true" tabindex="-1"></a>CC.sf <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="thursday-february-23-2023.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">residualsL =</span> CRIME <span class="sc">-</span> fit,</span>
+<span id="cb41-3"><a href="thursday-february-23-2023.html#cb41-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">lagWins =</span> <span class="fu">abs</span>(<span class="fu">residuals</span>(model.ols)) <span class="sc">&gt;</span> <span class="fu">abs</span>(residualsL),</span>
+<span id="cb41-4"><a href="thursday-february-23-2023.html#cb41-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">CovMinusSmooth =</span> trend <span class="sc">-</span> signal) <span class="sc">|&gt;</span></span>
+<span id="cb41-5"><a href="thursday-february-23-2023.html#cb41-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb41-6"><a href="thursday-february-23-2023.html#cb41-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">N =</span> <span class="fu">sum</span>(lagWins))</span></code></pre></div>
+<pre><code>##    N
+## 1 32</code></pre>
+<p>In 32 out of the 49 tracts the residuals from the spatial model are smaller than the residuals from the OLS model</p>
+<p>Another spatial regression option is to modify the linear model to include spatially-lagged explanatory variables. This is called the spatially-lagged X model</p>
+<p><span class="math display">\[
+y = X \beta + XW \theta + \varepsilon
+\]</span></p>
+<p>In this case the weights matrix is (post) multiplied by the matrix of X variables where <span class="math inline">\(W\)</span> is again the weights matrix and <span class="math inline">\(\theta\)</span> is a vector of coefficients for each lagged explanatory variable</p>
+<p>Here you fit the spatially-lagged X model using the <code>spatialreg::lmSLX()</code> function and save the model object as <code>model.slxm</code></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="thursday-february-23-2023.html#cb43-1" aria-hidden="true" tabindex="-1"></a>( model.slxm <span class="ot">&lt;-</span> spatialreg<span class="sc">::</span><span class="fu">lmSLX</span>(<span class="at">formula =</span> f, </span>
+<span id="cb43-2"><a href="thursday-february-23-2023.html#cb43-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">data =</span> CC.sf, </span>
+<span id="cb43-3"><a href="thursday-february-23-2023.html#cb43-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">listw =</span> wts) )</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = formula(paste(&quot;y ~ &quot;, paste(colnames(x)[-1], collapse = &quot;+&quot;))), 
+##     data = as.data.frame(x), weights = weights)
+## 
+## Coefficients:
+## (Intercept)          INC        HOVAL      lag.INC    lag.HOVAL  
+##     74.5534      -1.0974      -0.2944      -1.3987       0.2148</code></pre>
+<p>With this model, beside the direct marginal effects of income and housing value on crime, you also have the spatially-lagged indirect effects</p>
+<p>The total effect of income on crime is the sum of the direct effect and indirect effect. And again, using the <code>spatialreg::impacts()</code> function you see this</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="thursday-february-23-2023.html#cb45-1" aria-hidden="true" tabindex="-1"></a>model.slxm <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="thursday-february-23-2023.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  spatialreg<span class="sc">::</span><span class="fu">impacts</span>(<span class="at">listw =</span> wts)</span></code></pre></div>
+<pre><code>## Impact measures (SlX, estimable):
+##           Direct  Indirect       Total
+## INC   -1.0973898 -1.398746 -2.49613551
+## HOVAL -0.2943898  0.214841 -0.07954881</code></pre>
+<p>You get the impact measures and their standard errors, z-values and <span class="math inline">\(p\)</span>-values with the <code>summary()</code> method applied to the output of the <code>impacts()</code> function</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="thursday-february-23-2023.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(spatialreg<span class="sc">::</span><span class="fu">impacts</span>(model.slxm, <span class="at">listw =</span> wts))</span></code></pre></div>
+<pre><code>## Impact measures (SlX, estimable, n-k):
+##           Direct  Indirect       Total
+## INC   -1.0973898 -1.398746 -2.49613551
+## HOVAL -0.2943898  0.214841 -0.07954881
+## ========================================================
+## Standard errors:
+##          Direct  Indirect     Total
+## INC   0.3738313 0.5601247 0.4929713
+## HOVAL 0.1016586 0.2079212 0.2074767
+## ========================================================
+## Z-values:
+##          Direct  Indirect      Total
+## INC   -2.935522 -2.497204 -5.0634496
+## HOVAL -2.895867  1.033281 -0.3834108
+## 
+## p-values:
+##       Direct    Indirect Total     
+## INC   0.0033299 0.012518 4.1174e-07
+## HOVAL 0.0037811 0.301473 0.70142</code></pre>
+<p>Results show that income has a significant direct <em>and</em> indirect effect on crime rates, but housing values only show a significant direct effect and not a significant indirect effect</p>
+<p>Again you visualize the relative significance of the effects</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="thursday-february-23-2023.html#cb49-1" aria-hidden="true" tabindex="-1"></a>model.slxm <span class="sc">|&gt;</span></span>
+<span id="cb49-2"><a href="thursday-february-23-2023.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">tidy</span>(<span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb49-3"><a href="thursday-february-23-2023.html#cb49-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb49-4"><a href="thursday-february-23-2023.html#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate,</span>
+<span id="cb49-5"><a href="thursday-february-23-2023.html#cb49-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> term, </span>
+<span id="cb49-6"><a href="thursday-february-23-2023.html#cb49-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xmin =</span> conf.low, </span>
+<span id="cb49-7"><a href="thursday-february-23-2023.html#cb49-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xmax =</span> conf.high, </span>
+<span id="cb49-8"><a href="thursday-february-23-2023.html#cb49-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb49-9"><a href="thursday-february-23-2023.html#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb49-10"><a href="thursday-february-23-2023.html#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb49-11"><a href="thursday-february-23-2023.html#cb49-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbarh</span>()</span></code></pre></div>
+<pre><code>## Warning: The `tidy()` method for objects of class `SlX` is not maintained by the broom team, and is only supported through the `lm` tidier method. Please be cautious in interpreting and reporting broom output.
+## 
+## This warning is displayed once per session.</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Compare R squared values between the OLS model and the spatially-lagged X model</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="thursday-february-23-2023.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.ols)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.552404</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="thursday-february-23-2023.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.slxm)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.6105076</code></pre>
+<p>The spatially lagged model has an R squared value that is higher than the R squared value from the linear regression</p>
+<p>Another way to find the correct spatial model is to consider both the spatial Durbin error model and the spatial Durbin model</p>
+<p>The spatial Durban error model (SDEM) is a spatial error model with a spatially-lagged X term added</p>
+<p>To fit a SDEM use the <code>spatialreg::errorsarlm()</code> function but include the argument <code>etype = "emixed"</code> to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (<code>"W"</code>)</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="thursday-february-23-2023.html#cb55-1" aria-hidden="true" tabindex="-1"></a>( model.sdem <span class="ot">&lt;-</span> spatialreg<span class="sc">::</span><span class="fu">errorsarlm</span>(<span class="at">formula =</span> f, </span>
+<span id="cb55-2"><a href="thursday-february-23-2023.html#cb55-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">data =</span> CC.sf, </span>
+<span id="cb55-3"><a href="thursday-february-23-2023.html#cb55-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">listw =</span> wts,</span>
+<span id="cb55-4"><a href="thursday-february-23-2023.html#cb55-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">etype =</span> <span class="st">&quot;emixed&quot;</span>) )</span></code></pre></div>
+<pre><code>## 
+## Call:
+## spatialreg::errorsarlm(formula = f, data = CC.sf, listw = wts, 
+##     etype = &quot;emixed&quot;)
+## Type: error 
+## 
+## Coefficients:
+##      lambda (Intercept)         INC       HOVAL     lag.INC   lag.HOVAL 
+##   0.4035821  73.6450826  -1.0522585  -0.2781741  -1.2048761   0.1312451 
+## 
+## Log likelihood: -181.779</code></pre>
+<p>The spatial Durban model (SDM) is a spatially-lagged Y model with a spatially-lagged X term added to it</p>
+<p>To fit a SDM use the <code>lagsarlm()</code> function but include the argument <code>type = "mixed"</code> to ensure that the spatially lagged X variables are added and the lagged intercept term is dropped when the weights style is row standardized (<code>"W"</code>)</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="thursday-february-23-2023.html#cb57-1" aria-hidden="true" tabindex="-1"></a>( model.sdm <span class="ot">&lt;-</span> spatialreg<span class="sc">::</span><span class="fu">lagsarlm</span>(<span class="at">formula =</span> f, </span>
+<span id="cb57-2"><a href="thursday-february-23-2023.html#cb57-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">data =</span> CC.sf, </span>
+<span id="cb57-3"><a href="thursday-february-23-2023.html#cb57-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">listw =</span> wts,</span>
+<span id="cb57-4"><a href="thursday-february-23-2023.html#cb57-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">type =</span> <span class="st">&quot;mixed&quot;</span>) )</span></code></pre></div>
+<pre><code>## 
+## Call:
+## spatialreg::lagsarlm(formula = f, data = CC.sf, listw = wts, 
+##     type = &quot;mixed&quot;)
+## Type: mixed 
+## 
+## Coefficients:
+##         rho (Intercept)         INC       HOVAL     lag.INC   lag.HOVAL 
+##   0.4034626  44.3200052  -0.9199061  -0.2971294  -0.5839133   0.2576843 
+## 
+## Log likelihood: -181.6393</code></pre>
+<p>How to do you choose between these two models? Is the relationship between crime and income and housing values a global or local effect? Is there any reason to think that if something happens in one tract it will spillover across the entire city? If crime happens in one tract does it influence crime across the entire city? If so, then it is a global relationship.</p>
+<p>Or might it be a more local effect? If there is more crime in one tract then maybe that influences crime in the neighboring tract but not tracts farther away. If so, then it is a local relationship</p>
+<p>If you think it is a local relationship, start with the spatial Durbin error model and look at the <span class="math inline">\(p\)</span>-values on the direct and indirect effects</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="thursday-february-23-2023.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(spatialreg<span class="sc">::</span><span class="fu">impacts</span>(model.sdem, </span>
+<span id="cb59-2"><a href="thursday-february-23-2023.html#cb59-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">listw =</span> wts, </span>
+<span id="cb59-3"><a href="thursday-february-23-2023.html#cb59-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">R =</span> <span class="dv">500</span>), <span class="at">zstats =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Impact measures (SDEM, estimable, n):
+##           Direct   Indirect     Total
+## INC   -1.0522585 -1.2048761 -2.257135
+## HOVAL -0.2781741  0.1312451 -0.146929
+## ========================================================
+## Standard errors:
+##           Direct  Indirect     Total
+## INC   0.32127932 0.5736416 0.6326029
+## HOVAL 0.09114185 0.2072449 0.2372854
+## ========================================================
+## Z-values:
+##          Direct  Indirect     Total
+## INC   -3.275214 -2.100399 -3.568012
+## HOVAL -3.052101  0.633285 -0.619208
+## 
+## p-values:
+##       Direct    Indirect Total    
+## INC   0.0010558 0.035694 0.0003597
+## HOVAL 0.0022725 0.526548 0.5357794</code></pre>
+<p>You see that income has a statistically significant direct and indirect effect on crime. This means that tracts with higher income have lower crime and tracts whose <em>neighboring tracts</em> have higher income also have lower crime</p>
+<p>On the other hand, housing values have only a statistically significant direct effect on crime. Tracts with more expensive houses have lower crime but tracts whose neighboring tracts have more expensive houses do not imply lower crime. And the total effect of housing values on crime across the city is not significant. So if housing values go up in tracts citywide, there is no statistical evidence that crime will go down (or up)</p>
+<p>Try a likelihood ratio test with the null hypothesis being that you should restrict the model</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="thursday-february-23-2023.html#cb61-1" aria-hidden="true" tabindex="-1"></a>spatialreg<span class="sc">::</span><span class="fu">LR.Sarlm</span>(model.sdem, </span>
+<span id="cb61-2"><a href="thursday-february-23-2023.html#cb61-2" aria-hidden="true" tabindex="-1"></a>                     model.slxm)</span></code></pre></div>
+<pre><code>## 
+##  Likelihood ratio for spatial linear models
+## 
+## data:  
+## Likelihood ratio = 4.3832, df = 1, p-value = 0.03629
+## sample estimates:
+## Log likelihood of model.sdem Log likelihood of model.slxm 
+##                    -181.7790                    -183.9706</code></pre>
+<p>The relatively small <span class="math inline">\(p\)</span>-value suggests you shouldn’t restrict the spatial Durbin model to just the spatially-lagged X model although the evidence is not overwhelming</p>
+<p>More information:</p>
+<ul>
+<li><a href="https://youtu.be/b3HtV2Mhmvk" class="uri">https://youtu.be/b3HtV2Mhmvk</a> Video explaining the types of spatial regression models and how to implement them in R</li>
+<li><a href="https://rrs.scholasticahq.com/article/8081-what-regional-scientists-need-to-know-about-spatial-econometrics" class="uri">https://rrs.scholasticahq.com/article/8081-what-regional-scientists-need-to-know-about-spatial-econometrics</a> What Regional Scientists Need to Know About Spatial Econometrics</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tuesday-february-21-2023.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="tuesday-february-28-2023.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
