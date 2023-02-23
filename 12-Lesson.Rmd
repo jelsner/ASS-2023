@@ -192,15 +192,15 @@ https://rpubs.com/lexcomber/INIA_Session7
 
 ## Mapping incidence and risk with a spatial regression model {-}
 
-Note: This material is quite advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate the spatial regression framework from a Bayesian perspective. I do not expect you to understand all the details nor will I ask you to reproduce any of this as a lab exercise.
+Note: This material is quite advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate the spatial regression framework from a Bayesian perspective. I will not ask you to reproduce any of this as a lab exercise
 
-Spatial regression models are used in disease mapping where it is common to compute standardized incidence ratios (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Some areas can give extreme SIRs due to low population sizes or small sample sizes. Extreme values of SIRs can be misleading and unreliable for reporting. This is a big issue in demography.
+Spatial regression models are used in disease mapping where it is common to compute standardized incidence ratios (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Some areas can give extreme SIRs due to low population sizes or small sample sizes. Extreme values of SIRs can be misleading and unreliable for reporting. This is a big issue in demography
 
-Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. A spatial regression model incorporates information from neighboring areas as well as explanatory variables that together result in less extreme values.
+Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. A spatial regression model incorporates information from neighboring areas as well as explanatory variables that together result in less extreme values
 
-Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object `pennLC` with element name `spatial.polygon`. 
+Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object `pennLC` with element name `spatial.polygon`
 
-First change the native spatial polygons S4 object to an S3 simple feature data frame using the `sf::st_as_sf()` function and display a map of the county borders.
+First change the native spatial polygons S4 object to an S3 simple feature data frame using the `sf::st_as_sf()` function and display a map of the county borders
 
 ```{r}
 if(!require(SpatialEpi)) install.packages("SpatialEpi", repos = "http://cran.us.r-project.org")
@@ -212,7 +212,7 @@ ggplot(LC.sf) +
   geom_sf()
 ```
 
-For each county $i$, $i = 1, \ldots, n$ the SIR is defined as the ratio of observed counts ($Y_i$) to the expected counts ($E_i$).
+For each county $i$, $i = 1, \ldots, n$ the SIR is defined as the ratio of observed counts ($Y_i$) to the expected counts ($E_i$)
 
 $$
 \hbox{SIR}_i = Y_i/E_i.
@@ -227,11 +227,11 @@ where $r^{(s)}$ is the rate in the standard population (total number of cases di
 
 Then $\hbox{SIR}_i$ indicates whether county $i$ has higher ($\hbox{SIR}_i > 1$), equal ($\hbox{SIR}_i = 1$) or lower ($\hbox{SIR}_i < 1$) risk than expected relative to the statewide population.
 
-When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR).
+When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR)
 
-The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+). 
+The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+)
 
-You compute the number of cases for all the strata (groups) together in each county by aggregating the rows of the data frame by county and adding up the number of cases.
+You compute the number of cases for all the strata (groups) together in each county by aggregating the rows of the data frame by county and adding up the number of cases
 
 ```{r}
 ( County.df <- SpatialEpi::pennLC$data |>
@@ -239,11 +239,11 @@ You compute the number of cases for all the strata (groups) together in each cou
   dplyr::summarize(Y = sum(cases)) )
 ```
 
-You then calculate the expected number of cases in each county using standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves.
+You then calculate the expected number of cases in each county using standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves
 
-You do this by using the `SpatialEpi::expected()` function. The function has three arguments including `population` (vector of population counts for each strata in each county), `cases` (vector with the number of cases for each strata in each county), and `n.strata` (number of strata).
+You do this by using the `SpatialEpi::expected()` function. The function has three arguments including `population` (vector of population counts for each strata in each county), `cases` (vector with the number of cases for each strata in each county), and `n.strata` (number of strata)
 
-The vectors `population` and `cases` need to be sorted by county first and then, within each county, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the `dplyr::arrange()` function.
+The vectors `population` and `cases` need to be sorted by county first and then, within each county, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the `dplyr::arrange()` function
 
 ```{r}
 Strata.df <- SpatialEpi::pennLC$data |>
@@ -251,7 +251,7 @@ Strata.df <- SpatialEpi::pennLC$data |>
 head(Strata.df)
 ```
 
-Then you get the expected counts (E) in each county by calling the `SpatialEpi::expected()` function, where you set population equal to `Strata.df$population` and cases equal to `Strata.df$cases`. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16.
+Then you get the expected counts (E) in each county by calling the `SpatialEpi::expected()` function, where you set population equal to `Strata.df$population` and cases equal to `Strata.df$cases`. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16
 
 ```{r}
 ( E <- SpatialEpi::expected(population = Strata.df$population,
@@ -259,7 +259,7 @@ Then you get the expected counts (E) in each county by calling the `SpatialEpi::
                             n.strata = 16) )
 ```
 
-Now you include the observed count `Y`, the expected count `E`, and the computed SIR into the simple feature data frame `LC.sf` before making a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1.
+Now you include the observed count `Y`, the expected count `E`, and the computed SIR into the simple feature data frame `LC.sf` before making a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1
 
 ```{r}
 LC.sf <- LC.sf |>
@@ -276,11 +276,11 @@ ggplot(LC.sf) +
   theme_minimal()
 ```
 
-In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. In counties with SIR > 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR < 1 (blue) have fewer cancer cases observed than expected.
+In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. In counties with SIR > 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR < 1 (blue) have fewer cancer cases observed than expected
 
-In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring counties and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values.
+In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring counties and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values
 
-Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept (that accounts for the overall disease risk level) and random effects (that account for local variability).
+Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept (that accounts for the overall disease risk level) and random effects (that account for local variability)
 
 The relative risk quantifies whether a county has a higher ($\theta > 1$) or lower ($\theta < 1$) risk than the average risk in the population. For example if $\theta_i = 2$, then the risk in county $i$ is twice the average risk in the statewide population.
 
@@ -297,7 +297,7 @@ $$
 v \sim N(0, \sigma_v^2)
 $$
 
-Note: here the approach is to _assume_ spatial autocorrelation.
+Note: here the approach is to _assume_ spatial autocorrelation
 
 It is common to include explanatory variables to quantify risk factors (e.g., distance to nearest coal plant). Thus the log($\theta$) is expressed as
 
@@ -305,7 +305,7 @@ $$
 \log(\theta) = \alpha + X\beta + u + v
 $$
 
-where $X$ are the explanatory variables and $\beta$ are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor $\exp(\beta)$, holding the other variables constant.
+where $X$ are the explanatory variables and $\beta$ are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor $\exp(\beta)$, holding the other variables constant
 
 A popular form for the spatially structured random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregression distribution to $u$ as
 
@@ -317,13 +317,13 @@ where
 $$
 \bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}
 $$ 
-and where $\delta_i$ is the set of $n_{\delta_i}$ neighbors of area $i$.
+and where $\delta_i$ is the set of $n_{\delta_i}$ neighbors of area $i$
 
-In words, the logarithm of the disease incidence rate in county $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution.
+In words, the logarithm of the disease incidence rate in county $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution
 
-The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk. 
+The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk
 
-This is done with functions from the {INLA} package. You get the package (it is not on CRAN) as follows.
+This is done with functions from the {INLA} package. You get the package (it is not on CRAN) as follows
 
 ```{r eval=FALSE}
 options(timeout = 120)
@@ -340,9 +340,9 @@ f <- Y ~
 
 The formula includes the response in the left-hand side, and the fixed and random effects on the right-hand side. By default, the formula includes an intercept. 
 
-The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `IDu` and equal to c(1, 2, ..., I), where I is the number of counties and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable. 
+The random effects are set using `f()` with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name `IDu` and equal to c(1, 2, ..., I), where I is the number of counties and model `"besag"` with a CAR distribution and with neighborhood structure given by the graph `g`. The option `scale.model = TRUE` is used to make the precision parameter of models with different CAR priors comparable
 
-The formula also includes an uncorrelated random effect with index variable with name `IDv` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but both need to be specified separately since INLA does not allow to include two effects with `f()` that use the same index variable.
+The formula also includes an uncorrelated random effect with index variable with name `IDv` again equal to c(1, 2, ..., I), and model "iid". This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the `ID` variables are identical but both need to be specified separately since INLA does not allow to include two effects with `f()` that use the same index variable
 
 The BYM model can also be specified with the model "bym" which defines both the spatially structured random effect and the uncorrelated random effect ($u$ and $v$).
 
@@ -355,7 +355,7 @@ LC.sf <- LC.sf |>
 LC.sf
 ```
 
-Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function.
+Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function
 
 ```{r}
 nb <- spdep::poly2nb(LC.sf)
@@ -369,7 +369,7 @@ class(g)
 str(g)
 ```
 
-You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions.
+You fit the model by calling the `inla()` function specifying the formula, the family ("poisson"), the data, and the expected counts (E). You also set `control.predictor = list(compute = TRUE)` to compute the posteriors predictions
 
 ```{r}
 model.inla <- INLA::inla(formula = f, 
@@ -379,9 +379,9 @@ model.inla <- INLA::inla(formula = f,
                          control.predictor = list(compute = TRUE))
 ```
 
-The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object `model.inla$summary.fitted.values`. Column `mean` is the mean posterior and `0.025quant` and `0.975quant` are the 2.5 and 97.5 percentiles, respectively.
+The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object `model.inla$summary.fitted.values`. Column `mean` is the mean posterior and `0.025quant` and `0.975quant` are the 2.5 and 97.5 percentiles, respectively
 
-You add these to the spatial data frame and then make a map of the posterior mean relative risk.
+You add these to the spatial data frame and then make a map of the posterior mean relative risk
 
 ```{r}
 LC.sf$RR <- model.inla$summary.fitted.values[, "mean"]
@@ -399,16 +399,10 @@ ggplot(LC.sf) +
 
 These relative risk values are smoother and muted (less dispersed) in absolute magnitude compared with the empirical SIR estimates. 
 
-More on this topic is available from
+More on this topic is available from:
 
-- https://www.paulamoraga.com/book-geospatial/index.html
+-     <https://www.paulamoraga.com/book-geospatial/index.html> Paula Moraga's book is an excellent resource for fitting spatial data models using R
 
-Paula Moraga's book is an excellent resource for fitting spatial data models using R.
+-     <https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895> An application of the CAR model to estimate tornado risk across the United States
 
-- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895
-
-An application of the CAR model to estimate tornado risk across the United States.
-
-https://www.bayesrulesbook.com/
-
-An online book on Bayesian statistics using R.
+-     <https://www.bayesrulesbook.com/> An online book on Bayesian statistics using R
