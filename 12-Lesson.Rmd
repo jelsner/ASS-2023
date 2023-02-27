@@ -192,9 +192,15 @@ https://rpubs.com/lexcomber/INIA_Session7
 
 ## Mapping incidence and risk with a spatial regression model {-}
 
+<<<<<<< HEAD
 This material shows (1) how to use a probability model to specify spatial autocorrelation and (2) a spatial regression from a Bayesian framework
 
 Spatial regression models are used in disease mapping where it is common to compute standardized incidence ratios (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Some areas can give extreme SIRs due to low population sizes or small sample sizes. Extreme values of SIRs can be misleading and unreliable for reporting
+=======
+Note: This material is quite advanced. I present it here (1) to show how spatial autocorrelation can be modeled with a probabilistic specification, and (2) to demonstrate the spatial regression framework from a Bayesian perspective. I will not ask you to reproduce any of this as a lab exercise
+
+Spatial regression models are used in disease mapping where it is common to compute standardized incidence ratios (SIR) defined as the ratio of the observed to the _expected_ number of disease cases. Some areas can give extreme SIRs due to low population sizes or small sample sizes. Extreme values of SIRs can be misleading and unreliable for reporting. This is a big issue in demography
+>>>>>>> d728b5bfcec67885d14af8c204fdefd784160f1b
 
 Because of this so-called 'small area problem' it is better to estimate disease risk using a spatial regression model. A spatial regression model incorporates information from neighboring areas as well as explanatory variables that together result in less extreme values
 
@@ -229,7 +235,11 @@ Then $\hbox{SIR}_i$ indicates whether county $i$ has higher ($\hbox{SIR}_i > 1$)
 
 When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR)
 
+<<<<<<< HEAD
 The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and other), gender (female, male) and age (under 40, 40-59, 60-69 and 70+) 
+=======
+The data frame `SpatialEpi::pennLC$data` contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and non-white), gender (female and male) and age (under 40, 40-59, 60-69 and 70+)
+>>>>>>> d728b5bfcec67885d14af8c204fdefd784160f1b
 
 You compute the number of cases for all the strata (groups) together in each county by aggregating the rows of the data frame by county and adding up the number of cases
 
@@ -250,9 +260,12 @@ The vectors `population` and `cases` need to be sorted by county first and then,
   dplyr::arrange(county, race, gender, age) )
 ```
 
+<<<<<<< HEAD
 You check on 
 
 
+=======
+>>>>>>> d728b5bfcec67885d14af8c204fdefd784160f1b
 Then you get the expected counts (E) in each county by calling the `SpatialEpi::expected()` function, where you set population equal to `Strata.df$population` and cases equal to `Strata.df$cases`. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16
 
 ```{r}
@@ -278,9 +291,15 @@ ggplot(LC.sf) +
   theme_minimal()
 ```
 
+<<<<<<< HEAD
 In counties with SIR > 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR < 1 (blue) have fewer cancer cases observed than expected. In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. There is not a clear pattern
 
 In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferable to estimate disease risk using models that borrow information from neighboring counties and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values
+=======
+In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. In counties with SIR > 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR < 1 (blue) have fewer cancer cases observed than expected
+
+In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferred to estimate disease risk using models that borrow information from neighboring counties and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values
+>>>>>>> d728b5bfcec67885d14af8c204fdefd784160f1b
 
 Let the observed counts $Y$ be modeled with a Poisson distribution having a mean $E \theta$, where $E$ are the expected counts and $\theta$ are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept (that accounts for the overall disease risk level) and random effects (that account for local variability)
 
@@ -299,7 +318,11 @@ $$
 v \sim N(0, \sigma_v^2)
 $$
 
+<<<<<<< HEAD
 Note: here the approach is to _assume_ spatial autocorrelation through the term $u$
+=======
+Note: here the approach is to _assume_ spatial autocorrelation
+>>>>>>> d728b5bfcec67885d14af8c204fdefd784160f1b
 
 It is common to include explanatory variables to quantify risk factors (e.g., smoking prevalence, distance to nearest coal plant). Thus the log($\theta$) is expressed as
 
@@ -319,9 +342,13 @@ where
 $$
 \bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}
 $$ 
-and where $\delta_i$ is the set of $n_{\delta_i}$ neighbors of area $i$.
+and where $\delta_i$ is the set of $n_{\delta_i}$ neighbors of area $i$
 
+<<<<<<< HEAD
 In words, the logarithm of the disease incidence rate in county $i$ _conditional_ on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution
+=======
+In words, the logarithm of the disease incidence rate in county $i$ conditional on the incidence rates in the neighborhood of $i$ is modeled with a normal distribution centered on the neighborhood average ($\bar  u_{\delta_i}$) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution
+>>>>>>> d728b5bfcec67885d14af8c204fdefd784160f1b
 
 The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk
 
@@ -358,7 +385,7 @@ LC.sf <- LC.sf |>
 LC.sf
 ```
 
-Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function.
+Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the `inla.read.graph()` function
 
 ```{r}
 nb <- spdep::poly2nb(LC.sf)
@@ -400,6 +427,7 @@ ggplot(LC.sf) +
   theme_minimal()
 ```
 
+<<<<<<< HEAD
 These relative risk values are smoother and muted (less dispersed) in absolute magnitude compared with the empirical SIR estimates
 
 More on this topic is available from <https://www.paulamoraga.com/book-geospatial/index.html> Paula Moraga's book is an excellent resource for fitting spatial data models using R
@@ -407,3 +435,14 @@ More on this topic is available from <https://www.paulamoraga.com/book-geospatia
 An application of the CAR model to estimate tornado risk across the United States <https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895>
 
 An online book on Bayesian statistics using R <https://www.bayesrulesbook.com/>
+=======
+These relative risk values are smoother and muted (less dispersed) in absolute magnitude compared with the empirical SIR estimates. 
+
+More on this topic is available from:
+
+-     <https://www.paulamoraga.com/book-geospatial/index.html> Paula Moraga's book is an excellent resource for fitting spatial data models using R
+
+-     <https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895> An application of the CAR model to estimate tornado risk across the United States
+
+-     <https://www.bayesrulesbook.com/> An online book on Bayesian statistics using R
+>>>>>>> d728b5bfcec67885d14af8c204fdefd784160f1b
