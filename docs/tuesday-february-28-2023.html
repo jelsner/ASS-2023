@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Tuesday February 28, 2023 | GIS5122: Applied Spatial Statistics</title>
+  <meta name="description" content="Tuesday February 28, 2023 | GIS5122: Applied Spatial Statistics" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Tuesday February 28, 2023 | GIS5122: Applied Spatial Statistics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="jelsner/ASS-2022" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Tuesday February 28, 2023 | GIS5122: Applied Spatial Statistics" />
+  
+  
+  
+
+<meta name="author" content="James B. Elsner" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="thursday-february-23-2023.html"/>
+<link rel="next" href="tuesday-march-7-2023.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Spatial Statistics</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html"><i class="fa fa-check"></i>Syllabus and set up</a>
+<ul>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#contact-information"><i class="fa fa-check"></i>Contact information</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#course-description-and-expected-learning-outcomes"><i class="fa fa-check"></i>Course description and expected learning outcomes</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#grades-and-ethics"><i class="fa fa-check"></i>Grades and ethics</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#outline-of-topics-and-schedule"><i class="fa fa-check"></i>Outline of topics and schedule</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#reference-materials"><i class="fa fa-check"></i>Reference materials</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#reproducible-research"><i class="fa fa-check"></i>Reproducible research</a></li>
+<li class="chapter" data-level="" data-path="syllabus-and-set-up.html"><a href="syllabus-and-set-up.html#getting-you-set-up"><i class="fa fa-check"></i>Getting you set up</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html"><i class="fa fa-check"></i>Thursday, January 12, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#important-points-from-the-syllabus"><i class="fa fa-check"></i>Important points from the syllabus</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#continue-with-setup"><i class="fa fa-check"></i>Continue with setup</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#about-rstudio"><i class="fa fa-check"></i>About RStudio</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#lab-assignments"><i class="fa fa-check"></i>Lab assignments</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#data-science-workflow-with-r-markdown"><i class="fa fa-check"></i>Data science workflow with R markdown</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#getting-started-with-r"><i class="fa fa-check"></i>Getting started with R</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-12-2023.html"><a href="thursday-january-12-2023.html#completely-new-to-r"><i class="fa fa-check"></i>Completely new to R?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html"><i class="fa fa-check"></i>Tuesday, January 17, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#class-notes"><i class="fa fa-check"></i>Class notes</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#using-r"><i class="fa fa-check"></i>Using R</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-17-2023.html"><a href="tuesday-january-17-2023.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html"><i class="fa fa-check"></i>Thursday January 19, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#getting-data-into-r"><i class="fa fa-check"></i>Getting data into R</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#working-with-data-frames-using-functions-from-dplyr"><i class="fa fa-check"></i>Working with data frames using functions from {dplyr}</a></li>
+<li class="chapter" data-level="" data-path="thursday-january-19-2023.html"><a href="thursday-january-19-2023.html#making-graphs"><i class="fa fa-check"></i>Making graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html"><i class="fa fa-check"></i>Tuesday January 24, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#making-graphs-1"><i class="fa fa-check"></i>Making graphs</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#introduction-to-simple-features"><i class="fa fa-check"></i>Introduction to simple features</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-24-2023.html"><a href="tuesday-january-24-2023.html#geo-computation-on-simple-features"><i class="fa fa-check"></i>Geo-computation on simple features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html"><i class="fa fa-check"></i>Tuesday January 31, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#filtering-selecting-and-conditioning-on-attributes"><i class="fa fa-check"></i>Filtering, selecting, and conditioning on attributes</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#filtering-on-geographic-boundaries"><i class="fa fa-check"></i>Filtering on geographic boundaries</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#joining-data-frames"><i class="fa fa-check"></i>Joining data frames</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#interpolating-using-areal-weights"><i class="fa fa-check"></i>Interpolating using areal weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-january-31-2023.html"><a href="tuesday-january-31-2023.html#s4-spatial-data-objects"><i class="fa fa-check"></i>S4 spatial data objects</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html"><i class="fa fa-check"></i>Thursday February 2, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html#working-with-raster-data"><i class="fa fa-check"></i>Working with raster data</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-2-2023.html"><a href="thursday-february-2-2023.html#working-with-space-time-data"><i class="fa fa-check"></i>Working with space-time data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html"><i class="fa fa-check"></i>Tuesday February 7, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#mapping-using-functions-from-the-ggplot2-package"><i class="fa fa-check"></i>Mapping using functions from the {ggplot2} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#mapping-using-functions-from-the-tmap-package"><i class="fa fa-check"></i>Mapping using functions from the {tmap} package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#creating-an-interactive-map"><i class="fa fa-check"></i>Creating an interactive map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#isolines-and-isobands"><i class="fa fa-check"></i>Isolines and isobands</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#hillshape-and-colors-with-tidyterra"><i class="fa fa-check"></i>Hillshape and colors with tidyterra</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#visualizing-spatial-data"><i class="fa fa-check"></i>Visualizing spatial data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#adding-an-inset-map"><i class="fa fa-check"></i>Adding an inset map</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-7-2023.html"><a href="tuesday-february-7-2023.html#making-maps-with-rdeck"><i class="fa fa-check"></i>Making maps with rdeck</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html"><i class="fa fa-check"></i>Tuesday February 14, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html#defining-spatial-neighborhoods-and-spatial-weights"><i class="fa fa-check"></i>Defining spatial neighborhoods and spatial weights</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html#computing-autocorrelation"><i class="fa fa-check"></i>Computing autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-14-2023.html"><a href="tuesday-february-14-2023.html#relating-autocorrelation-to-the-spatial-lag-variable"><i class="fa fa-check"></i>Relating autocorrelation to the spatial lag variable</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html"><i class="fa fa-check"></i>Thursday February 16, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#defining-neighborhoods"><i class="fa fa-check"></i>Defining neighborhoods</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#assessing-the-statistical-significance-of-autocorrelation"><i class="fa fa-check"></i>Assessing the statistical significance of autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#computing-and-interpreting-bivariate-spatial-autocorrelation"><i class="fa fa-check"></i>Computing and interpreting bivariate spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="thursday-february-16-2023.html"><a href="thursday-february-16-2023.html#assessing-local-indicators-of-spatial-autocorrelation"><i class="fa fa-check"></i>Assessing local indicators of spatial autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html"><i class="fa fa-check"></i>Tuesday February 21, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#using-local-spatial-autocorrelation-to-understand-the-tornado-record"><i class="fa fa-check"></i>Using local spatial autocorrelation to understand the tornado record</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#constraining-group-membership-based-on-spatial-autocorrelation"><i class="fa fa-check"></i>Constraining group membership based on spatial autocorrelation</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#estimating-spatial-autocorrelation-in-model-residuals"><i class="fa fa-check"></i>Estimating spatial autocorrelation in model residuals</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-21-2023.html"><a href="tuesday-february-21-2023.html#choosing-a-spatial-regression-model"><i class="fa fa-check"></i>Choosing a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html"><i class="fa fa-check"></i>Thursday February 23, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-february-23-2023.html"><a href="thursday-february-23-2023.html#fitting-and-interpreting-spatial-regression-models"><i class="fa fa-check"></i>Fitting and interpreting spatial regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html"><i class="fa fa-check"></i>Tuesday February 28, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#fitting-and-interpreting-geographic-regression"><i class="fa fa-check"></i>Fitting and interpreting geographic regression</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#multiscale-gwr"><i class="fa fa-check"></i>Multiscale GWR</a></li>
+<li class="chapter" data-level="" data-path="tuesday-february-28-2023.html"><a href="tuesday-february-28-2023.html#mapping-incidence-and-risk-with-a-spatial-regression-model"><i class="fa fa-check"></i>Mapping incidence and risk with a spatial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html"><i class="fa fa-check"></i>Tuesday March 7, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#spatial-data-as-point-patterns"><i class="fa fa-check"></i>Spatial data as point patterns</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#theoretical-framework-for-analyzingmodeling-point-pattern-data"><i class="fa fa-check"></i>Theoretical framework for analyzing/modeling point pattern data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#working-with-point-pattern-data-using-functions-from-the-spatstat-package"><i class="fa fa-check"></i>Working with point pattern data using functions from the spatstat package</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-7-2023.html"><a href="tuesday-march-7-2023.html#quantifying-the-spatial-intensity-of-events"><i class="fa fa-check"></i>Quantifying the spatial intensity of events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html"><i class="fa fa-check"></i>Thursday March 9, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html#creating-ppp-and-owin-objects-from-simple-feature-data-frames"><i class="fa fa-check"></i>Creating <code>ppp</code> and <code>owin</code> objects from simple feature data frames</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html#estimating-spatial-intensity-as-a-function-of-distance"><i class="fa fa-check"></i>Estimating spatial intensity as a function of distance</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-9-2023.html"><a href="thursday-march-9-2023.html#covariate-trend-as-a-possible-confounding-factor"><i class="fa fa-check"></i>Covariate trend as a possible confounding factor</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html"><i class="fa fa-check"></i>Thursday March 23, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#estimating-the-relative-risk"><i class="fa fa-check"></i>Estimating the relative risk</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#estimating-second-moment-properties-of-events"><i class="fa fa-check"></i>Estimating second-moment properties of events</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-23-2023.html"><a href="thursday-march-23-2023.html#examples-of-clustered-events"><i class="fa fa-check"></i>Examples of clustered events</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html"><i class="fa fa-check"></i>Tuesday March 28, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#removing-duplicate-events-and-defining-the-domain"><i class="fa fa-check"></i>Removing duplicate events and defining the domain</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#determining-statistical-significance-of-clustering"><i class="fa fa-check"></i>Determining statistical significance of clustering</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#estimating-clustering-in-multi-type-event-locations"><i class="fa fa-check"></i>Estimating clustering in multi-type event locations</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#interpolating-output-from-a-distance-function"><i class="fa fa-check"></i>Interpolating output from a distance function</a></li>
+<li class="chapter" data-level="" data-path="tuesday-march-28-2023.html"><a href="tuesday-march-28-2023.html#limitations-of-the-distance-functions"><i class="fa fa-check"></i>Limitations of the distance functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html"><i class="fa fa-check"></i>Thursday March 30, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#limitations-on-interpreting-distance-functions"><i class="fa fa-check"></i>Limitations on interpreting distance functions</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#models-for-point-pattern-data"><i class="fa fa-check"></i>Models for point pattern data</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#fitting-and-interpreting-inhibition-models"><i class="fa fa-check"></i>Fitting and interpreting inhibition models</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#fitting-and-interpreting-cluster-models"><i class="fa fa-check"></i>Fitting and interpreting cluster models</a></li>
+<li class="chapter" data-level="" data-path="thursday-march-30-2023.html"><a href="thursday-march-30-2023.html#assessing-how-well-the-model-fits"><i class="fa fa-check"></i>Assessing how well the model fits</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html"><i class="fa fa-check"></i>Tuesday April 4, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#fitting-a-log-gaussian-cox-model"><i class="fa fa-check"></i>Fitting a log-Gaussian Cox model</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#assessing-how-well-a-point-pattern-model-fits-the-data"><i class="fa fa-check"></i>Assessing how well a point pattern model fits the data</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-4-2023.html"><a href="tuesday-april-4-2023.html#an-example-of-a-point-process-model-in-the-wild"><i class="fa fa-check"></i>An example of a point process model in the wild</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html"><i class="fa fa-check"></i>Thursday April 6, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#spatial-logistic-regression"><i class="fa fa-check"></i>Spatial logistic regression</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#spatial-data-interpolation"><i class="fa fa-check"></i>Spatial data interpolation</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-6-2023.html"><a href="thursday-april-6-2023.html#computing-the-sample-variogram"><i class="fa fa-check"></i>Computing the sample variogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html"><i class="fa fa-check"></i>Thursday April 13, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html#fitting-a-variogram-model-to-the-sample-variogram"><i class="fa fa-check"></i>Fitting a variogram model to the sample variogram</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-13-2023.html"><a href="thursday-april-13-2023.html#creating-an-interpolated-surface-with-the-method-of-kriging"><i class="fa fa-check"></i>Creating an interpolated surface with the method of kriging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html"><i class="fa fa-check"></i>Tuesday April 18, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#comparing-interpolation-methods"><i class="fa fa-check"></i>Comparing interpolation methods</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#evaluating-interpolation-accuracy"><i class="fa fa-check"></i>Evaluating interpolation accuracy</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#block-cross-validation"><i class="fa fa-check"></i>Block cross validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html"><i class="fa fa-check"></i>Thursday April 20, 2023</a>
+<ul>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#interpolating-to-areal-units-block-kriging"><i class="fa fa-check"></i>Interpolating to areal units (block kriging)</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#simulating-spatial-fields"><i class="fa fa-check"></i>Simulating spatial fields</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#interpolating-multiple-variables"><i class="fa fa-check"></i>Interpolating multiple variables</a></li>
+<li class="chapter" data-level="" data-path="thursday-april-20-2023.html"><a href="thursday-april-20-2023.html#machine-learning-for-spatial-interpolation"><i class="fa fa-check"></i>Machine learning for spatial interpolation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GIS5122: Applied Spatial Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tuesday-february-28-2023" class="section level1 unnumbered hasAnchor">
+<h1>Tuesday February 28, 2023<a href="tuesday-february-28-2023.html#tuesday-february-28-2023" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Lab 3 will be Thursday</p>
+<div id="fitting-and-interpreting-geographic-regression" class="section level2 unnumbered hasAnchor">
+<h2>Fitting and interpreting geographic regression<a href="tuesday-february-28-2023.html#fitting-and-interpreting-geographic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Another approach to modeling spatial data is to assume that the <em>relationships</em> between the response variable and the explanatory variables are modified by contextual factors that depend on location. In this case you fit individual regression models at each geographic location</p>
+<p>It is called geographically weighted regression (GWR) or simply geographic regression. GWR is used in epidemiology, particularly for research on infectious diseases and for evaluating health policies and programs</p>
+<p>The analogy is local measures of spatial autocorrelation where you estimate the statistic like Moran’s I at each location. It is a useful approach for exploratory analysis (e.g., to show where the explanatory variables are most strongly related to your response variable)</p>
+<p>Since GWR fits a separate regression model at every spatial location in the dataset, it is not a single model but a procedure for fitting a set of models. This is different from the spatial regression, like the spatially-lagged Y model, which is a single model with a spatial term</p>
+<p>Observations across the entire domain contribute to the model fit at a particular location, but nearby observations are given more weight than observations farther away. Consider a non-spatial case of localized regression using the <code>airquality</code> data frame where you are interested in the relationship between ozone concentration and air temperature. You can use a single regression model or a series of local regression models</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tuesday-february-28-2023.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="tuesday-february-28-2023.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="tuesday-february-28-2023.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> airquality,</span>
+<span id="cb1-4"><a href="tuesday-february-28-2023.html#cb1-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Temp, <span class="at">y =</span> Ozone)) <span class="sc">+</span></span>
+<span id="cb1-5"><a href="tuesday-february-28-2023.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb1-6"><a href="tuesday-february-28-2023.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-7"><a href="tuesday-february-28-2023.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Weighting is based on a Gaussian function (kernel) and a bandwidth. The bandwidth is defined as the distance across the kernel at the inflection points (2nd derivative goes through zero)</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tuesday-february-28-2023.html#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">by =</span> .<span class="dv">01</span> )</span>
+<span id="cb3-2"><a href="tuesday-february-28-2023.html#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> extremefit<span class="sc">::</span><span class="fu">Gaussian.kernel</span>(x)</span>
+<span id="cb3-3"><a href="tuesday-february-28-2023.html#cb3-3" aria-hidden="true" tabindex="-1"></a>dydx <span class="ot">&lt;-</span> DTWBI<span class="sc">::</span><span class="fu">local.derivative.ddtw</span>(y)</span>
+<span id="cb3-4"><a href="tuesday-february-28-2023.html#cb3-4" aria-hidden="true" tabindex="-1"></a>dy2dx2 <span class="ot">&lt;-</span> DTWBI<span class="sc">::</span><span class="fu">local.derivative.ddtw</span>(dydx)</span>
+<span id="cb3-5"><a href="tuesday-february-28-2023.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="tuesday-february-28-2023.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(x, y, dydx, dy2dx2) <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="tuesday-february-28-2023.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="tuesday-february-28-2023.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb3-9"><a href="tuesday-february-28-2023.html#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="sc">-</span>.<span class="dv">33</span>, <span class="at">y =</span> .<span class="dv">73</span>, </span>
+<span id="cb3-10"><a href="tuesday-february-28-2023.html#cb3-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">xend =</span> .<span class="dv">33</span>, <span class="at">yend =</span> .<span class="dv">73</span>, </span>
+<span id="cb3-11"><a href="tuesday-february-28-2023.html#cb3-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="tuesday-february-28-2023.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Lag distance&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Relative weight given to an observation&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="tuesday-february-28-2023.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>In GWR, the bandwidth is specified as a single parameter and determined through a cross-validation procedure. The bandwidth can also be a function of location (variable bandwidth)</p>
+<p>Said another way, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variables. Geographic regressions show how this dependency varies by location. GWR is used as an exploratory technique for determining where local regression coefficients are different from corresponding global values</p>
+<p>Returning (final time I promise) to with the Columbus crime data</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="tuesday-february-28-2023.html#cb4-1" aria-hidden="true" tabindex="-1"></a>( CC.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;columbus&quot;</span>),</span>
+<span id="cb4-2"><a href="tuesday-february-28-2023.html#cb4-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">layer =</span> <span class="st">&quot;columbus&quot;</span>) )</span></code></pre></div>
+<pre><code>## Reading layer `columbus&#39; from data source 
+##   `/Users/jelsner/Desktop/ClassNotes/ASS-2023/data/columbus&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 49 features and 20 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 5.874907 ymin: 10.78863 xmax: 11.28742 ymax: 14.74245
+## CRS:           NA</code></pre>
+<pre><code>## Simple feature collection with 49 features and 20 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 5.874907 ymin: 10.78863 xmax: 11.28742 ymax: 14.74245
+## CRS:           NA
+## First 10 features:
+##        AREA PERIMETER COLUMBUS_ COLUMBUS_I POLYID NEIG  HOVAL    INC     CRIME
+## 1  0.309441  2.440629         2          5      1    5 80.467 19.531 15.725980
+## 2  0.259329  2.236939         3          1      2    1 44.567 21.232 18.801754
+## 3  0.192468  2.187547         4          6      3    6 26.350 15.956 30.626781
+## 4  0.083841  1.427635         5          2      4    2 33.200  4.477 32.387760
+## 5  0.488888  2.997133         6          7      5    7 23.225 11.252 50.731510
+## 6  0.283079  2.335634         7          8      6    8 28.750 16.029 26.066658
+## 7  0.257084  2.554577         8          4      7    4 75.000  8.438  0.178269
+## 8  0.204954  2.139524         9          3      8    3 37.125 11.337 38.425858
+## 9  0.500755  3.169707        10         18      9   18 52.600 17.586 30.515917
+## 10 0.246689  2.087235        11         10     10   10 96.400 13.598 34.000835
+##        OPEN    PLUMB DISCBD     X     Y NSA NSB EW CP THOUS NEIGNO
+## 1  2.850747 0.217155   5.03 38.80 44.07   1   1  1  0  1000   1005
+## 2  5.296720 0.320581   4.27 35.62 42.38   1   1  0  0  1000   1001
+## 3  4.534649 0.374404   3.89 39.82 41.18   1   1  1  0  1000   1006
+## 4  0.394427 1.186944   3.70 36.50 40.52   1   1  0  0  1000   1002
+## 5  0.405664 0.624596   2.83 40.01 38.00   1   1  1  0  1000   1007
+## 6  0.563075 0.254130   3.78 43.75 39.28   1   1  1  0  1000   1008
+## 7  0.000000 2.402402   2.74 33.36 38.41   1   1  0  0  1000   1004
+## 8  3.483478 2.739726   2.89 36.71 38.71   1   1  0  0  1000   1003
+## 9  0.527488 0.890736   3.17 43.44 35.92   1   1  1  0  1000   1018
+## 10 1.548348 0.557724   4.33 47.61 36.42   1   1  1  0  1000   1010
+##                          geometry
+## 1  POLYGON ((8.624129 14.23698...
+## 2  POLYGON ((8.25279 14.23694,...
+## 3  POLYGON ((8.653305 14.00809...
+## 4  POLYGON ((8.459499 13.82035...
+## 5  POLYGON ((8.685274 13.63952...
+## 6  POLYGON ((9.401384 13.5504,...
+## 7  POLYGON ((8.037741 13.60752...
+## 8  POLYGON ((8.247527 13.58651...
+## 9  POLYGON ((9.333297 13.27242...
+## 10 POLYGON ((10.08251 13.03377...</code></pre>
+<p>Start by fitting a ‘global’ ordinary-least-squares (OLS) linear regression to the crime rates using income and housing values, as you did earlier</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tuesday-february-28-2023.html#cb7-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> CRIME <span class="sc">~</span> INC <span class="sc">+</span> HOVAL</span>
+<span id="cb7-2"><a href="tuesday-february-28-2023.html#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="tuesday-february-28-2023.html#cb7-3" aria-hidden="true" tabindex="-1"></a>( model.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> f,</span>
+<span id="cb7-4"><a href="tuesday-february-28-2023.html#cb7-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> CC.sf) )</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = f, data = CC.sf)
+## 
+## Coefficients:
+## (Intercept)          INC        HOVAL  
+##     68.6190      -1.5973      -0.2739</code></pre>
+<p>The coefficients on the two explanatory variables indicate that crime decreases in areas of higher income and higher housing values</p>
+<p>You compare this result to results from geographic regressions. The functions are in the {spgwr} package</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tuesday-february-28-2023.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(spgwr)) <span class="fu">install.packages</span>(<span class="at">pkgs =</span> <span class="st">&quot;spgwr&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: spgwr</code></pre>
+<pre><code>## Loading required package: sp</code></pre>
+<pre><code>## Loading required package: spData</code></pre>
+<pre><code>## NOTE: This package does not constitute approval of GWR
+## as a method of spatial analysis; see example(gwr)</code></pre>
+<p>The <code>sp</code> part of the package name indicates that the functions were developed to work with S4 spatial objects</p>
+<p>The functions allow you to use S3 simple features by specifying the locations as a matrix. Here you extract the centroid from each census tract as a matrix</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tuesday-february-28-2023.html#cb14-1" aria-hidden="true" tabindex="-1"></a>( Locations <span class="ot">&lt;-</span> CC.sf <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="tuesday-february-28-2023.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>() <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="tuesday-february-28-2023.html#cb14-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_coordinates</span>() )</span></code></pre></div>
+<pre><code>## Warning in st_centroid.sf(CC.sf): st_centroid assumes attributes are constant
+## over geometries of x</code></pre>
+<pre><code>##            X        Y
+## 1   8.827218 14.36908
+## 2   8.332658 14.03162
+## 3   9.012265 13.81972
+## 4   8.460801 13.71696
+## 5   9.007982 13.29637
+## 6   9.739926 13.47463
+## 7   8.118750 13.29570
+## 8   8.496488 13.40261
+## 9   9.630793 12.94272
+## 10 10.366383 13.00189
+## 11  8.669735 12.98012
+## 12  8.544996 12.95313
+## 13  8.349223 12.99609
+## 14  8.292702 12.86371
+## 15  8.973462 12.74159
+## 16  8.655866 12.62732
+## 17 10.528621 12.64748
+## 18  8.487918 12.54534
+## 19  8.312368 12.66672
+## 20 10.190582 12.25690
+## 21  7.847424 12.08500
+## 22  9.655244 12.46277
+## 23 10.671381 12.29157
+## 24  8.420744 12.31801
+## 25  8.938752 12.38051
+## 26  9.250921 12.41378
+## 27  9.737004 12.14969
+## 28  9.297976 11.97779
+## 29  8.977862 11.99401
+## 30  8.688719 11.93872
+## 31  6.892482 11.91415
+## 32 10.763784 11.84443
+## 33  9.783876 11.92271
+## 34  7.339431 11.62855
+## 35  9.668249 11.69254
+## 36  6.728838 11.63436
+## 37  8.912363 11.63031
+## 38  9.210527 11.65984
+## 39  6.221943 11.40251
+## 40 10.492493 11.50720
+## 41 10.953587 11.47925
+## 42  7.110051 11.29544
+## 43  9.214330 11.43277
+## 44  9.641904 11.39104
+## 45  8.910340 11.14864
+## 46  6.423385 11.21924
+## 47 10.935302 11.01003
+## 48  9.251957 11.18125
+## 49  9.492144 11.01496</code></pre>
+<p>These are the X and Y coordinate values specifying the centroid for the first six tracts (out of 49).</p>
+<p>To determine the optimal bandwidth for the Gaussian kernel (weighting function) you use the <code>spgwr::gwr.sel()</code> function. You need to specify the arguments, model formula (<code>formula =</code>), the data frame (<code>data =</code>), and the coordinates (<code>coords =</code>) as part of the function call. The argument <code>coords =</code> is the matrix of coordinates of points representing the spatial locations of the observations. It can be omitted if the data is an S4 spatial data frame from the {sp} package.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tuesday-february-28-2023.html#cb17-1" aria-hidden="true" tabindex="-1"></a>( bw <span class="ot">&lt;-</span> spgwr<span class="sc">::</span><span class="fu">gwr.sel</span>(<span class="at">formula =</span> f, </span>
+<span id="cb17-2"><a href="tuesday-february-28-2023.html#cb17-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> CC.sf,</span>
+<span id="cb17-3"><a href="tuesday-february-28-2023.html#cb17-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> Locations) )</span></code></pre></div>
+<pre><code>## Bandwidth: 2.220031 CV score: 7473.853 
+## Bandwidth: 3.588499 CV score: 7479.637 
+## Bandwidth: 1.374271 CV score: 7404.175 
+## Bandwidth: 0.8515626 CV score: 7389.293 
+## Bandwidth: 0.7515898 CV score: 7280.867 
+## Bandwidth: 0.4667245 CV score: 6319.861 
+## Bandwidth: 0.290668 CV score: 7474.967 
+## Bandwidth: 0.5755334 CV score: 6754.626 
+## Bandwidth: 0.3994769 CV score: 6197.735 
+## Bandwidth: 0.3597549 CV score: 6320.012 
+## Bandwidth: 0.4132551 CV score: 6200.674 
+## Bandwidth: 0.4028088 CV score: 6196.867 
+## Bandwidth: 0.4040147 CV score: 6196.817 
+## Bandwidth: 0.4038422 CV score: 6196.816 
+## Bandwidth: 0.4038829 CV score: 6196.816 
+## Bandwidth: 0.4038015 CV score: 6196.816 
+## Bandwidth: 0.4038422 CV score: 6196.816</code></pre>
+<pre><code>## [1] 0.4038422</code></pre>
+<p>The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (Gaussian by default) and that bandwidth (distance)</p>
+<p>The output shows that the first bandwidth chosen was 2.22 in arbitrary distance units. The resulting prediction skill from fitting 49 regression models with that bandwidth is 7474 units. The resulting CV score is based on cross validation whereby skill is computed at each location when data from that location is not used to fit the regression models</p>
+<p>The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score after refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs</p>
+<p>The output shows that no additional improvement in skill occurs at a bandwidth distance of .404 units, and this single value is assigned to the object you called <code>bw</code></p>
+<p>Once the bandwidth distance is determined you use the <code>spgwr::gwr()</code> function to fit the regressions using that bandwidth. The arguments are the same as before but includes the <code>bandwidth =</code> argument where you specify the object <code>bw</code>.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tuesday-february-28-2023.html#cb20-1" aria-hidden="true" tabindex="-1"></a>models.gwr <span class="ot">&lt;-</span> spgwr<span class="sc">::</span><span class="fu">gwr</span>(<span class="at">formula =</span> f, </span>
+<span id="cb20-2"><a href="tuesday-february-28-2023.html#cb20-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> CC.sf, </span>
+<span id="cb20-3"><a href="tuesday-february-28-2023.html#cb20-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">coords =</span> Locations,</span>
+<span id="cb20-4"><a href="tuesday-february-28-2023.html#cb20-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">bandwidth =</span> bw)</span></code></pre></div>
+<p>The model and observed data are assigned to a list object with element names listed using the <code>names()</code> function</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tuesday-february-28-2023.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(models.gwr)</span></code></pre></div>
+<pre><code>##  [1] &quot;SDF&quot;       &quot;lhat&quot;      &quot;lm&quot;        &quot;results&quot;   &quot;bandwidth&quot; &quot;adapt&quot;    
+##  [7] &quot;hatmatrix&quot; &quot;gweight&quot;   &quot;gTSS&quot;      &quot;this.call&quot; &quot;fp.given&quot;  &quot;timings&quot;</code></pre>
+<p>The first element is <code>SDF</code> containing the model output as a S4 spatial data frame</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tuesday-february-28-2023.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(models.gwr<span class="sc">$</span>SDF)</span></code></pre></div>
+<pre><code>## [1] &quot;SpatialPointsDataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;sp&quot;</code></pre>
+<p>The structure of the spatial data frame is obtained with the <code>str()</code> function and by setting the <code>max.level</code> argument to 2</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="tuesday-february-28-2023.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(models.gwr<span class="sc">$</span>SDF, </span>
+<span id="cb25-2"><a href="tuesday-february-28-2023.html#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.level =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## Formal class &#39;SpatialPointsDataFrame&#39; [package &quot;sp&quot;] with 5 slots
+##   ..@ data       :&#39;data.frame&#39;:  49 obs. of  7 variables:
+##   ..@ coords.nrs : num(0) 
+##   ..@ coords     : num [1:49, 1:2] 8.83 8.33 9.01 8.46 9.01 ...
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   ..@ bbox       : num [1:2, 1:2] 6.22 11.01 10.95 14.37
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot</code></pre>
+<p>Here there are five slots with the first slot labeled <code>@data</code> indicating that it is a data frame. The number of rows and columns in the data frame are listed with the <code>dim()</code> function</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="tuesday-february-28-2023.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(models.gwr<span class="sc">$</span>SDF)</span></code></pre></div>
+<pre><code>## [1] 49  7</code></pre>
+<p>There are 49 rows and 7 columns. Each row corresponds to a tract and information about the regressions localized to the tract is given in the columns. Column names are listed with the <code>names()</code> function.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="tuesday-february-28-2023.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(models.gwr<span class="sc">$</span>SDF)</span></code></pre></div>
+<pre><code>## [1] &quot;sum.w&quot;       &quot;(Intercept)&quot; &quot;INC&quot;         &quot;HOVAL&quot;       &quot;gwr.e&quot;      
+## [6] &quot;pred&quot;        &quot;localR2&quot;</code></pre>
+<p>They include the sum of the weights <code>sum.w</code> (the larger the sum the more often the tract is included in the local regressions–favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the explanatory variables (<code>INC</code> and <code>HOVAL</code>) and an intercept term, the residual (<code>gwr.e</code>), the predicted value (<code>pred</code>) and the local goodness-of-fit (<code>localR2</code>)</p>
+<p>You create a map displaying where income has the most and least influence on crime by first attaching the income coefficient from the data frame (column labeled <code>INC</code>) to the simple feature data frame since the order of the rows in the <code>SDF</code> matches the order in the simple feature data frame and then using functions from the {ggplot2} package</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="tuesday-february-28-2023.html#cb31-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>INCcoef <span class="ot">&lt;-</span> models.gwr<span class="sc">$</span>SDF<span class="sc">$</span>INC</span>
+<span id="cb31-2"><a href="tuesday-february-28-2023.html#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="tuesday-february-28-2023.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="tuesday-february-28-2023.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> INCcoef)) <span class="sc">+</span></span>
+<span id="cb31-5"><a href="tuesday-february-28-2023.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Most tracts have coefficients with values less than zero. Recall the global coefficient is less than zero. But areas in yellow show where the coefficient values are greater than zero indicating a direct relationship between crime and income</p>
+<p>How about the coefficients on housing values?</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tuesday-february-28-2023.html#cb32-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>HOVALcoef <span class="ot">&lt;-</span> models.gwr<span class="sc">$</span>SDF<span class="sc">$</span>HOVAL</span>
+<span id="cb32-2"><a href="tuesday-february-28-2023.html#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="tuesday-february-28-2023.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="tuesday-february-28-2023.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> HOVALcoef)) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="tuesday-february-28-2023.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>While the global coefficient is negative indicating crime rates tend to be lower in areas with higher housing values, the opposite is the case over much of city especially on the south side</p>
+<p>You put the vector of GWR predictions into the <code>CC.sf</code> simple feature data frame giving it the column name <code>predGWR</code> and then map the predictions using functions from the {tmap} package</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="tuesday-february-28-2023.html#cb33-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>predGWR <span class="ot">&lt;-</span> models.gwr<span class="sc">$</span>SDF<span class="sc">$</span>pred</span>
+<span id="cb33-2"><a href="tuesday-february-28-2023.html#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="tuesday-february-28-2023.html#cb33-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="tuesday-february-28-2023.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="st">&quot;predGWR&quot;</span>,</span>
+<span id="cb33-5"><a href="tuesday-february-28-2023.html#cb33-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Predicted crimes</span><span class="sc">\n</span><span class="st">per 1000&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="tuesday-february-28-2023.html#cb33-6" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Warning: Currect projection of shape CC.sf unknown. Long-lat (WGS84) is
+## assumed.</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also smoother than with a global OLS regression</p>
+<p>Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tuesday-february-28-2023.html#cb35-1" aria-hidden="true" tabindex="-1"></a>CC.sf<span class="sc">$</span>localR2 <span class="ot">&lt;-</span> models.gwr<span class="sc">$</span>SDF<span class="sc">$</span>localR2</span>
+<span id="cb35-2"><a href="tuesday-february-28-2023.html#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="tuesday-february-28-2023.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CC.sf) <span class="sc">+</span></span>
+<span id="cb35-4"><a href="tuesday-february-28-2023.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> localR2)) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="tuesday-february-28-2023.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Although crime rates are highest in the center, the relationship between crime and income and housing values is largest in tracts across the eastern part of the city.</p>
+<p>This type of nuanced exploratory analysis is made possible with GWR</p>
+<p>Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables ‘provoke’ the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals</p>
+<p>So a way to check the assumption of a stationary process is to use geographic regression. If the coefficients from the geographic regressions match closely the global coefficients then you can assume a stationary process</p>
+<p>Example: Southern homicides</p>
+<p>The file <code>south.zip</code> contains shapefiles with homicide rates and explanatory variables for counties in the southern United States. Unzip the file then get the data into your current session using the <code>sf::st_read()</code>. The data have latitude/longitude coordinates but there is no projection information so you set the CRS to long-lat with the <code>st_crs()</code> function</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="tuesday-february-28-2023.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;south.zip&quot;</span>),</span>
+<span id="cb36-2"><a href="tuesday-february-28-2023.html#cb36-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">exdir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>))</span>
+<span id="cb36-3"><a href="tuesday-february-28-2023.html#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="tuesday-february-28-2023.html#cb36-4" aria-hidden="true" tabindex="-1"></a>SH.sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;south&quot;</span>), </span>
+<span id="cb36-5"><a href="tuesday-february-28-2023.html#cb36-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">layer =</span> <span class="st">&quot;south&quot;</span>)</span></code></pre></div>
+<pre><code>## Reading layer `south&#39; from data source 
+##   `/Users/jelsner/Desktop/ClassNotes/ASS-2023/data/south&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 1412 features and 69 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -106.6495 ymin: 24.95597 xmax: -75.046 ymax: 40.63714
+## CRS:           NA</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="tuesday-february-28-2023.html#cb38-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(SH.sf) <span class="ot">&lt;-</span> <span class="dv">4326</span></span>
+<span id="cb38-2"><a href="tuesday-february-28-2023.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(SH.sf)</span></code></pre></div>
+<pre><code>##  [1] &quot;NAME&quot;       &quot;STATE_NAME&quot; &quot;STATE_FIPS&quot; &quot;CNTY_FIPS&quot;  &quot;FIPS&quot;      
+##  [6] &quot;STFIPS&quot;     &quot;COFIPS&quot;     &quot;FIPSNO&quot;     &quot;SOUTH&quot;      &quot;HR60&quot;      
+## [11] &quot;HR70&quot;       &quot;HR80&quot;       &quot;HR90&quot;       &quot;HC60&quot;       &quot;HC70&quot;      
+## [16] &quot;HC80&quot;       &quot;HC90&quot;       &quot;PO60&quot;       &quot;PO70&quot;       &quot;PO80&quot;      
+## [21] &quot;PO90&quot;       &quot;RD60&quot;       &quot;RD70&quot;       &quot;RD80&quot;       &quot;RD90&quot;      
+## [26] &quot;PS60&quot;       &quot;PS70&quot;       &quot;PS80&quot;       &quot;PS90&quot;       &quot;UE60&quot;      
+## [31] &quot;UE70&quot;       &quot;UE80&quot;       &quot;UE90&quot;       &quot;DV60&quot;       &quot;DV70&quot;      
+## [36] &quot;DV80&quot;       &quot;DV90&quot;       &quot;MA60&quot;       &quot;MA70&quot;       &quot;MA80&quot;      
+## [41] &quot;MA90&quot;       &quot;POL60&quot;      &quot;POL70&quot;      &quot;POL80&quot;      &quot;POL90&quot;     
+## [46] &quot;DNL60&quot;      &quot;DNL70&quot;      &quot;DNL80&quot;      &quot;DNL90&quot;      &quot;MFIL59&quot;    
+## [51] &quot;MFIL69&quot;     &quot;MFIL79&quot;     &quot;MFIL89&quot;     &quot;FP59&quot;       &quot;FP69&quot;      
+## [56] &quot;FP79&quot;       &quot;FP89&quot;       &quot;BLK60&quot;      &quot;BLK70&quot;      &quot;BLK80&quot;     
+## [61] &quot;BLK90&quot;      &quot;GI59&quot;       &quot;GI69&quot;       &quot;GI79&quot;       &quot;GI89&quot;      
+## [66] &quot;FH60&quot;       &quot;FH70&quot;       &quot;FH80&quot;       &quot;FH90&quot;       &quot;geometry&quot;</code></pre>
+<p>Each row is a county in the southeast U.S. There are 1412 counties and 70 columns (69 are variables and 1 is the geometry)</p>
+<p>You are interested in predicting homicide rates (<code>HR</code>) which are given as the number of homicides per 100,000 people. You consider five explanatory variables for the prediction model including <code>RD</code>: resource deprivation index, <code>PS</code>: population structure index, <code>MA</code>: marriage age, <code>DV</code>: divorce rate, and <code>UE</code>: unemployment rate. The two digit number appended to the column names is the census year from the 20th century</p>
+<p>First you apply the <code>plot()</code> method to the <code>geometry</code> column to see the extent of the locations and the geometry type</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tuesday-february-28-2023.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(SH.sf<span class="sc">$</span>geometry)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Next you select only the variables in the data frame of interest</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="tuesday-february-28-2023.html#cb41-1" aria-hidden="true" tabindex="-1"></a>SH.sf <span class="ot">&lt;-</span> SH.sf <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="tuesday-february-28-2023.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(HR90, RD90, PS90, MA90, DV90, UE90)</span></code></pre></div>
+<p>Since the homicide rates are non-negative, you create a new column in the <code>SH.sf</code> data frame called <code>logHR90</code>, which is the logarithm of <code>HR90</code>. Since there are some counties with no homicides [log(0) = -Inf] you change values in those counties to the minimum observed value before taking logarithms</p>
+<p>Here you first create a logical vector <code>x</code> corresponding to the rows with non-zero homicide rates. You then find the minimum non-zero rate and assign it to <code>e</code>. Next you subset on this value for all rates equal to zero and finally you create a new column as the logarithm of the non-zero rates</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="tuesday-february-28-2023.html#cb42-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> SH.sf<span class="sc">$</span>HR90 <span class="sc">!=</span> <span class="dv">0</span></span>
+<span id="cb42-2"><a href="tuesday-february-28-2023.html#cb42-2" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">min</span>(SH.sf<span class="sc">$</span>HR90[x])</span>
+<span id="cb42-3"><a href="tuesday-february-28-2023.html#cb42-3" aria-hidden="true" tabindex="-1"></a>SH.sf<span class="sc">$</span>HR90[<span class="sc">!</span>x] <span class="ot">&lt;-</span> e</span>
+<span id="cb42-4"><a href="tuesday-february-28-2023.html#cb42-4" aria-hidden="true" tabindex="-1"></a>SH.sf<span class="sc">$</span>logHR90 <span class="ot">&lt;-</span> <span class="fu">log</span>(SH.sf<span class="sc">$</span>HR90)</span></code></pre></div>
+<p>You then create a thematic map of the log homicide rates from the 1990 census (<code>logHR90</code>). This is your response variable</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="tuesday-february-28-2023.html#cb43-1" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(SH.sf) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="tuesday-february-28-2023.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;logHR90&quot;</span>, </span>
+<span id="cb43-3"><a href="tuesday-february-28-2023.html#cb43-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;1990</span><span class="sc">\n</span><span class="st"> Log Homicide Rates</span><span class="sc">\n</span><span class="st">[/100,000]&quot;</span>)</span></code></pre></div>
+<pre><code>## Variable(s) &quot;logHR90&quot; contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Homicide rates appear similar in neighboring counties but you start with an OLS regression model. You regress homicide rate onto resource deprivation, population structure, marriage age, divorce rate, and unemployment rate in 1990</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tuesday-february-28-2023.html#cb45-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> logHR90 <span class="sc">~</span> RD90 <span class="sc">+</span> PS90 <span class="sc">+</span> MA90 <span class="sc">+</span> DV90 <span class="sc">+</span> UE90</span>
+<span id="cb45-2"><a href="tuesday-february-28-2023.html#cb45-2" aria-hidden="true" tabindex="-1"></a>model.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> f, </span>
+<span id="cb45-3"><a href="tuesday-february-28-2023.html#cb45-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> SH.sf)</span>
+<span id="cb45-4"><a href="tuesday-february-28-2023.html#cb45-4" aria-hidden="true" tabindex="-1"></a>model.ols <span class="sc">|&gt;</span></span>
+<span id="cb45-5"><a href="tuesday-february-28-2023.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = f, data = SH.sf)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5386 -0.3360  0.0940  0.4664  3.1132 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.741435   0.230334   7.560 7.21e-14 ***
+## RD90         0.499278   0.027745  17.995  &lt; 2e-16 ***
+## PS90         0.367775   0.026559  13.847  &lt; 2e-16 ***
+## MA90        -0.008041   0.006323  -1.272    0.204    
+## DV90         0.072977   0.014892   4.900 1.07e-06 ***
+## UE90        -0.049012   0.009055  -5.413 7.29e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7578 on 1406 degrees of freedom
+## Multiple R-squared:  0.2937, Adjusted R-squared:  0.2912 
+## F-statistic:   117 on 5 and 1406 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>You remove the marriage age variable and refit the model</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tuesday-february-28-2023.html#cb47-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> logHR90 <span class="sc">~</span> RD90 <span class="sc">+</span> PS90 <span class="sc">+</span> DV90 <span class="sc">+</span> UE90</span>
+<span id="cb47-2"><a href="tuesday-february-28-2023.html#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="tuesday-february-28-2023.html#cb47-3" aria-hidden="true" tabindex="-1"></a>model.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> f, </span>
+<span id="cb47-4"><a href="tuesday-february-28-2023.html#cb47-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> SH.sf)</span>
+<span id="cb47-5"><a href="tuesday-february-28-2023.html#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-6"><a href="tuesday-february-28-2023.html#cb47-6" aria-hidden="true" tabindex="-1"></a>model.ols <span class="sc">|&gt;</span></span>
+<span id="cb47-7"><a href="tuesday-february-28-2023.html#cb47-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = f, data = SH.sf)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.54480 -0.34707  0.09298  0.46404  3.11601 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.490522   0.118854  12.541  &lt; 2e-16 ***
+## RD90         0.506974   0.027083  18.720  &lt; 2e-16 ***
+## PS90         0.378972   0.025063  15.121  &lt; 2e-16 ***
+## DV90         0.068451   0.014464   4.733 2.44e-06 ***
+## UE90        -0.048356   0.009042  -5.348 1.04e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.758 on 1407 degrees of freedom
+## Multiple R-squared:  0.2929, Adjusted R-squared:  0.2909 
+## F-statistic: 145.7 on 4 and 1407 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Your next step it to test for significant autocorrelation in the model residuals. You create a weights matrix using the functions from the {spdep} package and then use the <code>lm.morantest()</code> function</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="tuesday-february-28-2023.html#cb49-1" aria-hidden="true" tabindex="-1"></a>wts <span class="ot">&lt;-</span> SH.sf <span class="sc">|&gt;</span></span>
+<span id="cb49-2"><a href="tuesday-february-28-2023.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  spdep<span class="sc">::</span><span class="fu">poly2nb</span>() <span class="sc">|&gt;</span></span>
+<span id="cb49-3"><a href="tuesday-february-28-2023.html#cb49-3" aria-hidden="true" tabindex="-1"></a>  spdep<span class="sc">::</span><span class="fu">nb2listw</span>()</span>
+<span id="cb49-4"><a href="tuesday-february-28-2023.html#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="tuesday-february-28-2023.html#cb49-5" aria-hidden="true" tabindex="-1"></a>model.ols <span class="sc">|&gt;</span></span>
+<span id="cb49-6"><a href="tuesday-february-28-2023.html#cb49-6" aria-hidden="true" tabindex="-1"></a>  spdep<span class="sc">::</span><span class="fu">lm.morantest</span>(<span class="at">listw =</span> wts)</span></code></pre></div>
+<pre><code>## 
+##  Global Moran I for regression residuals
+## 
+## data:  
+## model: lm(formula = f, data = SH.sf)
+## weights: wts
+## 
+## Moran I statistic standard deviate = 7.1847, p-value = 3.367e-13
+## alternative hypothesis: greater
+## sample estimates:
+## Observed Moran I      Expectation         Variance 
+##     0.1139749888    -0.0021045133     0.0002610288</code></pre>
+<p>Moran I is only .11 but it is statistically significant (<span class="math inline">\(p\)</span> value &lt; .01) because there are many counties</p>
+<p>As noted above, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variable(s). Geographic regression might show how this dependency varies by location. It is an exploratory technique intended to indicate where local regression coefficients are different from the global values</p>
+<p>You obtain the optimal bandwidth with the <code>gwr.sel()</code> function from the {spgwr} package. You include the model formula, the data, and since the CRS is geographic we use the argument <code>longlat = TRUE</code> to get the distances in kilometers</p>
+<p>You extract the centroid from each county tract as a matrix</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tuesday-february-28-2023.html#cb51-1" aria-hidden="true" tabindex="-1"></a>Locations <span class="ot">&lt;-</span> SH.sf <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a href="tuesday-february-28-2023.html#cb51-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_centroid</span>() <span class="sc">|&gt;</span></span>
+<span id="cb51-3"><a href="tuesday-february-28-2023.html#cb51-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_coordinates</span>()</span></code></pre></div>
+<pre><code>## Warning in st_centroid.sf(SH.sf): st_centroid assumes attributes are constant
+## over geometries of x</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tuesday-february-28-2023.html#cb53-1" aria-hidden="true" tabindex="-1"></a>bw <span class="ot">&lt;-</span> spgwr<span class="sc">::</span><span class="fu">gwr.sel</span>(<span class="at">formula =</span> f, </span>
+<span id="cb53-2"><a href="tuesday-february-28-2023.html#cb53-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> SH.sf,</span>
+<span id="cb53-3"><a href="tuesday-february-28-2023.html#cb53-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">coords =</span> Locations,</span>
+<span id="cb53-4"><a href="tuesday-february-28-2023.html#cb53-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">longlat =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Bandwidth: 1265.036 CV score: 803.4763 
+## Bandwidth: 2044.828 CV score: 809.8068 
+## Bandwidth: 783.0983 CV score: 792.215 
+## Bandwidth: 485.2443 CV score: 776.8299 
+## Bandwidth: 301.1605 CV score: 759.9584 
+## Bandwidth: 187.3904 CV score: 748.7595 
+## Bandwidth: 117.0766 CV score: 757.0348 
+## Bandwidth: 202.3549 CV score: 749.8311 
+## Bandwidth: 178.743 CV score: 748.3143 
+## Bandwidth: 155.1886 CV score: 748.2566 
+## Bandwidth: 166.1613 CV score: 748.0175 
+## Bandwidth: 166.3299 CV score: 748.018 
+## Bandwidth: 165.6176 CV score: 748.0168 
+## Bandwidth: 165.5344 CV score: 748.0168 
+## Bandwidth: 165.5377 CV score: 748.0168 
+## Bandwidth: 165.538 CV score: 748.0168 
+## Bandwidth: 165.5379 CV score: 748.0168 
+## Bandwidth: 165.538 CV score: 748.0168 
+## Bandwidth: 165.538 CV score: 748.0168</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="tuesday-february-28-2023.html#cb55-1" aria-hidden="true" tabindex="-1"></a>bw</span></code></pre></div>
+<pre><code>## [1] 165.538</code></pre>
+<p>The bandwidth is assigned to the object <code>bw</code> as a single value of 165.5 km</p>
+<p>To get a feel for what a bandwidth distance of 165 km means in terms of the average number of neighbors per county you note that one-half the distance squared times <span class="math inline">\(\pi\)</span> is the area captured by the bandwidth</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="tuesday-february-28-2023.html#cb57-1" aria-hidden="true" tabindex="-1"></a>( bwA <span class="ot">&lt;-</span> pi <span class="sc">*</span> (bw <span class="sc">*</span> <span class="dv">1000</span> <span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> ) </span></code></pre></div>
+<pre><code>## [1] 21522121666</code></pre>
+<p>Or 21,522 square kilometers</p>
+<p>County areas are computed using the <code>st_area()</code> function. The average size of the counties and the ratio of the bandwidth area to the average county area is also computed</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="tuesday-february-28-2023.html#cb59-1" aria-hidden="true" tabindex="-1"></a>areas <span class="ot">&lt;-</span> SH.sf <span class="sc">|&gt;</span></span>
+<span id="cb59-2"><a href="tuesday-february-28-2023.html#cb59-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_area</span>()</span>
+<span id="cb59-3"><a href="tuesday-february-28-2023.html#cb59-3" aria-hidden="true" tabindex="-1"></a>countyAvgArea <span class="ot">&lt;-</span> areas <span class="sc">|&gt;</span></span>
+<span id="cb59-4"><a href="tuesday-february-28-2023.html#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>()</span>
+<span id="cb59-5"><a href="tuesday-february-28-2023.html#cb59-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-6"><a href="tuesday-february-28-2023.html#cb59-6" aria-hidden="true" tabindex="-1"></a>bwA<span class="sc">/</span>countyAvgArea</span></code></pre></div>
+<pre><code>## 13.24946 [1/m^2]</code></pre>
+<p>The ratio indicates that, on average, a neighborhood consists of 13 counties. For comparison, on a raster there are 8 first-order neighboring cells (queen contiguity) and 16 second-order neighboring cells (neighbors of neighbors) or a total of 24 neighbors</p>
+<p>You use the <code>gwr()</code> function from the {spgwr} package to includes the formula, data, and the <code>bandwith =</code> argument</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="tuesday-february-28-2023.html#cb61-1" aria-hidden="true" tabindex="-1"></a>model.gwr <span class="ot">&lt;-</span> spgwr<span class="sc">::</span><span class="fu">gwr</span>(<span class="at">formula =</span> logHR90 <span class="sc">~</span> RD90 <span class="sc">+</span> PS90 <span class="sc">+</span> DV90 <span class="sc">+</span> UE90, </span>
+<span id="cb61-2"><a href="tuesday-february-28-2023.html#cb61-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data =</span> SH.sf, </span>
+<span id="cb61-3"><a href="tuesday-february-28-2023.html#cb61-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">coords =</span> Locations,</span>
+<span id="cb61-4"><a href="tuesday-february-28-2023.html#cb61-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">bandwidth =</span> bw,</span>
+<span id="cb61-5"><a href="tuesday-february-28-2023.html#cb61-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">longlat =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>With many more model parameters metrics of predictive skill will favor the geographic regression. For example, the root mean-square-error is lower for GWR</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="tuesday-february-28-2023.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">residuals</span>(model.ols)<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] 28.43259</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="tuesday-february-28-2023.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>gwr.e<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] 25.68355</code></pre>
+<p>You put the GWR predictions into the <code>SH.sf</code> simple feature data frame with the column name <code>predGWR</code></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="tuesday-february-28-2023.html#cb66-1" aria-hidden="true" tabindex="-1"></a>SH.sf<span class="sc">$</span>predGWR <span class="ot">&lt;-</span> <span class="fu">exp</span>(model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>pred)</span>
+<span id="cb66-2"><a href="tuesday-february-28-2023.html#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="tuesday-february-28-2023.html#cb66-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(SH.sf) <span class="sc">+</span></span>
+<span id="cb66-4"><a href="tuesday-february-28-2023.html#cb66-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="st">&quot;predGWR&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Predicted</span><span class="sc">\n</span><span class="st">Homicide Rates</span><span class="sc">\n</span><span class="st">[/100,000]&quot;</span>) </span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>The geographic regressions captures the spatial pattern of homicides across the south. The spread of predicted values matches the observed spread better than the linear model. The pattern is also a smoother</p>
+<p>The OLS model indicated homicide rates increase with resource deprivation. How does this relationship vary across the South</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="tuesday-february-28-2023.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.ols)[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>##      RD90 
+## 0.5069745</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="tuesday-february-28-2023.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>RD90)</span></code></pre></div>
+<pre><code>## [1] 0.08442033 0.98146392</code></pre>
+<p>The global regression coefficient is .51 but locally the coefficients range from 0.08 to .98.</p>
+<p>Importantly you can map where resource deprivation has the most influence on the response variable</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="tuesday-february-28-2023.html#cb71-1" aria-hidden="true" tabindex="-1"></a>SH.sf<span class="sc">$</span>RDcoef <span class="ot">&lt;-</span> model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>RD90</span>
+<span id="cb71-2"><a href="tuesday-february-28-2023.html#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="tuesday-february-28-2023.html#cb71-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(SH.sf) <span class="sc">+</span></span>
+<span id="cb71-4"><a href="tuesday-february-28-2023.html#cb71-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="st">&quot;RDcoef&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Resource</span><span class="sc">\n</span><span class="st">Deprivation</span><span class="sc">\n</span><span class="st">Coefficient&quot;</span>, <span class="at">palette =</span> <span class="st">&#39;Blues&#39;</span>)</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>All values are above zero, but areas in darker blue indicate where resource deprivation plays a stronger role in explaining homicide rates. Western Texas and southern Florida</p>
+<p>How about the unemployment rate?</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="tuesday-february-28-2023.html#cb72-1" aria-hidden="true" tabindex="-1"></a>SH.sf<span class="sc">$</span>UEcoef <span class="ot">&lt;-</span> model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>UE90</span>
+<span id="cb72-2"><a href="tuesday-february-28-2023.html#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="tuesday-february-28-2023.html#cb72-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(SH.sf) <span class="sc">+</span></span>
+<span id="cb72-4"><a href="tuesday-february-28-2023.html#cb72-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="st">&quot;UEcoef&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Unemployment</span><span class="sc">\n</span><span class="st">Coefficient&quot;</span>, <span class="at">palette =</span> <span class="st">&#39;PiYG&#39;</span>)</span></code></pre></div>
+<pre><code>## Variable(s) &quot;UEcoef&quot; contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>While the global coefficient is negative indicating homicide rates tend to be lower in areas with more unemployment, the opposite is the case over much of Texas into Oklahoma</p>
+<p>Where does the model provide the best fit to the data? This is answered with a map of local R squared values (<code>localR2</code>)</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="tuesday-february-28-2023.html#cb74-1" aria-hidden="true" tabindex="-1"></a>SH.sf<span class="sc">$</span>localR2 <span class="ot">&lt;-</span> model.gwr<span class="sc">$</span>SDF<span class="sc">$</span>localR2</span>
+<span id="cb74-2"><a href="tuesday-february-28-2023.html#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="tuesday-february-28-2023.html#cb74-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(SH.sf) <span class="sc">+</span></span>
+<span id="cb74-4"><a href="tuesday-february-28-2023.html#cb74-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_fill</span>(<span class="st">&quot;localR2&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Local</span><span class="sc">\n</span><span class="st">R Squared&quot;</span>, <span class="at">palette =</span> <span class="st">&#39;Purples&#39;</span>) </span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+</div>
+<div id="multiscale-gwr" class="section level2 unnumbered hasAnchor">
+<h2>Multiscale GWR<a href="tuesday-february-28-2023.html#multiscale-gwr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://www.rdocumentation.org/packages/GWmodel/versions/2.0-8/topics/gwr.multiscale" class="uri">https://www.rdocumentation.org/packages/GWmodel/versions/2.0-8/topics/gwr.multiscale</a></p>
+<p>Example: London house prices. Hedonic relationship. What variables influence price (or demand) for that good</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="tuesday-february-28-2023.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GWmodel)</span></code></pre></div>
+<pre><code>## Loading required package: maptools</code></pre>
+<pre><code>## Checking rgeos availability: TRUE
+## Please note that &#39;maptools&#39; will be retired during 2023,
+## plan transition at your earliest convenience;
+## some functionality will be moved to &#39;sp&#39;.</code></pre>
+<pre><code>## Loading required package: robustbase</code></pre>
+<pre><code>## Loading required package: Rcpp</code></pre>
+<pre><code>## Loading required package: spatialreg</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## Loading required package: sf</code></pre>
+<pre><code>## Linking to GEOS 3.10.2, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
+<pre><code>## Welcome to GWmodel version 2.2-9.</code></pre>
+<p>The function <code>gwr.multiscale()</code> from the {GWmodel} package implements multiscale GWR to detect variations in regression relationships across different spatial scales. It can find a different bandwidth for each relationship and simultaneously find a different distance metric for each relationship</p>
+<p>Only works with S4 spatial data objects</p>
+<p>Example: Watershed soil data: response variables; soil total nitrogen percentage (TNPC), soil total phosphorus percentage (TPPC), and predictor variables; soil organic carbon (SOCgkg), nitrate nitrogen (NO3Ngkg), ammonium (NH4Ngkg), percentage clay (ClayPC), silt (SiltPC), sand (SandPC) content, vegetation coverage (CoveragePC), Slope, Aspect, Altitude_m, SoilType, LandUse and Position</p>
+<p>Comparisons of OLS regression, standard GWR, and multiscale GWR</p>
+<p><a href="https://rpubs.com/lexcomber/INIA_Session7" class="uri">https://rpubs.com/lexcomber/INIA_Session7</a></p>
+</div>
+<div id="mapping-incidence-and-risk-with-a-spatial-regression-model" class="section level2 unnumbered hasAnchor">
+<h2>Mapping incidence and risk with a spatial regression model<a href="tuesday-february-28-2023.html#mapping-incidence-and-risk-with-a-spatial-regression-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This material shows (1) how to use a probability model to specify spatial autocorrelation and (2) a spatial regression from a Bayesian framework</p>
+<p>Spatial regression models are used in disease mapping where it is common to compute standardized incidence ratios (SIR) defined as the ratio of the observed to the <em>expected</em> number of disease cases. Some areas can give extreme SIRs due to low population sizes or small sample sizes. Extreme values of SIRs can be misleading and unreliable for reporting</p>
+<p>Because of this so-called ‘small area problem’ it is better to estimate disease risk using a spatial regression model. A spatial regression model incorporates information from neighboring areas as well as explanatory variables that together result in less extreme values</p>
+<p>Consider county-level lung cancer cases in Pennsylvania from the {SpatialEpi} package. The county boundaries for the state are in the list object <code>pennLC</code> with element name <code>spatial.polygon</code></p>
+<p>First change the native spatial polygons S4 object to an S3 simple feature data frame using the <code>sf::st_as_sf()</code> function and display a map of the county borders</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="tuesday-february-28-2023.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(SpatialEpi)) <span class="fu">install.packages</span>(<span class="st">&quot;SpatialEpi&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: SpatialEpi</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="tuesday-february-28-2023.html#cb87-1" aria-hidden="true" tabindex="-1"></a>LC.sf <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span>pennLC<span class="sc">$</span>spatial.polygon <span class="sc">|&gt;</span></span>
+<span id="cb87-2"><a href="tuesday-february-28-2023.html#cb87-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>()</span>
+<span id="cb87-3"><a href="tuesday-february-28-2023.html#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="tuesday-february-28-2023.html#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(LC.sf) <span class="sc">+</span></span>
+<span id="cb87-5"><a href="tuesday-february-28-2023.html#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>For each county <span class="math inline">\(i\)</span>, <span class="math inline">\(i = 1, \ldots, n\)</span> the SIR is defined as the ratio of observed counts (<span class="math inline">\(Y_i\)</span>) to the expected counts (<span class="math inline">\(E_i\)</span>)</p>
+<p><span class="math display">\[
+\hbox{SIR}_i = \frac{Y_i}{E_i}
+\]</span></p>
+<p>The expected count <span class="math inline">\(E_i\)</span> is the total number of cases expected if the population in county <span class="math inline">\(i\)</span> behaves the way the statewide population behaves. Ignoring differences in rates for different stratum (e.g., age groups, race, etc), you compute the expected counts as</p>
+<p><span class="math display">\[
+E_i = r^{(s)} n^{(i)}
+\]</span>
+where <span class="math inline">\(r^{(s)}\)</span> is the rate in the standard population (total number of cases divided by the total population across all counties), and <span class="math inline">\(n^{(i)}\)</span> is the population of county <span class="math inline">\(i\)</span></p>
+<p>Then <span class="math inline">\(\hbox{SIR}_i\)</span> indicates whether county <span class="math inline">\(i\)</span> has higher (<span class="math inline">\(\hbox{SIR}_i &gt; 1\)</span>), equal (<span class="math inline">\(\hbox{SIR}_i = 1\)</span>) or lower (<span class="math inline">\(\hbox{SIR}_i &lt; 1\)</span>) risk than expected relative to the statewide population</p>
+<p>When applied to mortality data, the ratio is known as the standardized mortality ratio (SMR)</p>
+<p>The data frame <code>SpatialEpi::pennLC$data</code> contains the number of lung cancer cases and the population of Pennsylvania at county level, stratified on race (white and other), gender (female, male) and age (under 40, 40-59, 60-69 and 70+)</p>
+<p>You compute the number of cases for all the strata (groups) together in each county by aggregating the rows of the data frame by county and adding up the number of cases</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="tuesday-february-28-2023.html#cb88-1" aria-hidden="true" tabindex="-1"></a>( County.df <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span>pennLC<span class="sc">$</span>data <span class="sc">|&gt;</span></span>
+<span id="cb88-2"><a href="tuesday-february-28-2023.html#cb88-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(county) <span class="sc">|&gt;</span></span>
+<span id="cb88-3"><a href="tuesday-february-28-2023.html#cb88-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Y =</span> <span class="fu">sum</span>(cases)) )</span></code></pre></div>
+<pre><code>## # A tibble: 67 × 2
+##    county        Y
+##    &lt;fct&gt;     &lt;int&gt;
+##  1 adams        55
+##  2 allegheny  1275
+##  3 armstrong    49
+##  4 beaver      172
+##  5 bedford      37
+##  6 berks       308
+##  7 blair       127
+##  8 bradford     59
+##  9 bucks       454
+## 10 butler      158
+## # … with 57 more rows</code></pre>
+<p>You then calculate the expected number of cases in each county using standardization. The expected counts in each county represent the total number of disease cases one would expect if the population in the county behaved the way the population of Pennsylvania behaves</p>
+<p>You do this by using the <code>SpatialEpi::expected()</code> function. The function has three arguments including <code>population</code> (vector of population counts for each strata in each county), <code>cases</code> (vector with the number of cases for each strata in each county), and <code>n.strata</code> (number of strata)</p>
+<p>The vectors <code>population</code> and <code>cases</code> need to be sorted by county first and then, within each county, the counts for all strata need to be listed in the same order. All strata need to be included in the vectors, including strata with 0 cases. Here you use the <code>dplyr::arrange()</code> function</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="tuesday-february-28-2023.html#cb90-1" aria-hidden="true" tabindex="-1"></a>( Strata.df <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span>pennLC<span class="sc">$</span>data <span class="sc">|&gt;</span></span>
+<span id="cb90-2"><a href="tuesday-february-28-2023.html#cb90-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(county, race, gender, age) )</span></code></pre></div>
+<pre><code>##              county cases population race gender      age
+## 1             adams     0        365    o      f    40.59
+## 2             adams     1         68    o      f    60.69
+## 3             adams     0         73    o      f      70+
+## 4             adams     0       1492    o      f Under.40
+## 5             adams     0        387    o      m    40.59
+## 6             adams     0         69    o      m    60.69
+## 7             adams     1         53    o      m      70+
+## 8             adams     0       1697    o      m Under.40
+## 9             adams     5      12136    w      f    40.59
+## 10            adams     5       3609    w      f    60.69
+## 11            adams    18       5411    w      f      70+
+## 12            adams     0      23351    w      f Under.40
+## 13            adams     4      11844    w      m    40.59
+## 14            adams     9       3469    w      m    60.69
+## 15            adams    12       3666    w      m      70+
+## 16            adams     0      23602    w      m Under.40
+## 17        allegheny    20      24634    o      f    40.59
+## 18        allegheny    13       6988    o      f    60.69
+## 19        allegheny    32       9107    o      f      70+
+## 20        allegheny     0      66530    o      f Under.40
+## 21        allegheny    26      19796    o      m    40.59
+## 22        allegheny    17       5088    o      m    60.69
+## 23        allegheny    42       5271    o      m      70+
+## 24        allegheny     1      63452    o      m Under.40
+## 25        allegheny    64     157968    w      f    40.59
+## 26        allegheny   102      52580    w      f    60.69
+## 27        allegheny   347     100327    w      f      70+
+## 28        allegheny     1     256530    w      f Under.40
+## 29        allegheny    75     148349    w      m    40.59
+## 30        allegheny   147      42873    w      m    60.69
+## 31        allegheny   387      60460    w      m      70+
+## 32        allegheny     1     261713    w      m Under.40
+## 33        armstrong     0        130    o      f    40.59
+## 34        armstrong     0         44    o      f    60.69
+## 35        armstrong     0         52    o      f      70+
+## 36        armstrong     0        360    o      f Under.40
+## 37        armstrong     0        161    o      m    40.59
+## 38        armstrong     0         32    o      m    60.69
+## 39        armstrong     0         45    o      m      70+
+## 40        armstrong     0        395    o      m Under.40
+## 41        armstrong     3       9973    w      f    40.59
+## 42        armstrong     6       3512    w      f    60.69
+## 43        armstrong    11       5828    w      f      70+
+## 44        armstrong     1      17289    w      f Under.40
+## 45        armstrong     3      10037    w      m    40.59
+## 46        armstrong     9       2974    w      m    60.69
+## 47        armstrong    16       3934    w      m      70+
+## 48        armstrong     0      17626    w      m Under.40
+## 49           beaver     0       1649    o      f    40.59
+## 50           beaver     0        524    o      f    60.69
+## 51           beaver     1        653    o      f      70+
+## 52           beaver     0       4374    o      f Under.40
+## 53           beaver     3       1381    o      m    40.59
+## 54           beaver     3        386    o      m    60.69
+## 55           beaver     1        387    o      m      70+
+## 56           beaver     0       4168    o      m Under.40
+## 57           beaver    12      24384    w      f    40.59
+## 58           beaver    22       8632    w      f    60.69
+## 59           beaver    43      14568    w      f      70+
+## 60           beaver     1      39768    w      f Under.40
+## 61           beaver    15      23472    w      m    40.59
+## 62           beaver    19       7377    w      m    60.69
+## 63           beaver    51       9406    w      m      70+
+## 64           beaver     1      40283    w      m Under.40
+## 65          bedford     0         91    o      f    40.59
+## 66          bedford     0         19    o      f    60.69
+## 67          bedford     0         27    o      f      70+
+## 68          bedford     0        235    o      f Under.40
+## 69          bedford     0         69    o      m    40.59
+## 70          bedford     0         28    o      m    60.69
+## 71          bedford     0         19    o      m      70+
+## 72          bedford     0        243    o      m Under.40
+## 73          bedford     3       6775    w      f    40.59
+## 74          bedford     3       2534    w      f    60.69
+## 75          bedford     6       3475    w      f      70+
+## 76          bedford     1      12197    w      f Under.40
+## 77          bedford     3       6857    w      m    40.59
+## 78          bedford     6       2292    w      m    60.69
+## 79          bedford    14       2425    w      m      70+
+## 80          bedford     1      12698    w      m Under.40
+## 81            berks     2       3921    o      f    40.59
+## 82            berks     0        822    o      f    60.69
+## 83            berks     2        723    o      f      70+
+## 84            berks     0      16221    o      f Under.40
+## 85            berks     3       3990    o      m    40.59
+## 86            berks     1        737    o      m    60.69
+## 87            berks     1        518    o      m      70+
+## 88            berks     0      17246    o      m Under.40
+## 89            berks    20      46160    w      f    40.59
+## 90            berks    33      14646    w      f    60.69
+## 91            berks    74      24411    w      f      70+
+## 92            berks     0      83778    w      f Under.40
+## 93            berks    39      45766    w      m    40.59
+## 94            berks    41      13139    w      m    60.69
+## 95            berks    92      16060    w      m      70+
+## 96            berks     0      85500    w      m Under.40
+## 97            blair     0        276    o      f    40.59
+## 98            blair     0         77    o      f    60.69
+## 99            blair     1        106    o      f      70+
+## 100           blair     0        993    o      f Under.40
+## 101           blair     3        409    o      m    40.59
+## 102           blair     0         68    o      m    60.69
+## 103           blair     2         51    o      m      70+
+## 104           blair     0       1105    o      m Under.40
+## 105           blair     7      17737    w      f    40.59
+## 106           blair    11       6020    w      f    60.69
+## 107           blair    35      10549    w      f      70+
+## 108           blair     1      31469    w      f Under.40
+## 109           blair    12      16912    w      m    40.59
+## 110           blair    15       5065    w      m    60.69
+## 111           blair    40       6279    w      m      70+
+## 112           blair     0      32028    w      m Under.40
+## 113        bradford     0        150    o      f    40.59
+## 114        bradford     0         31    o      f    60.69
+## 115        bradford     0         30    o      f      70+
+## 116        bradford     0        436    o      f Under.40
+## 117        bradford     0        140    o      m    40.59
+## 118        bradford     0         33    o      m    60.69
+## 119        bradford     0         27    o      m      70+
+## 120        bradford     0        443    o      m Under.40
+## 121        bradford     3       8637    w      f    40.59
+## 122        bradford     6       2902    w      f    60.69
+## 123        bradford     9       4305    w      f      70+
+## 124        bradford     1      15677    w      f Under.40
+## 125        bradford     8       8497    w      m    40.59
+## 126        bradford    14       2677    w      m    60.69
+## 127        bradford    17       2872    w      m      70+
+## 128        bradford     1      15904    w      m Under.40
+## 129           bucks     2       5394    o      f    40.59
+## 130           bucks     1       1101    o      f    60.69
+## 131           bucks     5        920    o      f      70+
+## 132           bucks     0      15379    o      f Under.40
+## 133           bucks     1       5229    o      m    40.59
+## 134           bucks     3       1031    o      m    60.69
+## 135           bucks     6        638    o      m      70+
+## 136           bucks     0      15355    o      m Under.40
+## 137           bucks    44      83499    w      f    40.59
+## 138           bucks    53      21852    w      f    60.69
+## 139           bucks   131      31465    w      f      70+
+## 140           bucks     3     144843    w      f Under.40
+## 141           bucks    28      82174    w      m    40.59
+## 142           bucks    64      20257    w      m    60.69
+## 143           bucks   110      20349    w      m      70+
+## 144           bucks     3     148149    w      m Under.40
+## 145          butler     0        357    o      f    40.59
+## 146          butler     0         70    o      f    60.69
+## 147          butler     0         75    o      f      70+
+## 148          butler     0       1268    o      f Under.40
+## 149          butler     0        393    o      m    40.59
+## 150          butler     0         86    o      m    60.69
+## 151          butler     3         57    o      m      70+
+## 152          butler     0       1475    o      m Under.40
+## 153          butler     8      23854    w      f    40.59
+## 154          butler    22       6577    w      f    60.69
+## 155          butler    40      11445    w      f      70+
+## 156          butler     1      45428    w      f Under.40
+## 157          butler    20      23705    w      m    40.59
+## 158          butler    25       6098    w      m    60.69
+## 159          butler    39       7238    w      m      70+
+## 160          butler     0      45957    w      m Under.40
+## 161         cambria     0        570    o      f    40.59
+## 162         cambria     0        178    o      f    60.69
+## 163         cambria     1        237    o      f      70+
+## 164         cambria     0       1709    o      f Under.40
+## 165         cambria     0        886    o      m    40.59
+## 166         cambria     2        134    o      m    60.69
+## 167         cambria     0        119    o      m      70+
+## 168         cambria     0       2582    o      m Under.40
+## 169         cambria     7      20304    w      f    40.59
+## 170         cambria     8       7331    w      f    60.69
+## 171         cambria    25      14283    w      f      70+
+## 172         cambria     0      33975    w      f Under.40
+## 173         cambria    14      20407    w      m    40.59
+## 174         cambria    13       6060    w      m    60.69
+## 175         cambria    51       8542    w      m      70+
+## 176         cambria     0      35281    w      m Under.40
+## 177         cameron     0          6    o      f    40.59
+## 178         cameron     0          4    o      f    60.69
+## 179         cameron     0          0    o      f      70+
+## 180         cameron     0         28    o      f Under.40
+## 181         cameron     0          3    o      m    40.59
+## 182         cameron     0          3    o      m    60.69
+## 183         cameron     0          1    o      m      70+
+## 184         cameron     0         25    o      m Under.40
+## 185         cameron     0        775    w      f    40.59
+## 186         cameron     2        299    w      f    60.69
+## 187         cameron     2        553    w      f      70+
+## 188         cameron     0       1374    w      f Under.40
+## 189         cameron     1        845    w      m    40.59
+## 190         cameron     1        261    w      m    60.69
+## 191         cameron     2        351    w      m      70+
+## 192         cameron     0       1446    w      m Under.40
+## 193          carbon     0        147    o      f    40.59
+## 194          carbon     0         41    o      f    60.69
+## 195          carbon     0         13    o      f      70+
+## 196          carbon     0        409    o      f Under.40
+## 197          carbon     0        146    o      m    40.59
+## 198          carbon     0         31    o      m    60.69
+## 199          carbon     1         32    o      m      70+
+## 200          carbon     0        463    o      m Under.40
+## 201          carbon     2       7948    w      f    40.59
+## 202          carbon     6       2866    w      f    60.69
+## 203          carbon    10       4935    w      f      70+
+## 204          carbon     0      13810    w      f Under.40
+## 205          carbon     5       8085    w      m    40.59
+## 206          carbon     6       2569    w      m    60.69
+## 207          carbon    12       3131    w      m      70+
+## 208          carbon     0      14176    w      m Under.40
+## 209          centre     0        513    o      f    40.59
+## 210          centre     0         84    o      f    60.69
+## 211          centre     0         70    o      f      70+
+## 212          centre     0       4447    o      f Under.40
+## 213          centre     1        887    o      m    40.59
+## 214          centre     0         90    o      m    60.69
+## 215          centre     0         65    o      m      70+
+## 216          centre     0       5468    o      m Under.40
+## 217          centre     7      13704    w      f    40.59
+## 218          centre     4       4318    w      f    60.69
+## 219          centre    10       5956    w      f      70+
+## 220          centre     0      37344    w      f Under.40
+## 221          centre    10      14060    w      m    40.59
+## 222          centre    10       3950    w      m    60.69
+## 223          centre    19       4037    w      m      70+
+## 224          centre     0      40765    w      m Under.40
+## 225         chester     3       5186    o      f    40.59
+## 226         chester     3       1211    o      f    60.69
+## 227         chester     7       1353    o      f      70+
+## 228         chester     0      15602    o      f Under.40
+## 229         chester     4       5153    o      m    40.59
+## 230         chester     7       1108    o      m    60.69
+## 231         chester     6        908    o      m      70+
+## 232         chester     0      16235    o      m Under.40
+## 233         chester    25      58711    w      f    40.59
+## 234         chester    25      14392    w      f    60.69
+## 235         chester    70      20622    w      f      70+
+## 236         chester     1     103685    w      f Under.40
+## 237         chester    22      57093    w      m    40.59
+## 238         chester    44      13493    w      m    60.69
+## 239         chester    73      13801    w      m      70+
+## 240         chester     1     104948    w      m Under.40
+## 241         clarion     0         66    o      f    40.59
+## 242         clarion     0         13    o      f    60.69
+## 243         clarion     0         13    o      f      70+
+## 244         clarion     0        280    o      f Under.40
+## 245         clarion     0         53    o      m    40.59
+## 246         clarion     0         16    o      m    60.69
+## 247         clarion     0          5    o      m      70+
+## 248         clarion     0        321    o      m Under.40
+## 249         clarion     3       5217    w      f    40.59
+## 250         clarion     2       1899    w      f    60.69
+## 251         clarion     9       2733    w      f      70+
+## 252         clarion     0      11382    w      f Under.40
+## 253         clarion     1       5162    w      m    40.59
+## 254         clarion     8       1718    w      m    60.69
+## 255         clarion     9       1890    w      m      70+
+## 256         clarion     0      10997    w      m Under.40
+## 257      clearfield     0        122    o      f    40.59
+## 258      clearfield     0         29    o      f    60.69
+## 259      clearfield     0         33    o      f      70+
+## 260      clearfield     0        285    o      f Under.40
+## 261      clearfield     1        388    o      m    40.59
+## 262      clearfield     0         43    o      m    60.69
+## 263      clearfield     0         23    o      m      70+
+## 264      clearfield     0       1241    o      m Under.40
+## 265      clearfield     6      10993    w      f    40.59
+## 266      clearfield     9       3946    w      f    60.69
+## 267      clearfield    18       6400    w      f      70+
+## 268      clearfield     0      19993    w      f Under.40
+## 269      clearfield     7      11245    w      m    40.59
+## 270      clearfield     9       3482    w      m    60.69
+## 271      clearfield    23       4082    w      m      70+
+## 272      clearfield     0      21077    w      m Under.40
+## 273         clinton     0         48    o      f    40.59
+## 274         clinton     0         17    o      f    60.69
+## 275         clinton     0         20    o      f      70+
+## 276         clinton     0        216    o      f Under.40
+## 277         clinton     0         54    o      m    40.59
+## 278         clinton     0         13    o      m    60.69
+## 279         clinton     0          9    o      m      70+
+## 280         clinton     0        273    o      m Under.40
+## 281         clinton     2       4823    w      f    40.59
+## 282         clinton     5       1758    w      f    60.69
+## 283         clinton     9       2818    w      f      70+
+## 284         clinton     0       9825    w      f Under.40
+## 285         clinton     0       4764    w      m    40.59
+## 286         clinton     3       1603    w      m    60.69
+## 287         clinton     8       1876    w      m      70+
+## 288         clinton     0       9797    w      m Under.40
+## 289        columbia     0        125    o      f    40.59
+## 290        columbia     0         27    o      f    60.69
+## 291        columbia     0         22    o      f      70+
+## 292        columbia     0        535    o      f Under.40
+## 293        columbia     0        133    o      m    40.59
+## 294        columbia     0         30    o      m    60.69
+## 295        columbia     0         16    o      m      70+
+## 296        columbia     0        661    o      m Under.40
+## 297        columbia     3       8446    w      f    40.59
+## 298        columbia     4       2810    w      f    60.69
+## 299        columbia    15       4697    w      f      70+
+## 300        columbia     0      16966    w      f Under.40
+## 301        columbia    10       8112    w      m    40.59
+## 302        columbia     5       2494    w      m    60.69
+## 303        columbia    21       2901    w      m      70+
+## 304        columbia     0      16176    w      m Under.40
+## 305        crawford     0        338    o      f    40.59
+## 306        crawford     0         64    o      f    60.69
+## 307        crawford     0         80    o      f      70+
+## 308        crawford     0       1046    o      f Under.40
+## 309        crawford     0        243    o      m    40.59
+## 310        crawford     0         73    o      m    60.69
+## 311        crawford     0         58    o      m      70+
+## 312        crawford     0        811    o      m Under.40
+## 313        crawford     6      12202    w      f    40.59
+## 314        crawford     8       3861    w      f    60.69
+## 315        crawford    16       6169    w      f      70+
+## 316        crawford     0      22638    w      f Under.40
+## 317        crawford     5      11808    w      m    40.59
+## 318        crawford    18       3661    w      m    60.69
+## 319        crawford    21       4053    w      m      70+
+## 320        crawford     0      23261    w      m Under.40
+## 321      cumberland     2       1232    o      f    40.59
+## 322      cumberland     0        215    o      f    60.69
+## 323      cumberland     1        206    o      f      70+
+## 324      cumberland     0       3525    o      f Under.40
+## 325      cumberland     0       1419    o      m    40.59
+## 326      cumberland     0        237    o      m    60.69
+## 327      cumberland     1        132    o      m      70+
+## 328      cumberland     0       4992    o      m Under.40
+## 329      cumberland    13      28962    w      f    40.59
+## 330      cumberland     9       8860    w      f    60.69
+## 331      cumberland    38      14406    w      f      70+
+## 332      cumberland     1      52055    w      f Under.40
+## 333      cumberland    14      28215    w      m    40.59
+## 334      cumberland    19       7787    w      m    60.69
+## 335      cumberland    33       8811    w      m      70+
+## 336      cumberland     1      52620    w      m Under.40
+## 337         dauphin     4       6753    o      f    40.59
+## 338         dauphin     3       1677    o      f    60.69
+## 339         dauphin     5       1749    o      f      70+
+## 340         dauphin     1      19845    o      f Under.40
+## 341         dauphin     5       6262    o      m    40.59
+## 342         dauphin     3       1338    o      m    60.69
+## 343         dauphin     4       1036    o      m      70+
+## 344         dauphin     0      18980    o      m Under.40
+## 345         dauphin    10      29636    w      f    40.59
+## 346         dauphin    17       9051    w      f    60.69
+## 347         dauphin    31      14558    w      f      70+
+## 348         dauphin     0      47676    w      f Under.40
+## 349         dauphin    15      28467    w      m    40.59
+## 350         dauphin    24       7685    w      m    60.69
+## 351         dauphin    45       8894    w      m      70+
+## 352         dauphin     1      48191    w      m Under.40
+## 353        delaware    11      13407    o      f    40.59
+## 354        delaware     9       3067    o      f    60.69
+## 355        delaware    22       3614    o      f      70+
+## 356        delaware     0      36951    o      f Under.40
+## 357        delaware     9      10991    o      m    40.59
+## 358        delaware     5       2453    o      m    60.69
+## 359        delaware    17       2078    o      m      70+
+## 360        delaware     0      35854    o      m Under.40
+## 361        delaware    31      62212    w      f    40.59
+## 362        delaware    41      19387    w      f    60.69
+## 363        delaware   121      37144    w      f      70+
+## 364        delaware     0     112258    w      f Under.40
+## 365        delaware    43      59104    w      m    40.59
+## 366        delaware    51      16089    w      m    60.69
+## 367        delaware   123      22456    w      m      70+
+## 368        delaware     2     113799    w      m Under.40
+## 369             elk     0         45    o      f    40.59
+## 370             elk     0          6    o      f    60.69
+## 371             elk     0          9    o      f      70+
+## 372             elk     0        126    o      f Under.40
+## 373             elk     0         45    o      m    40.59
+## 374             elk     0         11    o      m    60.69
+## 375             elk     0          5    o      m      70+
+## 376             elk     0        119    o      m Under.40
+## 377             elk     1       4534    w      f    40.59
+## 378             elk     7       1713    w      f    60.69
+## 379             elk     4       2700    w      f      70+
+## 380             elk     0       8598    w      f Under.40
+## 381             elk     5       4803    w      m    40.59
+## 382             elk     6       1515    w      m    60.69
+## 383             elk     8       1786    w      m      70+
+## 384             elk     0       9097    w      m Under.40
+## 385            erie     1       2371    o      f    40.59
+## 386            erie     0        551    o      f    60.69
+## 387            erie     2        537    o      f      70+
+## 388            erie     0       8993    o      f Under.40
+## 389            erie     4       2361    o      m    40.59
+## 390            erie     7        454    o      m    60.69
+## 391            erie     3        343    o      m      70+
+## 392            erie     0       9951    o      m Under.40
+## 393            erie    20      34938    w      f    40.59
+## 394            erie    24      10368    w      f    60.69
+## 395            erie    71      18315    w      f      70+
+## 396            erie     0      67803    w      f Under.40
+## 397            erie    18      34196    w      m    40.59
+## 398            erie    23       9031    w      m    60.69
+## 399            erie    56      11359    w      m      70+
+## 400            erie     2      69272    w      m Under.40
+## 401         fayette     1        837    o      f    40.59
+## 402         fayette     0        275    o      f    60.69
+## 403         fayette     4        423    o      f      70+
+## 404         fayette     0       2152    o      f Under.40
+## 405         fayette     1        758    o      m    40.59
+## 406         fayette     1        212    o      m    60.69
+## 407         fayette     3        240    o      m      70+
+## 408         fayette     0       2090    o      m Under.40
+## 409         fayette     8      19926    w      f    40.59
+## 410         fayette    11       6922    w      f    60.69
+## 411         fayette    31      12376    w      f      70+
+## 412         fayette     0      34597    w      f Under.40
+## 413         fayette    12      19589    w      m    40.59
+## 414         fayette    26       5726    w      m    60.69
+## 415         fayette    52       7461    w      m      70+
+## 416         fayette     0      35060    w      m Under.40
+## 417          forest     0          5    o      f    40.59
+## 418          forest     0          5    o      f    60.69
+## 419          forest     0          4    o      f      70+
+## 420          forest     0         23    o      f Under.40
+## 421          forest     0          6    o      m    40.59
+## 422          forest     0          3    o      m    60.69
+## 423          forest     0          2    o      m      70+
+## 424          forest     0        153    o      m Under.40
+## 425          forest     0        695    w      f    40.59
+## 426          forest     0        324    w      f    60.69
+## 427          forest     1        371    w      f      70+
+## 428          forest     0        915    w      f Under.40
+## 429          forest     0        689    w      m    40.59
+## 430          forest     0        334    w      m    60.69
+## 431          forest     3        318    w      m      70+
+## 432          forest     0       1099    w      m Under.40
+## 433        franklin     0        607    o      f    40.59
+## 434        franklin     1        155    o      f    60.69
+## 435        franklin     2        160    o      f      70+
+## 436        franklin     0       2037    o      f Under.40
+## 437        franklin     0        640    o      m    40.59
+## 438        franklin     1        129    o      m    60.69
+## 439        franklin     1        118    o      m      70+
+## 440        franklin     0       2188    o      m Under.40
+## 441        franklin     9      17039    w      f    40.59
+## 442        franklin     8       5756    w      f    60.69
+## 443        franklin    22       9002    w      f      70+
+## 444        franklin     0      31642    w      f Under.40
+## 445        franklin     9      16489    w      m    40.59
+## 446        franklin    18       5297    w      m    60.69
+## 447        franklin    34       5951    w      m      70+
+## 448        franklin     0      32103    w      m Under.40
+## 449          fulton     0         25    o      f    40.59
+## 450          fulton     0         13    o      f    60.69
+## 451          fulton     0         10    o      f      70+
+## 452          fulton     0         96    o      f Under.40
+## 453          fulton     0         26    o      m    40.59
+## 454          fulton     0          6    o      m    60.69
+## 455          fulton     0          1    o      m      70+
+## 456          fulton     0         72    o      m Under.40
+## 457          fulton     0       1907    w      f    40.59
+## 458          fulton     1        682    w      f    60.69
+## 459          fulton     2        848    w      f      70+
+## 460          fulton     0       3547    w      f Under.40
+## 461          fulton     1       1967    w      m    40.59
+## 462          fulton     4        667    w      m    60.69
+## 463          fulton     3        594    w      m      70+
+## 464          fulton     0       3800    w      m Under.40
+## 465          greene     0         74    o      f    40.59
+## 466          greene     0         21    o      f    60.69
+## 467          greene     0         34    o      f      70+
+## 468          greene     0        169    o      f Under.40
+## 469          greene     0        386    o      m    40.59
+## 470          greene     0         24    o      m    60.69
+## 471          greene     0         15    o      m      70+
+## 472          greene     0       1284    o      m Under.40
+## 473          greene     4       5366    w      f    40.59
+## 474          greene     4       1654    w      f    60.69
+## 475          greene     5       2809    w      f      70+
+## 476          greene     0       9594    w      f Under.40
+## 477          greene     6       5600    w      m    40.59
+## 478          greene     7       1449    w      m    60.69
+## 479          greene    12       1801    w      m      70+
+## 480          greene     0      10392    w      m Under.40
+## 481      huntingdon     0        106    o      f    40.59
+## 482      huntingdon     0         33    o      f    60.69
+## 483      huntingdon     0         31    o      f      70+
+## 484      huntingdon     0        318    o      f Under.40
+## 485      huntingdon     0        576    o      m    40.59
+## 486      huntingdon     0         33    o      m    60.69
+## 487      huntingdon     0         24    o      m      70+
+## 488      huntingdon     0       1921    o      m Under.40
+## 489      huntingdon     2       5720    w      f    40.59
+## 490      huntingdon     1       2052    w      f    60.69
+## 491      huntingdon     6       2897    w      f      70+
+## 492      huntingdon     0      10587    w      f Under.40
+## 493      huntingdon     3       5980    w      m    40.59
+## 494      huntingdon     5       1891    w      m    60.69
+## 495      huntingdon     9       1868    w      m      70+
+## 496      huntingdon     0      11549    w      m Under.40
+## 497         indiana     0        199    o      f    40.59
+## 498         indiana     0         41    o      f    60.69
+## 499         indiana     0         53    o      f      70+
+## 500         indiana     0       1109    o      f Under.40
+## 501         indiana     1        213    o      m    40.59
+## 502         indiana     1         41    o      m    60.69
+## 503         indiana     0         47    o      m      70+
+## 504         indiana     0       1106    o      m Under.40
+## 505         indiana     7      11396    w      f    40.59
+## 506         indiana     7       3615    w      f    60.69
+## 507         indiana    14       6135    w      f      70+
+## 508         indiana     0      23635    w      f Under.40
+## 509         indiana     6      11400    w      m    40.59
+## 510         indiana    13       3255    w      m    60.69
+## 511         indiana    21       3882    w      m      70+
+## 512         indiana     0      23478    w      m Under.40
+## 513       jefferson     0         51    o      f    40.59
+## 514       jefferson     0         16    o      f    60.69
+## 515       jefferson     0         23    o      f      70+
+## 516       jefferson     0        146    o      f Under.40
+## 517       jefferson     0         60    o      m    40.59
+## 518       jefferson     0          7    o      m    60.69
+## 519       jefferson     0         15    o      m      70+
+## 520       jefferson     0        157    o      m Under.40
+## 521       jefferson     4       6170    w      f    40.59
+## 522       jefferson     2       2206    w      f    60.69
+## 523       jefferson    10       3751    w      f      70+
+## 524       jefferson     0      11104    w      f Under.40
+## 525       jefferson     2       6102    w      m    40.59
+## 526       jefferson     8       2022    w      m    60.69
+## 527       jefferson     8       2426    w      m      70+
+## 528       jefferson     0      11676    w      m Under.40
+## 529         juniata     0         38    o      f    40.59
+## 530         juniata     0          4    o      f    60.69
+## 531         juniata     0          3    o      f      70+
+## 532         juniata     0        161    o      f Under.40
+## 533         juniata     0         46    o      m    40.59
+## 534         juniata     0          8    o      m    60.69
+## 535         juniata     0          5    o      m      70+
+## 536         juniata     0        180    o      m Under.40
+## 537         juniata     0       2932    w      f    40.59
+## 538         juniata     1       1078    w      f    60.69
+## 539         juniata     3       1497    w      f      70+
+## 540         juniata     0       5755    w      f Under.40
+## 541         juniata     0       3039    w      m    40.59
+## 542         juniata     1        994    w      m    60.69
+## 543         juniata     1        991    w      m      70+
+## 544         juniata     0       6090    w      m Under.40
+## 545      lackawanna     0        594    o      f    40.59
+## 546      lackawanna     0        111    o      f    60.69
+## 547      lackawanna     0        117    o      f      70+
+## 548      lackawanna     0       2506    o      f Under.40
+## 549      lackawanna     0        705    o      m    40.59
+## 550      lackawanna     0        140    o      m    60.69
+## 551      lackawanna     1         90    o      m      70+
+## 552      lackawanna     0       2872    o      m Under.40
+## 553      lackawanna    11      28179    w      f    40.59
+## 554      lackawanna    17      10190    w      f    60.69
+## 555      lackawanna    35      20770    w      f      70+
+## 556      lackawanna     0      50214    w      f Under.40
+## 557      lackawanna    18      27137    w      m    40.59
+## 558      lackawanna    31       8434    w      m    60.69
+## 559      lackawanna    68      11217    w      m      70+
+## 560      lackawanna     0      50019    w      m Under.40
+## 561       lancaster     1       3748    o      f    40.59
+## 562       lancaster     2        690    o      f    60.69
+## 563       lancaster     7        636    o      f      70+
+## 564       lancaster     0      14869    o      f Under.40
+## 565       lancaster     3       3885    o      m    40.59
+## 566       lancaster     0        623    o      m    60.69
+## 567       lancaster     1        404    o      m      70+
+## 568       lancaster     0      15347    o      m Under.40
+## 569       lancaster    18      58287    w      f    40.59
+## 570       lancaster    31      17642    w      f    60.69
+## 571       lancaster    66      29205    w      f      70+
+## 572       lancaster     2     116127    w      f Under.40
+## 573       lancaster    31      56310    w      m    40.59
+## 574       lancaster    50      15903    w      m    60.69
+## 575       lancaster    87      19101    w      m      70+
+## 576       lancaster     2     117881    w      m Under.40
+## 577        lawrence     0        483    o      f    40.59
+## 578        lawrence     3        128    o      f    60.69
+## 579        lawrence     2        175    o      f      70+
+## 580        lawrence     0       1653    o      f Under.40
+## 581        lawrence     1        424    o      m    40.59
+## 582        lawrence     1        108    o      m    60.69
+## 583        lawrence     0        107    o      m      70+
+## 584        lawrence     0       1671    o      m Under.40
+## 585        lawrence     5      12604    w      f    40.59
+## 586        lawrence     6       4495    w      f    60.69
+## 587        lawrence    19       8494    w      f      70+
+## 588        lawrence     1      21617    w      f Under.40
+## 589        lawrence     6      12083    w      m    40.59
+## 590        lawrence     6       3785    w      m    60.69
+## 591        lawrence    26       5179    w      m      70+
+## 592        lawrence     0      21637    w      m Under.40
+## 593         lebanon     1        625    o      f    40.59
+## 594         lebanon     0        115    o      f    60.69
+## 595         lebanon     0         96    o      f      70+
+## 596         lebanon     0       2338    o      f Under.40
+## 597         lebanon     1        753    o      m    40.59
+## 598         lebanon     0        110    o      m    60.69
+## 599         lebanon     0         78    o      m      70+
+## 600         lebanon     0       2550    o      m Under.40
+## 601         lebanon     3      15917    w      f    40.59
+## 602         lebanon     3       5234    w      f    60.69
+## 603         lebanon    20       8902    w      f      70+
+## 604         lebanon     0      28490    w      f Under.40
+## 605         lebanon    11      15597    w      m    40.59
+## 606         lebanon     9       4705    w      m    60.69
+## 607         lebanon    29       5615    w      m      70+
+## 608         lebanon     0      29202    w      m Under.40
+## 609          lehigh     2       3823    o      f    40.59
+## 610          lehigh     3        692    o      f    60.69
+## 611          lehigh     2        503    o      f      70+
+## 612          lehigh     0      15262    o      f Under.40
+## 613          lehigh     3       3743    o      m    40.59
+## 614          lehigh     0        554    o      m    60.69
+## 615          lehigh     1        338    o      m      70+
+## 616          lehigh     0      15585    o      m Under.40
+## 617          lehigh    18      39593    w      f    40.59
+## 618          lehigh    28      12438    w      f    60.69
+## 619          lehigh    63      22754    w      f      70+
+## 620          lehigh     1      66471    w      f Under.40
+## 621          lehigh    22      38246    w      m    40.59
+## 622          lehigh    39      10906    w      m    60.69
+## 623          lehigh    70      13723    w      m      70+
+## 624          lehigh     0      67459    w      m Under.40
+## 625         luzerne     0        826    o      f    40.59
+## 626         luzerne     0        170    o      f    60.69
+## 627         luzerne     0        183    o      f      70+
+## 628         luzerne     0       3132    o      f Under.40
+## 629         luzerne     0       1452    o      m    40.59
+## 630         luzerne     2        196    o      m    60.69
+## 631         luzerne     0        112    o      m      70+
+## 632         luzerne     0       4703    o      m Under.40
+## 633         luzerne    22      42128    w      f    40.59
+## 634         luzerne    31      15526    w      f    60.69
+## 635         luzerne    54      31068    w      f      70+
+## 636         luzerne     1      72422    w      f Under.40
+## 637         luzerne    27      41779    w      m    40.59
+## 638         luzerne    44      13204    w      m    60.69
+## 639         luzerne   104      16957    w      m      70+
+## 640         luzerne     0      75392    w      m Under.40
+## 641        lycoming     2        780    o      f    40.59
+## 642        lycoming     0        126    o      f    60.69
+## 643        lycoming     0        123    o      f      70+
+## 644        lycoming     0       2646    o      f Under.40
+## 645        lycoming     0        751    o      m    40.59
+## 646        lycoming     0         98    o      m    60.69
+## 647        lycoming     0         79    o      m      70+
+## 648        lycoming     0       2704    o      m Under.40
+## 649        lycoming     9      15712    w      f    40.59
+## 650        lycoming     9       5201    w      f    60.69
+## 651        lycoming    24       8671    w      f      70+
+## 652        lycoming     0      28103    w      f Under.40
+## 653        lycoming     8      15319    w      m    40.59
+## 654        lycoming    20       4630    w      m    60.69
+## 655        lycoming    25       5473    w      m      70+
+## 656        lycoming     1      29628    w      m Under.40
+## 657          mckean     0         78    o      f    40.59
+## 658          mckean     0         26    o      f    60.69
+## 659          mckean     2         20    o      f      70+
+## 660          mckean     0        202    o      f Under.40
+## 661          mckean     0        289    o      m    40.59
+## 662          mckean     0         23    o      m    60.69
+## 663          mckean     0         16    o      m      70+
+## 664          mckean     0        970    o      m Under.40
+## 665          mckean     6       5866    w      f    40.59
+## 666          mckean     3       2119    w      f    60.69
+## 667          mckean     7       3424    w      f      70+
+## 668          mckean     0      11188    w      f Under.40
+## 669          mckean     2       6046    w      m    40.59
+## 670          mckean     4       1848    w      m    60.69
+## 671          mckean    11       2267    w      m      70+
+## 672          mckean     0      11554    w      m Under.40
+## 673          mercer     0        899    o      f    40.59
+## 674          mercer     1        292    o      f    60.69
+## 675          mercer     0        308    o      f      70+
+## 676          mercer     0       2623    o      f Under.40
+## 677          mercer     1        905    o      m    40.59
+## 678          mercer     1        213    o      m    60.69
+## 679          mercer     1        209    o      m      70+
+## 680          mercer     0       2813    o      m Under.40
+## 681          mercer     6      15355    w      f    40.59
+## 682          mercer    11       5429    w      f    60.69
+## 683          mercer    22       9715    w      f      70+
+## 684          mercer     0      27149    w      f Under.40
+## 685          mercer     8      15125    w      m    40.59
+## 686          mercer    21       4741    w      m    60.69
+## 687          mercer    26       6260    w      m      70+
+## 688          mercer     0      28257    w      m Under.40
+## 689         mifflin     0         52    o      f    40.59
+## 690         mifflin     0         15    o      f    60.69
+## 691         mifflin     0         12    o      f      70+
+## 692         mifflin     0        254    o      f Under.40
+## 693         mifflin     0         69    o      m    40.59
+## 694         mifflin     0          8    o      m    60.69
+## 695         mifflin     0         11    o      m      70+
+## 696         mifflin     0        262    o      m Under.40
+## 697         mifflin    10       6151    w      f    40.59
+## 698         mifflin     4       2279    w      f    60.69
+## 699         mifflin    12       3601    w      f      70+
+## 700         mifflin     1      11702    w      f Under.40
+## 701         mifflin     3       5969    w      m    40.59
+## 702         mifflin     6       2050    w      m    60.69
+## 703         mifflin     9       2169    w      m      70+
+## 704         mifflin     0      11882    w      m Under.40
+## 705          monroe     0       2046    o      f    40.59
+## 706          monroe     0        323    o      f    60.69
+## 707          monroe     1        259    o      f      70+
+## 708          monroe     0       5668    o      f Under.40
+## 709          monroe     1       2019    o      m    40.59
+## 710          monroe     2        336    o      m    60.69
+## 711          monroe     0        172    o      m      70+
+## 712          monroe     0       5522    o      m Under.40
+## 713          monroe    13      17679    w      f    40.59
+## 714          monroe    10       5185    w      f    60.69
+## 715          monroe    18       6537    w      f      70+
+## 716          monroe     0      32500    w      f Under.40
+## 717          monroe    11      17796    w      m    40.59
+## 718          monroe    19       5028    w      m    60.69
+## 719          monroe    34       4907    w      m      70+
+## 720          monroe     1      32710    w      m Under.40
+## 721      montgomery     7      12737    o      f    40.59
+## 722      montgomery    10       2849    o      f    60.69
+## 723      montgomery    10       2888    o      f      70+
+## 724      montgomery     0      32576    o      f Under.40
+## 725      montgomery     2      12440    o      m    40.59
+## 726      montgomery    10       2753    o      m    60.69
+## 727      montgomery    10       1664    o      m      70+
+## 728      montgomery     0      33680    o      m Under.40
+## 729      montgomery    37      94388    w      f    40.59
+## 730      montgomery    58      28071    w      f    60.69
+## 731      montgomery   160      48666    w      f      70+
+## 732      montgomery     1     165368    w      f Under.40
+## 733      montgomery    43      90072    w      m    40.59
+## 734      montgomery    68      24125    w      m    60.69
+## 735      montgomery   181      30799    w      m      70+
+## 736      montgomery     2     167021    w      m Under.40
+## 737         montour     0         52    o      f    40.59
+## 738         montour     0          8    o      f    60.69
+## 739         montour     0          6    o      f      70+
+## 740         montour     0        216    o      f Under.40
+## 741         montour     0         56    o      m    40.59
+## 742         montour     0         13    o      m    60.69
+## 743         montour     0          5    o      m      70+
+## 744         montour     0        252    o      m Under.40
+## 745         montour     0       2512    w      f    40.59
+## 746         montour     1        861    w      f    60.69
+## 747         montour     4       1503    w      f      70+
+## 748         montour     0       4417    w      f Under.40
+## 749         montour     0       2444    w      m    40.59
+## 750         montour     2        752    w      m    60.69
+## 751         montour     1        825    w      m      70+
+## 752         montour     0       4314    w      m Under.40
+## 753     northampton     1       2376    o      f    40.59
+## 754     northampton     0        473    o      f    60.69
+## 755     northampton     1        470    o      f      70+
+## 756     northampton     0       8455    o      f Under.40
+## 757     northampton     0       2277    o      m    40.59
+## 758     northampton     1        418    o      m    60.69
+## 759     northampton     1        270    o      m      70+
+## 760     northampton     0       8688    o      m Under.40
+## 761     northampton    23      35347    w      f    40.59
+## 762     northampton    25      10555    w      f    60.69
+## 763     northampton    52      19017    w      f      70+
+## 764     northampton     0      60412    w      f Under.40
+## 765     northampton    25      34337    w      m    40.59
+## 766     northampton    26       9365    w      m    60.69
+## 767     northampton    80      12084    w      m      70+
+## 768     northampton     1      62522    w      m Under.40
+## 769  northumberland     0        169    o      f    40.59
+## 770  northumberland     0         35    o      f    60.69
+## 771  northumberland     0         49    o      f      70+
+## 772  northumberland     0        572    o      f Under.40
+## 773  northumberland     0        374    o      m    40.59
+## 774  northumberland     0         30    o      m    60.69
+## 775  northumberland     0         19    o      m      70+
+## 776  northumberland     0       1505    o      m Under.40
+## 777  northumberland     6      12626    w      f    40.59
+## 778  northumberland     9       4628    w      f    60.69
+## 779  northumberland    16       8731    w      f      70+
+## 780  northumberland     0      21371    w      f Under.40
+## 781  northumberland     6      12617    w      m    40.59
+## 782  northumberland    16       4151    w      m    60.69
+## 783  northumberland    29       4990    w      m      70+
+## 784  northumberland     1      22689    w      m Under.40
+## 785           perry     0         63    o      f    40.59
+## 786           perry     0         12    o      f    60.69
+## 787           perry     0          8    o      f      70+
+## 788           perry     0        196    o      f Under.40
+## 789           perry     0         65    o      m    40.59
+## 790           perry     0         10    o      m    60.69
+## 791           perry     0          5    o      m      70+
+## 792           perry     0        279    o      m Under.40
+## 793           perry     4       6304    w      f    40.59
+## 794           perry     6       1697    w      f    60.69
+## 795           perry     7       2186    w      f      70+
+## 796           perry     0      11516    w      f Under.40
+## 797           perry     5       6445    w      m    40.59
+## 798           perry     2       1668    w      m    60.69
+## 799           perry     7       1535    w      m      70+
+## 800           perry     0      11613    w      m Under.40
+## 801    philadelphia    74     106060    o      f    40.59
+## 802    philadelphia    80      31213    o      f    60.69
+## 803    philadelphia   130      37060    o      f      70+
+## 804    philadelphia     2     278613    o      f Under.40
+## 805    philadelphia    77      82346    o      m    40.59
+## 806    philadelphia    81      21828    o      m    60.69
+## 807    philadelphia   139      20035    o      m      70+
+## 808    philadelphia     2     257128    o      m Under.40
+## 809    philadelphia    79      87745    w      f    40.59
+## 810    philadelphia    86      32477    w      f    60.69
+## 811    philadelphia   235      65590    w      f      70+
+## 812    philadelphia     2     173685    w      f Under.40
+## 813    philadelphia    82      82728    w      m    40.59
+## 814    philadelphia   108      26540    w      m    60.69
+## 815    philadelphia   236      36915    w      m      70+
+## 816    philadelphia     2     177587    w      m Under.40
+## 817            pike     0        478    o      f    40.59
+## 818            pike     0         78    o      f    60.69
+## 819            pike     0         68    o      f      70+
+## 820            pike     0        982    o      f Under.40
+## 821            pike     1        460    o      m    40.59
+## 822            pike     0         81    o      m    60.69
+## 823            pike     1         53    o      m      70+
+## 824            pike     0        993    o      m Under.40
+## 825            pike     6       6216    w      f    40.59
+## 826            pike     5       2263    w      f    60.69
+## 827            pike     9       2415    w      f      70+
+## 828            pike     0      10728    w      f Under.40
+## 829            pike     1       6226    w      m    40.59
+## 830            pike     6       2245    w      m    60.69
+## 831            pike     6       2209    w      m      70+
+## 832            pike     0      10807    w      m Under.40
+## 833          potter     0         40    o      f    40.59
+## 834          potter     0         10    o      f    60.69
+## 835          potter     1         12    o      f      70+
+## 836          potter     0        118    o      f Under.40
+## 837          potter     0         39    o      m    40.59
+## 838          potter     1         17    o      m    60.69
+## 839          potter     2          7    o      m      70+
+## 840          potter     0        108    o      m Under.40
+## 841          potter     3       2373    w      f    40.59
+## 842          potter     2        848    w      f    60.69
+## 843          potter     3       1290    w      f      70+
+## 844          potter     0       4469    w      f Under.40
+## 845          potter     5       2433    w      m    40.59
+## 846          potter     3        830    w      m    60.69
+## 847          potter     2        888    w      m      70+
+## 848          potter     0       4598    w      m Under.40
+## 849      schuylkill     0        253    o      f    40.59
+## 850      schuylkill     0         49    o      f    60.69
+## 851      schuylkill     0         71    o      f      70+
+## 852      schuylkill     0        827    o      f Under.40
+## 853      schuylkill     0        825    o      m    40.59
+## 854      schuylkill     0         68    o      m    60.69
+## 855      schuylkill     1         49    o      m      70+
+## 856      schuylkill     0       2945    o      m Under.40
+## 857      schuylkill    12      19492    w      f    40.59
+## 858      schuylkill    11       7247    w      f    60.69
+## 859      schuylkill    32      14333    w      f      70+
+## 860      schuylkill     0      33246    w      f Under.40
+## 861      schuylkill    14      20190    w      m    40.59
+## 862      schuylkill    20       6385    w      m    60.69
+## 863      schuylkill    46       8453    w      m      70+
+## 864      schuylkill     0      35903    w      m Under.40
+## 865          snyder     0         60    o      f    40.59
+## 866          snyder     0         19    o      f    60.69
+## 867          snyder     0          9    o      f      70+
+## 868          snyder     0        265    o      f Under.40
+## 869          snyder     0        114    o      m    40.59
+## 870          snyder     0          8    o      m    60.69
+## 871          snyder     0         12    o      m      70+
+## 872          snyder     0        291    o      m Under.40
+## 873          snyder     2       4928    w      f    40.59
+## 874          snyder     5       1612    w      f    60.69
+## 875          snyder     3       2286    w      f      70+
+## 876          snyder     0      10015    w      f Under.40
+## 877          snyder     2       4892    w      m    40.59
+## 878          snyder     3       1455    w      m    60.69
+## 879          snyder    13       1522    w      m      70+
+## 880          snyder     0      10058    w      m Under.40
+## 881        somerset     0         77    o      f    40.59
+## 882        somerset     0         24    o      f    60.69
+## 883        somerset     0         20    o      f      70+
+## 884        somerset     0        225    o      f Under.40
+## 885        somerset     0        337    o      m    40.59
+## 886        somerset     0         44    o      m    60.69
+## 887        somerset     1         25    o      m      70+
+## 888        somerset     0       1333    o      m Under.40
+## 889        somerset     3      10632    w      f    40.59
+## 890        somerset     4       3860    w      f    60.69
+## 891        somerset    13       6635    w      f      70+
+## 892        somerset     0      18583    w      f Under.40
+## 893        somerset     6      11040    w      m    40.59
+## 894        somerset     9       3394    w      m    60.69
+## 895        somerset    17       4240    w      m      70+
+## 896        somerset     1      19554    w      m Under.40
+## 897        sullivan     0         13    o      f    40.59
+## 898        sullivan     0          4    o      f    60.69
+## 899        sullivan     0          3    o      f      70+
+## 900        sullivan     0         91    o      f Under.40
+## 901        sullivan     0          6    o      m    40.59
+## 902        sullivan     0          5    o      m    60.69
+## 903        sullivan     0          6    o      m      70+
+## 904        sullivan     0        162    o      m Under.40
+## 905        sullivan     0        855    w      f    40.59
+## 906        sullivan     0        383    w      f    60.69
+## 907        sullivan     2        577    w      f      70+
+## 908        sullivan     0       1318    w      f Under.40
+## 909        sullivan     0        876    w      m    40.59
+## 910        sullivan     0        395    w      m    60.69
+## 911        sullivan     1        474    w      m      70+
+## 912        sullivan     0       1388    w      m Under.40
+## 913     susquehanna     0         89    o      f    40.59
+## 914     susquehanna     0         15    o      f    60.69
+## 915     susquehanna     0         21    o      f      70+
+## 916     susquehanna     0        175    o      f Under.40
+## 917     susquehanna     0         87    o      m    40.59
+## 918     susquehanna     0         18    o      m    60.69
+## 919     susquehanna     0         13    o      m      70+
+## 920     susquehanna     0        199    o      m Under.40
+## 921     susquehanna     8       5883    w      f    40.59
+## 922     susquehanna     2       1920    w      f    60.69
+## 923     susquehanna     6       2767    w      f      70+
+## 924     susquehanna     0      10365    w      f Under.40
+## 925     susquehanna     6       6029    w      m    40.59
+## 926     susquehanna     3       1955    w      m    60.69
+## 927     susquehanna     7       1960    w      m      70+
+## 928     susquehanna     2      10742    w      m Under.40
+## 929           tioga     0         83    o      f    40.59
+## 930           tioga     0         19    o      f    60.69
+## 931           tioga     0         14    o      f      70+
+## 932           tioga     0        279    o      f Under.40
+## 933           tioga     0         66    o      m    40.59
+## 934           tioga     0         21    o      m    60.69
+## 935           tioga     0          9    o      m      70+
+## 936           tioga     0        293    o      m Under.40
+## 937           tioga     1       5491    w      f    40.59
+## 938           tioga     1       1956    w      f    60.69
+## 939           tioga     7       2722    w      f      70+
+## 940           tioga     1      10556    w      f Under.40
+## 941           tioga     2       5377    w      m    40.59
+## 942           tioga     6       1977    w      m    60.69
+## 943           tioga    10       1997    w      m      70+
+## 944           tioga     0      10513    w      m Under.40
+## 945           union     0         75    o      f    40.59
+## 946           union     0         23    o      f    60.69
+## 947           union     0         14    o      f      70+
+## 948           union     0        477    o      f Under.40
+## 949           union     2        836    o      m    40.59
+## 950           union     0         56    o      m    60.69
+## 951           union     0         17    o      m      70+
+## 952           union     0       2630    o      m Under.40
+## 953           union     3       4570    w      f    40.59
+## 954           union     0       1488    w      f    60.69
+## 955           union     6       2559    w      f      70+
+## 956           union     0       9382    w      f Under.40
+## 957           union     3       5267    w      m    40.59
+## 958           union     4       1464    w      m    60.69
+## 959           union     9       1596    w      m      70+
+## 960           union     1      11170    w      m Under.40
+## 961         venango     0        131    o      f    40.59
+## 962         venango     0         39    o      f    60.69
+## 963         venango     0         24    o      f      70+
+## 964         venango     0        412    o      f Under.40
+## 965         venango     0        121    o      m    40.59
+## 966         venango     1         33    o      m    60.69
+## 967         venango     1         22    o      m      70+
+## 968         venango     0        575    o      m Under.40
+## 969         venango     1       8152    w      f    40.59
+## 970         venango     7       2851    w      f    60.69
+## 971         venango    15       4224    w      f      70+
+## 972         venango     0      13629    w      f Under.40
+## 973         venango     3       8116    w      m    40.59
+## 974         venango    18       2459    w      m    60.69
+## 975         venango    24       2785    w      m      70+
+## 976         venango     0      13992    w      m Under.40
+## 977          warren     0         77    o      f    40.59
+## 978          warren     0         13    o      f    60.69
+## 979          warren     0         15    o      f      70+
+## 980          warren     0        165    o      f Under.40
+## 981          warren     0         89    o      m    40.59
+## 982          warren     0         21    o      m    60.69
+## 983          warren     0         12    o      m      70+
+## 984          warren     0        185    o      m Under.40
+## 985          warren     4       6362    w      f    40.59
+## 986          warren     1       2150    w      f    60.69
+## 987          warren     8       3178    w      f      70+
+## 988          warren     0      10397    w      f Under.40
+## 989          warren     3       6278    w      m    40.59
+## 990          warren     6       1983    w      m    60.69
+## 991          warren    13       2133    w      m      70+
+## 992          warren     0      10805    w      m Under.40
+## 993      washington     1       1060    o      f    40.59
+## 994      washington     0        346    o      f    60.69
+## 995      washington     1        510    o      f      70+
+## 996      washington     0       2992    o      f Under.40
+## 997      washington     1       1064    o      m    40.59
+## 998      washington     1        289    o      m    60.69
+## 999      washington     1        328    o      m      70+
+## 1000     washington     0       3011    o      m Under.40
+## 1001     washington    13      28549    w      f    40.59
+## 1002     washington    19       9454    w      f    60.69
+## 1003     washington    51      16444    w      f      70+
+## 1004     washington     0      46096    w      f Under.40
+## 1005     washington    27      27667    w      m    40.59
+## 1006     washington    22       7995    w      m    60.69
+## 1007     washington    57      10339    w      m      70+
+## 1008     washington     0      46753    w      m Under.40
+## 1009          wayne     0        149    o      f    40.59
+## 1010          wayne     0         37    o      f    60.69
+## 1011          wayne     0         29    o      f      70+
+## 1012          wayne     0        300    o      f Under.40
+## 1013          wayne     1        341    o      m    40.59
+## 1014          wayne     0         52    o      m    60.69
+## 1015          wayne     1         27    o      m      70+
+## 1016          wayne     0        627    o      m Under.40
+## 1017          wayne     4       6444    w      f    40.59
+## 1018          wayne    10       2476    w      f    60.69
+## 1019          wayne     5       3440    w      f      70+
+## 1020          wayne     0      10905    w      f Under.40
+## 1021          wayne     7       6693    w      m    40.59
+## 1022          wayne     6       2304    w      m    60.69
+## 1023          wayne    10       2476    w      m      70+
+## 1024          wayne     1      11422    w      m Under.40
+## 1025   westmoreland     2       1463    o      f    40.59
+## 1026   westmoreland     0        353    o      f    60.69
+## 1027   westmoreland     1        461    o      f      70+
+## 1028   westmoreland     0       3854    o      f Under.40
+## 1029   westmoreland     4       1545    o      m    40.59
+## 1030   westmoreland     2        311    o      m    60.69
+## 1031   westmoreland     4        276    o      m      70+
+## 1032   westmoreland     0       4405    o      m Under.40
+## 1033   westmoreland    25      53392    w      f    40.59
+## 1034   westmoreland    29      18104    w      f    60.69
+## 1035   westmoreland   101      30681    w      f      70+
+## 1036   westmoreland     1      83250    w      f Under.40
+## 1037   westmoreland    31      51605    w      m    40.59
+## 1038   westmoreland    52      15349    w      m    60.69
+## 1039   westmoreland   119      19735    w      m      70+
+## 1040   westmoreland     1      85209    w      m Under.40
+## 1041        wyoming     0         50    o      f    40.59
+## 1042        wyoming     0          6    o      f    60.69
+## 1043        wyoming     0          7    o      f      70+
+## 1044        wyoming     0        157    o      f Under.40
+## 1045        wyoming     0         49    o      m    40.59
+## 1046        wyoming     0          5    o      m    60.69
+## 1047        wyoming     0          1    o      m      70+
+## 1048        wyoming     0        207    o      m Under.40
+## 1049        wyoming     0       3953    w      f    40.59
+## 1050        wyoming     1       1084    w      f    60.69
+## 1051        wyoming     3       1686    w      f      70+
+## 1052        wyoming     0       7198    w      f Under.40
+## 1053        wyoming     2       4072    w      m    40.59
+## 1054        wyoming     4       1115    w      m    60.69
+## 1055        wyoming     4       1025    w      m      70+
+## 1056        wyoming     0       7465    w      m Under.40
+## 1057           york     2       2803    o      f    40.59
+## 1058           york     4        567    o      f    60.69
+## 1059           york     1        511    o      f      70+
+## 1060           york     0       9875    o      f Under.40
+## 1061           york     5       2826    o      m    40.59
+## 1062           york     1        513    o      m    60.69
+## 1063           york     1        319    o      m      70+
+## 1064           york     0      10234    o      m Under.40
+## 1065           york    19      51713    w      f    40.59
+## 1066           york    31      14891    w      f    60.69
+## 1067           york    59      22096    w      f      70+
+## 1068           york     2      91628    w      f Under.40
+## 1069           york    30      51757    w      m    40.59
+## 1070           york    40      13863    w      m    60.69
+## 1071           york    84      14466    w      m      70+
+## 1072           york     0      93689    w      m Under.40</code></pre>
+<p>You check on</p>
+<p>Then you get the expected counts (E) in each county by calling the <code>SpatialEpi::expected()</code> function, where you set population equal to <code>Strata.df$population</code> and cases equal to <code>Strata.df$cases</code>. There are two races, two genders and four age groups for each county, so number of strata is set to 2 x 2 x 4 = 16</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="tuesday-february-28-2023.html#cb92-1" aria-hidden="true" tabindex="-1"></a>( E <span class="ot">&lt;-</span> SpatialEpi<span class="sc">::</span><span class="fu">expected</span>(<span class="at">population =</span> Strata.df<span class="sc">$</span>population,</span>
+<span id="cb92-2"><a href="tuesday-february-28-2023.html#cb92-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cases =</span> Strata.df<span class="sc">$</span>cases, </span>
+<span id="cb92-3"><a href="tuesday-february-28-2023.html#cb92-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">n.strata =</span> <span class="dv">16</span>) )</span></code></pre></div>
+<pre><code>##  [1]   69.627305 1182.428036   67.610123  172.558055   44.190132  300.705979
+##  [7]  115.069655   53.237644  428.797481  134.797705  149.846027    5.945905
+## [13]   55.475211   79.404013  300.124058   33.906647   73.853240   33.012029
+## [19]   53.312111   75.025024  170.866603  199.809038  454.545971   31.543736
+## [25]  216.203436  137.810484    5.403583  109.888662   11.594802   33.093112
+## [31]   36.659515   71.090130   42.555800   18.735146  204.172754  357.237966
+## [37]   91.303056  103.076598  259.874790  309.688036  101.231639   40.105227
+## [43]  111.790653   40.774630  100.094714  608.691819   16.081330  222.731099
+## [49]   90.872134   31.037254 1219.102696   39.865269   16.003210  147.937712
+## [55]   28.878902   74.523497    7.419682   36.174266   35.756382   30.833836
+## [61]   51.141014   39.230710  189.097720   44.490161  351.175955   21.009224
+## [67]  288.869666</code></pre>
+<p>Now you include the observed count <code>Y</code>, the expected count <code>E</code>, and the computed SIR into the simple feature data frame <code>LC.sf</code> before making a map of the standardized incidence ratios (SIR) with blue shades below a value of 1 (midpoint) and red shades above a value of 1</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="tuesday-february-28-2023.html#cb94-1" aria-hidden="true" tabindex="-1"></a>LC.sf <span class="ot">&lt;-</span> LC.sf <span class="sc">|&gt;</span></span>
+<span id="cb94-2"><a href="tuesday-february-28-2023.html#cb94-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Y =</span> County.df<span class="sc">$</span>Y,</span>
+<span id="cb94-3"><a href="tuesday-february-28-2023.html#cb94-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">E =</span> E,</span>
+<span id="cb94-4"><a href="tuesday-february-28-2023.html#cb94-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">SIR =</span> Y<span class="sc">/</span>E)</span>
+<span id="cb94-5"><a href="tuesday-february-28-2023.html#cb94-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-6"><a href="tuesday-february-28-2023.html#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(LC.sf) <span class="sc">+</span> </span>
+<span id="cb94-7"><a href="tuesday-february-28-2023.html#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> SIR)) <span class="sc">+</span></span>
+<span id="cb94-8"><a href="tuesday-february-28-2023.html#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">midpoint =</span> <span class="dv">1</span>, </span>
+<span id="cb94-9"><a href="tuesday-february-28-2023.html#cb94-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">low =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb94-10"><a href="tuesday-february-28-2023.html#cb94-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mid =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb94-11"><a href="tuesday-february-28-2023.html#cb94-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">high =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb94-12"><a href="tuesday-february-28-2023.html#cb94-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p>In counties with SIR &gt; 1 (red), the number of cancer cases observed is higher than the expected cases. Counties with SIR &lt; 1 (blue) have fewer cancer cases observed than expected. In counties with SIR = 1 (white) the number of cancer cases observed is the same as the number of expected cases. There is not a clear pattern</p>
+<p>In regions with few people, the expected counts may be very low and the SIR value may be misleading. Therefore, it is preferable to estimate disease risk using models that borrow information from neighboring counties and, if appropriate, incorporate explanatory information. This results in smoothing (shrinkage) of extreme values</p>
+<p>Let the observed counts <span class="math inline">\(Y\)</span> be modeled with a Poisson distribution having a mean <span class="math inline">\(E \theta\)</span>, where <span class="math inline">\(E\)</span> are the expected counts and <span class="math inline">\(\theta\)</span> are the relative risks. The logarithm of the relative risk is expressed as the sum of an intercept (that accounts for the overall disease risk level) and random effects (that account for local variability)</p>
+<p>The relative risk quantifies whether a county has a higher (<span class="math inline">\(\theta &gt; 1\)</span>) or lower (<span class="math inline">\(\theta &lt; 1\)</span>) risk than the average risk in the population. For example if <span class="math inline">\(\theta_i = 2\)</span>, then the risk in county <span class="math inline">\(i\)</span> is twice the average risk in the statewide population</p>
+<p>The model is expressed as</p>
+<p><span class="math display">\[
+Y \sim \hbox{Poisson}(E\theta) \\
+\log(\theta) = \alpha + u + v
+\]</span></p>
+<p>The parameter <span class="math inline">\(\alpha\)</span> is the overall risk in the state, <span class="math inline">\(u\)</span> is the spatially structured random effect representing the spatial autocorrelation in risk across neighboring counties, and <span class="math inline">\(v\)</span> is the uncorrelated random noise modeled as</p>
+<p><span class="math display">\[
+v \sim N(0, \sigma_v^2)
+\]</span></p>
+<p>Note: here the approach is to <em>assume</em> spatial autocorrelation through the term <span class="math inline">\(u\)</span></p>
+<p>It is common to include explanatory variables to quantify risk factors (e.g., smoking prevalence, distance to nearest coal plant). Thus the log(<span class="math inline">\(\theta\)</span>) is expressed as</p>
+<p><span class="math display">\[
+\log(\theta) = \alpha + X\beta + u + v
+\]</span></p>
+<p>where <span class="math inline">\(X\)</span> are the explanatory variables and <span class="math inline">\(\beta\)</span> are the associated coefficients. A coefficient is interpreted such that a one-unit increase in the explanatory variable value changes the relative risk by a factor <span class="math inline">\(\exp(\beta)\)</span>, holding the other variables constant</p>
+<p>A popular form for the spatially structured random effect is the Besag-York-Mollié (BYM) model, which assigns a conditional autoregression distribution to <span class="math inline">\(u\)</span> as</p>
+<p><span class="math display">\[
+u | u_{j \ne i} \sim N(\bar u_{\delta}, \frac{\sigma_u^2}{n_{\delta}})
+\]</span></p>
+<p>where
+<span class="math display">\[
+\bar  u_{\delta_i} = \Sigma_{j \in \delta_i} u_j/n_{\delta_i}
+\]</span>
+and where <span class="math inline">\(\delta_i\)</span> is the set of <span class="math inline">\(n_{\delta_i}\)</span> neighbors of area <span class="math inline">\(i\)</span>.</p>
+<p>In words, the logarithm of the disease incidence rate in county <span class="math inline">\(i\)</span> <em>conditional</em> on the incidence rates in the neighborhood of <span class="math inline">\(i\)</span> is modeled with a normal distribution centered on the neighborhood average (<span class="math inline">\(\bar u_{\delta_i}\)</span>) with a variance scaled by the number of neighbors. This is called the conditional autoregressive (CAR) distribution</p>
+<p>The model is fit using an application of Bayes rule through the method of integrated nested Laplace approximation (INLA), which results in posterior densities for the predicted relative risk</p>
+<p>This is done with functions from the {INLA} package. You get the package (it is not on CRAN) as follows</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="tuesday-february-28-2023.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout =</span> <span class="dv">120</span>)</span>
+<span id="cb95-2"><a href="tuesday-february-28-2023.html#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="tuesday-february-28-2023.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;INLA&quot;</span>, <span class="at">repos=</span><span class="fu">c</span>(<span class="fu">getOption</span>(<span class="st">&quot;repos&quot;</span>), <span class="at">INLA =</span> <span class="st">&quot;https://inla.r-inla-download.org/R/stable&quot;</span>), <span class="at">dep =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>The syntax for the BYM model using functions from the {INLA} package is given as</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="tuesday-february-28-2023.html#cb96-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> Y <span class="sc">~</span> </span>
+<span id="cb96-2"><a href="tuesday-february-28-2023.html#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">f</span>(IDu, <span class="at">model =</span> <span class="st">&quot;besag&quot;</span>, <span class="at">graph =</span> g, <span class="at">scale.model =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb96-3"><a href="tuesday-february-28-2023.html#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">f</span>(IDv, <span class="at">model =</span> <span class="st">&quot;iid&quot;</span>)</span></code></pre></div>
+<p>The formula includes the response in the left-hand side, and the fixed and random effects on the right-hand side. By default, the formula includes an intercept</p>
+<p>The random effects are set using <code>f()</code> with parameters equal to the name of the index variable, the model, and other options. The BYM formula includes a spatially structured random effect with index variable with name <code>IDu</code> and equal to c(1, 2, …, I), where I is the number of counties and model <code>"besag"</code> with a CAR distribution and with neighborhood structure given by the graph <code>g</code>. The option <code>scale.model = TRUE</code> is used to make the precision parameter of models with different CAR priors comparable</p>
+<p>The formula also includes an uncorrelated random effect with index variable with name <code>IDv</code> again equal to c(1, 2, …, I), and model “iid”. This is an independent and identically distributed zero-mean normally distributed random effect. Note that both the <code>ID</code> variables are identical but both need to be specified separately since INLA does not allow to include two effects with <code>f()</code> that use the same index variable</p>
+<p>The BYM model can also be specified with the model “bym” which defines both the spatially structured random effect and the uncorrelated random effect (<span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>)</p>
+<p>You include these two vectors (call them <code>IDu</code> and <code>IDv</code>) in the data frame as separate column names</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="tuesday-february-28-2023.html#cb97-1" aria-hidden="true" tabindex="-1"></a>LC.sf <span class="ot">&lt;-</span> LC.sf <span class="sc">|&gt;</span></span>
+<span id="cb97-2"><a href="tuesday-february-28-2023.html#cb97-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">IDu =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(LC.sf),</span>
+<span id="cb97-3"><a href="tuesday-february-28-2023.html#cb97-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">IDv =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(LC.sf))</span>
+<span id="cb97-4"><a href="tuesday-february-28-2023.html#cb97-4" aria-hidden="true" tabindex="-1"></a>LC.sf</span></code></pre></div>
+<pre><code>## Simple feature collection with 67 features and 5 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -80.53494 ymin: 39.72316 xmax: -74.72516 ymax: 42.26137
+## CRS:           +proj=longlat
+## First 10 features:
+##                          geometry    Y          E       SIR IDu IDv
+## 1  POLYGON ((-77.4467 39.96954...   55   69.62730 0.7899200   1   1
+## 2  POLYGON ((-80.14534 40.6742... 1275 1182.42804 1.0782897   2   2
+## 3  POLYGON ((-79.21142 40.9091...   49   67.61012 0.7247435   3   3
+## 4  POLYGON ((-80.1568 40.85189...  172  172.55806 0.9967660   4   4
+## 5  POLYGON ((-78.38063 39.7288...   37   44.19013 0.8372910   5   5
+## 6  POLYGON ((-75.53303 40.4508...  308  300.70598 1.0242563   6   6
+## 7  POLYGON ((-78.11707 40.7373...  127  115.06965 1.1036793   7   7
+## 8  POLYGON ((-76.14609 42.0035...   59   53.23764 1.1082384   8   8
+## 9  POLYGON ((-74.97153 40.0554...  454  428.79748 1.0587749   9   9
+## 10 POLYGON ((-80.14534 40.6742...  158  134.79770 1.1721268  10  10</code></pre>
+<p>Create a graph object from a neighbor list object. Write the neighbor list object to a file then read it back in with the <code>inla.read.graph()</code> function.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="tuesday-february-28-2023.html#cb99-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> spdep<span class="sc">::</span><span class="fu">poly2nb</span>(LC.sf)</span>
+<span id="cb99-2"><a href="tuesday-february-28-2023.html#cb99-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-3"><a href="tuesday-february-28-2023.html#cb99-3" aria-hidden="true" tabindex="-1"></a>spdep<span class="sc">::</span><span class="fu">nb2INLA</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;map.adj&quot;</span>), nb)</span>
+<span id="cb99-4"><a href="tuesday-february-28-2023.html#cb99-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-5"><a href="tuesday-february-28-2023.html#cb99-5" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> INLA<span class="sc">::</span><span class="fu">inla.read.graph</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;map.adj&quot;</span>))</span>
+<span id="cb99-6"><a href="tuesday-february-28-2023.html#cb99-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-7"><a href="tuesday-february-28-2023.html#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(g)</span></code></pre></div>
+<pre><code>## [1] &quot;inla.graph&quot;</code></pre>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="tuesday-february-28-2023.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(g)</span></code></pre></div>
+<pre><code>## List of 4
+##  $ n   : int 67
+##  $ nnbs: num [1:67] 3 5 6 4 5 6 5 5 4 8 ...
+##  $ nbs :List of 67
+##   ..$ : int [1:3] 21 28 67
+##   ..$ : int [1:5] 3 4 10 63 65
+##   ..$ : int [1:6] 2 10 16 32 33 65
+##   ..$ : int [1:4] 2 10 37 63
+##   ..$ : int [1:5] 7 11 29 31 56
+##   ..$ : int [1:6] 15 36 38 39 46 54
+##   ..$ : int [1:5] 5 11 14 17 31
+##   ..$ : int [1:5] 41 57 58 59 66
+##   ..$ : int [1:4] 39 46 48 51
+##   ..$ : int [1:8] 2 3 4 16 37 43 61 65
+##   ..$ : int [1:7] 5 7 14 17 32 56 65
+##   ..$ : int [1:5] 17 18 24 42 53
+##   ..$ : int [1:5] 39 40 45 48 54
+##   ..$ : int [1:7] 7 11 17 18 31 44 60
+##   ..$ : int [1:4] 6 23 36 46
+##   ..$ : int [1:5] 3 10 27 33 61
+##   ..$ : int [1:8] 7 11 12 14 18 24 32 33
+##   ..$ : int [1:6] 12 14 17 41 53 60
+##   ..$ : int [1:6] 40 41 47 49 54 57
+##   ..$ : int [1:4] 25 43 61 62
+##   ..$ : int [1:5] 1 22 28 50 67
+##   ..$ : int [1:7] 21 36 38 49 50 54 67
+##   ..$ : int [1:3] 15 46 51
+##   ..$ : int [1:6] 12 17 27 33 42 62
+##   ..$ : int [1:2] 20 62
+##   ..$ : int [1:4] 30 56 63 65
+##   ..$ : int [1:6] 16 24 33 42 61 62
+##   ..$ : int [1:6] 1 21 29 31 34 50
+##   ..$ : int [1:3] 5 28 31
+##   ..$ : int [1:2] 26 63
+##   ..$ : int [1:7] 5 7 14 28 29 34 44
+##   ..$ : int [1:5] 3 11 17 33 65
+##   ..$ : int [1:6] 3 16 17 24 27 32
+##   ..$ : int [1:6] 28 31 44 49 50 55
+##   ..$ : int [1:5] 40 45 58 64 66
+##   ..$ : int [1:5] 6 15 22 38 67
+##   ..$ : int [1:3] 4 10 43
+##   ..$ : int [1:4] 6 22 36 54
+##   ..$ : int [1:6] 6 9 13 46 48 54
+##   ..$ : int [1:7] 13 19 35 45 54 57 66
+##   ..$ : int [1:9] 8 18 19 47 49 53 57 59 60
+##   ..$ : int [1:5] 12 24 27 53 62
+##   ..$ : int [1:4] 10 20 37 61
+##   ..$ : int [1:5] 14 31 34 55 60
+##   ..$ : int [1:6] 13 35 40 48 52 64
+##   ..$ : int [1:6] 6 9 15 23 39 51
+##   ..$ : int [1:3] 19 41 49
+##   ..$ : int [1:4] 9 13 39 45
+##   ..$ : int [1:9] 19 22 34 41 47 50 54 55 60
+##   ..$ : int [1:6] 21 22 28 34 49 55
+##   ..$ : int [1:3] 9 23 46
+##   ..$ : int [1:2] 45 64
+##   ..$ : int [1:5] 12 18 41 42 59
+##   ..$ : int [1:8] 6 13 19 22 38 39 40 49
+##   ..$ : int [1:5] 34 44 49 50 60
+##   ..$ : int [1:4] 5 11 26 65
+##   ..$ : int [1:5] 8 19 40 41 66
+##   ..$ : int [1:4] 8 35 64 66
+##   ..$ : int [1:3] 8 41 53
+##   ..$ : int [1:6] 14 18 41 44 49 55
+##   ..$ : int [1:6] 10 16 20 27 43 62
+##   ..$ : int [1:6] 20 24 25 27 42 61
+##   ..$ : int [1:5] 2 4 26 30 65
+##   ..$ : int [1:4] 35 45 52 58
+##   ..$ : int [1:8] 2 3 10 11 26 32 56 63
+##   ..$ : int [1:5] 8 35 40 57 58
+##   ..$ : int [1:4] 1 21 22 36
+##  $ cc  :List of 4
+##   ..$ id   : int [1:67] 1 1 1 1 1 1 1 1 1 1 ...
+##   ..$ n    : int 1
+##   ..$ nodes:List of 1
+##   .. ..$ : int [1:67] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ mean : Factor w/ 1 level &quot;1&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  - attr(*, &quot;class&quot;)= chr &quot;inla.graph&quot;</code></pre>
+<p>You fit the model by calling the <code>inla()</code> function specifying the formula, the family (“poisson”), the data, and the expected counts (E). You also set <code>control.predictor = list(compute = TRUE)</code> to compute the posteriors predictions</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="tuesday-february-28-2023.html#cb103-1" aria-hidden="true" tabindex="-1"></a>model.inla <span class="ot">&lt;-</span> INLA<span class="sc">::</span><span class="fu">inla</span>(<span class="at">formula =</span> f, </span>
+<span id="cb103-2"><a href="tuesday-february-28-2023.html#cb103-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,</span>
+<span id="cb103-3"><a href="tuesday-february-28-2023.html#cb103-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> LC.sf,</span>
+<span id="cb103-4"><a href="tuesday-february-28-2023.html#cb103-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">E =</span> E,</span>
+<span id="cb103-5"><a href="tuesday-february-28-2023.html#cb103-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">control.predictor =</span> <span class="fu">list</span>(<span class="at">compute =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p>The estimates of the relative risk of lung cancer and their uncertainty for each of the counties are given by the mean posterior and the 95% credible intervals which are contained in the object <code>model.inla$summary.fitted.values</code>. Column <code>mean</code> is the mean posterior and <code>0.025quant</code> and <code>0.975quant</code> are the 2.5 and 97.5 percentiles, respectively</p>
+<p>You add these to the spatial data frame and then make a map of the posterior mean relative risk</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="tuesday-february-28-2023.html#cb104-1" aria-hidden="true" tabindex="-1"></a>LC.sf<span class="sc">$</span>RR <span class="ot">&lt;-</span> model.inla<span class="sc">$</span>summary.fitted.values[, <span class="st">&quot;mean&quot;</span>]</span>
+<span id="cb104-2"><a href="tuesday-february-28-2023.html#cb104-2" aria-hidden="true" tabindex="-1"></a>LC.sf<span class="sc">$</span>LL <span class="ot">&lt;-</span> model.inla<span class="sc">$</span>summary.fitted.values[, <span class="st">&quot;0.025quant&quot;</span>]</span>
+<span id="cb104-3"><a href="tuesday-february-28-2023.html#cb104-3" aria-hidden="true" tabindex="-1"></a>LC.sf<span class="sc">$</span>UL <span class="ot">&lt;-</span> model.inla<span class="sc">$</span>summary.fitted.values[, <span class="st">&quot;0.975quant&quot;</span>]</span>
+<span id="cb104-4"><a href="tuesday-february-28-2023.html#cb104-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-5"><a href="tuesday-february-28-2023.html#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(LC.sf) <span class="sc">+</span> </span>
+<span id="cb104-6"><a href="tuesday-february-28-2023.html#cb104-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> RR)) <span class="sc">+</span></span>
+<span id="cb104-7"><a href="tuesday-february-28-2023.html#cb104-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">midpoint =</span> <span class="dv">1</span>, </span>
+<span id="cb104-8"><a href="tuesday-february-28-2023.html#cb104-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">low =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb104-9"><a href="tuesday-february-28-2023.html#cb104-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mid =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb104-10"><a href="tuesday-february-28-2023.html#cb104-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">high =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb104-11"><a href="tuesday-february-28-2023.html#cb104-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="ASS-2022_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p>These relative risk values are smoother and muted (less dispersed) in absolute magnitude compared with the empirical SIR estimates</p>
+<p>More on this topic is available from <a href="https://www.paulamoraga.com/book-geospatial/index.html" class="uri">https://www.paulamoraga.com/book-geospatial/index.html</a> Paula Moraga’s book is an excellent resource for fitting spatial data models using R</p>
+<p>An application of the CAR model to estimate tornado risk across the United States <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895" class="uri">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0166895</a></p>
+<p>An online book on Bayesian statistics using R <a href="https://www.bayesrulesbook.com/" class="uri">https://www.bayesrulesbook.com/</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="thursday-february-23-2023.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="tuesday-march-7-2023.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -46,7 +46,7 @@ In GWR, the bandwidth is specified as a single parameter and determined through 
 
 Said another way, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variables. Geographic regressions show how this dependency varies by location. GWR is used as an exploratory technique for determining where local regression coefficients are different from corresponding global values
 
-Returning (final time) to with the Columbus crime data
+Returning (final time I promise) to with the Columbus crime data
 
 ```{r}
 ( CC.sf <- sf::st_read(dsn = here::here("data", "columbus"),
@@ -90,13 +90,13 @@ To determine the optimal bandwidth for the Gaussian kernel (weighting function) 
                        coords = Locations) )
 ```
 
-The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (Gaussian by default) and that bandwidth (distance).
+The procedure makes an initial guess at the optimal bandwidth distance and then fits local regression models at each location using weights that decay defined by the kernel (Gaussian by default) and that bandwidth (distance)
 
-The output shows that the first bandwidth chosen was 2.22 in arbitrary distance units. The resulting prediction skill from fitting 49 regression models with that bandwidth is 7474 units. The resulting CV score is based on cross validation whereby skill is computed at each location when data from that location is not used to fit the regression models.
+The output shows that the first bandwidth chosen was 2.22 in arbitrary distance units. The resulting prediction skill from fitting 49 regression models with that bandwidth is 7474 units. The resulting CV score is based on cross validation whereby skill is computed at each location when data from that location is not used to fit the regression models
 
-The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score after refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs. 
+The procedure continues by increasing the bandwidth distance (to 3.59) and then computing a new CV score after refitting the regression models. Since the new CV score is higher (7480) than the initial CV score (7474), the bandwidth is changed in the other direction (decreasing from 2.22 to 1.37) and the models again are refit. With that bandwidth, the CV score is 7404, which is lower than the initial bandwidth so the bandwidth is decreased again. The procedure continues until no additional improvement in prediction skill occurs
 
-The output shows that no additional improvement in skill occurs at a bandwidth distance of .404 units, and this single value is assigned to the object you called `bw`.
+The output shows that no additional improvement in skill occurs at a bandwidth distance of .404 units, and this single value is assigned to the object you called `bw`
 
 Once the bandwidth distance is determined you use the `spgwr::gwr()` function to fit the regressions using that bandwidth. The arguments are the same as before but includes the `bandwidth =` argument where you specify the object `bw`.
 
@@ -107,26 +107,26 @@ models.gwr <- spgwr::gwr(formula = f,
                          bandwidth = bw)
 ```
 
-The model and observed data are assigned to a list object with element names listed using the `names()` function.
+The model and observed data are assigned to a list object with element names listed using the `names()` function
 
 ```{r}
 names(models.gwr)
 ```
 
-The first element is `SDF` containing the model output as a S4 spatial data frame.
+The first element is `SDF` containing the model output as a S4 spatial data frame
 
 ```{r}
 class(models.gwr$SDF)
 ```
 
-The structure of the spatial data frame is obtained with the `str()` function and by setting the `max.level` argument to 2. 
+The structure of the spatial data frame is obtained with the `str()` function and by setting the `max.level` argument to 2
 
 ```{r}
 str(models.gwr$SDF, 
     max.level = 2)
 ```
 
-Here there are five slots with the first slot labeled `@data` indicating that it is a data frame. The number of rows and columns in the data frame are listed with the `dim()` function.
+Here there are five slots with the first slot labeled `@data` indicating that it is a data frame. The number of rows and columns in the data frame are listed with the `dim()` function
 
 ```{r}
 dim(models.gwr$SDF)
@@ -138,21 +138,19 @@ There are 49 rows and 7 columns. Each row corresponds to a tract and information
 names(models.gwr$SDF)
 ```
 
-They include the sum of the weights `sum.w` (the larger the sum the more often the tract is included in the local regressions--favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the  explanatory variables (`INC` and `HOVAL`) and an intercept term, the residual (`gwr.e`), the predicted value (`pred`) and the local goodness-of-fit (`localR2`).
+They include the sum of the weights `sum.w` (the larger the sum the more often the tract is included in the local regressions--favoring smaller counties and ones farther from the borders of the spatial domain), the three regression coefficients one for each of the  explanatory variables (`INC` and `HOVAL`) and an intercept term, the residual (`gwr.e`), the predicted value (`pred`) and the local goodness-of-fit (`localR2`)
 
-You create a map displaying where income has the most and least influence on crime by first attaching the income coefficient from the data frame (column labeled `INC`) to the simple feature data frame since the order of the rows in the `SDF` matches the order in the simple feature data frame and then using functions from the {ggplot2} package.
+You create a map displaying where income has the most and least influence on crime by first attaching the income coefficient from the data frame (column labeled `INC`) to the simple feature data frame since the order of the rows in the `SDF` matches the order in the simple feature data frame and then using functions from the {ggplot2} package
 
 ```{r}
 CC.sf$INCcoef <- models.gwr$SDF$INC
-
-library(ggplot2)
 
 ggplot(CC.sf) +
   geom_sf(aes(fill = INCcoef)) +
   scale_fill_viridis_c()
 ```
 
-Most tracts have coefficients with values less than zero. Recall the global coefficient is less than zero. But areas in yellow show where the coefficient values are greater than zero indicating a direct relationship between crime and income.
+Most tracts have coefficients with values less than zero. Recall the global coefficient is less than zero. But areas in yellow show where the coefficient values are greater than zero indicating a direct relationship between crime and income
 
 How about the coefficients on housing values?
 
@@ -164,9 +162,9 @@ ggplot(CC.sf) +
   scale_fill_viridis_c()
 ```
 
-While the global coefficient is negative indicating crime rates tend to be lower in areas with higher housing values, the opposite is the case over much of city especially on the south side.
+While the global coefficient is negative indicating crime rates tend to be lower in areas with higher housing values, the opposite is the case over much of city especially on the south side
 
-You put the vector of GWR predictions into the `CC.sf` simple feature data frame giving it the column name `predGWR` and then map the predictions using functions from the {tmap} package.
+You put the vector of GWR predictions into the `CC.sf` simple feature data frame giving it the column name `predGWR` and then map the predictions using functions from the {tmap} package
 
 ```{r}
 CC.sf$predGWR <- models.gwr$SDF$pred
@@ -177,9 +175,9 @@ tmap::tm_shape(CC.sf) +
   tmap::tm_layout(legend.outside = TRUE)
 ```
 
-The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also smoother than with a global OLS regression.
+The geographic regressions capture the spatial pattern of crimes across the city. The spread of predicted values matches the observed spread better than the linear model. The pattern of predicted crime is also smoother than with a global OLS regression
 
-Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models.
+Where is the relationship between crime and the two explanatory variables the tightest? This is answered by mapping the R squared coefficient for each of the models
 
 ```{r}
 CC.sf$localR2 <- models.gwr$SDF$localR2
@@ -191,11 +189,205 @@ ggplot(CC.sf) +
 
 Although crime rates are highest in the center, the relationship between crime and income and housing values is largest in tracts across the eastern part of the city.
 
-This type of nuanced exploratory analysis is made possible with GWR.
+This type of nuanced exploratory analysis is made possible with GWR
 
-Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables 'provoke' the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals. 
+Also, when fitting a regression model to data that vary spatially you are assuming an underlying stationary process. This means you believe the explanatory variables 'provoke' the same response (statistically) across the domain. If this is not the case then it shows up in a map of correlated residuals
 
-So a way to check the assumption of a stationary process is to use geographic regression. If the coefficients from the geographic regressions match closely the global coefficients then you can assume a stationary process.
+So a way to check the assumption of a stationary process is to use geographic regression. If the coefficients from the geographic regressions match closely the global coefficients then you can assume a stationary process
+
+Example: Southern homicides
+
+The file `south.zip` contains shapefiles with homicide rates and explanatory variables for counties in the southern United States. Unzip the file then get the data into your current session using the `sf::st_read()`. The data have latitude/longitude coordinates but there is no projection information so you set the CRS to long-lat with the `st_crs()` function
+
+```{r}
+unzip(here::here("data", "south.zip"),
+      exdir = here::here("data"))
+
+SH.sf <- sf::st_read(dsn = here::here("data", "south"), 
+                     layer = "south")
+sf::st_crs(SH.sf) <- 4326
+names(SH.sf)
+```
+
+Each row is a county in the southeast U.S. There are 1412 counties and 70 columns (69 are variables and 1 is the geometry)
+
+You are interested in predicting homicide rates (`HR`) which are given as the number of homicides per 100,000 people. You consider five explanatory variables for the prediction model including `RD`: resource deprivation index, `PS`: population structure index, `MA`: marriage age, `DV`: divorce rate, and `UE`: unemployment rate. The two digit number appended to the column names is the census year from the 20th century
+
+First you apply the `plot()` method to the `geometry` column to see the extent of the locations and the geometry type
+
+```{r}
+plot(SH.sf$geometry)
+```
+
+Next you select only the variables in the data frame of interest
+
+```{r}
+SH.sf <- SH.sf |>
+  dplyr::select(HR90, RD90, PS90, MA90, DV90, UE90)
+```
+
+Since the homicide rates are non-negative, you create a new column in the `SH.sf` data frame called `logHR90`, which is the logarithm of `HR90`. Since there are some counties with no homicides [log(0) = -Inf] you change values in those counties to the minimum observed value before taking logarithms
+
+Here you first create a logical vector `x` corresponding to the rows with non-zero homicide rates. You then find the minimum non-zero rate and assign it to `e`. Next you subset on this value for all rates equal to zero and finally you create a new column as the logarithm of the non-zero rates
+
+```{r}
+x <- SH.sf$HR90 != 0
+e <- min(SH.sf$HR90[x])
+SH.sf$HR90[!x] <- e
+SH.sf$logHR90 <- log(SH.sf$HR90)
+```
+
+You then create a thematic map of the log homicide rates from the 1990 census (`logHR90`). This is your response variable
+
+```{r}
+tmap::tm_shape(SH.sf) +
+  tmap::tm_fill(col = "logHR90", 
+                title = "1990\n Log Homicide Rates\n[/100,000]")
+```
+
+Homicide rates appear similar in neighboring counties but you start with an OLS regression model. You regress homicide rate onto resource deprivation, population structure, marriage age, divorce rate, and unemployment rate in 1990
+
+```{r}
+f <- logHR90 ~ RD90 + PS90 + MA90 + DV90 + UE90
+model.ols <- lm(formula = f, 
+                data = SH.sf)
+model.ols |>
+  summary()
+```
+
+You remove the marriage age variable and refit the model
+
+```{r}
+f <- logHR90 ~ RD90 + PS90 + DV90 + UE90
+
+model.ols <- lm(formula = f, 
+                data = SH.sf)
+
+model.ols |>
+  summary()
+```
+
+Your next step it to test for significant autocorrelation in the model residuals. You create a weights matrix using the functions from the {spdep} package and then use the `lm.morantest()` function
+
+```{r}
+wts <- SH.sf |>
+  spdep::poly2nb() |>
+  spdep::nb2listw()
+
+model.ols |>
+  spdep::lm.morantest(listw = wts)
+```
+
+Moran I is only .11 but it is statistically significant ($p$ value < .01) because there are many counties
+
+As noted above, linear regression is a model for the conditional mean. The mean of the response variable depends on the explanatory variable(s). Geographic regression might show how this dependency varies by location. It is an exploratory technique intended to indicate where local regression coefficients are different from the global values
+
+You obtain the optimal bandwidth with the `gwr.sel()` function from the {spgwr} package. You include the model formula, the data, and since the CRS is geographic we use the argument `longlat = TRUE` to get the distances in kilometers
+
+You extract the centroid from each county tract as a matrix
+
+```{r}
+Locations <- SH.sf |>
+  sf::st_centroid() |>
+  sf::st_coordinates()
+```
+
+```{r}
+bw <- spgwr::gwr.sel(formula = f, 
+                     data = SH.sf,
+                     coords = Locations,
+                     longlat = TRUE)
+bw
+```
+
+The bandwidth is assigned to the object `bw` as a single value of 165.5 km
+
+To get a feel for what a bandwidth distance of 165 km means in terms of the average number of neighbors per county you note that one-half the distance squared times $\pi$ is the area captured by the bandwidth
+
+```{r}
+( bwA <- pi * (bw * 1000 /2)^2 ) 
+```
+
+Or 21,522 square kilometers
+
+County areas are computed using the `st_area()` function. The average size of the counties and the ratio of the bandwidth area to the average county area is also computed
+```{r}
+areas <- SH.sf |>
+  sf::st_area()
+countyAvgArea <- areas |>
+  mean()
+
+bwA/countyAvgArea
+```
+
+The ratio indicates that, on average, a neighborhood consists of 13 counties. For comparison, on a raster there are 8 first-order neighboring cells (queen contiguity) and 16 second-order neighboring cells (neighbors of neighbors) or a total of 24 neighbors
+
+You use the `gwr()` function from the {spgwr} package to includes the formula, data, and the `bandwith =` argument
+
+```{r}
+model.gwr <- spgwr::gwr(formula = logHR90 ~ RD90 + PS90 + DV90 + UE90, 
+                        data = SH.sf, 
+                        coords = Locations,
+                        bandwidth = bw,
+                        longlat = TRUE)
+```
+
+With many more model parameters metrics of predictive skill will favor the geographic regression. For example, the root mean-square-error is lower for GWR
+```{r}
+sqrt(sum(residuals(model.ols)^2))
+sqrt(sum(model.gwr$SDF$gwr.e^2))
+```
+
+You put the GWR predictions into the `SH.sf` simple feature data frame with the column name `predGWR`
+
+```{r}
+SH.sf$predGWR <- exp(model.gwr$SDF$pred)
+
+tmap::tm_shape(SH.sf) +
+  tmap::tm_fill("predGWR", title = "Predicted\nHomicide Rates\n[/100,000]") 
+```
+
+The geographic regressions captures the spatial pattern of homicides across the south. The spread of predicted values matches the observed spread better than the linear model. The pattern is also a smoother
+
+The OLS model indicated homicide rates increase with resource deprivation. How does this relationship vary across the South
+
+```{r}
+coef(model.ols)[2]
+range(model.gwr$SDF$RD90)
+```
+
+The global regression coefficient is .51 but locally the coefficients range from 0.08 to .98.
+
+Importantly you can map where resource deprivation has the most influence on the response variable
+
+```{r}
+SH.sf$RDcoef <- model.gwr$SDF$RD90
+
+tmap::tm_shape(SH.sf) +
+  tmap::tm_fill("RDcoef", title = "Resource\nDeprivation\nCoefficient", palette = 'Blues')
+```
+
+All values are above zero, but areas in darker blue indicate where resource deprivation plays a stronger role in explaining homicide rates. Western Texas and southern Florida
+
+How about the unemployment rate?
+
+```{r}
+SH.sf$UEcoef <- model.gwr$SDF$UE90
+
+tmap::tm_shape(SH.sf) +
+  tmap::tm_fill("UEcoef", title = "Unemployment\nCoefficient", palette = 'PiYG')
+```
+
+While the global coefficient is negative indicating homicide rates tend to be lower in areas with more unemployment, the opposite is the case over much of Texas into Oklahoma
+
+Where does the model provide the best fit to the data? This is answered with a map of local R squared values (`localR2`)
+
+```{r}
+SH.sf$localR2 <- model.gwr$SDF$localR2
+
+tmap::tm_shape(SH.sf) +
+  tmap::tm_fill("localR2", title = "Local\nR Squared", palette = 'Purples') 
+```
 
 ## Multiscale GWR {-}
 
