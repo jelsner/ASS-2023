@@ -389,7 +389,8 @@ tmap::tm_shape(SH.sf) +
   tmap::tm_fill("localR2", title = "Local\nR Squared", palette = 'Purples') 
 ```
 
-## Multiscale GWR {-}
+
+Multiscale GWR
 
 https://www.rdocumentation.org/packages/GWmodel/versions/2.0-8/topics/gwr.multiscale
 
