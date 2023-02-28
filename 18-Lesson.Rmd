@@ -1,4 +1,4 @@
-# Thursday March 9, 2023 {.unnumbered}
+# Thursday April 6, 2023 {-}
 
 **"So much complexity in software comes from trying to make one thing do two things."** - Ryan Singer
 

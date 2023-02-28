@@ -1,15 +1,8 @@
-# Thursday March 30, 2023 {.unnumbered}
+# Tuesday April 18, 2023 {.unnumbered}
 
 **"Weeks of coding can save you hours of planning."** - Unknown
 
-Today
-
-- Limitations on interpreting distance functions
-- Models for point pattern data 
-- Fitting and interpreting inhibition models
-- Fitting and interpreting cluster models
-
-## Limitations on interpreting distance functions {.unnumbered}
+## Limitations on interpreting distance functions {-}
 
 The distance functions ($G$, $K$, etc) that quantify clustering are defined and estimated under the assumption that a stationary process produced the events. Under this assumption any sub-region of the domain is treated as an independent and identically distributed (iid) sample of events from the entire domain.
 

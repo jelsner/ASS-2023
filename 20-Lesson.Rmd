@@ -1,18 +1,8 @@
-# Tuesday March 28, 2023 {.unnumbered}
+# Thursday April 13, 2023 {-}
 
 **"Good code is its own best documentation. As you're about to add a comment, ask yourself, 'How can I improve the code so that this comment isn't needed?' Improve the code and then document it to make it even clearer."** - Steve McConnell
 
-Today
-
--   Removing duplicate events and defining the domain
--   Determining statistical significance of clustering
--   Estimating clustering in multi-type event locations
--   Interpolating output from a distance function
--   Limitations of the distance functions
-
-Thursday will be Lab 4. Next Tuesday we will look at modeling point pattern data.
-
-## Removing duplicate events and defining the domain {.unnumbered}
+## Removing duplicate events and defining the domain {-}
 
 Functions from the {spatstat} family of packages require the event locations (as a `ppp` object) and a domain over which the spatial statistics are computed (as an `owin` object).
 

@@ -1,12 +1,6 @@
-# Tuesday April 4, 2023 {.unnumbered}
+# Tuesday April 25, 2023 {-}
 
 **"Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week debugging Monday's code."** - Christopher Thompson
-
-Today
-
-- Fitting a log-Gaussian Cox model
-- Assessing how well a point pattern model fits the data
-- An example of a point process model in the wild
 
 ## Fitting a log-Gaussian Cox model {-}
 
