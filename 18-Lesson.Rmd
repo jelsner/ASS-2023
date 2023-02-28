@@ -1,582 +1,199 @@
-# Tuesday April 4, 2023 {.unnumbered}
+# Thursday March 9, 2023 {.unnumbered}
 
-**"Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week debugging Monday's code."** - Christopher Thompson
+**"So much complexity in software comes from trying to make one thing do two things."** - Ryan Singer
 
-Today
+Last time the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced.
 
-- Fitting a log-Gaussian Cox model
-- Assessing how well a point pattern model fits the data
-- An example of a point process model in the wild
+Focus is on natural occurring systems where the geographic location of events is examined through the lens of statistics to better understand physical processes.
 
-## Fitting a log-Gaussian Cox model {-}
+<https://www.washingtonpost.com/business/2022/10/21/dead-bugs-on-windshields/>
 
-Last time you saw how to fit a cluster model to point pattern data using the `kppm()` function from the {spatstat} family of packages. You fit a Thomas model to the maple trees in the Lansing Woods data.
+The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`.
 
-The Thomas cluster model is a type of Cox process where the logarithm of the spatial intensity is a sample from a non-negative random variable. If the dispersion of events around other events is uniform rather than Gaussian than you fit a Matérn cluster model. 
+Typical work flow includes importing and munging data as a simple feature data frame and then converting the spatial data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object.
 
-A limitation of the Thomas and Matérn cluster models is that the samples are assumed to be _spatially independent_. Nearby locations might have different spatial intensities. 
+## Creating `ppp` and `owin` objects from simple feature data frames {.unnumbered}
 
-If there is a systematic trend or covariate influence on the spatial intensity then you can include this in the model.
-
-A related but more flexible process is the log-Gaussian Cox process (LGCP). A LGCP has a hierarchical structure, where at the first level the events are assumed to be drawn from a Poisson distribution conditional on the intensity function, and at the second level the log of the intensity function is assumed to be drawn from a Gaussian process. That is, the log spatial intensity values are _spatially correlated_.
-
-The flexibility of the model arises from the Gaussian process prior specified over the log-intensity function. Given this hierarchical structure with a Gaussian process at the second level, fitting this model to observed spatial point pattern data is a computational challenge.
-
-One way is through the method of stochastic partial differential equations (SPDE), which involves a probability (Bayesian) framework to approximate posterior distributions.
-
-To see how this works and to get a glimpse of the Bayesian framework, here you consider a 1D space and you fit the model using functions from the {inlabru} and {INLA} packages.
-
-Example modified from <https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html>
-
-Install and make the packages available to this session.
-
-```{r}
-library(inlabru)
-library(INLA)
-library(mgcv)
-library(ggplot2)
-```
-
-Get the data to model from the {inlabru} package using the `data(Poisson2_1D)` function. The data are in the object `pts2`.
-
-```{r}
-data(Poisson2_1D)
-
-pts2 |>
-  dplyr::glimpse()
-```
-
-The object `pts2` is a one column data frame with column name `x`.
-
-```{r}
-pts2 |>
-  range()
-```
-
-The values of `x` are strictly positive between .33 and 51. 
-
-Plot the data as points along a horizontal line together with a histogram estimating the 1D spatial intensity. Here you choose about 20 bins across the range of values from 0 to 55.
-
-```{r}
-ggplot(data = pts2) +
-  geom_histogram(mapping = aes(x = x), 
-                 binwidth = 55 / 20, 
-                 boundary = 0, 
-                 fill = NA, 
-                 color = "black") +
-  geom_point(mapping = aes(x = x), 
-             y = 0, pch = "|", cex = 4) 
-```
-
-The histogram is a discrete version of the spatial intensity. It shows that events along the horizontal axis tend to be most common near the value of 20.
-
-Your goal is a smoothed estimate of the 1-D spatial intensity taking into account event clustering.
-
-Draw the DAG.
-
-First create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are unconstrained by setting `boundary = "free"`. Assign the mesh to an object with name `mesh1D`.
-
-```{r}
-x <- seq(from = 0, 
-         to = 55, 
-         length.out = 50)
-
-mesh1D <- inla.mesh.1d(loc = x, 
-                       boundary = "free")
-```
-
-
-Then specify the _prior_ spatial correlation as a Matérn cluster model.
-
-The first argument is the mesh onto which the model will be built and the next two arguments are the prior distributions for the range and standard deviation of the spatial correlation.
-
-This allows you to control the priors of the parameters by supplying information on the scale of the problem. What is a reasonable upper magnitude for the spatial effect and what is a reasonable lower scale at which the spatial effect can operate?
-
-```{r}
-Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
-                              prior.range = c(150, .75),
-                              prior.sigma = c(.1, .75))
-```
-
-The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial correlation and the second element the probability that the range will be less than that value. If the second value is `NA`, the value of the first element is used as a fixed range.
-
-The argument `prior.sigma =` accepts a vector of length two with the first element the marginal standard deviation of the spatial intensity and the second element the probability that the standard deviation will be greater than that value.
-
-Here you are non-committal on the range of spatial correlation so you specify a large distance (150) with a 75% chance that it will be less than that. That is you give a broad range to the prior.
-
-Values for `prior.range` and `prior.sigma` are called hyper-parameters.
-
-_Key idea_: In the frequentist context you are interested in the likelihood of the data given the model P(D | M). In a Bayesian context, you are interested in the probability of the model given the data P(M | D). This is called the posterior. You get from P(D | M) to P(M | D) by multiplying the likelihood by the priors P(M). This requires you to specify the priors.
-
-Next specify the full model and assign it to the object `f`.
-
-```{r}
-f <- x ~ spde1D(x, model = Matern) + Intercept(1)
-```
-
-Next fit the model to the actual event locations in `pts2`. You use the log Gaussian Cox process `lgcp()` function from the {inlabru} package. The `domain =` argument specifies the 1D mesh as a list object.
-
-```{r}
-model.lgcp <- lgcp(components = f, 
-                   data = pts2, 
-                   domain = list(x = mesh1D))
-```
-
-You look at the output posterior distributions of the model parameters using the `spde.posterior()` function. The function returns x and y values for a plot of the posterior probability density function (PDF) as a data frame, which you plot with the `plot.bru()` function (`plot()` method). 
-
-Start with the probability density function for the range parameter by specifying `what = "range"`.
-
-```{r}
-spde.posterior(result = model.lgcp, 
-               name = "spde1D", 
-               what = "range") |>
-  plot()
-```
-
-The prior range value was specified broadly but the posterior range is focused on values between 2.5 and 5. The output is better viewed on a logarithmic scale by specifying `what = "log.range"`.
-
-```{r}
-spde.posterior(model.lgcp, 
-               name = "spde1D", 
-               what = "log.range") |>
-  plot()
-```
-
-Next you plot the probability density function for the Matérn correlation component of the model.
-
-```{r}
-spde.posterior(model.lgcp, 
-               name = "spde1D", 
-               what = "matern.correlation") |>
-  plot()
-```
-
-The black line is the posterior median correlation as a function of lag distance. The maximum correlation of 1 at zero lag distance decays to .5 correlation out at a distance of about 20 units.
-
-You can get a feel for sensitivity to priors by specifying different priors and looking at these posterior plots. Always a good idea when fitting models using Bayesian methods.
-
-For example, change the prior range from 150 to 30 and refit the model. Compare the probability density function of the Matérn correlation.
-
-You predict on the 'response' scale [i.e. the intensity function $\lambda$(s)] as follows. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method with `data = grid.df` and `formula = ~ exp(spde1D + Intercept`. It takes a few seconds to make predictions at each grid point location.
-
-```{r}
-grid.df <- data.frame(x = seq(from = 0, to = 55, by = 1)) 
-pred.df <- predict(model.lgcp, 
-                   data = grid.df, 
-                   formula = ~ exp(spde1D + Intercept))
-```
-
-The output is a data frame containing the locations on the grid (`x`) and the corresponding summary statistics (mean, median, standard deviation, and quantiles) on the posterior predictions at those location.
-
-```{r}
-pred.df |>
-  dplyr::glimpse()
-```
-
-You pass this data frame to the `plot()` method to produce the following prediction plot using the grammar of graphics.
-
-```{r}
-plot(pred.df, color = "red") +
-  geom_point(data = pts2, 
-             mapping = aes(x = x), 
-             y = 0, pch = "|", cex = 2) +
-  xlab("x") + 
-  ylab("Spatial intensity\n number of events per unit interval") +
-  theme_minimal()
-```
-
-The LGCP model provides a smoothed spatial intensity of the events and a 95% credible interval about the intensity at each grid location. The intensity values are the number of events per unit interval.
-
-How does this compare with the intensity function that generated the data? 
-
-The function `lambda2_1D( ) `in the data object `Poission2_1D` calculates the true intensity that was used in simulating the data. 
-
-To plot this function you make a data frame with x- and y-coordinates giving the true intensity function, $\lambda(s)$. Here you use 150 x-values to get a smooth plot.
-
-```{r}
-xs <- seq(from = 0, to = 55, length = 150)
-true.lambda <- data.frame(x = xs, 
-                          y = lambda2_1D(xs))
-```
-
-Now plot the LGCP model predicted values together with the true intensity function.
-
-```{r}
-plot(pred.df, color = "red") +
-  geom_point(data = pts2, 
-             mapping = aes(x = x), 
-             y = 0, pch = "|", cex = 2) +
-  geom_line(data = true.lambda, 
-            mapping = aes(x, y)) +
-  xlab("x") + 
-  ylab("Spatial intensity") +
-  theme_minimal()
-```
-
-The match is pretty good. Keep in mind that the data represents just one sample generated from the
-
-You can look at the goodness-of-fit of the model using the function `bincount( )`, which plots the 95% credible intervals in a set of bins along the x-axis together with the observed count in each bin. 
-
-```{r}
-bc <- bincount(
-  result = model.lgcp,
-  observations = pts2,
-  breaks = seq(from = 0, to = max(pts2), length = 12),
-  predictor = x ~ exp(spde1D + Intercept)
-)
-
-attributes(bc)$ggp
-```
-
-The credible intervals are shown as red rectangles, the mean fitted value as a short horizontal blue line, and the observed data as black points.
-
-Abundance is the integral of the intensity over the entire space. Here space is 1D and you estimate the abundance by integrating the predicted intensity over the range of x.
-
-Integration is done as a weighted sum of the intensities. The locations along the x axis and their weights are constructed using the `ipoints()` function.
-
-Here you create 50 equally-space integration points cover the 1D range. The weights are all equal to 55/100.
-
-```{r}
-ips <- ipoints(c(0, 55), 100, name = "x")
-
-head(ips)
-```
-
-Then compute the abundance over the entire domain with the `predict()` method.
-
-```{r}
-( Lambda <- predict(model.lgcp, 
-                    ips, 
-                    ~ sum(weight * exp(spde1D + Intercept))) )
-```
-
-* `mean` is the posterior mean abundance
-* `sd` is the estimated standard error of the posterior of the abundance
-* `q0.025` and `q0.975` are the 95% credible interval bounds
-* `q0.5` is the posterior median abundance
-
-The mean number of events is just over 130 with a standard deviation of 11.5 events.
-
-Recall that the LGCP has a hierarchical structure, where at the first level the process is assumed Poisson conditional on the intensity function, and at the second level the log of the intensity function is assumed to be drawn from a Gaussian process.
-
-The above posterior values for the abundance takes into account only the variance due to the parameters of the intensity function (2nd level). It neglects the variance in the number of events, given the intensity function (first level).
-
-To include both variances you need to modify the input to the `predict( )` method. You include a data frame that samples from a Poisson density for each value of the abundance (here `N = 50:250`).
-
-```{r}
-Nest <- predict(model.lgcp, 
-                ips,
-                ~ data.frame(N = 50:250,
-                             dpois = dpois(50:250,
-                             lambda = sum(weight * exp(spde1D + Intercept)))))
-```
-
-The result shows the same set of statistics as were calculated for `Lambda`, but here for every abundance value between 50 and 250, rather than for the posterior mean abundance alone.
-
-```{r}
-Nest |>
-  head()
-```
-
-You compute the 95% prediction interval and the median with the `inla.qmarginal()` function.
-
-```{r}
-inla.qmarginal(c(.025, .5, .975), 
-               marginal = list(x = Nest$N, 
-                               y = Nest$mean))
-```
-
-Now compare `Lambda` to `Nest` using a plot.
-
-First calculate the posterior conditional on the mean of `Lambda`.
-
-```{r}
-Nest$plugin_estimate <- dpois(Nest$N, 
-                              lambda = Lambda$mean)
-```
-
-Then plot it and the unconditional posterior.
-
-```{r}
-ggplot(data = Nest) +
-  geom_line(aes(x = N, 
-                y = mean, 
-                color = "Posterior")) +
-  geom_line(aes(x = N, 
-                y = plugin_estimate, 
-                color = "Plugin"))
-```
-
-Can you explain the difference?
-
-Spatial distribution of gorilla nests using SPDE <https://inlabru-org.github.io/inlabru/index.html>
-
-## Assessing how well a point pattern model fits the data {-}
-
-A model should be capable of generating fake data that are statistically indistinguishable from the real data. If your model is a point pattern model you produce samples of event locations with the `simulate()` function.
-
-Let's return to the Swedish pine sapling data and the inhibition model that you fit last time.
-
-You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intensity of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one.
-
-You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument.
-
-```{r}
-library(spatstat)
-
-SP <- swedishpines
-
-model.in <- SP |>
-  ppm(trend = ~ 1, 
-      interaction = Strauss(r = 10), 
-      rbord = 10)
-```
-
-Here you generate three samples of the Swedish pine sapling data and for comparison plot them alongside the actual data.
-
-```{r}
-X <- model.in |>
-  simulate(nsim = 3)
-
-plot(SP) 
-plot(X[[1]])
-plot(X[[2]])
-plot(X[[3]])
-```
-
-The samples of point pattern data look similar to the actual data providing evidence that the inhibition model is adequate. 
-
-To quantitatively assess the similarity you can use the `envelope()` function to compute the $K$ function on 99 samples and on the actual data. 
-
-The $K$ function values are averaged over all samples and a mean line represents the mean model curve. Uncertainty is assessed with a band that ranges from the minimum to the maximum K at each distance.
-
-Do this with the inhibition model for the pine saplings. This takes a few seconds to complete.
-
-```{r}
-model.in |>
-  envelope(fun = Kest, 
-           nsim = 99, 
-           correction = 'border') |>
-  plot(legend = FALSE)
-```
-
-The black line is the empirical (data) curve and the red line is the average over the 99 samples. The two lines are close and the black line falls nearly completely within the gray uncertainty band indicating the model fits the data well. The kink in the red curve is the result of specifying 10 units for the interaction distance. 
-
-From this plot you confidently conclude that a homogeneous inhibition model is adequate for describing the pine sapling data.
-
-What about the cluster model for the maple trees? You used a Thomas cluster process which means that centered on each event the chance of a nearby event decays as a two-dimensional Gaussian distribution. The latent rate of a nearby event is a two-dimensional kernel.
-
-This differs from a Matérn cluster process which means that centered on each event there is an equal chance of a nearby event out to some distance r.
-
-Use use the `kppm()` function and include the point pattern data as the first argument. You assume stationarity so `trend = ~ 1` and the argument `clusters =` is set to `"Thomas"`.
-
-```{r}
-MT <- lansing |>
-  subset(marks == "maple") |>
-  unmark()
-
-( model.cl <- MT |>
-    kppm(trend = ~ 1,
-         clusters = "Thomas") )
-```
-
-Now plot the $K$ function on the data and on 99 model simulations.
-
-```{r}
-model.cl |>
-  envelope(fun = Kest, 
-           nsim = 99, 
-           correction = 'border') |>
-  plot(legend = FALSE)
-```
-
-In the case of the maple trees, a cluster model is adequate. 
-
-However, it might not be satisfying since you know about the potential for inhibition caused by the presence of hickory trees. 
-
-Also there were more trees in the south than in the north so the stationary assumption is suspect.
-
-You fit a second cluster model where the intensity is a linear function of distance in the north-south direction.
-
-```{r}
-model.cl2 <- MT |>
-  kppm(trend = ~ y,
-       clusters = "Thomas")
-
-model.cl2
-```
-
-This is an inhomogeneous cluster point process model. The logarithm of the intensity depends on y (`Log intensity:  ~y`). The fitted trend coefficient is negative as expected, since there are fewer trees as you move north (increasing y direction). There is one spatial unit in the north-south direction so you interpret this coefficient to mean there are 77% fewer trees in the north than in the south. The 77% comes from the formula 1 - exp(-1.486) = .77.
-
-The average number of clusters (`kappa`) is higher at about 27 (it was 22 with the stationary model). The cluster scale parameter (`sigma`), indicating the characteristic size of the cluster (in distance units) is lower at .0536. That makes sense since some of the event-to-event distances are accounted for by the trend term.
-
-Simulate data using the new model and compare the inhomogenous $K$ function between the simulations and the observed data.
-
-```{r}
-model.cl2 |> 
-  envelope(fun = Kinhom, 
-           nsim = 99,
-           correction = 'border') |>
-  plot(legend = FALSE)
-```
-
-The black line falls within the gray band and the gray band is narrower than the simulations using the homogeneous cluster model.
-
-If the intensity of events depends on spatial location as it does with the maple trees you can include a trend and covariate term in the model.
-
-For a trend term, the `formula ~ x` corresponds to a spatial trend of the form $\lambda(x) = \exp(a + bx)$, while `~ x + y` corresponds to $\lambda(x, y) = \exp(a + bx + cy)$ where `x`, `y` are the spatial coordinates. For a covariates, the formula is `~ covariate1 + covariate2`.
-
-Consider the `bei` data from the {spatstat} package containing the locations of 3605 trees in a tropical rain forest.
-
-```{r}
-bei |>
-  plot()
-```
-
-Accompanied by covariate data giving the elevation (altitude) and slope of elevation in the study region. The data `bei.extra` is a list containing two pixel images, `elev` (elevation in meters) and `grad` (norm of elevation gradient). These pixel images are objects of class `im`, see `im.object`.
-
-```{r}
-bei.extra |>
-  image()
-```
-
-Compute and plot the $L$ function on the `ppp` object `bei`.
-
-```{r}
-bei |>
-  envelope(fun = Lest,
-           nsim = 39, 
-           global = TRUE, 
-           correction = "border") |>
-  plot(legend = FALSE)
-```
-
-There is significant clustering indicated by the black line sitting far above the CSR line. There are more trees in the vicinity of other trees than expected by chance.
-
-But how much of the clustering is due to variations in terrain?
-
-You start by fitting a model that includes elevation and gradient as covariates without clustering. This is done with the `trend =` argument naming the image variables and including the argument `covariates =` indicating a data frame or, in this case, a list whose entries are image functions.
-
-```{r}
-model.ppm1 <- bei |>
-  ppm(trend = ~ elev + grad, 
-      covariates = bei.extra)
-```
-
-Check to see if elevation and gradient as explanatory variables are significant in the model.
-
-```{r}
-model.ppm1 |>
-  summary()
-```
-
-The output shows that both elevation and elevation gradient are significant in explaining the spatial varying intensity of the trees. 
-
-Since the conditional intensity is on a log scale you interpret the elevation coefficient as follows: For a one meter increase in elevation the local spatial intensity increases by a amount equal to exp(.021) or 2%.
-
-Check how well the model fits the data. Again this is done with the `envelope()` function using the model object as the first argument.
-
-```{r}
-E <- model.ppm1 |>
-  envelope(fun = Lest, 
-           nsim = 39,
-           correction = "border",
-           global = TRUE)
-E |>
-  plot(main = "Inhomogeneous Poisson Model", 
-       legend = FALSE)
-```
-
-You conclude that although elevation and elevation slope are significant in explaining the spatial distribution of trees, they do not explain all the clustering.
-
-An improvement is made by adding a cluster process to the model. This is done with the function `kppm()`.
-
-```{r}
-model.ppm2 <- bei |>
-  kppm(trend = ~ elev + grad, 
-       covariates = bei.extra, 
-       clusters = "Thomas")
-
-E <- model.ppm2 |>
-  envelope(Lest, 
-           nsim = 39, 
-           global = TRUE, 
-           correction = "border")
-E |>
-  plot(main = "Clustered Inhomogeneous Model", 
-       legend = FALSE)
-```
-
-The uncertainty band is much wider. The empirical curve fits inside the band so you conclude that an inhomogeneous cluster process appears to be an adequate description of the point pattern data.
-
-## An example of a point process model in the wild {-}
-
-The vast majority of tornadoes have winds of less than 60 m/s (120 mph). Violent tornadoes, with winds exceeding 90 m/s, are rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions. 
-
-The long-term risk of a tornado at a given location is assessed using historical records, however, the rarity of the most violent tornadoes make these rate estimates unstable. Here you use the more stable rate estimates from the larger set of less violent tornadoes to create more reliable estimates of violent tornado frequency.
-
-For this exercise attention is restricted to tornadoes occurring in Kansas over the period 1954--2020.
+Consider again the set of Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating) since 1950 whose initial location occurred within the state.
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
-  sf::st_transform(crs = 3082) |>
-  dplyr::filter(mag >= 0, yr >= 1954) |>
-  dplyr::mutate(EF = mag,
-                EFf = as.factor(EF)) |>
-  dplyr::select(yr, EF, EFf)
+  sf::st_transform(crs = 6922) |>
+  dplyr::filter(st == "KS", mag >= 0) |>
+  dplyr::mutate(EF = factor(mag)) |>
+  dplyr::select(EF)
 
-W.sfc <- USAboundaries::us_states(states = "Kansas") |>
-  sf::st_transform(crs = sf::st_crs(Torn.sf)) |>
-  sf::st_geometry()
-
-Torn.sf <- Torn.sf[W.sfc, ]
+Torn.sf |>
+  head()
 ```
 
-Create a `owin` and `ppp` objects. Note that although you already subset by Kansas tornadoes above you need to subset on the `ppp` object to assign the KS boundary as the analysis window.
+The length unit is meters. This is seen by printing the CRS.
 
 ```{r}
-KS.win <- W.sfc |>
-  as.owin()
+sf::st_crs(Torn.sf)
+```
 
-T.ppp <- Torn.sf["EF"] |>
+You note that some tornadoes are incorrectly coded as Kansas tornadoes by plotting the event locations.
+
+```{r}
+plot(Torn.sf$geometry)
+```
+
+Most events are within the near-rectangle shape of the state border but you also see a few events clearly outside the border.
+
+Instead of filtering by column name (`st == "KS"`) you can subset by geometry using the `sf::st_intersection()` function as you did earlier in the semester. You also can do this by defining the state border as an `owin` object.
+
+You get the Kansas border as a simple feature data frame from the {USAboundaries} package and transform the CRS to that of the CRS in the tornado simple feature data frame.
+
+```{r}
+KS.sf <- USAboundaries::us_states(states = "Kansas") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf))
+```
+
+You then create an `owin` object from the simple feature data frame using the `as.owin()` function.
+
+```{r}
+suppressMessages(library(spatstat))
+
+KS.win <- KS.sf |>
+  as.owin()
+```
+
+Next you convert the simple feature data frame of tornado reports to a `ppp` object with the EF damage rating as the marks using the `as.ppp()` function.
+
+```{r}
+T.ppp <- Torn.sf |>
   as.ppp()
 
-T.ppp <- T.ppp[KS.win]
-
-summary(T.ppp)
+plot(T.ppp)
 ```
 
-There are 4139 tornadoes over the period with an average intensity of 192 per 100 square kilometer (multiply the average intensity in square meters by 10^10).
-
-Separate the point pattern data into non-violent tornadoes and violent tornadoes. The non-violent tornadoes include those with an EF rating of 0, 1, 2 or 3. The violent tornadoes include those with an EF rating of 4 or 5.
+Finally you subset the event locations in the `ppp` object by the Kansas border using the subset operator (`[]`).
 
 ```{r}
-NV.ppp <- T.ppp |>
-  subset(marks <= 3 & marks >= 0) |>
-  unmark()
+T.ppp <- T.ppp[KS.win]
+plot(T.ppp)
+```
 
-summary(NV.ppp)
+With your `T.ppp` object you are ready to analyze the tornado locations as spatial point pattern data.
 
-V.ppp <- T.ppp |>
-  subset(marks >= 4) |> 
-  unmark()
+The `summary()` method provides information about the `ppp` object.
 
-V.ppp |>
+```{r}
+T.ppp |>
   summary()
 ```
 
-The spatial intensity of the non-violent tornadoes is 190 per 100 sq km. The spatial intensity of the violent tornadoes is 1.9 per 100 square kilometer.
+There are 4281 events (tornado reports) with an average spatial intensity of .0000000201 (2.008277e-08) events per unit area.
 
-Plot the locations of the violent tornado events.
+The distance unit is meter since that is the length unit in the simple feature data frame from which the `ppp` object was derived. So the area is in square meters making the spatial intensity (number of tornado reports per square meter) quite small.
+
+To make it easier to interpret the intensity, you convert the length unit from meters to kilometers within the `ppp` object with the `rescale()` function from the {spatstat} package (spatstat.geom). The scaling factor argument is `s =` and the conversion is 1000 m = 1 km so the argument is set to 1000. You then set the unit name to `km` with the `unitname =` argument.
 
 ```{r}
-V.ppp |>
+T.ppp <- T.ppp |>
+  spatstat.geom::rescale(s = 1000, 
+                         unitname = "km")
+T.ppp |>
+  summary()
+```
+
+Caution here as you are recycling the object name `T.ppp`. If you run the above code chunk again the scale will change again by a factor of 1000 while the unit name will stay the same.
+
+There are 4281 tornado reports with an average intensity of .02 tornadoes per square km over this time period. Nearly 60% of Kansas tornadoes are rated as doing EF0 (lowest damage level). Less than 1% of them are rated as 'violent' (doing EF4 or EF5 level damage). The area of the state is 213,168 square kilometers (km).
+
+Plot the events separated by the marks using the `plot()` method together with the `split()` function.
+
+```{r}
+T.ppp |>
+  split() |>
   plot()
 ```
 
-Early we found that the spatial intensity of tornado reports was a function of distance to nearest city with fewer reports in rural areas.
+The spatial intensity of EF3 and less damaging tornadoes appears to be fairly uniform across the state.
 
-So here you include this as an explanatory variable. Import the data, set the CRS, and transform the CRS to match that of the tornadoes. Exclude cities with fewer than 1000 people.
+Can the spatial distribution of Kansas tornadoes be described by complete spatial randomness?
+
+The number of tornadoes varies across the state (EF4 tornadoes are rare in the far western part of the state for example) but it's difficult to say whether this is due to sampling variation. To illustrate this here you compare the EF1 tornado locations with a sample of events generated under the null hypothesis of CSR.
+
+First create `Y` as an unmarked `ppp` object containing only the EF1 tornadoes. You do this by keeping only the events with marks equal to one with the `subset()` function. Since the marks are a factor you remove the levels with the `unmark()` function.
+
+```{r}
+( Y <- T.ppp |>
+  subset(marks == 1) |>
+  unmark() )
+```
+
+There were 1062 reported EF1 tornadoes originating within the state over the period 1950 through 2020.
+
+The average intensity of the EF1 tornado events is obtained with the `intensity()` function.
+
+```{r}
+Y |>
+  intensity()
+```
+
+On average there has been .005 EF1 tornadoes per square km or 50 per 100 square km.
+
+Make a map to check if things look right.
+
+```{r}
+Y |>
+ plot()
+```
+
+EF1 tornado reports are found throughout the state and they appear to be distributed randomly.
+
+Formally: Is the spatial distribution of EF1 tornado reports consistent with a set of event locations that are described as complete spatial randomness?
+
+To help answer this question you construct `X` to be a set of events generated from a homogeneous Poisson process (a model for CSR) where the intensity of the events is equal to the average intensity of the EF1 tornado reports.
+
+You assign the average intensity to an object called `lambdaEF1` and then use `rpoispp()` (random Poisson point pattern) with lambda set to that intensity and the domain specified with the `win =` argument.
+
+```{r}
+( lambdaEF1 <- intensity(Y) )
+
+( X <- rpoispp(lambda = lambdaEF1, 
+               win = window(Y)) )
+```
+
+The average intensity of `X` matches (closely) the average intensity of `Y` by design and the `plot()` method reveals a similar looking pattern of event locations.
+
+```{r}
+X |>
+  intensity()
+
+X |>
+  plot()
+```
+
+While the pattern is similar, there does appear to be a difference. Can you describe the difference?
+
+To make comparisons between the two point pattern data (one observed events and the other simulated) easier you use the `superimpose()` function to create a single `ppp` object and assign to `Z` marks `Y` and `X`. Then plot the two intensity rasters split by mark type.
+
+```{r}
+Z <- superimpose(Y = Y, 
+                 X = X)
+
+Z |>
+  split() |>
+  density() |>
+  plot()
+```
+
+The range of local intensity variations is similar. So we don't have much evidence against the null model of CSR as defined by a homogeneous Poisson process.
+
+## Estimating spatial intensity as a function of distance {.unnumbered}
+
+Are tornado reports more common in the vicinity of towns?
+
+Based on domain specific knowledge of how these data were collected you suspect that tornado reports will cluster near cities and towns. This is especially true in the earlier years of the record.
+
+This understanding is available from the literature on tornadoes (not from the data) and it is a well-known artifact of the data set, but it had never been quantified until 2013 in a paper we wrote. <http://myweb.fsu.edu/jelsner/PDF/Research/ElsnerMichaelsScheitlinElsner2013.pdf>.
+
+How was this done? We estimated the spatial intensity of the observed tornado reports as a function of distance from nearest town and compared it with an estimate of the spatial intensity of randomly placed events as a function of distance from the nearest town.
+
+First get the city locations from the `us_cities()` function in the {USAboundaries} package. Exclude towns with fewer than 1000 people and transform the geometry to that of the tornado locations.
 
 ```{r}
 C.sf <- USAboundaries::us_cities() |>
@@ -584,20 +201,22 @@ C.sf <- USAboundaries::us_cities() |>
   sf::st_transform(crs = sf::st_crs(Torn.sf))
 ```
 
-Then convert the simple feature data frame to a `ppp` object. Then subset the events by the analysis window (Kansas border).
+Create a `ppp` object of events from the city/town locations in the simple feature data frame. Remove the marks and include only events inside the window object (`KS.own`). Convert the distance unit from meters to kilometers.
 
 ```{r}
 C.ppp <- C.sf |>
-  as.ppp()
-
-C.ppp <- C.ppp[KS.win] |>
+  as.ppp() |>
   unmark()
 
-C.ppp |>
-  plot()
+C.ppp <- C.ppp[KS.win] |>
+  rescale(s = 1000,
+          unitname = "km")
+plot(C.ppp)
 ```
 
-Next create a distance map of the city locations using the `distmap()` function.
+Next compute a 'distance map'. A distance map for a spatial domain A is a function $f(s)$ whose value is defined for any *point* $s$ as the shortest distance from $s$ to any *event* location in A.
+
+This is done with the `distmap()` function and the points are the intersections of a 128 x 128 rectangular grid.
 
 ```{r}
 Zc <- C.ppp |>
@@ -607,202 +226,234 @@ Zc |>
   plot()
 ```
 
-The pixel values of the `im` object are distances is meters. Blue indicates locations that are less than 20 km from a city.
+The result is an object of class `im` (image raster). Distances are in kilometers. Most points in Kansas are less than 50 km from the nearest town (reds and blues) but some points are more than 80 km away (yellow).
 
-Interest lies with the distance to nearest non-violent tornado. You check to see if this might be a useful variable in a model so you make a distance map for the non-violent events and then use the `rhohat()` function.
+Other distance functions include `pairdist()`, which is the pairwise distance between all event pairs and `crossdist()`, which is the distance between events from two point patterns. The `nndist()` computes the distance between an event and its nearest neighbor event.
+
+The distance map (distance from any point in Kansas to the nearest town) is used to quantify the population bias in the tornado records.
+
+This is done with `rhohat()` which estimates the smoothed spatial intensity as a function of some explanatory variable. The relationship between spatial intensity and an explanatory variable is called a 'resource selection' function (if the events are organisms and the variable is a descriptor of habitat) or a 'prospectivity index' (if the events are mineral deposits and the variable is a geological variable).
+
+The method assumes the events are a realization from a Poisson process with intensity function $\lambda(u)$ of the form
+
+$$
+\lambda(u) = \rho[Z(u)]
+$$
+
+where $Z$ is the spatial explanatory variable (covariate) function (with continuous values) and $\rho(z)$ is a function to be estimated.
+
+The function does not assume a particular form for the relationship between the point pattern and the variable (thus it is said to be 'non-parametric').
+
+Here you use `rhohat()` to estimate tornado report intensity as a function of distance to nearest city.
+
+The first argument in `rhohat()` is the `ppp` object for which you want the intensity estimate and the `covariate =` argument is the spatial variable, here as object of class `im`. By default kernel smoothing is done using a fixed bandwidth. With `method = "transform"` a variable bandwidth is used.
 
 ```{r}
-Znv <- NV.ppp |>
-  distmap()
-  
-rhat <- rhohat(V.ppp, Znv, 
-               adjust = 1.5, 
-               smoother = "kernel", 
-               method = "transform")
+rhat <- Y |>
+  rhohat(covariate = Zc,
+         method = "transform")
 
-dist <- rhat$Znv
-rho <- rhat$rho
-hi <- rhat$hi
-lo <- rhat$lo
-Rho.df <- data.frame(dist = dist, rho = rho, hi = hi, lo = lo)
+class(rhat)
+```
 
-ggplot(data = Rho.df) + 
+The resulting object (`rhat`) has three classes including a data frame. The data frame contains the explanatory variable as a single vector (`Zc`), an estimate of the intensity at the distances (`rho`), the variance (`var`) and upper (`hi`) and lower (`lo`) uncertainty values (point-wise).
+
+```{r}
+rhat |>
+  data.frame() |>
+  head()
+```
+
+Here you put these values into a new data frame (`df`) multiplying the intensities by 10,000 (so areal units are 100 sq. km) then use `ggplot()` method with a `geom_ribbon()` layer to overlay the uncertainty band.
+
+```{r}
+df <- data.frame(dist = rhat$Zc, 
+                 rho = rhat$rho * 10000, 
+                 hi = rhat$hi * 10000, 
+                 lo = rhat$lo * 10000)
+
+library(ggplot2)
+
+ggplot(data = df) +
   geom_ribbon(mapping = aes(x = dist, 
-                            ymin = lo, 
-                            ymax = hi), 
-              alpha = .3) + 
-  geom_line(aes(x = dist, y = rho), col = "black") + 
-  ylab("Spatial intensity of violent tornadoes") +
-  xlab("Distance from nearest non-violent tornado (m)") + 
+                            ymin = lo , 
+                            ymax = hi), alpha = .3) +
+  geom_line(mapping = aes(x = dist, 
+                          y = rho), color = "red") +  
+  geom_hline(yintercept = intensity(Y) * 10000, 
+             color = "blue") +
+  scale_y_continuous(limits = c(0, 100)) +
+  ylab("Tornado reports (EF1) per 100 sq. km") +
+  xlab("Distance from nearest town center (km)") +
   theme_minimal()
 ```
 
-This shows that regions that get non-violent tornadoes also see higher rates of violent tornadoes.
+The vertical axis on the plot is the tornado report intensity in units of number of reports per 100 square kilometers. The horizontal axis is the distance to nearest town in km. The red line is the average spatial intensity as a function of distance from nearest town. The 95% uncertainty band about this estimate is shown in gray.
 
-So the model should include two covariates (trend terms), distance to nearest city and distance to nearest non-violent tornado.
+At points close to the town (center) tornado reports are high relative to at points far from town. The blue line is the average intensity across the state computed with the `intensity()` function and scaled appropriately.
+
+At points within about 15 km the tornado report intensity is above the statewide average intensity. At points greater than about 60 km the report intensity is below the statewide average.
+
+At zero distance from a town, this number is more than 1.7 times higher (85 tornadoes per 100 sq. km). The spatial scale is about 15 km (distance along the spatial axis where the red line falls below the blue line).
+
+At this point in the analysis you need to think that although the plot look reasonable based on your expectations of a population bias in the tornado reports (fewer reports away from cities/towns), could this result be an artifact of the smoothing algorithm?
+
+You need to know how to apply statistical tools to accomplish specific tasks. But you also need to be a bit skeptical of the tool's outcome. The skepticism provides a critical check against being fooled by randomness (null hypothesis).
+
+As an example, the method of computing the spatial intensity as a function of a covariate should give you a different answer if events are randomly distributed. If the events are randomly distributed, what would you expect to find on a plot such as this?
+
+Recall Friday's seminar talk by Jeffery Cannon. Where he found an increase in cone production on pine trees a few years after a hurricane. He needed to compare his graph with a graph showing cone production a few years after an other year (null hypothesis).
+
+You already generated a set of events from a homogeneous Poisson model so you can check simply by applying the `rhohat()` function to these events using the same set of city/town locations.
 
 ```{r}
-model.ppm1 <- V.ppp |>
-  ppm(trend = ~ Zc + Znv, 
-      covariates = list(Zc = Zc, Znv = Znv))
-
-model.ppm1 |>
-  summary() |>
-  coef()
+rhat0 <- X |>
+  rhohat(covariate = Zc,
+         method = "transform")
+df <- data.frame(dist = rhat0$Zc, 
+                 rho = rhat0$rho * 10000, 
+                 hi = rhat0$hi * 10000, 
+                 lo = rhat0$lo * 10000)
+ggplot(data = df) +
+  geom_ribbon(mapping = aes(x = dist, 
+                            ymin = lo , 
+                            ymax = hi), alpha = .3) +
+  geom_line(mapping = aes(x = dist, 
+                          y = rho), color = "red") +  
+  geom_hline(yintercept = intensity(Y) * 10000, 
+             color = "blue") +
+  scale_y_continuous(limits = c(0, 100)) +
+  ylab("Random events per 100 sq. km") +
+  xlab("Distance from nearest town center (km)") +
+  theme_minimal()
 ```
 
-As expected the model shows fewer violent tornadoes with increasing distance from the nearest city (negative coefficient on `Zc`) and fewer violent tornadoes with increasing distance from a non-violent tornado (negative coefficient on `Znv`).
+As expected, the number of random events near cities/towns is not higher than the number of random events at greater distances. Thus you reject the null hypothesis of no difference in tornado reports near and far from cities.
 
-Since the spatial unit is meters the coefficient of -3.21e-05 is interpreted as a [1 - exp(-.0321)] * 100% or 3% decrease in violent tornado reports per kilometer of distance from a city. Similarly the coefficient on distance from nearest non-violent tornado is interpreted as a 23% decrease in violent tornado reports per kilometer of distance from nearest non-violent tornado.
+## Covariate trend as a possible confounding factor {.unnumbered}
 
-Check if there is any residual nearest neighbor correlation.
+Quantifying the report bias with the spatial intensity function works well for Kansas where there is no trend in the local intensity. Local tornado intensity is largely uniform across Kansas.
+
+Things are different in Texas where a significant intensity trend makes it more difficult to estimate the report bias.
+
+Convert the tornado reports (EF1 or worse) occurring over Texas as a `ppp` object. Use a Texas-centric Lambert conic conformal projection.
 
 ```{r}
-E <- model.ppm1 |>
-  envelope(fun = Kest, 
-           nsim = 39,
-           global = TRUE)
-E |>
-  plot(main = "Inhomogeneous Poisson Model", 
-       legend = FALSE)
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
+  sf::st_transform(crs = 3082) |>
+  dplyr::filter(mag >= 0)
+
+T.ppp <- Torn.sf |>
+  as.ppp()
+
+W <- USAboundaries::us_states(states = "Texas") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)) |>
+  as.owin()
+
+( T.ppp <- T.ppp[W] |>
+    rescale(s = 1000, 
+            unitname = "km") )
+intensity(T.ppp)
 ```
 
-There appears to be a bit of regularity at smaller scales. The empirical curve (black line) falls slightly below the model (dashed red line). There are fewer nearby violent tornadoes than one would expect.
+There are 8,932 tornado reports. The distance unit is kilometer. The average intensity is .013 events per square kilometer over this 71-year period (1950-2020).
 
-To see if this is statistically significant, you add an inhibition process to the model.
-
-```{r}
-model.ppm2 <- V.ppp |> 
-  ppm(trend = ~ Zc + Znv, 
-      covariates = list(Zc = Zc, Znv = Znv),
-      interaction = Strauss(r = 40000))
-
-model.ppm2 |>
-  summary() |>
-  coef()
-```
-
-The interaction coefficient has a negative sign as expected from the above plot, but the standard error is relatively large so it is not statistically significant.
-
-Remove the inhibition process and add a trend term in the east-west direction.
+Next plot the local intensity using a kernel smoother.
 
 ```{r}
-model.ppm3 <- V.ppp |>
-  ppm(trend = ~ Zc + Znv + x, 
-      covariates = list(Zc = Zc, Znv = Znv))
-
-model.ppm3 |>
-  summary() |>
-  coef()
-```
-
-There is a significant eastward trend but it appears to confound the distance to city term because the Zc term is no longer significant. Why is this? 
-
-Settle on the first model and generate simulated data from it.
-
-```{r}
-model.ppm1 |>
-  simulate(nsim = 6) |>
+T.ppp |>
+  density() |>
   plot()
-
-plot(V.ppp)
 ```
 
-The model appears to due a good job simulating data that looks like the actual data.
+There is a clear trend of tornado reports from a low number of reports in the southwest part of the state along the Rio Grande to a high number of reports in the northeast part of the state. The statewide average intensity of .013 tornado reports per square km is too high in southwest and too low in the northern.
 
-## Spatial logistic regression {-}
-
-Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise.
-
-Then a logistic regression is a model for the presence probability $p = P(Y = 1)$ as a function of explanatory variables $X$ in the form 
-
-$$
-\log \frac{p}{1-p} = \beta X
-$$
-
-where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients on the explanatory variables to be determined.
-
-If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.
-
-Let's look at an example from the package (a good strategy when learning a new technique).
-
-Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are geological fault lines.
-
-Interest centers on being able to predict the probability of a copper ore from the distance to the fault line. 
-
-The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
+Next compute and plot the spatial intensity as a smoothed function of distance to nearest town or city. Start by removing the marks on the tornado events assigning the unmarked `ppp` object to `Tum.ppp`. Then create a `ppp` object from the city/town locations and subset the tornado events by the window.
 
 ```{r}
-library(spatstat) |>
-  suppressMessages()
+Tum.ppp <- T.ppp |>
+  unmark()
 
-data(copper)
+C.ppp <- C.sf |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)) |>
+  as.ppp() |>
+  unmark()
 
-copper$SouthPoints |>
-  plot()
-
-copper$SouthLines |>
-  plot(add = TRUE)
+C.ppp <- C.ppp[W] |>
+  spatstat.geom::rescale(s = 1000,
+                         unitname = "km")
 ```
 
-First rotate the events (points and lines) by 90 degrees in the anticlockwise direction and save them as separate objects.
+Next create a distance map of the city/town locations using the `distmap()` function.
 
 ```{r}
-C <- rotate(copper$SouthPoints, pi/2)
-L <- rotate(copper$SouthLines, pi/2)
-
-C |>
-  plot()
-L |>
-  plot(add = TRUE)
-```
-
-You summarize the planar point pattern data object `C`.
-
-```{r}
-C |>
-  summary()
-```
-
-There are 57 ore deposits over a region of size 5584 square km resulting in an intensity of about .01 ore deposits per square km.
-
-Next you create a distance map indicating the distance to the nearest fault line. This distance will be used as a covariate for a model of the probability of an ore deposit.
-
-```{r}
-D <- L |>
+Zc <- C.ppp |>
   distmap()
 
-D |>
+Zc |>
   plot()
 ```
 
-Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} family of packages.
+Finally, compute the intensity of tornadoes as a smoothed function of distance to nearest town/city with the `rhohat()` function. Prepare the output and make a plot.
 
 ```{r}
-model.slr <- slrm(C ~ D)
-model.slr
+rhat <- Tum.ppp |>
+  rhohat(covariate = Zc,
+         method = "transform")
+
+data.frame(dist = rhat$Zc, 
+           rho = rhat$rho, 
+           hi = rhat$hi, 
+           lo = rhat$lo) |>
+ggplot() +
+  geom_ribbon(mapping = aes(x = dist, 
+                            ymin = lo , 
+                            ymax = hi), alpha = .3) +
+  geom_line(mapping = aes(x = dist, 
+                          y = rho), color = "red") +  
+  scale_y_continuous(limits = c(0, NA)) +
+  geom_hline(yintercept = intensity(Tum.ppp), color = "blue") +
+  ylab("Tornado reports per sq. km") +
+  xlab("Distance from nearest town center (km)") +
+  theme_minimal()
 ```
 
-The model says that the odds of a copper ore deposit along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.
+The plot shows that the intensity of the tornado reports is much higher than the average intensity in the vicinity of towns and cities. Yet caution needs to exercised in the interpretation because the trend of increasing tornado reports moving from southwest to northeast across the state is mirrored by the trend in the occurrence of cities/towns. There are many fewer towns in the southwestern part of Texas compared to the northern and eastern part of the state.
 
-The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments.
-
-The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. Values are the probability of finding an ore deposit in each pixel.
+You can quantify this effect by specifying a function in the `covariate =` argument. Here you specify a planar surface with `x,y` as arguments and `x + y` inside the function. Here you use the `plot()` method on the output (instead of creating a data frame and using `ggplot()`).
 
 ```{r}
-model.slr |>
-  fitted() |>
-  plot()
-C |>
-  plot(add = TRUE)
+plot(rhohat(Tum.ppp, 
+            covariate = function(x,y){x + y},
+            method = "transform"),
+     main = "Spatial intensity trend of tornadoes")
 ```
 
-Integrating (summing) the predictions over the domain area equals the abundance (number of ore deposits).
+Local intensity increases along the axis labeled `X` starting at a value of 7,400. At value of `X` equal to about 8,200 the spatial intensity stops increasing.
+
+Units along the horizontal axis are kilometers but the reference (intercept) distance is at the far left. So you interpret the increase in spatial intensity going from southwest to northeast as a change across about 800 km (8200 - 7400).
+
+The local intensity of cities has the same property (increasing from southwest to northeast then leveling off). Here you substitute `C.ppp` for `Tum.ppp` in the `rhohat()` function.
 
 ```{r}
-model.slr |>
-  fitted() |>
-  sum()
+plot(rhohat(C.ppp, 
+            covariate = function(x,y){x + y},
+            method = "transform"),
+     main = "Spatial intensity trend of cities")
 ```
 
-See <https://r-spatial.org/book/12-Interpolation.html>
+So the population bias towards more reports near towns/cities is confounded by the fact that there tends to be more cities and towns in areas that have conditions more favorable for tornadoes.
+
+Thus you can only get so far by examining intensity estimates. If your interest lies in inferring the causes of spatial variation in the intensity you will need to use a spatial model.
+
+Before doing that we will want to quantify the second-order property of spatial events. We will use various functions to do this and we will compare outputs from these functions when applied to the observed data and when applied to models for CSR.
+
+But, spatial intensity can be used to estimate the relative risk. Separate spatial intensity maps across two marked types provides a way to estimate the risk of one event type conditional on the other event type. More generally, the relative risk of occurrence of some event is a conditional probability. In a non-spatial context, the risk of catching a disease if you are elderly relative to the risk if you are young.
+
+Given a tornado somewhere in Texas what is the chance that it will cause at least EF3 damage? With the historical set of all tornadoes marked by the damage rating you can make a map of all tornadoes and a map of the EF3+ tornadoes and then take the ratio.
+
+Summary: Analyzing spatial point pattern data with function from the {spatstat} family of packages requires the data be of class `ppp`. A `ppp` object contains the events and the domain (window). You saw how to create `ppp` and `owin` objects from simple feature data frames. Visually you can compare your events against events generated from simple models of CSR. You saw how to estimate spatial intensity as a function of a covariate. This allowed you to examine the hypothesis of no population bias in the tornado reports. However, if the covariate has the same spatial intensity as the observed events then inference is not straight forward.
+
+Next we will look at estimating relative risk before we turn our attention to spatial clustering.
+
+Additional resource: <https://r-spatial.org/book/11-PointPattern.html>

@@ -1,572 +1,808 @@
-# Thursday April 20, 2023 {.unnumbered}
+# Tuesday April 4, 2023 {.unnumbered}
 
-**“Practice any art, music, singing, dancing, acting, drawing, painting, sculpting, poetry, fiction, essays, reportage, no matter how well or badly, not to get money & fame, but to experience becoming, to find out what's inside you, to make your soul grow.”** - Kurt Vonnegut
+**"Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week debugging Monday's code."** - Christopher Thompson
 
-## Interpolating to areal units (block kriging) {-}
+Today
 
-Let's consider at another application of spatial statistical interpolation to highlight additional aspects of the procedure like making better plots, constructing and interpreting variogram maps, working with anisotropy, and kriging to polygons.
+- Fitting a log-Gaussian Cox model
+- Assessing how well a point pattern model fits the data
+- An example of a point process model in the wild
 
-In 2008 tropical cyclone (TC) Fay formed from a tropical wave near the Dominican Republic, passed over the island of Hispaniola, Cuba, and the Florida Keys, then crossed the Florida peninsula and moved westward across portions of the Panhandle producing heavy rains in parts of the state.
+## Fitting a log-Gaussian Cox model {-}
 
-Rainfall is an example of geostatistical data. In principle it can be measured anywhere, but typically you have rainfall amounts at scattered measurement sites. Interest centers on making inferences about how much rain fell at certain locations or over averaged over a region (e.g., watershed basin).
+Last time you saw how to fit a cluster model to point pattern data using the `kppm()` function from the {spatstat} family of packages. You fit a Thomas model to the maple trees in the Lansing Woods data.
 
-Storm total rainfall amounts from sites in and around the state are in `FayRain.txt` on my website. The reports are a mix of official weather stations and cooperative sites. The cooperative sites are the Community Collaborative Rain, Hail and Snow Network (CoCoRaHS), a community-based, high density precipitation network made up of volunteers who take measurements of precipitation on their property. The data are from the Florida Climate Center.
+The Thomas cluster model is a type of Cox process where the logarithm of the spatial intensity is a sample from a non-negative random variable. If the dispersion of events around other events is uniform rather than Gaussian than you fit a Matérn cluster model. 
 
-Import the data.
+A limitation of the Thomas and Matérn cluster models is that the samples are assumed to be _spatially independent_. Nearby locations might have different spatial intensities. 
 
-```{r}
-L <- "http://myweb.fsu.edu/jelsner/temp/data/FayRain.txt"
-( FR.df <- readr::read_table(L) )
-```
+If there is a systematic trend or covariate influence on the spatial intensity then you can include this in the model.
 
-The data frame contains 803 rainfall measurement sites. Longitude and latitude coordinates are given in the first two columns and total rainfall in inches and millimeters are given in the second two columns. 
+A related but more flexible process is the log-Gaussian Cox process (LGCP). A LGCP has a hierarchical structure, where at the first level the events are assumed to be drawn from a Poisson distribution conditional on the intensity function, and at the second level the log of the intensity function is assumed to be drawn from a Gaussian process. That is, the log spatial intensity values are _spatially correlated_.
 
-Create a spatial points data frame by specifying columns that contain the spatial coordinates. Then assign a geographic coordinate system and convert the rainfall from millimeters to centimeters.
+The flexibility of the model arises from the Gaussian process prior specified over the log-intensity function. Given this hierarchical structure with a Gaussian process at the second level, fitting this model to observed spatial point pattern data is a computational challenge.
 
-```{r}
-FR.sf <- sf::st_as_sf(x = FR.df,
-                      coords = c("lon", "lat"),
-                      crs = 4326) |>
-  dplyr::mutate(tpm = tpm/10)
+One way is through the method of stochastic partial differential equations (SPDE), which involves a probability (Bayesian) framework to approximate posterior distributions.
 
-summary(FR.sf$tpm)
-```
+To see how this works and to get a glimpse of the Bayesian framework, here you consider a 1D space and you fit the model using functions from the {inlabru} and {INLA} packages.
 
-The median rainfall across all available observations is 15.8 cm and the highest is 60.2 cm. 
+Example modified from <https://inlabru-org.github.io/inlabru/articles/web/1d_lgcp.html>
 
-Get the Florida county boundaries from the {USAboundaries} package.
+Install and make the packages available to this session.
 
 ```{r}
-FL.sf <- USAboundaries::us_counties(states = "Florida")
-```
-
-Transform the geographic coordinates of the site locations and map polygons to projected coordinates. Here you use Florida GDL Albers (EPSG:3087) with meter as the length unit.
-
-```{r}
-FR.sf <- sf::st_transform(FR.sf, crs = 3087)
-FL.sf <- sf::st_transform(FL.sf, crs = 3087)
-sf::st_crs(FR.sf)
-```
-
-Start by making a map of the rainfall sites and storm total rainfall that includes the state border.
-
-```{r}
-tmap::tm_shape(FR.sf) +
-  tmap::tm_dots(col = "tpm", size = .5) +
-tmap::tm_shape(FL.sf) +
-  tmap::tm_borders()
-```
-
-Two areas of very heavy rainfall are noted. One running north-south along the east coast and another across the north centered on Tallahassee.
-
-Rainfall reporting sites are clustered in and around cities and are located only over land. This type of station location arrangement will make it hard for deterministic interpolation methods (e.g., IDW or splines) to produce a reasonable surface.
-
-The empirical variogram is computed using the `variogram()` function from the {gstat} package. The first argument is the model formula specifying the rainfall column from the data frame and the second argument is the data frame name.  Here `~ 1` in the model formula indicates no covariates or trends in the data. Trends are included by specifying coordinate names through the `st_coordinates()` function.
-
-Compute the empirical variogram for these set of rainfall values. Use a cutoff distance of 400 km (400,000 m). The cutoff is the separation distance up to which point pairs are included in the semivariogram. The smaller the cutoff value the more the variogram is focused on nearest neighbor locations.
-
-```{r}
-library(gstat)
-
-v <- variogram(tpm ~ 1, 
-               data = FR.sf,
-               cutoff = 400000)
-```
-
-Plot the variogram values as a function of lag distance and add text indicating the number of point pairs for each lag distance. Save a copy of the plot.
-
-```{r}
+library(inlabru)
+library(INLA)
+library(mgcv)
 library(ggplot2)
-
-v.df <- data.frame(dist = v$dist/1000,
-                   gamma = v$gamma,
-                   np = v$np)
-
-( pv <- ggplot(v.df, aes(x = dist, y = gamma)) +
-  geom_point() +
-  geom_text(aes(label = np), nudge_y = -5) +
-  scale_y_continuous(limits = c(0, 220)) +
-  scale_x_continuous(limits = c(0, 400)) +
-  xlab("Lagged distance (h) [km]") +
-  ylab(expression(paste("Semivariance (", gamma, ") [", cm^2, "]"))) +
-  theme_minimal() )
 ```
 
-Values start low (around 50 cm$^2$) at the shortest lag distance and increase to greater than 200 cm$^2$ at lag distances of 200 km and longer.
-
-The semivariance at lag zero is called the 'nugget' and the semivariance at a level where the variogram values no longer increase is called the 'sill.' The difference between the sill and the nugget is called the 'partial sill'.  The lag distance out to where the sill is reached is called the 'range.'  These three parameters (nugget, partial sill, and range) are used to model the variogram.
-
-Next fit a model to the empirical variogram. The model is a mathematical relationship that defines the semivariance as a function of lag distance. First save the family and the initial parameter guesses in a variogram model (`vmi`) object.
+Get the data to model from the {inlabru} package using the `data(Poisson2_1D)` function. The data are in the object `pts2`.
 
 ```{r}
-vmi <- vgm(model = "Gau", 
-           psill = 150, 
-           range = 200 * 1000, 
-           nugget = 50)
-vmi
+data(Poisson2_1D)
+
+pts2 |>
+  dplyr::glimpse()
 ```
 
-The `psill` argument is the partial sill along the vertical axis. Estimate the parameter values by looking at the empirical variogram. 
-
-Next use the `fit.variogram()` function to improve the fit over these initial values. Given a set of initial parameter values the method of weighted least squares is used to improve the parameter estimates.
+The object `pts2` is a one column data frame with column name `x`.
 
 ```{r}
-vm <- fit.variogram(object = v, 
-                    model = vmi)
-vm
+pts2 |>
+  range()
 ```
 
-The result is a variogram model with a nugget of 46.6 cm$^2$, a partial sill of 156 cm$^2$, and a range on the sill of 128 km. 
+The values of `x` are strictly positive between .33 and 51. 
 
-Plot the model on top of the empirical variogram. Let $r$ be the range, $c$ the partial sill and $c_o$ the nugget, then the equation defining the function over the set of lag distances $h$ is
-
-$$
-\gamma(h)=c\left(1-\exp\left(-\frac{h^2}{r^2}\right)\right)+c_o
-$$
-
-Create a data frame with values of h and gamma using this equation.
+Plot the data as points along a horizontal line together with a histogram estimating the 1D spatial intensity. Here you choose about 20 bins across the range of values from 0 to 55.
 
 ```{r}
-nug <- vm$psill[1]
-ps <- vm$psill[2]
-r <- vm$range[2] / 1000
-h <- seq(0, 400, .2)
-gamma <- ps * (1 - exp(-h^2 / (r^2))) + nug
-
-vm.df <- data.frame(dist = h,
-                    gamma = gamma)
-
-pv + geom_line(data = vm.df,
-               mapping = aes(x = dist, y = gamma))
+ggplot(data = pts2) +
+  geom_histogram(mapping = aes(x = x), 
+                 binwidth = 55 / 20, 
+                 boundary = 0, 
+                 fill = NA, 
+                 color = "black") +
+  geom_point(mapping = aes(x = x), 
+             y = 0, pch = "|", cex = 4) 
 ```
 
-Check for anisotropy. Anisotropy refers to a dependence of the variogram shape on the direction of the location pairs used to compute semivariances. Isotropy refers to a directional independence.
+The histogram is a discrete version of the spatial intensity. It shows that events along the horizontal axis tend to be most common near the value of 20.
+
+Your goal is a smoothed estimate of the 1-D spatial intensity taking into account event clustering.
+
+Draw the DAG.
+
+First create a 1D mesh of 50 points (`length.out =`) across the range of values (from 0 to 55). The end points of the mesh are unconstrained by setting `boundary = "free"`. Assign the mesh to an object with name `mesh1D`.
 
 ```{r}
-plot(variogram(tpm ~ 1, 
-               data = FR.sf, 
-               alpha = c(0, 45, 90, 135),
-               cutoff = 400000), 
-     xlab = "Lag Distance (m)")
+x <- seq(from = 0, 
+         to = 55, 
+         length.out = 50)
+
+mesh1D <- inla.mesh.1d(loc = x, 
+                       boundary = "free")
 ```
 
-The semivariance values reach the sill at a longer range  (about 300 km) in the north-south direction (0 degrees) compared to the other three directions.
 
-Another way to look at directional dependence in the variogram is through a variogram map. Instead of classifying point pairs Z(s) and Z(s + h) by direction and distance class separately, you classify them jointly.
+Then specify the _prior_ spatial correlation as a Matérn cluster model.
 
-If h = {x, y} is the two-dimensional coordinates of the separation vector, in the variogram map the variance contribution of each point pair (Z(s) − Z(s + h))^2 is attributed to the grid cell in which h lies. The map is centered at (0, 0) and h is lag distance. Cutoff and width correspond to map extent and cell size; the semivariance map is point-wise symmetric around (0, 0), as γ(h) = γ(−h).
+The first argument is the mesh onto which the model will be built and the next two arguments are the prior distributions for the range and standard deviation of the spatial correlation.
 
-The variogram map is made with the `variogram()` function by adding the `map = TRUE` argument. Here you set the cutoff to be 200 km (200,000 m) and the width (cell size) to be 20 km.
+This allows you to control the priors of the parameters by supplying information on the scale of the problem. What is a reasonable upper magnitude for the spatial effect and what is a reasonable lower scale at which the spatial effect can operate?
 
 ```{r}
-vmap <- variogram(tpm ~ 1, 
-                  data = FR.sf,
-                  cutoff = 200000,
-                  width = 20000,
-                  map = TRUE)
-plot(vmap)
+Matern <- inla.spde2.pcmatern(mesh = mesh1D, 
+                              prior.range = c(150, .75),
+                              prior.sigma = c(.1, .75))
 ```
 
-Along the dx = 0 vertical line in the north-south direction (top-to-bottom on the plot), the semivariance values increase away from dy = 0, but the increase is less compared to along the dy = 0 horizontal line in the east-west direction (left-to-right on the plot) indicative of directional dependency.
+The argument `prior.range =` accepts a vector of length two with the first element the lag distance (range) of the spatial correlation and the second element the probability that the range will be less than that value. If the second value is `NA`, the value of the first element is used as a fixed range.
 
-You refit the variogram model defining an anisotropy ellipse with the `anis =` argument. The first value is the direction of longest range (here north-south) and the second value is the ratio of the shortest to longest ranges. Here about (200/300 = .67, see the directional variogram plot above).
+The argument `prior.sigma =` accepts a vector of length two with the first element the marginal standard deviation of the spatial intensity and the second element the probability that the standard deviation will be greater than that value.
+
+Here you are non-committal on the range of spatial correlation so you specify a large distance (150) with a 75% chance that it will be less than that. That is you give a broad range to the prior.
+
+Values for `prior.range` and `prior.sigma` are called hyper-parameters.
+
+_Key idea_: In the frequentist context you are interested in the likelihood of the data given the model P(D | M). In a Bayesian context, you are interested in the probability of the model given the data P(M | D). This is called the posterior. You get from P(D | M) to P(M | D) by multiplying the likelihood by the priors P(M). This requires you to specify the priors.
+
+Next specify the full model and assign it to the object `f`.
 
 ```{r}
-vmi <- vgm(model = "Gau", 
-           psill = 150, 
-           range = 300 * 1000, 
-           nugget = 50,
-           anis = c(0, .67))
-vm <- fit.variogram(v, vmi)
+f <- x ~ spde1D(x, model = Matern) + Intercept(1)
 ```
 
-Use the variogram model together with the rainfall values at the observation sites to create an interpolated surface. Here you use ordinary kriging as there are no spatial trends in the rainfall.
-
-Interpolation is done using the `krige()` function. The first argument is the model specification and the second is the data. Two other arguments are needed. One is the variogram model using the argument name `model =` and the other is a set of locations identifying where the interpolations are to be made. This is specified with the argument name `newdata =`.
-
-Here you interpolate to locations on a regular grid. You create a grid of locations within the borders of the state using the `st_sample()` function.
+Next fit the model to the actual event locations in `pts2`. You use the log Gaussian Cox process `lgcp()` function from the {inlabru} package. The `domain =` argument specifies the 1D mesh as a list object.
 
 ```{r}
-grid.sfc <- sf::st_sample(FL.sf,
-                          size = 5000,
-                          type = "regular")
+model.lgcp <- lgcp(components = f, 
+                   data = pts2, 
+                   domain = list(x = mesh1D))
 ```
 
-You specify the number of grid locations using the argument `size =`. Note that the actual number of locations will be somewhat different because of the irregular boundary.
+You look at the output posterior distributions of the model parameters using the `spde.posterior()` function. The function returns x and y values for a plot of the posterior probability density function (PDF) as a data frame, which you plot with the `plot.bru()` function (`plot()` method). 
+
+Start with the probability density function for the range parameter by specifying `what = "range"`.
 
 ```{r}
-grid.sfc |>
-  plot(pch = ".")
-```
-
-First use the `krige()` function to interpolate the observed rainfall to the grid locations. For a given location, the interpolation is a weighted average of the rainfall across the entire region where the weights are determined by the variogram model.
-
-```{r}
-r.int <- krige(tpm ~ 1, 
-               locations = FR.sf, 
-               newdata = grid.sfc,
-               model = vm)
-```
-
-If the variogram model is not included then inverse distance-weighted interpolation is performed. The function will not work if a location has more than one value.
-
-The saved object (`r.int`) inherits the spatial geometry specified in the `newdata =` argument but extends it to a spatial data frame. The column `var1.pred` in the data frame is the interpolated rainfall and the second `var1.var` is the variability about the interpolated value.
-
-Plot the interpolated storm-total rainfall field.
-
-```{r}
-tmap::tm_shape(r.int) +
-  tmap::tm_dots("var1.pred",
-                size = .1,
-                palette = "Greens",
-                title = "Rainfall (cm)") +
-  tmap::tm_shape(FL.sf) +
-  tmap::tm_borders() +
-  tmap::tm_layout(legend.position = c("left", "bottom"),
-                  title = "TC Fay (2008)",
-                  title.position = c("left", "bottom"),
-                  legend.outside = TRUE)
-```
-
-Note: a portion of the data locations are outside of the state but interest is only interpolated values within the state border as specified by the `newdata =` argument.
-
-The spatial interpolation shows that parts of east central and north Florida were deluged by Fay with rainfall totals exceeding 30 cm (12 in).
-
-The interpolation can also be done as an area average. For example what was the storm-total average rainfall for each county?
-
-County level rainfall is relevant for water resource managers. _Block kriging_ produces an estimate of this area average, which will differ from a simple average over all sites within the county because of the spatial autocorrelation in rainfall observations.
-
-You use the same function to interpolate but specify the spatial polygons rather than the spatial grid as the new data. Here the spatial polygons are the county borders.
-
-```{r}
-r.int2 <- krige(tpm ~ 1, 
-                locations = FR.sf, 
-                newdata = FL.sf, 
-                model = vm)
-```
-
-Again plot the interpolations.
-
-```{r}
-tmap::tm_shape(r.int2) +
-  tmap::tm_polygons(col = "var1.pred",
-                    palette = "Greens",
-                    title = "Rainfall (cm)") +
-  tmap::tm_layout(legend.position = c("left", "bottom"),
-                  title = "TC Fay (2008)",
-                  title.position = c("left", "bottom"))
-```
-
-The overall pattern of rainfall from Fay featuring the largest amounts along the central east coast and over the Big Bend region are similar in both maps but these estimates answer questions like on average how much rain fell over Leon County during TC Fay? 
-
-You compare the kriged average with the simple average at the county level with the `aggregate()` method. The argument `FUN = mean` says to compute the average of the values in `FR.sf` across the polygons in `FL.sf`.
-
-```{r}
-r.int3 <- aggregate(FR.sf, 
-                    by = FL.sf, 
-                    FUN = mean)
-```
-
-The result is a simple feature data frame of the average rainfall in each county.
-
-The state-wide mean of the kriged estimates at the county level is
-
-```{r}
-r.int2$var1.pred |>
-  mean() |>
-  round(2)
-```
-
-This compares with a state-wide mean from the simple averages.
-
-```{r}
-r.int3$tpm |>
-  mean() |>
-  round(2)
-```
-
-The correlation between the two estimates across the 67 counties is 
-
-```{r}
-round(cor(r.int3$tpm, r.int2$var1.pred), 2)
-```
-
-The variogram model reduces the standard deviation of the kriged estimate relative to the standard deviation of the simple averages because of local smoothing.
-
-```{r}
-r.int2$var1.pred |>
-  sd() |>
-  round(2)
-
-r.int3$tpm |>
-  sd() |>
-  round(2)
-```
-
-This can be seen with a scatter plot of simple averages versus kriged averages at the county level.
-
-```{r}
-compare.df <- data.frame(simpleAvg = r.int3$tpm,
-                         krigeAvg = r.int2$var1.pred)
-ggplot(compare.df, aes(x = simpleAvg,
-                       y = krigeAvg)) +
-  geom_point() +
-  geom_abline(slope = 1) +
-  geom_smooth(method = lm, se = FALSE)
-```
-
-The slope of the blue line is less than the black line (y = x line) indicating kriging over estimates at low amounts and under estimates at high amounts relative to simple averaging.
-
-Kriging has the advantage of accompanying uncertainty estimates. The prediction variances are listed in a column in the spatial data frame saved from apply the `krige()` function. Variances are smaller in regions with more rainfall observations.  
-
-Prediction variances are also smaller with block kriging as much of the variability within the county averages out. To compare the distribution characteristics of the prediction variances for point and block kriging of the rainfall observations, type
-
-```{r}
-r.int$var1.var |>
-  summary() |>
-  round(1)
-
-r.int2$var1.var |>
-  summary() |>
-  round(1)
-```
-
-The median prediction variance (in cm$^2$) for the point kriging is close to the value of the nugget.
-
-```{r}
-r.int$var1.var |>
-  median() |>
-  round(1)
-```
-In contrast, the median prediction variance for our block kriging is a much smaller.
-
-```{r} 
-r.int2$var1.var |>
-  median() |>
-  round(1)
-```
-
-## Simulating spatial fields {-}
-
-Simulations use the interpolated uncertainty to provide additional data for deterministic models. Suppose you have a hydrology model of rainfall runoff. Given a spatial field of rain amounts the model predicts a discharge rate at some location along a river. The uncertainty in the predicted runoff rate at the location is due to the uncertainty in where and how hard the rain fell (in the rainfall field) and not due to the deterministic hydrology model.
-
-The uncertainty in the rainfall field is simulated conditional on the observations with the same `krige()` function by adding the argument `nsim =` that specifies the number of simulations.  
-
-For a large number it may be necessary to limit the number neighbors in the kriging. This is done using the `nmax` argument. For a given location, the weights assigned to observations far away are very small, so it is efficient to limit how many are used in the simulation.
-
-As an example, here you generate four realizations of the county-level average storm total rainfall for Fay and limit the neighborhood to 50 of the closest observation sites. This takes a few seconds.
-
-```{r}
-r.sim <- krige(tpm ~ 1, 
-               locations = FR.sf, 
-               newdata = FL.sf, 
-               model = vm, 
-               nsim = 4, 
-               nmax = 50)
-```
-
-Given the variogram model, the simulations are conditional on the observed rainfall.
-
-```{r}
-tmap::tm_shape(r.sim) +
-    tmap::tm_polygons(col = c("sim1", "sim2", "sim3", "sim4"),
-                palette = "Greens",
-                title = "Simulated Rainfall [cm]") +
-    tmap::tm_facets(free.scales = FALSE) 
-```
-
-The overall pattern of rainfall remains the same, but there are differences especially in counties with fewer observations and in counties where the rainfall gradients are sharp.
-
-## Interpolating multiple variables {-}
-
-Spatial interpolation can be extended to obtain surfaces of multiple variables. The idea is that if two variables are correlated then information about the spatial correlation in one variable can help provide information about values in the other variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to two variables. 
-
-Here you consider observations of heavy metal concentrations (ppm) in the top soil in the flood plain of the river Meuse near the village of Stein. The data are available in {sp} package.
-
-```{r}
-library(sp)
-
-data(meuse)
-names(meuse)
-```
-
-The metals include cadmium, copper, lead, and zinc. Observation locations are given by x and y. Other variables include elevation, soil type and distance to the river (meters).
-
-Create a simple feature data frame with a projected coordinate system for the Netherlands.
-
-```{r}
-meuse.sf <- sf::st_as_sf(x = meuse,
-                         coords = c("x", "y"),
-                         crs = 28992)
-```
-
-Interest is on a spatial interpolation of all four heavy metals in the soil.
-
-Map the concentrations at the observation locations.
-
-```{r}
-tmap::tmap_mode("view")
-tmap::tm_shape(meuse.sf) +
-  tmap::tm_dots(col = c("cadmium", "copper", "lead", "zinc"))
-```
-
-All observations (bulk sampled from an area of approximately 15 m x 15 m) have units of ppm. The most abundant heavy metal is zinc followed by lead and copper. For all metals highest concentrations are found nearest to the river. Thus you want to include distance to river as a covariate (trend term) and use universal kriging.
-
-The distribution of concentrations is skewed with many locations having only low levels of heavy metals with a few having very high levels.
-
-```{r}
-ggplot(data = meuse.sf,
-       mapping = aes(x = lead)) +
-  geom_histogram(bins = 17) +
-  theme_minimal()
-```
-
-Thus you use logarithmic transformations.
-
-First you organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the variables into a single object. Ordering is done succession.
-
-Here you specify the trend using the square root of the distance to river and take the natural logarithm of the heavy metal concentration. You give the dependent variable a new name with the `id =` argument.
-
-```{r}
-g <- gstat(id = "logCd", 
-           formula = log(cadmium) ~ sqrt(dist), 
-           data = meuse.sf)
-g <- gstat(g, 
-           id = "logCu", 
-           formula = log(copper) ~ sqrt(dist), 
-           data = meuse.sf)
-g <- gstat(g, 
-           id = "logPb", 
-           formula = log(lead) ~ sqrt(dist), 
-           data = meuse.sf)
-g <- gstat(g, 
-           id = "logZn",
-           formula = log(zinc) ~ sqrt(dist), 
-           data = meuse.sf)
-g
-```
-
-Next you use the `variogram()` function to compute multivariable sample variograms. The function, when operating on a `gstat` object, computes all direct and cross variograms. A direct variogram is the semivariance computed for a single variable ($z$). 
-
-$$
-\gamma(h) = \frac{1}{2N(h)} \sum^{N(h)} (z_i - z_j)^2
-$$
-
-
-A cross variogram is the semivariance computed between two variables ($z_1$ and $z_2).
-
-$$
-\gamma_c(h) = \frac{1}{2N(h)} \sum^{N(h)} (z_{1i} - z_{2j})^2
-$$
-
-```{r}
-v <- g |>
-  variogram()
-
-v |>
+spde.posterior(result = model.lgcp, 
+               name = "spde1D", 
+               what = "range") |>
   plot()
 ```
 
-The individual plots are the direct and cross variograms. The direct variograms are shown in the four panels along the diagonal of the triangle of plots.
-
-The cross variograms are shown in the six panels below the diagonal. For example, the cross variogram between the values of cadmium ($z_1$ = cadmium) and copper ($z_2$ = copper) is given in the second row of the first column and so on. 
-
-The cross variogram is analogous to the multi-type $K$ function for analyzing point pattern data.
-
-The cross variograms show small semivariance values at short lag distance with increasing semivariance values at longer lags. Because these variables are co-located, you can also compute direct correlations.
+The prior range value was specified broadly but the posterior range is focused on values between 2.5 and 5. The output is better viewed on a logarithmic scale by specifying `what = "log.range"`.
 
 ```{r}
-cor(meuse[c("cadmium", "copper", "lead", "zinc")])
+spde.posterior(model.lgcp, 
+               name = "spde1D", 
+               what = "log.range") |>
+  plot()
 ```
 
-The direct correlation between cadmium and copper is .92 and between cadmium and lead is .8.
-
-The correlation matrix confirms strong relationships among the four variables at zero lag. The cross variogram generalizes these correlations across lag distance ($h$). For instance, the cross variogram indicates the strength of the relationship between cadmium at one location and copper at nearby locations.
-
-You use the `fit.lmc()` function to fit separate variogram models to each of the empirical variograms. The first argument in the function is the multivariable sample variogram and the second argument is the `gstat` object. The third argument is the initial model estimates. Here you set the initial estimates using a spherical model with a nugget of zero, a partial sill of .5 and a range of 800 m.
+Next you plot the probability density function for the Matérn correlation component of the model.
 
 ```{r}
-vmi <- vgm(model = "Sph", 
-           psill = .5,
-           nugget = 0,
-           range = 800)
-
-vm <- fit.lmc(v, g, 
-              model = vmi)
-plot(v, vm)
+spde.posterior(model.lgcp, 
+               name = "spde1D", 
+               what = "matern.correlation") |>
+  plot()
 ```
 
-The final variogram models (blue line) fit the empirical variogram (direct and cross) well.
+The black line is the posterior median correlation as a function of lag distance. The maximum correlation of 1 at zero lag distance decays to .5 correlation out at a distance of about 20 units.
 
-Given the variogram models and the observations, co-kriged maps are produced using the `predict()` method after setting the grid locations for the interpolations. The `meuse.grid` data frame is converted to a simple feature data frame and with the CRS for the grid locations matching the CRS of the data.
+You can get a feel for sensitivity to priors by specifying different priors and looking at these posterior plots. Always a good idea when fitting models using Bayesian methods.
+
+For example, change the prior range from 150 to 30 and refit the model. Compare the probability density function of the Matérn correlation.
+
+You predict on the 'response' scale [i.e. the intensity function $\lambda$(s)] as follows. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method with `data = grid.df` and `formula = ~ exp(spde1D + Intercept`. It takes a few seconds to make predictions at each grid point location.
 
 ```{r}
-data(meuse.grid)
-
-grid.sf <- sf::st_as_sf(x = meuse.grid,
-                        coords = c("x", "y"),
-                        crs = 28992)
-
-int <- predict(vm, grid.sf)
-
-names(int)
+grid.df <- data.frame(x = seq(from = 0, to = 55, by = 1)) 
+pred.df <- predict(model.lgcp, 
+                   data = grid.df, 
+                   formula = ~ exp(spde1D + Intercept))
 ```
-The output include the interpolated values for each of the log heavy metals and the uncertainty.
 
-Plot the interpolations.
+The output is a data frame containing the locations on the grid (`x`) and the corresponding summary statistics (mean, median, standard deviation, and quantiles) on the posterior predictions at those location.
 
 ```{r}
-tmap::tmap_mode("plot")
-tmap::tm_shape(int) +
-  tmap::tm_dots(col = c("logCd.pred", "logCu.pred", "logPb.pred", "logZn.pred"), 
-                size = .2, breaks = seq(-2, 8, by = 1), palette = "Reds", midpoint = NA)
+pred.df |>
+  dplyr::glimpse()
 ```
 
-The pattern of heavy metal concentrations are similar with highest values along the river bank. 
-
-It is interesting to compare the interpolations using only a single variable against the interpolations of the same variable when all variables are used. Here you do that for copper.
+You pass this data frame to the `plot()` method to produce the following prediction plot using the grammar of graphics.
 
 ```{r}
-v2 <- variogram(log(copper) ~ sqrt(dist), 
-                data = meuse.sf)
-vm2 <- fit.variogram(v2, 
-                     model = vgm(psill = .15, model = "Sph", 
-                                 range = 800, nugget = .1))
-
-int2 <- krige(log(copper) ~ sqrt(dist), 
-              locations = meuse.sf, 
-              newdata = grid.sf, 
-              model = vm2)
+plot(pred.df, color = "red") +
+  geom_point(data = pts2, 
+             mapping = aes(x = x), 
+             y = 0, pch = "|", cex = 2) +
+  xlab("x") + 
+  ylab("Spatial intensity\n number of events per unit interval") +
+  theme_minimal()
 ```
-Map together and compute the correlation.
+
+The LGCP model provides a smoothed spatial intensity of the events and a 95% credible interval about the intensity at each grid location. The intensity values are the number of events per unit interval.
+
+How does this compare with the intensity function that generated the data? 
+
+The function `lambda2_1D( ) `in the data object `Poission2_1D` calculates the true intensity that was used in simulating the data. 
+
+To plot this function you make a data frame with x- and y-coordinates giving the true intensity function, $\lambda(s)$. Here you use 150 x-values to get a smooth plot.
 
 ```{r}
-p1 <- tmap::tm_shape(int2) +
-        tmap::tm_dots(col = "var1.pred", 
-                      size = .2, palette = "Reds")
-p2 <- tmap::tm_shape(int) +
-        tmap::tm_dots(col = "logCu.pred", 
-                      size = .2, palette = "Reds")
-tmap::tmap_arrange(p1, p2)
-
-cor(int$logCu.pred, int2$var1.pred)
+xs <- seq(from = 0, to = 55, length = 150)
+true.lambda <- data.frame(x = xs, 
+                          y = lambda2_1D(xs))
 ```
 
-Only minor differences are visible on the plot and the correlation between the two interpolations exceeds .98.
-
-Plot the covariances between zinc and cadmium.
+Now plot the LGCP model predicted values together with the true intensity function.
 
 ```{r}
-tmap::tm_shape(int) +
-  tmap::tm_dots(col = "cov.logCd.logZn", size = .2)
+plot(pred.df, color = "red") +
+  geom_point(data = pts2, 
+             mapping = aes(x = x), 
+             y = 0, pch = "|", cex = 2) +
+  geom_line(data = true.lambda, 
+            mapping = aes(x, y)) +
+  xlab("x") + 
+  ylab("Spatial intensity") +
+  theme_minimal()
 ```
 
-The map shows areas of the flood plain with high (and low) covariances between cadmium and zinc. Higher values of the covariance indicate lower correlations. There is an inverse relationship between the correlogram and the covariogram.
+The match is pretty good. Keep in mind that the data represents just one sample generated from the
 
-Kriging is useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
+You can look at the goodness-of-fit of the model using the function `bincount( )`, which plots the 95% credible intervals in a set of bins along the x-axis together with the observed count in each bin. 
 
-Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your toolbox.
+```{r}
+bc <- bincount(
+  result = model.lgcp,
+  observations = pts2,
+  breaks = seq(from = 0, to = max(pts2), length = 12),
+  predictor = x ~ exp(spde1D + Intercept)
+)
 
-## Machine learning for spatial interpolation {-}
+attributes(bc)$ggp
+```
 
-See <https://geocompr.robinlovelace.net/spatial-cv.html>
+The credible intervals are shown as red rectangles, the mean fitted value as a short horizontal blue line, and the observed data as black points.
+
+Abundance is the integral of the intensity over the entire space. Here space is 1D and you estimate the abundance by integrating the predicted intensity over the range of x.
+
+Integration is done as a weighted sum of the intensities. The locations along the x axis and their weights are constructed using the `ipoints()` function.
+
+Here you create 50 equally-space integration points cover the 1D range. The weights are all equal to 55/100.
+
+```{r}
+ips <- ipoints(c(0, 55), 100, name = "x")
+
+head(ips)
+```
+
+Then compute the abundance over the entire domain with the `predict()` method.
+
+```{r}
+( Lambda <- predict(model.lgcp, 
+                    ips, 
+                    ~ sum(weight * exp(spde1D + Intercept))) )
+```
+
+* `mean` is the posterior mean abundance
+* `sd` is the estimated standard error of the posterior of the abundance
+* `q0.025` and `q0.975` are the 95% credible interval bounds
+* `q0.5` is the posterior median abundance
+
+The mean number of events is just over 130 with a standard deviation of 11.5 events.
+
+Recall that the LGCP has a hierarchical structure, where at the first level the process is assumed Poisson conditional on the intensity function, and at the second level the log of the intensity function is assumed to be drawn from a Gaussian process.
+
+The above posterior values for the abundance takes into account only the variance due to the parameters of the intensity function (2nd level). It neglects the variance in the number of events, given the intensity function (first level).
+
+To include both variances you need to modify the input to the `predict( )` method. You include a data frame that samples from a Poisson density for each value of the abundance (here `N = 50:250`).
+
+```{r}
+Nest <- predict(model.lgcp, 
+                ips,
+                ~ data.frame(N = 50:250,
+                             dpois = dpois(50:250,
+                             lambda = sum(weight * exp(spde1D + Intercept)))))
+```
+
+The result shows the same set of statistics as were calculated for `Lambda`, but here for every abundance value between 50 and 250, rather than for the posterior mean abundance alone.
+
+```{r}
+Nest |>
+  head()
+```
+
+You compute the 95% prediction interval and the median with the `inla.qmarginal()` function.
+
+```{r}
+inla.qmarginal(c(.025, .5, .975), 
+               marginal = list(x = Nest$N, 
+                               y = Nest$mean))
+```
+
+Now compare `Lambda` to `Nest` using a plot.
+
+First calculate the posterior conditional on the mean of `Lambda`.
+
+```{r}
+Nest$plugin_estimate <- dpois(Nest$N, 
+                              lambda = Lambda$mean)
+```
+
+Then plot it and the unconditional posterior.
+
+```{r}
+ggplot(data = Nest) +
+  geom_line(aes(x = N, 
+                y = mean, 
+                color = "Posterior")) +
+  geom_line(aes(x = N, 
+                y = plugin_estimate, 
+                color = "Plugin"))
+```
+
+Can you explain the difference?
+
+Spatial distribution of gorilla nests using SPDE <https://inlabru-org.github.io/inlabru/index.html>
+
+## Assessing how well a point pattern model fits the data {-}
+
+A model should be capable of generating fake data that are statistically indistinguishable from the real data. If your model is a point pattern model you produce samples of event locations with the `simulate()` function.
+
+Let's return to the Swedish pine sapling data and the inhibition model that you fit last time.
+
+You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intensity of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one.
+
+You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument.
+
+```{r}
+library(spatstat)
+
+SP <- swedishpines
+
+model.in <- SP |>
+  ppm(trend = ~ 1, 
+      interaction = Strauss(r = 10), 
+      rbord = 10)
+```
+
+Here you generate three samples of the Swedish pine sapling data and for comparison plot them alongside the actual data.
+
+```{r}
+X <- model.in |>
+  simulate(nsim = 3)
+
+plot(SP) 
+plot(X[[1]])
+plot(X[[2]])
+plot(X[[3]])
+```
+
+The samples of point pattern data look similar to the actual data providing evidence that the inhibition model is adequate. 
+
+To quantitatively assess the similarity you can use the `envelope()` function to compute the $K$ function on 99 samples and on the actual data. 
+
+The $K$ function values are averaged over all samples and a mean line represents the mean model curve. Uncertainty is assessed with a band that ranges from the minimum to the maximum K at each distance.
+
+Do this with the inhibition model for the pine saplings. This takes a few seconds to complete.
+
+```{r}
+model.in |>
+  envelope(fun = Kest, 
+           nsim = 99, 
+           correction = 'border') |>
+  plot(legend = FALSE)
+```
+
+The black line is the empirical (data) curve and the red line is the average over the 99 samples. The two lines are close and the black line falls nearly completely within the gray uncertainty band indicating the model fits the data well. The kink in the red curve is the result of specifying 10 units for the interaction distance. 
+
+From this plot you confidently conclude that a homogeneous inhibition model is adequate for describing the pine sapling data.
+
+What about the cluster model for the maple trees? You used a Thomas cluster process which means that centered on each event the chance of a nearby event decays as a two-dimensional Gaussian distribution. The latent rate of a nearby event is a two-dimensional kernel.
+
+This differs from a Matérn cluster process which means that centered on each event there is an equal chance of a nearby event out to some distance r.
+
+Use use the `kppm()` function and include the point pattern data as the first argument. You assume stationarity so `trend = ~ 1` and the argument `clusters =` is set to `"Thomas"`.
+
+```{r}
+MT <- lansing |>
+  subset(marks == "maple") |>
+  unmark()
+
+( model.cl <- MT |>
+    kppm(trend = ~ 1,
+         clusters = "Thomas") )
+```
+
+Now plot the $K$ function on the data and on 99 model simulations.
+
+```{r}
+model.cl |>
+  envelope(fun = Kest, 
+           nsim = 99, 
+           correction = 'border') |>
+  plot(legend = FALSE)
+```
+
+In the case of the maple trees, a cluster model is adequate. 
+
+However, it might not be satisfying since you know about the potential for inhibition caused by the presence of hickory trees. 
+
+Also there were more trees in the south than in the north so the stationary assumption is suspect.
+
+You fit a second cluster model where the intensity is a linear function of distance in the north-south direction.
+
+```{r}
+model.cl2 <- MT |>
+  kppm(trend = ~ y,
+       clusters = "Thomas")
+
+model.cl2
+```
+
+This is an inhomogeneous cluster point process model. The logarithm of the intensity depends on y (`Log intensity:  ~y`). The fitted trend coefficient is negative as expected, since there are fewer trees as you move north (increasing y direction). There is one spatial unit in the north-south direction so you interpret this coefficient to mean there are 77% fewer trees in the north than in the south. The 77% comes from the formula 1 - exp(-1.486) = .77.
+
+The average number of clusters (`kappa`) is higher at about 27 (it was 22 with the stationary model). The cluster scale parameter (`sigma`), indicating the characteristic size of the cluster (in distance units) is lower at .0536. That makes sense since some of the event-to-event distances are accounted for by the trend term.
+
+Simulate data using the new model and compare the inhomogenous $K$ function between the simulations and the observed data.
+
+```{r}
+model.cl2 |> 
+  envelope(fun = Kinhom, 
+           nsim = 99,
+           correction = 'border') |>
+  plot(legend = FALSE)
+```
+
+The black line falls within the gray band and the gray band is narrower than the simulations using the homogeneous cluster model.
+
+If the intensity of events depends on spatial location as it does with the maple trees you can include a trend and covariate term in the model.
+
+For a trend term, the `formula ~ x` corresponds to a spatial trend of the form $\lambda(x) = \exp(a + bx)$, while `~ x + y` corresponds to $\lambda(x, y) = \exp(a + bx + cy)$ where `x`, `y` are the spatial coordinates. For a covariates, the formula is `~ covariate1 + covariate2`.
+
+Consider the `bei` data from the {spatstat} package containing the locations of 3605 trees in a tropical rain forest.
+
+```{r}
+bei |>
+  plot()
+```
+
+Accompanied by covariate data giving the elevation (altitude) and slope of elevation in the study region. The data `bei.extra` is a list containing two pixel images, `elev` (elevation in meters) and `grad` (norm of elevation gradient). These pixel images are objects of class `im`, see `im.object`.
+
+```{r}
+bei.extra |>
+  image()
+```
+
+Compute and plot the $L$ function on the `ppp` object `bei`.
+
+```{r}
+bei |>
+  envelope(fun = Lest,
+           nsim = 39, 
+           global = TRUE, 
+           correction = "border") |>
+  plot(legend = FALSE)
+```
+
+There is significant clustering indicated by the black line sitting far above the CSR line. There are more trees in the vicinity of other trees than expected by chance.
+
+But how much of the clustering is due to variations in terrain?
+
+You start by fitting a model that includes elevation and gradient as covariates without clustering. This is done with the `trend =` argument naming the image variables and including the argument `covariates =` indicating a data frame or, in this case, a list whose entries are image functions.
+
+```{r}
+model.ppm1 <- bei |>
+  ppm(trend = ~ elev + grad, 
+      covariates = bei.extra)
+```
+
+Check to see if elevation and gradient as explanatory variables are significant in the model.
+
+```{r}
+model.ppm1 |>
+  summary()
+```
+
+The output shows that both elevation and elevation gradient are significant in explaining the spatial varying intensity of the trees. 
+
+Since the conditional intensity is on a log scale you interpret the elevation coefficient as follows: For a one meter increase in elevation the local spatial intensity increases by a amount equal to exp(.021) or 2%.
+
+Check how well the model fits the data. Again this is done with the `envelope()` function using the model object as the first argument.
+
+```{r}
+E <- model.ppm1 |>
+  envelope(fun = Lest, 
+           nsim = 39,
+           correction = "border",
+           global = TRUE)
+E |>
+  plot(main = "Inhomogeneous Poisson Model", 
+       legend = FALSE)
+```
+
+You conclude that although elevation and elevation slope are significant in explaining the spatial distribution of trees, they do not explain all the clustering.
+
+An improvement is made by adding a cluster process to the model. This is done with the function `kppm()`.
+
+```{r}
+model.ppm2 <- bei |>
+  kppm(trend = ~ elev + grad, 
+       covariates = bei.extra, 
+       clusters = "Thomas")
+
+E <- model.ppm2 |>
+  envelope(Lest, 
+           nsim = 39, 
+           global = TRUE, 
+           correction = "border")
+E |>
+  plot(main = "Clustered Inhomogeneous Model", 
+       legend = FALSE)
+```
+
+The uncertainty band is much wider. The empirical curve fits inside the band so you conclude that an inhomogeneous cluster process appears to be an adequate description of the point pattern data.
+
+## An example of a point process model in the wild {-}
+
+The vast majority of tornadoes have winds of less than 60 m/s (120 mph). Violent tornadoes, with winds exceeding 90 m/s, are rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions. 
+
+The long-term risk of a tornado at a given location is assessed using historical records, however, the rarity of the most violent tornadoes make these rate estimates unstable. Here you use the more stable rate estimates from the larger set of less violent tornadoes to create more reliable estimates of violent tornado frequency.
+
+For this exercise attention is restricted to tornadoes occurring in Kansas over the period 1954--2020.
+
+```{r}
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
+  sf::st_transform(crs = 3082) |>
+  dplyr::filter(mag >= 0, yr >= 1954) |>
+  dplyr::mutate(EF = mag,
+                EFf = as.factor(EF)) |>
+  dplyr::select(yr, EF, EFf)
+
+W.sfc <- USAboundaries::us_states(states = "Kansas") |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf)) |>
+  sf::st_geometry()
+
+Torn.sf <- Torn.sf[W.sfc, ]
+```
+
+Create a `owin` and `ppp` objects. Note that although you already subset by Kansas tornadoes above you need to subset on the `ppp` object to assign the KS boundary as the analysis window.
+
+```{r}
+KS.win <- W.sfc |>
+  as.owin()
+
+T.ppp <- Torn.sf["EF"] |>
+  as.ppp()
+
+T.ppp <- T.ppp[KS.win]
+
+summary(T.ppp)
+```
+
+There are 4139 tornadoes over the period with an average intensity of 192 per 100 square kilometer (multiply the average intensity in square meters by 10^10).
+
+Separate the point pattern data into non-violent tornadoes and violent tornadoes. The non-violent tornadoes include those with an EF rating of 0, 1, 2 or 3. The violent tornadoes include those with an EF rating of 4 or 5.
+
+```{r}
+NV.ppp <- T.ppp |>
+  subset(marks <= 3 & marks >= 0) |>
+  unmark()
+
+summary(NV.ppp)
+
+V.ppp <- T.ppp |>
+  subset(marks >= 4) |> 
+  unmark()
+
+V.ppp |>
+  summary()
+```
+
+The spatial intensity of the non-violent tornadoes is 190 per 100 sq km. The spatial intensity of the violent tornadoes is 1.9 per 100 square kilometer.
+
+Plot the locations of the violent tornado events.
+
+```{r}
+V.ppp |>
+  plot()
+```
+
+Early we found that the spatial intensity of tornado reports was a function of distance to nearest city with fewer reports in rural areas.
+
+So here you include this as an explanatory variable. Import the data, set the CRS, and transform the CRS to match that of the tornadoes. Exclude cities with fewer than 1000 people.
+
+```{r}
+C.sf <- USAboundaries::us_cities() |>
+  dplyr::filter(population >= 1000) |>
+  sf::st_transform(crs = sf::st_crs(Torn.sf))
+```
+
+Then convert the simple feature data frame to a `ppp` object. Then subset the events by the analysis window (Kansas border).
+
+```{r}
+C.ppp <- C.sf |>
+  as.ppp()
+
+C.ppp <- C.ppp[KS.win] |>
+  unmark()
+
+C.ppp |>
+  plot()
+```
+
+Next create a distance map of the city locations using the `distmap()` function.
+
+```{r}
+Zc <- C.ppp |>
+  distmap()
+
+Zc |>
+  plot()
+```
+
+The pixel values of the `im` object are distances is meters. Blue indicates locations that are less than 20 km from a city.
+
+Interest lies with the distance to nearest non-violent tornado. You check to see if this might be a useful variable in a model so you make a distance map for the non-violent events and then use the `rhohat()` function.
+
+```{r}
+Znv <- NV.ppp |>
+  distmap()
+  
+rhat <- rhohat(V.ppp, Znv, 
+               adjust = 1.5, 
+               smoother = "kernel", 
+               method = "transform")
+
+dist <- rhat$Znv
+rho <- rhat$rho
+hi <- rhat$hi
+lo <- rhat$lo
+Rho.df <- data.frame(dist = dist, rho = rho, hi = hi, lo = lo)
+
+ggplot(data = Rho.df) + 
+  geom_ribbon(mapping = aes(x = dist, 
+                            ymin = lo, 
+                            ymax = hi), 
+              alpha = .3) + 
+  geom_line(aes(x = dist, y = rho), col = "black") + 
+  ylab("Spatial intensity of violent tornadoes") +
+  xlab("Distance from nearest non-violent tornado (m)") + 
+  theme_minimal()
+```
+
+This shows that regions that get non-violent tornadoes also see higher rates of violent tornadoes.
+
+So the model should include two covariates (trend terms), distance to nearest city and distance to nearest non-violent tornado.
+
+```{r}
+model.ppm1 <- V.ppp |>
+  ppm(trend = ~ Zc + Znv, 
+      covariates = list(Zc = Zc, Znv = Znv))
+
+model.ppm1 |>
+  summary() |>
+  coef()
+```
+
+As expected the model shows fewer violent tornadoes with increasing distance from the nearest city (negative coefficient on `Zc`) and fewer violent tornadoes with increasing distance from a non-violent tornado (negative coefficient on `Znv`).
+
+Since the spatial unit is meters the coefficient of -3.21e-05 is interpreted as a [1 - exp(-.0321)] * 100% or 3% decrease in violent tornado reports per kilometer of distance from a city. Similarly the coefficient on distance from nearest non-violent tornado is interpreted as a 23% decrease in violent tornado reports per kilometer of distance from nearest non-violent tornado.
+
+Check if there is any residual nearest neighbor correlation.
+
+```{r}
+E <- model.ppm1 |>
+  envelope(fun = Kest, 
+           nsim = 39,
+           global = TRUE)
+E |>
+  plot(main = "Inhomogeneous Poisson Model", 
+       legend = FALSE)
+```
+
+There appears to be a bit of regularity at smaller scales. The empirical curve (black line) falls slightly below the model (dashed red line). There are fewer nearby violent tornadoes than one would expect.
+
+To see if this is statistically significant, you add an inhibition process to the model.
+
+```{r}
+model.ppm2 <- V.ppp |> 
+  ppm(trend = ~ Zc + Znv, 
+      covariates = list(Zc = Zc, Znv = Znv),
+      interaction = Strauss(r = 40000))
+
+model.ppm2 |>
+  summary() |>
+  coef()
+```
+
+The interaction coefficient has a negative sign as expected from the above plot, but the standard error is relatively large so it is not statistically significant.
+
+Remove the inhibition process and add a trend term in the east-west direction.
+
+```{r}
+model.ppm3 <- V.ppp |>
+  ppm(trend = ~ Zc + Znv + x, 
+      covariates = list(Zc = Zc, Znv = Znv))
+
+model.ppm3 |>
+  summary() |>
+  coef()
+```
+
+There is a significant eastward trend but it appears to confound the distance to city term because the Zc term is no longer significant. Why is this? 
+
+Settle on the first model and generate simulated data from it.
+
+```{r}
+model.ppm1 |>
+  simulate(nsim = 6) |>
+  plot()
+
+plot(V.ppp)
+```
+
+The model appears to due a good job simulating data that looks like the actual data.
+
+## Spatial logistic regression {-}
+
+Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise.
+
+Then a logistic regression is a model for the presence probability $p = P(Y = 1)$ as a function of explanatory variables $X$ in the form 
+
+$$
+\log \frac{p}{1-p} = \beta X
+$$
+
+where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients on the explanatory variables to be determined.
+
+If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.
+
+Let's look at an example from the package (a good strategy when learning a new technique).
+
+Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are geological fault lines.
+
+Interest centers on being able to predict the probability of a copper ore from the distance to the fault line. 
+
+The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
+
+```{r}
+library(spatstat) |>
+  suppressMessages()
+
+data(copper)
+
+copper$SouthPoints |>
+  plot()
+
+copper$SouthLines |>
+  plot(add = TRUE)
+```
+
+First rotate the events (points and lines) by 90 degrees in the anticlockwise direction and save them as separate objects.
+
+```{r}
+C <- rotate(copper$SouthPoints, pi/2)
+L <- rotate(copper$SouthLines, pi/2)
+
+C |>
+  plot()
+L |>
+  plot(add = TRUE)
+```
+
+You summarize the planar point pattern data object `C`.
+
+```{r}
+C |>
+  summary()
+```
+
+There are 57 ore deposits over a region of size 5584 square km resulting in an intensity of about .01 ore deposits per square km.
+
+Next you create a distance map indicating the distance to the nearest fault line. This distance will be used as a covariate for a model of the probability of an ore deposit.
+
+```{r}
+D <- L |>
+  distmap()
+
+D |>
+  plot()
+```
+
+Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} family of packages.
+
+```{r}
+model.slr <- slrm(C ~ D)
+model.slr
+```
+
+The model says that the odds of a copper ore deposit along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.
+
+The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments.
+
+The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. Values are the probability of finding an ore deposit in each pixel.
+
+```{r}
+model.slr |>
+  fitted() |>
+  plot()
+C |>
+  plot(add = TRUE)
+```
+
+Integrating (summing) the predictions over the domain area equals the abundance (number of ore deposits).
+
+```{r}
+model.slr |>
+  fitted() |>
+  sum()
+```
+
+See <https://r-spatial.org/book/12-Interpolation.html>

@@ -1,540 +1,475 @@
 # Tuesday March 7, 2023 {-}
 
-**"Give someone a program, you frustrate them for a day; teach them how to program, you frustrate them for a lifetime."** - David Leinweber
+**"Beyond basic mathematical aptitude, the difference between good programmers and great programmers is verbal ability."** – Marissa Mayer
 
-## Spatial data as point patterns {-}
+## Spatial data interpolation {-}
 
-We now turn our attention to analyzing and modeling point pattern data. We start with some theory, then learn how to work with functions from the {spatstat} package before focusing on estimating spatial intensity.
+In situ observations of the natural world are made at specific locations in space (and time). But you often want estimates of the values everywhere. The temperature reported at the airport is 15C, but what is it at my house 10 miles away? 
 
-As humans we naturally seek patterns within a collection of events. A pattern that quickly catches our attention is clustering. Clusters of stars in the night sky were defined by the ancients as a constellation.
+Interpolation of the observed to values across the domain is needed.  You must assume the observations are taken from a _continuous_ field (surface). Data observed or measured at locations across a continuous field are called geostatistical data. Examples: concentrations of heavy metals across a farm field, surface air pressures in cities across the country, air temperatures within a city during the night.
 
-A cluster of events in a particular region begs for an explanation. Why do events occur more often in one region rather than in another region?
+Local averaging, spline functions, or inverse-distance weighting are interpolation methods. If it is 20C five miles north of here and 30C files miles to the south, then it is 25C here. 
 
-Consider tornado reports in the state of Kansas. Let the start position of a tornado be an *event location*. And let the damage rating (EF scale) provide a *mark* on the event.
+_Key idea_: These types of interpolation fail to take into account spatial autocorrelation and they do not contain estimates of uncertainty.
 
-Here you consider only events since 2007 with marks of 1, 2, 3, 4, and 5. More about the damage rating scale is available here <https://en.wikipedia.org/wiki/Enhanced_Fujita_scale>
+Kriging is statistical spatial interpolation. It is the centerpiece of what is called 'geostatistics.' The resulting surface (kriged surface) has three parts. (1) Spatial trend: an increase or decrease in the values that depends on direction or a covariate (co-kriging); (2) Local spatial autocorrelation. (3) Random variation. This should now sound familiar. Together the three components provide a model that is used to estimate values everywhere within a specified domain.
 
-Import and filter the data accordingly.
+In short, geostatistics is used to quantify spatial correlation, predict values at locations where values were not observed, estimate uncertainty on the predicted values, and simulate data.
+
+As you've done with areal data (Moran's I) and point pattern data (Ripley's K), you will begin with quantifying spatial autocorrelation.
+
+First some definitions.
+
+- Statistical interpolation assumes the observed values are spatially homogeneous. This implies stationarity and continuity
+
+- Stationarity means that the average difference in values between pairs of observations separated by a given distance (lag) is constant across the domain
+
+- Continuity means that the spatial autocorrelation depends only on the lag (and orientation) between observations. That is; spatial autocorrelation is independent of location and can be described by a single function
+
+- Stationarity and continuity allow different parts of the region to be treated as "independent" samples
+
+Stationarity can be weak or intrinsic. Both assume the average of the difference in values at observations separated by a lag distance $h$ is zero. That is, E$[z_i - z_j]$ = 0, where location $i$ and location $j$ are a (lag) distance $h$ apart. This implies that the interpolated surface $Z(s)$ is a random function with a constant mean ($m$) and a residual ($z$).
+
+$$
+Z(s) = m + z(s).
+$$
+The expected value (average across all values) in the domain is $m$ and the residuals are spatially correlated.
+
+Weak stationarity assumes that the covariance is a function of lag distance $h$.
+
+$$
+\hbox{cov}(z_i, z_j) = \hbox{cov}(h)
+$$
+where cov($h$) is called the covariogram and $z_i$ and $z_j$ are residuals at different locations in $s$.
+
+Intrinsic stationarity assumes the variance of the difference in values is a function of the lag distance.
+
+$$
+\hbox{var}(z_i - z_j) = \gamma(h),
+$$
+where $\gamma(h)$ is called the variogram. This means that spatial autocorrelation is independent of location.
+
+These assumptions are needed to get started with statistical interpolation. If the assumptions are not met, we remove the trends in the data before spatially interpolating the residuals.
+
+Computing the covariogram and the correlogram
+
+In practice you focus on fitting a model to the variogram $\gamma(h)$. But to understand the variogram it helps to first consider the covariogram. This is because you are likely familiar with the idea of nearby things being more correlated than things farther away.
+
+To make things simple but without loss in generality, start with a 4 x 6 grid of equally spaced surface air temperatures across a field in degrees C.
+
+  21  21  20  19  18  19 
+  
+  26  25  26  27  29  28 
+  
+  32  33  34  35  30  28   
+  
+  34  35  35  36  32  31   
+
+Put the values into a data vector and determine the mean and variance.
 
 ```{r}
-Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
-  dplyr::filter(st == "KS", 
-                yr >= 2007,
-                mag > 0) 
+temps <- c(21, 21, 20, 19, 18, 19, 
+           26, 25, 26, 27, 29, 28, 
+           32, 33, 34, 35, 30, 28, 
+           34, 35, 35, 36, 32, 31)
+temps |>
+  mean()
+temps |>
+  var()
 ```
 
-Create a map of the event locations using functions from the {tmap} package. The state border is obtained as a simple feature data frame. The polygon geometry is plotted first with `tm_borders()` then the event locations are plotted with the `tm_bubbles()` and `size = "mag"`.
+Focusing only on the covariance function in the north-south direction, to compute the sample covariance function you first compute the covariance between the observed values one distance unit apart. Using math
+
+$$
+\hbox{cov}(0, 1) = 1/|N(1)| \sum (z_i - Z)(z_j - Z)
+$$
+
+where $|N(1)|$ is the number of distinct observation pairs with a distance separation of one unit in the north-south direction and where $Z$ is the average over all observations. We let zero in cov(0, 1) refer to the direction and we let one refer to the distance one unit apart. With this grid of observations $|N(1)|$ = 18.
+
+The equation for the covariance can be simplified to
+
+$$
+\hbox{cov}(0, 1) = 1/|N(1)| \sum z_i z_j - m_{-1} m_{+1}
+$$
+
+where $m_{-1}$ is the average temperature over all rows except the first (northern most) and $m_{+1}$ is the average temperature over all rows except the last (southern most).
+
+To simplify the notation re-index the grid of temperatures using lexicographic (reading) order.
+
+ 1   2   3   4   5   6
+ 
+ 7   8   9   10  11  12 
+ 
+ 13  14  15  16  17  18  
+  
+ 19  20  21  22  23  24 
+
+Then
 
 ```{r}
-KS.sf <- USAboundaries::us_states(states = "Kansas")
-
-tmap::tm_shape(KS.sf) +
-   tmap::tm_borders(col = "grey70") +
-tmap::tm_shape(Torn.sf) +
-   tmap::tm_bubbles(size = "mag", 
-                    col = "red",
-                    alpha = .4,
-                    title.size = "EF Rating") +
-tmap::tm_layout(legend.position = c("left", "top"),
-                legend.outside = TRUE)
+mp1 <- mean(temps[1:18])
+mm1 <- mean(temps[7:24])
+cc <- sum(temps[1:18] * temps[7:24])/18
+cc - mm1 * mp1
 ```
 
-Based on this map you ask: (1) Are certain areas of the state more likely to get a tornado? (2) Do tornadoes tend to cluster? (3) Are there places in the state that are safe from tornadoes?
+Or more generally
+```{r}
+N <- 18
+k <- 1:N
+1/N * sum(temps[k] * temps[k + 6]) - mean(temps[k]) * mean(temps[k + 6])
+```
 
-These questions are similar but they are not identical. We will explore these questions about point pattern data.
+The covariance has units of the observed variable squared (here $^\circ C^2$).
 
-To make things more precise, it is helpful to begin with some definitions.
+You also have observation pairs two units of distance apart. So you compute the cov(0, 2) in a similar way.
 
--   Event: An occurrence of interest (e.g., tornado, accident, wildfire).
+$$
+\hbox{cov}(0, 2) = 1/|N(2)| \sum z_i z_j - m_{-2} m_{+2}
+$$
 
--   Event location: Location of event (e.g., latitude/longitude).
+where $m_{-2}$ is the average temperature over all rows except the first two and $m_{+2}$ is the average temperature over all rows except the last two. $|N(2)|$ is the number of pairs two units apart.
 
--   Point: Any location in the study area where an event *could* occur. Across the state of Kansas a tornado can occur anywhere. However, in a forest with a lake, the lake is a place where a tree can not occur.
+```{r}
+N <- 12
+k <- 1:N
+1/N * sum(temps[k] * temps[k + 12]) - mean(temps[k]) * mean(temps[k + 12])
+```
 
-Note: Event location is a particular point where an event *did* occur.
+Similarly you have observation pairs three units apart so you compute cov(0, 3) as
 
--   Point pattern data: A collection of observed (or simulated) event locations together with a domain of interest. The event locations may contain additional information about the event. For example, the age of a tree.
+$$
+\hbox{cov}(0, 3) = 1/|N(3)| \sum z_i z_j - m_{-3} m_{+3}
+$$
 
--   Domain: Study area that is often defined by data availability (e.g., state or county boundary) or by the extent of the events.
+```{r}
+N <- 6
+k <- 1:N
+1/N * sum(temps[k] * temps[k + 18]) - mean(temps[k]) * mean(temps[k + 18])
+```
 
--   Complete spatial randomness: Or CSR (not to be confused with CRS--coordinate reference system) defines the situation where an event has an equal chance of occurring at any point in the domain regardless of other nearby events.
+There are no observation pairs four units apart in the north-south direction so you are finished. The covariogram is a plot of the covariance values as a function of lag distance. Let $h$ be the lag distance, then
 
-Under the situation of CSR you say the event locations have a uniform probability distribution across space. Note: uniform chance does not mean that the events have an ordered pattern (e.g., trees in an orchard).
+$h$    |  cov($h$)  
+-------|--------  
+(0, 1) |  15  
+(0, 2) |   3  
+(0, 3) |   1  
 
-Consider a set of event locations that are randomly distributed within the unit plane. First create two vectors containing the x and y coordinates, then create a data frame that includes the name of the sample, and then graph the locations using `ggplot()`.
+It is convenient to have a measure of co-variability that is dimensionless. So you divide the covariance at lag distance $h$ by the covariance at lag zero. This is the correlogram. Values of the correlogram range from 0 to +1.
+
+The covariogram is a decreasing function of lag distance. The _variogram_ is the inverse (multiplicative) of the covariogram. 
+
+Mathematically: var($z_i - z_j$) for locations $i$ and $j$. The semivariogram is 1/2 the variogram. If location $i$ is near location $j$, the difference in the values will be small and so too will the variance of their differences, in general. If location $i$ is far from location $j$, the difference in values will be large and so too will the variance of their differences.
+
+In practice you have a set of observations and you compute a variogram. This is called the sample (empirical) variogram. Let $t_i = (x_i, y_i)$  be the ith location and $h_{i,j} = t_j - t_i$ be the vector connecting location $t_i$ with location $t_j$. Then the sample variogram is defined as
+
+$$
+\gamma(h) = \frac{1}{2N(h)} \sum^{N(h)} (z_i - z_j)^2
+$$
+
+where $N(h)$ is the number of observation pairs a distance of $h$ units apart.
+
+The sample variogram assumes intrinsic stationarity so the raw observed values should not have a trend. If there is a trend in the observed value it needs to be removed before computing the variogram.
+
+The sample variogram is characterized by a set of points the values of which generally increase as $h$ increases before leveling off (reaching a plateau).
+
+As an example, you compute and plot the sample variogram from the `meuse.all` data frame from the {gstat} package. First attach the data frame and look at the first six rows.
+
+```{r}
+library(gstat)
+
+data(meuse.all)
+head(meuse.all)
+```
+
+The data are the locations and heavy metal concentrations (ppm) in the soil at those locations along with other soil and landscape variables collected in a flood plain of the river Meuse, near the village Stein, NL. Heavy metal concentrations are bulk sampled from an area of approximately 15 m x 15 m.
+
+Next locate where the data are from. First convert the data frame to a spatial data frame and then use functions from the {tmap} package in view mode.
+
+```{r}
+meuse.sf <- meuse.all |>
+  sf::st_as_sf(coords = c("x", "y"), 
+               crs = 28992)
+
+tmap::tmap_mode("view")
+
+tmap::tm_shape(meuse.sf) +
+  tmap::tm_bubbles(size = "zinc")
+```
+
+Then compute the sample variogram and save it as `meuse.v`.
+
+```{r}
+meuse.v <- variogram(zinc ~ 1,
+                     data = meuse.all,
+                     locations = ~ x + y)
+meuse.v |>
+  class()
+```
+
+The output is an object of class `gstatVariogram` and `data.frame`. 
+
+Make a graph of the sample variogram and label the key features using functions from the {ggplot2} package. Map the variable `gamma` in the `meuse.v` data frame to the y aesthetic and the variable `dist` to the x aesthetic.
 
 ```{r}
 library(ggplot2)
 
-x <- runif(n = 50, min = 0, max = 1)
-y <- runif(n = 50, min = 0, max = 1)
-df1 <- data.frame(x, y, name = "Point Pattern 1")
-ggplot(data = df1, 
-       mapping = aes(x, y)) +
-  geom_point(size = 2)
+ggplot(data = meuse.v,
+       mapping = aes(x = dist, y = gamma)) +
+  geom_point(size = 2) +
+  scale_y_continuous(limits = c(0, 210000)) +
+  geom_hline(yintercept = c(30000, 175000), color = "red") +
+  geom_vline(xintercept = 800, color = "red") +
+  xlab("Lag distance (h)") + ylab(expression(paste(gamma,"(h)"))) +
+  geom_segment(aes(x = 0, y = 0, xend = 0, yend = 30000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 100, y = 10000, label = "nugget")) +
+  geom_segment(aes(x = 0, y = 10000, xend = 0, yend = 175000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 180, y = 150000, label = "sill (partial sill)")) +
+  geom_segment(aes(x = 0, y = 190000, xend = 800, yend = 190000,), arrow = arrow(angle = 15, length = unit(.3, "cm"))) +
+  geom_label(aes(x = 250, y = 190000, label = "range")) +
+  theme_minimal()
 ```
 
-The plot shows a sample from a spatial point pattern process. A *spatial point process* is a mechanism (physical or synthetic) for producing a set of event locations. The pattern of locations produced by the point process is described as CSR. There are areas with relatively few events and areas with relative many events.
+- Lag (lag distance): Relative distance between observation locations (here units: meters)
+- Nugget (nugget, nugget variance, or nugget effect): The height of the variogram at zero lag (here units ppm squared). The nugget is the variation in the values at the observation locations independent of spatial variation. It is related to the observation (or measurement) precision 
+- Sill: The height of the variogram at which the values are uncorrelated
+- Relative nugget effect: The ratio of the nugget to the sill expressed as a percentage
+- Range: The distance beyond which the values are uncorrelated. The range is indicated on the sample variogram as the position along the horizontal axis where values of the variogram reach a constant height
 
-Let's repeat this procedure to create three more samples. First combine them into a single data frame with the `rbind()` function and then plot a four-panel figure using the `facet_wrap()` function.
+Additional terms.
+- Isotropy: The condition in which spatial correlation is the same in all directions
+- Anisotropy: (an-I-so-trop-y) spatial correlation is stronger or more persistent in some directions
+- Directional variogram: Distance and direction are important in characterizing the spatial correlations. Otherwise the variogram is called omni-directional
+- Azimuth ($\theta$): Defines the direction of the variogram in degrees. The azimuth is measured clockwise from north
+- Lag spacing: The distance between successive lags is called the lag spacing or lag increment
+- Lag tolerance: The distance allowable for observational pairs at a specified lag. With arbitrary observation locations there will be no observations exactly a lag distance from any observation. Lag tolerance provides a range of distances to be used for computing values of the variogram at a specified lag.
+
+Computing the sample variogram is the first step in modeling geostatistical data. The next step is fitting a model to the variogram. The model is important since the sample variogram estimates are made only at discrete lag distances (with specified lag tolerance and azimuth). You need a continuous function that varies smoothly across all lags. The statistical model replaces the discrete set of points.
+
+Variogram models come from different families. The fitting process first requires a decision about what family to choose and then given the family, a decision about what parameters (nugget, sill, range) to choose. 
+
+An exponential variogram model reaches the sill asymptotically. The range (a) is defined as the lag distance at which gamma reaches 95% of the sill.
 
 ```{r}
-df2 <- data.frame(x = runif(n = 30, min = 0, max = 1),
-                  y = runif(n = 30, min = 0, max = 1),
-                  name = "Point Pattern 2")
-df3 <- data.frame(x = runif(n = 30, min = 0, max = 1),
-                  y = runif(n = 30, min = 0, max = 1),
-                  name = "Point Pattern 3")
-df4 <- data.frame(x = runif(n = 30, min = 0, max = 1),
-                  y = runif(n = 30, min = 0, max = 1),
-                  name = "Point Pattern 4")
-df <- rbind(df1, df2, df3, df4)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
+c0 <- .1
+c1 <- 2.1
+a <- 1.3
+curve(c0 + c1*(1 - exp(-3*x/a)), 
+      from = .01, to = 3, 
+      xlab = "h", 
+      ylab = expression(paste(hat(gamma), "(h)")), 
+      las = 1)
+```
+
+A spherical variogram model reaches the sill at x = 1.
+
+```{r}
+curve(c0 + c1*(3*x/2 - x^3/2),
+      from = .01, to = 1,
+      xlab = "h",
+      ylab = expression(paste(hat(gamma), "(h)")), 
+      las = 1)
+```
+
+A Gaussian variogram model is "S"-shaped (sigmodial). It is used when the data exhibit strong correlations at the shortest lag distances.  The inflection point of the model occurs at $\sqrt{a/6}$.
+
+```{r}
+curve(c0 + c1*(1 - exp(-3*x^2/a^2)),
+      from = .01, to = 3, 
+      xlab = "h", 
+      ylab = expression(paste(hat(gamma), "(h)")),
+      las = 1)
+```
+
+Other families include
+
+* Linear models: $\hat \gamma(h)$ = c0 + b * h.
+* Power models:  $\hat \gamma(h)$ = c0 + b * h$^\lambda$.
+
+These models have no sill.
+
+Choosing a variogram family is largely done by looking at the shape of the sample variogram. Then, given a sample variogram computed from a set of spatial observations and a choice of family, the parameters of the variogram model are determined by weighted least-squares (WLS). Weighting is needed because the because the sample variogram estimates are computed using a varying number of point pairs.
+
+There are other ways to determine the parameters including by eye, and by the method of maximum likelihoods, but WLS is less erratic than other methods and it requires fewer assumptions about the distribution of the data. And the process can be automated and it often is in high-level packages, but it is important to understand what is in the black box.
+
+The final step in spatial statistical interpolation is called kriging. Kriging interpolates the observed data using the variogram model. It was developed by a South African miner (D.G. Krige) as a way to improve estimates of where ore reserves might be located. Extraction costs are reduced substantially if good predictions can be made of where the ore resides given samples taken across the mine.
+
+A kriged estimate is a weighted average of the observations where the weights are based on the variogram model. The kriged estimates are optimal in the sense that they minimize the error between observed and predicted. The type of kriging depends on the characteristics of the observations and the purpose of interpolation.
+
+- Simple kriging assumes a known constant mean for the domain 
+- Ordinary kriging assumes an unknown constant mean
+- Universal kriging assumes an unknown linear or nonlinear trend in the mean
+
+To review, the steps for spatial interpolation (statistical) are:
+
+1. Examine the observations for trends and isotropy
+2. Compute a sample (empirical) variogram
+3. Fit a variogram model to the sample variogram
+4. Create an interpolated surface using the variogram model together with the data (kriging)
+
+## Computing the sample variogram {-}
+
+The {gstat} package contains functions for spatial interpolation that take advantage of simple feature (and S4 class) spatial data data frames.
+
+Suppose we have the following set of observations (`zobs`) at locations (`sx`, `sy`).
+
+```{r}
+sx <- c(1.1, 3.2, 2.1, 4.9, 5.5, 7, 7.8, 9, 2.3, 6.9)
+sy <- c(3, 3.5, 6, 1.5, 5.5, 3.2, 1, 4.5, 1, 7)
+zobs <- c(-0.6117, -2.4232, -0.42, -0.2522, -2.0362, 0.9814, 1.842,
+         0.1723, -0.0811, -0.3896)
+```
+
+Create a data frame and plot the observed values at the locations using the `geom_text()` function.
+```{r}
+sf <- data.frame(sx, sy, zobs) |>
+  sf::st_as_sf(coords = c("sx", "sy"),
+               crs = 4326)
+
+ggplot(data = sf, 
+       mapping = aes(x = sx, y = sy, label = zobs)) +
+  geom_text() +
+  theme_minimal()
+```
+
+Lag distance (distance between locations) is the independent variable in the variogram function. You get all pairwise distances by applying the `dist()` function to a matrix of spatial coordinates.
+
+```{r}
+cbind(sx, sy) |>
+  dist()
+
+cbind(sx, sy) |>
+  dist() |>
+  range()
+```
+
+The `dist()` function computes a pairwise distance matrix. The distance between the first and second observation is 2.16 units and so on. The largest lag distance is 8.04 units and the smallest lag distance is 2.05 units.
+
+The functions in the {gstat} package work with simple feature objects.
+
+As another example, consider the dataset called `topo` from the {MASS} package. The data are topographic heights (feet) within a 310 sq ft domain.
+
+Examine the data with a series of plots.
+
+```{r}
+topo.df <- MASS::topo
+
+p1 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = y, color = z)) +
   geom_point() +
-  facet_wrap(~ name)
-```
+  scale_color_viridis_c() +
+  theme_minimal()
 
-Groups of nearby events illustrate the fact that a certain amount of *clustering* will occur simply by chance (without cause). This chance cluster confounds visual attempts to assess whether clustering is causal or not.
-
-Complete spatial randomness sits on a spectrum between regularity and clustered.
-
-To illustrate this here you generate point pattern data that have *more* regularity than CSR and point pattern data that are *more* clustered than CSR. You do this using the `rMaternI()` and `rMaternClust()` functions from the {spatstat} package.
-
-```{r}
-m1 <- spatstat.random::rMaternI(kappa = 200, r = .04)
-df1 <- data.frame(x = m1$x, y = m1$y, name = "Regularity Pattern 1")
-m2 <- spatstat.random::rMaternI(kappa = 200, r = .04)
-df2 <- data.frame(x = m2$x, y = m2$y, name = "Regularity Pattern 2")
-m3 <- spatstat.random::rMatClust(kappa = 30, r = .15, mu = 4)
-df3 <- data.frame(x = m3$x, y = m3$y, name = "Clustered Pattern 1")
-m4 <- spatstat.random::rMatClust(kappa = 30, r = .15, mu = 4)
-df4 <- data.frame(x = m4$x, y = m4$y, name = "Clustered Pattern 2")
-df <- rbind(df1, df2, df3, df4)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
+p2 <- ggplot(data = topo.df,
+             mapping = aes(x = z, y = y)) +
   geom_point() +
-  facet_wrap(~ name)
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
+
+p3 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = z)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
+
+p4 <- ggplot(data = topo.df,
+             mapping = aes(x = z)) +
+  geom_histogram(bins = 13) +
+  theme_minimal()
+
+library(patchwork)
+( p1 + p2 ) / ( p3 + p4 )
 ```
 
-The difference in the arrangement of events between the two pattern types (clustered in the top two panels) can be visually detected. For example, given an event in a regularity pattern, there appears to always be more distance to the nearest neighbor event.
+Note the trend in the north-south direction and the skewness in the observed values. 
 
-But the difference in the arrangement of events between a CSR and regular process and the difference in the arrangement of events between a CSR and cluster process is not.
-
-And spatial scale matters. A set of event locations can be regular on a small scale but clustered on a larger scale.
-
-Probability models for spatial patterns motivate methods for detecting event clustering. A probability model generates a point pattern process. For example, you can think of crime as a point pattern process defined by location and influenced by environmental factors. The probability of a crime occurring at a particular location is the random variable and you can estimate the probability of a crime event at any location given factors that influence crime.
-
-## Theoretical framework for analyzing/modeling point pattern data {-}
-
-More formally, a spatial point pattern process is a *stochastic* (statistical) process where event location is the random variable. A sample of the process is a collection of events generated under the probability model.
-
-A spatial point process is said to be *stationary* if the statistical properties of the resulting events are invariant to translation. This means that the relationship between two events depends on (1) how much distance separates them and on (2) their relative orientation to each other but not on where the two events are located in the domain.
-
-A spatial point process is said to be *isotropic* if the statistical properties of the resulting events are invariant to rotation. This means that the relationship between two events depends only on how much distance separates them. The inter-event distance between events is called the *spatial lag*.
-
-The properties of *stationarity* and *isotropy* allow you to treat each region within the domain as *independent*. Assuming a stationary and isotropic point process, two event pairs that are separated by the same distance will have the same relatedness regardless of where the event pairs are located in the domain.
-
-This is analogous to the assumption you make when you define a weights matrix for spatially aggregated data. The assumptions of stationarity and isotropy are starting points for modeling point pattern data.
-
-The Poisson distribution defines a model for complete spatial randomness (CSR). A point process is said to be *homogeneous Poisson* under the following two criteria:
-
-1.  The number of events (N) occurring within a finite domain A is a random variable described by a Poisson distribution with mean $\lambda$ times \|A\| for some positive constant $\lambda$, with \|A\| denoting the area of the domain, and
-
-2.  The locations of the N events represent a sample where each point in A is *equally likely* to be chosen as an event location.
-
-The first criteria of a Poisson distribution refers to a probability model describing the number of events. It expresses the probability of a given number of events occurring in a fixed interval of space (and time) when the events occur with a known constant rate.
-
-The Poisson parameter (lambda) defines the *intensity* of the point process. Given a set of events, an estimate for the mean (rate) parameter of the Poisson distribution is given by the number of events divided by the domain area. The second criteria ensures the events are scattered about the domain without clustering or regularity.
-
-A procedure to create a homogeneous Poisson point process follows from its definition. Step 1: Choose the number of events from a Poisson distribution with a mean that is proportional to the domain area. Step 2: Place each event within the domain with coordinates given by a *uniform distribution*.
-
-For example, let area \|A\| = 1, and the rate of occurrence $\lambda$ = 20, then the code below generates a CSR set of events.
+Examine the residuals after removing a first-order trend from the observations.
 
 ```{r}
-lambda <- 2000
-N <- rpois(1, lambda)
-x <- runif(N)
-y <- runif(N)
-df <- data.frame(x, y)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  geom_point(size = 2) 
+topo.df$z1 <- lm(z ~ x + y, data = topo.df) |>
+  residuals()
+
+p1 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = y, color = z1)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  theme_minimal()
+
+p2 <- ggplot(data = topo.df,
+             mapping = aes(x = z1, y = y)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
+
+p3 <- ggplot(data = topo.df,
+             mapping = aes(x = x, y = z1)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal()
+
+p4 <- ggplot(data = topo.df,
+             mapping = aes(x = z1)) +
+  geom_histogram(bins = 13) +
+  theme_minimal()
+
+( p1 + p2 ) / ( p3 + p4 )
 ```
 
-The set of events represents a sample from a homogeneous Poisson point process. The intensity of the events is specified first then the locations are placed uniformly inside the domain. The domain need not be regular. The actual number of events varies from one realization to the next. On average the number of events is 20 but it could vary between 10 and 35 or more.
+The north-south trend is removed and the observations have a more symmetric distribution. There appears to be some non-linear trend (U-shape) in the east-west direction. 
 
-This point pattern exhibits CSR by construction. However, you are typically in the opposite position. You *observe* a set of events (e.g., tornadoes on the Plains) and you want to know if the events are regular, clustered, or random.
+However, the residuals appear to show spatial autocorrelation (areas with above and below residuals). 
 
-The null hypothesis is CSR and you need a test statistic that will summarize the evidence against this hypothesis. The null models are simple so you can use Monte Carlo methods to generate samples and compare summary statistics from those samples with your observed data.
-
-In some cases the homogeneous Poisson model is not restrictive enough. This means that you can easily reject the null hypothesis but not learn anything interesting about your data. For example, with health events (locations of people with heart disease) CSR is not an appropriate model because a null hypothesis that incidences are equally likely does not consider that people cluster (locations at risk are not uniform).
-
-Each person may have the same risk of heart disease, for instance, regardless of location. But you expect more cases in areas with more people at risk. Clusters of cases in high population areas violate the CSR but not necessarily the constant risk hypothesis. The constant risk hypothesis requires the intensity of the spatial process be defined as a spatially varying function. That is, you define the intensity as $\lambda(s)$, where $s$ denotes location.
-
-The intensity (density) function is a first-order property of point pattern data. If intensity varies (significantly) across the domain, the process generating the data is said to be heterogeneous. The intensity function describes the expected number of events at any location. Events might be independent of one another, but groups of events appear because of the changing intensity.
-
-It helps to visualize these concepts. We do that with functions from the {spatstat} family of packages.
-
-## Working with point pattern data using functions from the spatstat package {-}
-
-The {spatstat} family of packages contain functions to analyze and model point pattern data. The individual packages have different namespace names beginning with `spatstat` so it is best to load the family of packages with the `library()` function before beginning.
+Compare the sample variograms using first the raw values and then the residuals after removing the first-order trend.
 
 ```{r}
-library(spatstat)
+topo.sf <- topo.df |>
+  sf::st_as_sf(coords = c("x", "y"))
+
+topo.v1 <- variogram(z ~ 1,
+                     data = topo.sf,
+                     cutoff = 6)
+topo.v2 <- variogram(z1 ~ 1,
+                     data = topo.sf,
+                     cutoff = 6)
+
+ggplot(data = topo.v1,
+       mapping = aes(x = dist, y = gamma)) +
+  geom_point(color = "red") +
+  geom_point(data = topo.v2,
+             mapping = aes(x = dist, y = gamma),
+             color = "black") +
+  scale_x_continuous(breaks = seq(0, 6, by = 1)) +
+  xlab("Lag distance (h)") + 
+  ylab(expression(paste(gamma,"(h)"))) +
+  theme_minimal()
 ```
 
-Point pattern data are defined in {spatstat} by an object of class `ppp` (for planar point pattern) which contains the spatial coordinates of the events (event locations), optional values attached to the events (called 'marks'), and a description of the domain or 'window' over which the events are observed. See `?ppp.object()` for details.
+The semivariance ($\gamma(u)$) is plotted against lag distance ($h$). 
 
-Spatial statistics computed on a `ppp` object will be sensitive to the choice of the window (domain), so some thought should go into the choice of the domain.
+Values increase with lag out to a distance of 3 from the sample variogram computed with the detrended data (black dots) but continue to increase from the sample variogram computed with the raw data (red dots). 
 
-As an example, the data `swedishpines` is available in the package as a `ppp` object.
+For short lag distances, the increasing variogram values are due to spatial autocorrelation but at large distances the increasing variogram values are due to trend. That is why you need to remove trends before computing and modeling the variogram.
+
+The units of the variogram values are squared units of the variable units (here square feet). Values are calculated using observational point pairs at lag distances within a lag tolerance. The number of point pairs depends on the lag. At short and long distances there are fewer observational point pairs, so the sample variogram values have greater variance for short and long lag distances.
+
+Plot the number of observational point pairs used to calculate the variogram.
 
 ```{r}
-class(swedishpines)
-swedishpines
+ggplot(data = topo.v2,
+       mapping = aes(y = np, x = dist)) +
+  geom_point() +
+  xlab("Lag Distance") + 
+  ylab("Number of Observation Pairs") +
+  theme_minimal()
 ```
 
-The data is a planar point pattern object with 71 events.
+Summary: 
 
-Note: Unfortunately events in a `ppp` object are called 'points' rather than events. This is in contrast to the terminology used by the theoreticians who define a point as a *potential* event not an *observed* event.
+Modeling point pattern data is not straightforward so often the data are aggregated to areal units and spatial logistic regression is used to indicate the presence or absence of events at a particular scale. The scale is chosen so as to effectively remove clustering or inhibition processes. You saw how to implement a spatial logistic regression model with functions from the {spatstat} family of packages.
 
-All the events are contained within a rectangle window of size 9.6 by 10 meters.
+The topic of spatial interpolation was introduced. There are many ways to interpolate. Kriging provides a statistical methodology that is useful for estimating uncertainty about the interpolated values and for simulation. The first steps are to examine the data for trends and compute the sample variogram on the residuals. If there is spatial autocorrelation in the residuals then the sample variogram values increase with lag distance out to some range. 
 
-There is a `plot()` method for `ppp` objects that provides a quick view of the data and the domain window.
+The next steps are fitting a variogram model to the sample variogram and creating an interpolated surface with the method of kriging. Kriging combines the variogram model with the observations.
 
-```{r}
-swedishpines |>
-  plot()
-```
-
-Events are plotted as open circles inside a bounding box. The plot is labeled with the name of the `ppp` object.
-
-The function `convexhull()` from the {spatstat.geom} package as part of the {spatstat} family of packages creates a convex hull around the events. A convex hull defines the minimum-area convex polygon that contains all the events.
-
-Here you create the hull and add it to the plot.
-
-```{r}
-swedishpines |>
-  plot()
-swedishpines |>
-  convexhull() |>
-  plot(add = TRUE)
-```
-
-The domain (window) for analysis and modeling should be somewhat larger than the convex hull. The function `ripras()` computes a spatial domain based on the event locations alone assuming the locations are independent and identically distributed.
-
-Here you also overlay this polygon on the plot.
-
-```{r}
-swedishpines |>
-  plot()
-swedishpines |>
-  convexhull() |>
-  plot(add = TRUE)
-swedishpines |>
-  ripras() |>
-  plot(add = TRUE, lty = "dotted")
-```
-
-The window can have an arbitrary shape. A rectangle, a polygon, a collection of polygons including holes, or a binary image (mask). A window can be stored as a separate object of class `owin`. See `?owin.object()` for details.
-
-Each event may carry information called a 'mark'. A mark can be continuous (e.g. tree height) or discrete (tree species).
-
-Multitype point patterns are point patterns in which the events have a discrete mark (e.g., tree species). The mark values are given in a vector of the same length as the vector of locations. That is, `marks[i]` is the mark attached to the location (`x[i]`, `y[i]`).
-
-Consider the `ppp` object `demopat` from the {spatstat} package.
-
-```{r}
-demopat |>
- plot()
-```
-
-Here the domain is defined as an irregular concave polygon with a hole. The distinction between inside and outside is important for spatial statistics computed using the events.
-
-You print the marks with the `marks()` function.
-
-```{r}
-demopat |>
-  marks()
-```
-
-For a multitype pattern (where the marks are factors) you can use the `split()` function to separate the point pattern objects by mark type. Consider the Lansing Woods data set (`lansing`) with marks corresponding to tree species.
-
-```{r}
-data(lansing)
-LW <- lansing
-
-LW |>
-  split() |>
-  plot()
-```
-
-## Quantifying the spatial intensity of events {-}
-
-The average intensity of events is defined as the number of events per unit area of the domain. The `summary()` method applied to a `ppp` object gives the average intensity.
-
-```{r}
-swedishpines |>
-  summary()
-```
-
-There are 71 events over a window area (spatial domain) of 9600 square units giving an average intensity of 71/9600 = .0074.
-
-Average intensity depends on the number of events and on the domain area defined by the `owin` object.
-
-The `owin` object is the first element labeled `window` in a `ppp` object.
-
-```{r}
-W0 <- swedishpines$window
-class(W0)
-```
-
-The default window is a rectangle.
-
-```{r}
-plot(W0)
-```
-
-Here you change the window to that defined by the event locations using the method of Ripley-Rasson (`ripras()` function) and then make that the window for the Swedish pines by using the subset operator `[`.
-
-```{r}
-W1 <- swedishpines |>
-  ripras()
-
-SP2 <- swedishpines[W1]
-```
-
-Since the new window area is slightly larger than the default window the summary method shows that the spatial intensity is lower.
-
-```{r}
-SP2 |>
-  summary()
-```
-
-The average intensity might not represent the intensity of events locally. We need a way to describe the expected number of events at any location of the region.
-
-Counting the number of events in equal areas is one way. The quadrat method divides the domain into a grid of rectangular cells and the number of events in each cell is counted. Quadrat counting is done with the `quadratcount()` function.
-
-```{r}
-swedishpines |>
-  quadratcount()
-```
-
-By default the function divides the data into a 5 x 5 grid of cells. The event count in each cell is produced. To change the default number of cells in x and y directions you use the `nx =` and `ny =` arguments.
-
-```{r}
-swedishpines |>
-  quadratcount(nx = 2, 
-               ny = 3)
-```
-
-The plot method applied to the results of the `quadratcount()` functions adds the counts to a plot. Here you add the counts and include the event locations.
-
-```{r}
-swedishpines |>
-  quadratcount() |>
-  plot()
-swedishpines |>
-  plot(pty = 19, col = "red", 
-       add = TRUE, main = "")
-```
-
-Grid cell areas will not be all equal when the domain boundaries are irregular like with the `demopat` ppp object.
-
-```{r}
-demopat |>
-  quadratcount() |>
-  plot()
-```
-
-Areas near the borders are smaller than areas completely within the domain.
-
-When the number of events is large, hexagon grid cells provide a useful alternative to rectangular grid cells.
-
-The process is: (1) tessellate the domain by a regular grid of hexagons, (2) count the number of events in each hexagon, and (3) use a color ramp to display the events per hexagon.
-
-As an example here you generate 20K values from the standard normal distribution for the x coordinate and the same number of values for the y coordinate. You then use the `hexbin()` function from the {hexbin} package and specify 10 bins in the x direction to count the number of events in each hexagon and assign the result to the object `hbin`.
-
-```{r}
-if(!require(hexbin)) install.packages(pkgs = "hexbin", repos = "http://cran.us.r-project.org")
-
-x <- rnorm(20000)
-y <- rnorm(20000)
-hbin <- hexbin::hexbin(x, y, xbins = 10) 
-str(hbin)
-```
-
-The {hexbin} package uses S4 data classes so the output is stored in slots. Use the `plot()` method to make a graph.
-
-```{r}
-hbin |>
-  plot()
-```
-
-Hexagons have symmetric nearest neighbors (there is only rook contiguity). They have the most sides of any polygon that can tessellate the plane.
-
-They are generally more efficient than rectangles at covering the events. In other words it takes fewer of them to cover the same number of events.
-
-They are visually less biased for displaying local event intensity compared to squares/rectangles.
-
-Here you generate a large number of random events in the two-dimensional plane. Use a normal distribution in the x-direction and a student t-distribution in the y-direction.
-
-```{r}
-set.seed(131)
-x <- rnorm(7777)
-y <- rt(7777, df = 3)
-hexbin::hexbin(x, y, xbins = 25) |>
-  plot()
-```
-
-The {ggplot2} package has the `stat_binhex()` function so that also can be used for displaying spatial intensity.
-
-```{r}
-df <- data.frame(x, y)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  stat_binhex()
-```
-
-Another way to quantify the spatial intensity is with kernel density estimation (KDE). Let $s_i$ for $i$ = 1...$n$ be event locations, then an estimate for the intensity of the events at any location $s$ is given by
-
-$$
-\hat \lambda (s) = \frac{1}{nh}\sum_{i=1}^nK\Big(\frac{s - s_i}{h}\Big)
-$$
-
-where $K()$ is the kernel function and $h > 0$ is a smoothing parameter called the bandwidth. Typically the kernel function is a Gaussian probability density function.
-
-To help visualize KDE you generate 25 event locations (`el`) uniformly on the real number line representing a one-dimensional spatial domain between 0 and 1 and then use kernel density estimation to get a continuous intensity function. The density estimation is is done using the function `density()` and here you compare the intensity function for increasing bandwidths specified with the `bw =` argument.
-
-```{r}
-el <- runif(25)
-dd1 <- density(el, bw = .025)
-dd2 <- density(el, bw = .05)
-dd3 <- density(el, bw = .1)
-df <- data.frame(x = c(dd1$x, dd2$x, dd3$x), 
-                 y = c(dd1$y, dd2$y, dd3$y),
-                bw = c(rep("h = .025", 512), 
-                       rep("h = .05", 512),
-                       rep("h = .1", 512)))
-df2 <- data.frame(x = el, y = 0)
-ggplot(data = df, 
-       mapping = aes(x, y)) +
-  geom_line() +
-  facet_wrap(~ bw, nrow = 3) +
-  geom_point(mapping = aes(x, y), 
-             data = df2, 
-             color = "red")
-```
-
-As the bandwidth increases the curve (black line) representing the local intensity becomes smoother. The intensity is estimated at every location, not just at the location of the event.
-
-The density is a summation of the kernels with one kernel centered on top of each event location. Event locations are marked with a point along the x-axis and the kernel is a Gaussian probability density function. The kernel is placed on each event and the bandwidth specifies the distance between the inflection points of the kernel. The one-dimensional KDE extends to two (or more) dimensions.
-
-Example: The distribution of trees in a tropical forest
-
-The object `bei` is a planar point pattern object from the {spatstat} package containing the locations of trees in a tropical rain forest.
-
-```{r}
-bei |>
-  summary()
-```
-
-There are 3604 events (trees) over an area of 500,000 square meters giving an average intensity of .0073 trees per unit area.
-
-The distribution of trees is not uniform (heterogeneous) as can be seen with a plot
-
-```{r}
-bei |>
-  plot()
-```
-
-The plot shows clusters of trees and large areas with few if any trees.
-
-Elevation and elevation slope are factors associated with tree occurrence.
-
-The point pattern data is accompanied by data (`bei.extra`) on elevation (`elev`) and slope of elevation (`grad`) across the region.
-
-```{r}
-bei.extra |>
-  plot()
-```
-
-These data are stored as `im` (image) objects.
-
-```{r}
-class(bei.extra$elev)
-```
-
-The image object contains a list with 10 elements including the matrix of values (`v`).
-
-```{r}
-str(bei.extra$elev)
-```
-
-Specifying a spatial domain (window) allows focuses the analysis on a particular region. Suppose you want to model locations of a certain tree type, but only for trees located at elevations above 145 meters. The `levelset()` function creates a window from an image object using `thresh =` and `compare =` arguments.
-
-```{r}
-W <- levelset(bei.extra$elev,
-              thresh = 145, 
-              compare = ">")
-class(W)
-```
-
-The result is an object of class `owin`. The plot method displays the window as a mask, which is the region in black.
-
-```{r}
-W |>
-  plot()
-```
-
-You subset the `ppp` object by the window using the bracket operator (`[]`). Here you assign the reduced `ppp` object to `beiW` and then make a plot.
-
-```{r}
-beiW <- bei[W]
-
-beiW |>
-  plot()
-```
-
-Now the analysis window is white and the event locations are plotted on top.
-
-As another example you create a window where altitude is lower than 145 m and slope exceeds .1 degrees. In this case you use the `solutionset()` function.
-
-```{r}
-V <- solutionset(bei.extra$elev <= 145 & 
-                 bei.extra$grad > .1)
-beiV <- bei[V]
-
-beiV |>
-  plot()
-```
-
-You compute the spatial intensity function over the domain with the `density()` method using the default Gaussian kernel and fixed bandwidth determined by the window size.
-
-```{r}
-beiV |>
-  density() |>
-  plot()
-```
-
-The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid ($v$) and are returned as a pixel image.
-
-There are over 16K cells that have a value of `NA` as a result of the masking by elevation and slope.
-
-```{r}
-den <- beiV |>
-  density()
-
-sum(is.na(den$v))
-```
-
-Summarizing: Spatial point patterns play a big role in the analysis of natural occurring systems where the spatial location of events is examined through the lens of statistics in an attempt to understand physical processes.
-
-Some of the terminology and theory of point pattern data analysis was introduced in this lesson. Including the concept of complete spatial randomness (CSR) and the twin assumptions of stationarity and isotropy.
-
-The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`.
-
-The typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do at least part of the data munging after conversion to a `ppp` object.
-
-The first-order property of spatial point pattern data is spatial intensity. It is defined as the number of events per unit area of the domain. The spatial intensity can vary with domain area even if the number of events is constant. It can also vary across the domain. Quadrat counting and kernel density estimates are used to quantify the spatial varying intensity.
+Class next Tuesday, November 22 will be via Zoom. I will start at 8a and record it so you can watch it live or at your convenience.
