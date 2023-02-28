@@ -145,8 +145,8 @@ You create a map displaying where income has the most and least influence on cri
 ```{r}
 CC.sf$INCcoef <- models.gwr$SDF$INC
 
-ggplot(CC.sf) +
-  geom_sf(aes(fill = INCcoef)) +
+ggplot(data = CC.sf) +
+  geom_sf(mapping = aes(fill = INCcoef)) +
   scale_fill_viridis_c()
 ```
 
@@ -157,8 +157,8 @@ How about the coefficients on housing values?
 ```{r}
 CC.sf$HOVALcoef <- models.gwr$SDF$HOVAL
 
-ggplot(CC.sf) +
-  geom_sf(aes(fill = HOVALcoef)) +
+ggplot(data = CC.sf) +
+  geom_sf(mapping = aes(fill = HOVALcoef)) +
   scale_fill_viridis_c()
 ```
 
@@ -182,8 +182,8 @@ Where is the relationship between crime and the two explanatory variables the ti
 ```{r}
 CC.sf$localR2 <- models.gwr$SDF$localR2
 
-ggplot(CC.sf) +
-  geom_sf(aes(fill = localR2)) +
+ggplot(data = CC.sf) +
+  geom_sf(mapping = aes(fill = localR2)) +
   scale_fill_viridis_c()
 ```
 
@@ -305,7 +305,7 @@ The bandwidth is assigned to the object `bw` as a single value of 165.5 km
 To get a feel for what a bandwidth distance of 165 km means in terms of the average number of neighbors per county you note that one-half the distance squared times $\pi$ is the area captured by the bandwidth
 
 ```{r}
-( bwA <- pi * (bw * 1000 /2)^2 ) 
+( bwA <- pi * (bw * 1000 / 2)^2 ) 
 ```
 
 Or 21,522 square kilometers
@@ -408,7 +408,7 @@ Example: Watershed soil data: response variables; soil total nitrogen percentage
 
 Comparisons of OLS regression, standard GWR, and multiscale GWR
 
-https://rpubs.com/lexcomber/INIA_Session7
+<https://rpubs.com/lexcomber/INIA_Session7>
 
 ## Mapping incidence and risk with a spatial regression model {-}
 
@@ -489,8 +489,8 @@ LC.sf <- LC.sf |>
                 E = E,
                 SIR = Y/E)
 
-ggplot(LC.sf) + 
-  geom_sf(aes(fill = SIR)) +
+ggplot(data = LC.sf) + 
+  geom_sf(mapping = aes(fill = SIR)) +
   scale_fill_gradient2(midpoint = 1, 
                        low = "blue", 
                        mid = "white", 
@@ -512,6 +512,11 @@ $$
 Y \sim \hbox{Poisson}(E\theta) \\
 \log(\theta) = \alpha + u + v
 $$
+$$
+Y \sim N(\mu, \sigma^2) \\
+\mu = \beta_0 + \beta_1 x
+$$
+
 
 The parameter $\alpha$ is the overall risk in the state, $u$ is the spatially structured random effect representing the spatial autocorrelation in risk across neighboring counties, and $v$ is the uncorrelated random noise modeled as 
 
@@ -611,8 +616,8 @@ LC.sf$RR <- model.inla$summary.fitted.values[, "mean"]
 LC.sf$LL <- model.inla$summary.fitted.values[, "0.025quant"]
 LC.sf$UL <- model.inla$summary.fitted.values[, "0.975quant"]
 
-ggplot(LC.sf) + 
-  geom_sf(aes(fill = RR)) +
+ggplot(data = LC.sf) + 
+  geom_sf(mapping = aes(fill = RR)) +
   scale_fill_gradient2(midpoint = 1, 
                        low = "blue", 
                        mid = "white", 
