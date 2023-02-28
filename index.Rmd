@@ -12,9 +12,3 @@ documentclass: book
 editor_options: 
   chunk_output_type: console
 ---
-
-# {-}
-
-#tidycensus::get_acs(geography = "county", variables = "B01003_001") will get you the latest 2016-2020 ACS estimates
-
-https://walker-data.com/census-r/wrangling-census-data-with-tidyverse-tools.html
