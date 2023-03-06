@@ -4,6 +4,9 @@
 
 Changes to Lesson and lab schedules
 
+Lessons 13-16 will cover spatial interpolation, no class on Thursday, March 23, Lab 4 to follow Lesson 16 on Thursday March 30
+Lessons 17-22 will cover point pattern analysis and modeling, Lab 5 follows on April 27
+
 ## Spatial data interpolation {-}
 
 In situ observations of the natural world are made at specific locations in space (and time). But you often want estimates of the values everywhere. The temperature reported at the airport is 15C, but what is it at my house 10 miles away? 
