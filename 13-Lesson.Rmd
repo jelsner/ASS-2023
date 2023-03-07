@@ -11,13 +11,15 @@ Lessons 17-22 will cover point pattern analysis and modeling, Lab 5 follows on A
 
 In situ observations of the natural world are made at specific locations in space (and time). But you often want estimates of the values everywhere. The temperature reported at the airport is 15C, but what is it at my house 10 miles away? 
 
-Interpolation of the observed to values across the domain is needed.  You must assume the observations are taken from a _continuous_ field (surface). Data observed or measured at locations across a continuous field are called geostatistical data. Examples: concentrations of heavy metals across a farm field, surface air pressures in cities across the country, air temperatures within a city during the night, ocean currents in the Gulf of Mexico
+Interpolation of the observed values across the domain is needed. You assume observations are taken from a _continuous_ field (surface)
+
+Data observed or measured at locations across a continuous field are called geostatistical data. Examples: concentrations of heavy metals across a farm field, surface air pressures in cities across the country, air temperatures within a city during the night, ocean currents in the Gulf of Mexico
 
 Local averaging, spline functions, or inverse-distance weighting are interpolation methods. If it is 20C five miles north of here and 30C files miles to the south, then it is 25C here 
 
 _Key idea_: These types of interpolation fail to take into account spatial autocorrelation and they do not contain estimates of uncertainty
 
-Kriging is statistical spatial interpolation. It is the centerpiece of what is called 'geostatistics.' The resulting surface (kriged surface) has three parts. (1) Spatial trend: an increase or decrease in the values that depends on direction or a covariate (co-kriging); (2) Local spatial autocorrelation. (3) Random variation. This should now sound familiar. Together the three components provide a model that is used to estimate values everywhere within a specified domain
+Kriging is statistical spatial interpolation. It is the centerpiece of what is called 'geostatistics.' The resulting surface (kriged surface) has three parts. (1) Spatial trend: an increase or decrease in the values that depends on direction or a covariate; (2) Local spatial autocorrelation which can be from more than a single variable (co-kriging). (3) Random variation. This should now sound familiar. Together the three components provide a model that is used to estimate values everywhere within a specified domain
 
 In short, geostatistics is used to quantify spatial correlation, predict values at locations where values were not observed, estimate uncertainty on the predicted values, and simulate data
 
@@ -253,7 +255,7 @@ Additional terminology
 
 Computing the sample variogram is the first step in modeling geostatistical data. The next step is fitting a model to the variogram. The model is important since the sample variogram estimates are made only at discrete lag distances (with specified lag tolerance and azimuth). You need a continuous function that varies smoothly across all lags. The statistical model replaces the discrete set of points
 
-Variogram models come from different families. The fitting process first requires a decision about what family to choose and then given the family, a decision about what parameters (nugget, sill, range) to choose
+Variogram models come from different families. The fitting process first requires a decision about what family to choose and then given the family, a decision about what parameter values (nugget, sill, range) to choose
 
 An exponential variogram model reaches the sill asymptotically. The range (a) is defined as the lag distance at which gamma reaches 95% of the sill
 
@@ -316,7 +318,7 @@ To review, the steps for spatial interpolation (statistical) are:
 
 ## Computing the sample variogram {-}
 
-The {gstat} package contains functions for spatial interpolation that take advantage of simple feature (and S4 class) spatial data data frames
+The {gstat} package contains functions for spatial interpolation that take advantage of simple feature (and S4 class) spatial data frames
 
 Suppose we have the following set of observations (`zobs`) at locations (`sx`, `sy`).
 
@@ -353,7 +355,7 @@ cbind(sx, sy) |>
 
 The `dist()` function computes a pairwise distance matrix. The distance between the first and second observation is 2.16 units and so on. The largest lag distance is 8.04 units and the smallest lag distance is 2.05 units
 
-The functions in the {gstat} package work with simple feature objects.=
+The functions in the {gstat} package work with simple feature objects
 
 As another example, consider the dataset called `topo` from the {MASS} package. The data are topographic heights (feet) within a 310 sq ft domain
 
