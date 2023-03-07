@@ -4,15 +4,15 @@
 
 ## Fitting a variogram model to the sample variogram {-}
 
-Some years ago there were three nuclear waste repository sites being proposed. One in Nevada, one in Texas, and one in Washington. The proposed site needed to be large enough for more than 68,000 high-level waste containers placed underground, about 9 m (~30 feet) apart, in trenches surrounded by salt. 
+Some years ago there were three nuclear waste repository sites being proposed. One in Nevada, one in Texas, and one in Washington. The proposed site needed to be large enough for more than 68,000 high-level waste containers placed underground, about 9 m (~30 feet) apart, in trenches surrounded by salt
 
-In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste. The facility has yet to be built.
+In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste. The facility has yet to be built
 
-The site must isolate nuclear waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters. 
+The site must isolate nuclear waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters
 
-The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seek its own level in the pipe (piezometer). The head measurements indicate the total energy of the water in units of height (feet above sea level). The higher the head height, the greater the potential energy.  Water flows away from areas of high potential energy to areas of lower energy with aquifer discharge proportional to the gradient of the piezometric head. The data are in `wolfcamp.csv` on my website.
+The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seek its own level in the pipe (piezometer). The head measurements indicate the total energy of the water in units of height (feet above sea level). The higher the head height, the greater the potential energy.  Water flows away from areas of high potential energy to areas of lower energy with aquifer discharge proportional to the gradient of the piezometric head. The data are in `wolfcamp.csv` on my website
 
-Start by examining the values of head height for trends and check to see if the values can adequately described by a normal distribution. Import the csv file as a data frame. Change the name `head` to `head_ft` and add a column for heights in meters.
+Start by examining the values of head height for trends and check to see if the values can adequately described by a normal distribution. Import the csv file as a data frame. Change the name `head` to `head_ft` and add a column for heights in meters
 
 ```{r}
 L <- "http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv"
@@ -21,7 +21,7 @@ wca.df <- readr::read_csv(L) |>
   dplyr::mutate(head_m = head_ft * .3048)
 ```
 
-Create a simple feature data frame and make a map showing the locations and the head heights. This is done by specifying the columns `lon` and `lat` as coordinates with the `coords =` argument. Then using functions from the {tmap} package.
+Create a simple feature data frame and make a map showing the locations and the head heights. This is done by specifying the columns `lon` and `lat` as coordinates with the `coords =` argument. Then using functions from the {tmap} package
 
 ```{r}
 wca.sf <- sf::st_as_sf(x = wca.df, 
@@ -33,9 +33,10 @@ tmap::tmap_mode("view")
 tmap::tm_shape(wca.sf) +
   tmap::tm_dots("head_m")
 ```
-The aquifer measurements are taken across the panhandle region of Texas and portions of northeast New Mexico.
 
-You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trends. So you include them as attributes in your spatial data frame. Note: they were removed as attributes when creating the simple feature data frame.
+The aquifer measurements are taken across the panhandle region of Texas and portions of northeast New Mexico
+
+You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trends. So you include them as attribute variables in your spatial data frame. Note: they were removed as attributes when creating the simple feature data frame
 
 ```{r}
 XY <- wca.sf |>
@@ -381,6 +382,284 @@ ggplot() +
   theme_minimal()
 ```
 
-Standard deviation of the prediction variance in units of meters. Recall the range of head heights was from a low of 312 m to a high of 1088 m so the predictive errors are generally less than 10%. 
+Standard deviation of the prediction variance in units of meters. Recall the range of head heights was from a low of 312 m to a high of 1088 m so the predictive errors are generally less than 10%
 
-Predictive errors are a function of distance to nearest measurement (northwest corner). This makes sense since information about the aquifer heights comes from the measurements.
+Predictive errors are a function of distance to nearest measurement (northwest corner). This makes sense since information about the aquifer heights comes from the measurements
+
+## Comparing interpolation methods {-}
+
+Here you consider a data set of monthly average near-surface air temperatures during April across the Midwest. The data set is available on my website in the file `MidwestTemps.txt`
+
+Start by importing the data as a data frame.
+
+```{r}
+L <- "http://myweb.fsu.edu/jelsner/temp/data/MidwestTemps.txt"
+t.df <- readr::read_table(L)
+```
+
+The data frame contains three columns. The first two are longitude (`lon`) and latitude (`lat`) and the third is average air temperatures (`temp`) in tens of °F. These are the climate observations at specified locations and you want a continuous field of climate values across the domain.
+
+Convert the data frame to a simple feature data frame by specifying which columns you want as coordinates (first X then Y).
+
+```{r}
+t.sf <- t.df |>
+  sf::st_as_sf(coords = c("lon", "lat"),
+               crs = 4326)
+```
+
+Next include the spatial coordinates as attributes (`X` and `Y`) in the simple feature data frame. They were removed as attributes by the `sf::st_as_sf()` function.
+
+```{r}
+t.sf$X <- t.df$lon
+t.sf$Y <- t.df$lat
+```
+
+Check to see if there are duplicated coordinates.
+
+```{r}
+t.sf$geometry |>
+  duplicated() |>
+  any()
+```
+
+Plot the climatological temperatures at the observation locations on a map.
+
+```{r}
+sts <- USAboundaries::us_states()
+
+tmap::tm_shape(t.sf) +
+  tmap::tm_text(text = "temp", 
+                size = .6) +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() 
+```
+
+There is a clear trend in temperatures with the coolest air to the north. Besides this north-south trend, there appears to be some clustering (spatial autocorrelation) of the temperatures due to local variations.
+
+Next, compute and plot the sample variogram (omni-directional) using the residuals after removing the trend. The trend term is specified in the formula as `temp ~ X + Y`.
+
+```{r}
+library(gstat)
+
+t.v <- variogram(temp ~ X + Y, 
+                 data = t.sf)
+plot(t.v)
+```
+
+The sample variogram values confirm spatial autocorrelation as there is an increase in the semi-variance for increasing lag distance out to about 150 km.
+
+Next, check for anisotropy. Specify four directions and compute the corresponding directional sample variograms.
+
+```{r}
+t.vd <- variogram(temp ~ X + Y, 
+                  data = t.sf,
+                  alpha = c(0, 45, 90, 135))
+df <- t.vd |>
+  as.data.frame() |>
+  dplyr::mutate(direction = factor(dir.hor))
+
+library(ggplot2)
+
+ggplot(data = df, 
+              mapping = aes(x = dist, y = gamma, color = direction)) + 
+  geom_point() + 
+  geom_smooth(alpha = .2) +
+  scale_y_continuous(limits = c(0, NA)) +
+  ylab(expression(paste("Variogram [", gamma,"(h)]"))) +
+  xlab("Lag distance (h)") +
+  theme_minimal()
+```
+
+The four sample variograms are all quite similar providing no strong evidence to reject the assumption of isotropy.
+
+Next, fit a variogram model to the variogram sample. Plot the sample variogram again to eyeball initial estimates of the model parameters.
+
+```{r}
+plot(t.v)
+```
+Choose a nugget of .5, a partial sill of 2.5, and a range of 150.
+
+Next set the initial parameters for an exponential model then fit the model. Plot the sample variogram and the variogram model.
+
+```{r}
+t.vmi <- vgm(model = "Exp", 
+             psill = 2.5, 
+             range = 150, 
+             nugget = .5)
+t.vmi
+
+t.vm <- fit.variogram(object = t.v, 
+                      model = t.vmi)
+t.vm
+
+plot(t.v, t.vm)
+```
+
+Next, make a grid of locations at which values will be interpolated. Add the coordinates as attributes to the resulting `sfc`.
+
+```{r}
+grid.sfc <- sf::st_make_grid(t.sf,
+                             n = c(100, 100),
+                             what = "centers")
+XY <- grid.sfc |>
+  sf::st_coordinates()
+
+grid.sf <- grid.sfc |>
+  sf::st_as_sf() |>
+  dplyr::mutate(X = XY[, 1],
+                Y = XY[, 2])
+```
+
+Next, interpolate the observed temperatures to the grid locations using the method of universal kriging.
+
+```{r}
+t.int <- krige(temp ~ X + Y,
+               locations = t.sf,
+               newdata = grid.sf,
+               model = t.vm)
+```
+
+The interpolated values at the grid locations are returned in the simple feature data frame you assigned as `t.int`. Take a glimpse of the the contents of the file.
+
+```{r}
+t.int |>
+  dplyr::glimpse()
+```
+
+There are 10,000 rows (100 by 100 grid locations). The first column labeled `var1.pred` contains the interpolated temperatures. The second column contains the variance of the interpolated temperatures and the third column is the simple feature column.
+
+The trend term captures the north-south temperature gradient and the variogram captures the local spatial autocorrelation. Together they make up the interpolated values.
+
+To see this, you refit the interpolation first without the variogram model and second without the trend.
+
+First, rename the columns.
+
+```{r}
+t.int <- t.int |>
+  dplyr::rename(uk.pred = var1.pred,
+                uk.var = var1.var)
+```
+
+Next, use the `krige()` function but do not include the `model = ` argument.
+
+```{r}
+t.trend <- krige(temp ~ X + Y,
+                 locations = t.sf,
+                 newdata = grid.sf) 
+```
+
+Add the interpolated temperature trend (located in `t.trend$var1.pred`) to the `t.int` simple feature data frame.
+
+```{r}
+t.int <- t.int |>
+  dplyr::mutate(trend.pred = t.trend$var1.pred)
+```
+
+Next, again use the `krige()` function but do not include the trend term. That is interpolate using ordinary kriging.
+
+```{r}
+t.ok <- krige(temp ~ 1,
+              locations = t.sf,
+              newdata = grid.sf,
+              model = t.vm)
+```
+Again add the interpolated temperatures from ordinary kriging to the `t.int` simple feature data frame.
+
+```{r}
+t.int <- t.int |>
+  dplyr::mutate(ok.pred = t.ok$var1.pred)
+```
+
+Now we have three interpolations of the temperatures in the `t.int` simple feature data frame all labeled with `.pred`.
+
+```{r}
+t.int |>
+  dplyr::glimpse()
+```
+Map the interpolations
+
+```{r}
+tmap::tm_shape(t.int) +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = c("uk.pred", "trend.pred", "ok.pred"), 
+                n = 9, 
+                palette = "OrRd") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() +
+tmap::tm_shape(t.sf) +
+  tmap::tm_text("temp", 
+                col = "white", 
+                size = .5) +
+tmap::tm_layout(legend.outside = TRUE,
+                legend.outside.position = "bottom")
+```
+
+The trend term (middle panel) captures the north-south temperature gradient and ordinary kriging (right panel) captures the local spatial autocorrelation. Together they make the universal kriging (left panel) interpolated surface.
+
+The pattern obtained with ordinary kriging is similar to that obtained using inverse distance weighting. 
+
+Inverse distance weighting (IDW) is a deterministic method for interpolation. The values assigned to locations are calculated with a weighted average of the values available at the observed locations. The weights are proportional to the inverse of the distance to each location.
+
+The function `krige()` performs IDW when there is no trend term and no variogram model given as arguments to the function.
+
+```{r}
+t.idw <- krige(temp ~ 1,
+               locations = t.sf,
+               newdata = grid.sf) 
+```
+
+The IDW interpolation is not statistical so there is no estimate of the uncertainty on the interpolated values. This shows up as `NA` values in the `var1.pred` column.
+
+```{r}
+t.idw |>
+  dplyr::glimpse()
+```
+Put the IDW interpolated values into the `t.int` simple feature data frame and compare them to the universal kriging interpolated values on a map.
+
+```{r}
+t.int <- t.int |>
+  dplyr::mutate(idw.pred = t.idw$var1.pred)
+
+tmap::tm_shape(t.int) +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = c("uk.pred", "idw.pred"), 
+                n = 9, 
+                palette = "OrRd") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders() +
+tmap::tm_layout(legend.outside = TRUE)
+```
+
+IDW tends to create more 'bulls-eye' patterns in the interpolations compared with universal kriging. It also tends to over smooth at the larger scales.
+
+```{r}
+t.int <- t.int |>
+  dplyr::mutate(diff.pred = idw.pred - uk.pred)
+
+tmap::tm_shape(t.int) +
+  tmap::tm_dots(title = "°F",
+                shape = 15, 
+                size = 2,
+                col = "diff.pred", 
+                n = 9, 
+                palette = "BrBG") +
+tmap::tm_shape(sts) +
+  tmap::tm_borders()
+```
+Relative to universal kriging, IDW over estimates the temperatures in the coldest regions and under estimates the temperatures in the warmest regions. At the largest scales IDW is too smooth and at the smallest scales it is too coarse.
+
+By taking into account to different models (trend at the largest scale and autocorrelation at the smallest scales) universal kriging produces a 'goldilocks' surface.
+
+Finally, simple kriging is ordinary kriging with a known mean value. This is done by specifying a value for the `beta =` argument. Here you specify the average value over all observed temperatures.
+
+```{r}
+krige(temp ~ 1,
+      beta = mean(t.sf$temp),
+      locations = t.sf,
+      newdata = grid.sf,
+      model = t.vm)
+```
