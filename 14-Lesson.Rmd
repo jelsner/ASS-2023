@@ -8,56 +8,71 @@ Some years ago there were three nuclear waste repository sites being proposed. O
 
 In July of 2002 the Congress approved [Yucca Mountain](https://en.wikipedia.org/wiki/Yucca_Mountain_nuclear_waste_repository), Nevada, as the nation’s first long-term geological repository for spent nuclear fuel and high-level radioactive waste. The facility has yet to be built
 
-The site must isolate nuclear waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction of salt and water can create hydrochloric acid that might corrode the canisters
+The site must isolate nuclear waste for 10,000 years. Leaks could occur, however, or radioactive heat could cause tiny quantities of water in the salt to migrate toward the heat until eventually each canister is surrounded by 22.5 liters of water (~6 gallons). A chemical reaction involving salt and water can create hydrochloric acid that might corrode the canisters. Thus the site needs to be surveyed for the flow of water in any underground aquifer
 
-The piezometric-head data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seek its own level in the pipe (piezometer). The head measurements indicate the total energy of the water in units of height (feet above sea level). The higher the head height, the greater the potential energy.  Water flows away from areas of high potential energy to areas of lower energy with aquifer discharge proportional to the gradient of the piezometric head. The data are in `wolfcamp.csv` on my website
+The Ogallala Aquifer is a shallow water table aquifer surrounded by sand, silt, clay, and gravel located beneath the Great Plains in the United States. It is one of the world's largest aquifers underlying an area of approximately 450,000 square kilometers across 8 states including Texas and New Mexico 
 
-Start by examining the values of head height for trends and check to see if the values can adequately described by a normal distribution. Import the csv file as a data frame. Change the name `head` to `head_ft` and add a column for heights in meters
+Data at the site were obtained by drilling a narrow pipe into the aquifer and letting water seek its own level and then measuring the water height in the pipe (piezometer). Measurements indicate potential energy in units of feet above sea level. Higher heights indicate greater potential energy. Water flows from areas of higher potential energy to areas of lower energy with water movement in the aquifer proportional to the gradient of energy. The data are in `wolfcamp.csv` on my website
 
-```{r}
-L <- "http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv"
-wca.df <- readr::read_csv(L) |>
+Start by examining the values of piezometric head heights for trends and check to see if the values can adequately described by a normal distribution. Import the csv file as a data frame. Change the name `head` to `head_ft` and add a column for heights in meters
+
+```{r, message=FALSE}
+( wca.df <- "http://myweb.fsu.edu/jelsner/temp/data/wolfcamp.csv" |>
+  readr::read_csv() |>
   dplyr::rename(head_ft = head) |>
-  dplyr::mutate(head_m = head_ft * .3048)
+  dplyr::mutate(head_m = head_ft * .3048) )
 ```
 
-Create a simple feature data frame and make a map showing the locations and the head heights. This is done by specifying the columns `lon` and `lat` as coordinates with the `coords =` argument. Then using functions from the {tmap} package
+Create a simple feature data frame. This is done by specifying the columns `lon` and `lat` as coordinates with the `coords =` argument. Then using functions from the {tmap} package
 
 ```{r}
-wca.sf <- sf::st_as_sf(x = wca.df, 
+( wca.sf <- sf::st_as_sf(x = wca.df, 
                        coords = c("lon", "lat"),
-                       crs = 4326)
+                       crs = 4326) )
+```
 
+Note that the simple feature data frame does not have columns labeled `lon` and `lat`. They are removed as attributes and used in the `geometry` column
+
+Make a map using functions from the {tmap} package showing the locations and the measured values of the head heights
+
+```{r}
 tmap::tmap_mode("view")
 
 tmap::tm_shape(wca.sf) +
   tmap::tm_dots("head_m")
 ```
 
-The aquifer measurements are taken across the panhandle region of Texas and portions of northeast New Mexico
+The measurements were taken across the panhandle region of Texas and portions of northeast New Mexico. The aquifer extends northward into Kansas, Colorado, Nebraska, and Wyoming
 
-You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trends. So you include them as attribute variables in your spatial data frame. Note: they were removed as attributes when creating the simple feature data frame
+You will use the spatial coordinates to model the spatial autocorrelation and to remove any spatial trend. The variogram model will use the spatial information stored in the `geometry` column but the spatial trend model will need the coordinates as attributes. So you include them as attribute variables in your spatial data frame
+
+First create a matrix of the 2-D coordinates with the `sf::st_coordinates()` function
 
 ```{r}
 XY <- wca.sf |>
   sf::st_coordinates()
 
+XY |>
+  head()
+```
+
+Then attach these column vectors to the simple feature data frame
+
+```{r}
 wca.sf$X <- XY[, 1]
 wca.sf$Y <- XY[, 2]
 ```
 
-Do all observations have different locations? Duplicate coordinates might be due to an error or they might represent multiple measurements at a location.
+Do all observations have different locations? Duplicate coordinates might be due to an error or might represent multiple measurements at a location
 
-You check for duplicates with the {base} `duplicated()` function applied to the geometry field.
+You check for duplicates with the {base} `duplicated()` function applied to the geometry field
 
 ```{r}
 wca.sf$geometry |>
   duplicated()
 ```
 
-Observation 31 is a location that already has an observed head height. 
-
-You remove this observation from the data frame.
+Observation 31 is a location that already has an observed head height. You remove this observation from the data frame
 
 ```{r}
 wca.sf <- wca.sf |>
@@ -68,7 +83,7 @@ wca.sf$geometry |>
   any()
 ```
 
-Summarize the information in the spatial data frame.
+Summarize the information in the spatial data frame with the `summary()` method and with the `sf::st_bbox()` function
 
 ```{r}
 wca.sf |>
@@ -78,9 +93,9 @@ wca.sf |>
   sf::st_bbox(wca.sf)
 ```
 
-There are 84 well sites bounded between longitude lines 104.55W and 100.02W and latitude lines 33.51N and 36.09N.
+There are 84 well sites bounded between longitude lines 104.55W and 100.02W and latitude lines 33.51N and 36.09N. The head heights range from a minimum of 312 m to a maximum of 1088 m with an average of 609 m
 
-The data values are summarized. A minimum of 312 m and a maximum of 1088 m with an average of 609 m.
+Create a static map with functions from the {ggplot2} package
 
 ```{r}
 library(ggplot2)
@@ -93,11 +108,11 @@ ggplot() +
   theme_minimal()
 ```
 
-There is a clear trend in head heights with the highest potential energy (highest heights) over the southwest (yellow) and lowest over the northeast (blue).
+There is a clear trend in head heights with the highest heights (potential energy) over the southwest (yellow) and lowest heights over the northeast (blue)
 
-There are two sources of variation in any set of spatial data: trend and spatial autocorrelation. With geostatistical data, trend is modeled with a smooth curve and autocorrelation is modeled with the variogram. 
+There are two sources of variation in any set of spatial data: trend and spatial autocorrelation. With geostatistical data, trend is modeled with a smooth curve and autocorrelation is modeled with the variogram
 
-Compute and plot the sample variogram using the `variogram()` function from the {gstat} package. Here you are assuming that all spatial variation is due to autocorrelation.
+Compute and plot the sample variogram using the `variogram()` function from the {gstat} package. Here you are assuming that all spatial variation is due to autocorrelation
 
 ```{r}
 library(gstat)
@@ -107,9 +122,9 @@ variogram(head_m ~ 1,
   plot()
 ```
 
-You see nearly continuously increasing variances (m^2) with lag distance (km). Note: since the spatial coordinates are un-projected (decimal latitude/longitude) great circle distances are used and the units are kilometers. 
+You see nearly continuously increasing variances (m^2) with lag distance (km) with no leveling off (no plateau). Note: since the spatial coordinates are un-projected (decimal latitude/longitude) great circle distances are used and the units are kilometers
 
-You compute and plot the variogram this time with the trend removed. You replace the `1` with `X + Y` on the right hand side of the formula. The variogram is then computed on the residuals from the linear trend model.
+You compute and plot the variogram this time with the trend removed. You replace the `1` with `X + Y` on the right hand side of the formula where `X` and `Y` are the spatial coordinates as attributes in `wca.sf`. The variogram is then computed on the residuals from a linear trend model (2-D plane surface)
 
 ```{r}
 variogram(head_m ~ X + Y,
@@ -117,20 +132,33 @@ variogram(head_m ~ X + Y,
   plot()
 ```
 
-Here you see an increase in the variance with lag distance out to about 100 km, but then the values fluctuate about a variance of about 4000 (m^2).
+Here you see an increase in the variance with lag distance out to about 100 km, but then the values fluctuate about a variance of about 4000 (m^2). This is what you want to see if kriging is your tool of choice for spatial interpolation
 
-You save the variogram object computed on the residuals.
+You save the variogram object computed on the residuals
 
 ```{r}
 wca.v <- variogram(head_m ~ X + Y, 
                    data = wca.sf)
 ```
 
-You then use the information contained in the variogram object to anticipate the type of variogram model.
+Check the structure of the saved object with the `str()` function
+
+```{r}
+wca.v |>
+  str()
+```
+
+`np` number of observation pairs
+`dist` lag distance (km)
+`gamma` semi-variance estimate (km^2)
+`dir.*` 0s for omni-directional variogram
+`"boundaries"` lag tolerance
+
+You use the information contained in the data frame portion of the variogram object to anticipate the type of variogram model
 
 ```{r}
 df <- wca.v |>
-  as.data.frame()
+  data.frame()
 
 ( p <- ggplot(data = df, 
               mapping = aes(x = dist, y = gamma)) + 
