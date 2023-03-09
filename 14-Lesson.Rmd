@@ -368,6 +368,7 @@ Since the variogram is done on the residuals after a trend in the X and Y direct
 ```{r}
 XY <- grid.sfc |>
   sf::st_coordinates() 
+
 grid.sf <- grid.sfc |>
   sf::st_as_sf() |>
   dplyr::rename(geometry = x) |>
@@ -682,7 +683,7 @@ tmap::tm_shape(sts) +
 tmap::tm_layout(legend.outside = TRUE)
 ```
 
-IDW tends to create more 'bulls-eye' patterns in the interpolations compared with universal kriging. It also tends to over smooth at the larger scales.
+IDW tends to create more 'bulls-eye' patterns in the interpolations compared with universal kriging. It also tends to over smooth at the larger scales
 
 ```{r}
 t.int <- t.int |>
@@ -701,7 +702,7 @@ tmap::tm_shape(sts) +
 
 Relative to universal kriging, IDW over estimates the temperatures in the coldest regions and under estimates the temperatures in the warmest regions. At the largest scales IDW is too smooth and at the smallest scales it is too coarse
 
-By taking into account to different models (trend at the largest scale and autocorrelation at the smallest scales) universal kriging produces a 'goldilocks' surface
+By taking into account two different models (trend at the largest scale and autocorrelation at the smallest scales) universal kriging produces a 'goldilocks' surface
 
 Finally, simple kriging is ordinary kriging with a known mean value. This is done by specifying a value for the `beta =` argument. Here you specify the average value over all observed temperatures
 
