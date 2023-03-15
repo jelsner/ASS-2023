@@ -351,9 +351,9 @@ Two areas of very heavy rainfall are noted. One running north-south along the ea
 
 Rainfall reporting sites are clustered in and around cities and are located only over land. This clustering of station locations will make it hard for deterministic interpolation methods (e.g., IDW or splines) to produce a reasonable surface
 
-The empirical variogram is computed using the `variogram()` function from the {gstat} package. The first argument is the model formula specifying the rainfall column from the data frame and the second argument is the data frame name.  Here `~ 1` in the model formula indicates no covariates or trends in the data. Trends are included by specifying coordinate names through the `st_coordinates()` function.
+The empirical variogram is computed using the `variogram()` function from the {gstat} package. The first argument is the model formula specifying the rainfall column from the data frame and the second argument is the data frame name.  Here `~ 1` in the model formula indicates no covariates or trends in the data. Trends are included by specifying coordinate names through the `st_coordinates()` function
 
-Compute the empirical variogram for these set of rainfall values. Use a cutoff distance of 400 km (400,000 m). The cutoff is the separation distance up to which point pairs are included in the semivariogram. The smaller the cutoff value the more the variogram is focused on nearest neighbor locations.
+Compute the empirical variogram for these set of rainfall values. Use a cutoff distance of 400 km (400,000 m). The cutoff is the separation distance up to which point pairs are included in the variogram. A smaller cutoff results in more variogram estimates at shorter lag distances
 
 ```{r}
 library(gstat)
@@ -363,7 +363,7 @@ v <- variogram(tpm ~ 1,
                cutoff = 400000)
 ```
 
-Plot the variogram values as a function of lag distance and add text indicating the number of point pairs for each lag distance. Save a copy of the plot.
+Plot the variogram values as a function of lag distance and add text indicating the number of point pairs for each lag distance. Save a copy of the plot
 
 ```{r}
 library(ggplot2)
@@ -382,11 +382,11 @@ v.df <- data.frame(dist = v$dist/1000,
   theme_minimal() )
 ```
 
-Values start low (around 50 cm$^2$) at the shortest lag distance and increase to greater than 200 cm$^2$ at lag distances of 200 km and longer.
+Values start low (around 50 cm$^2$) at the shortest lag distance and increase to greater than 200 cm$^2$ at lag distances of 200 km and longer
 
-The semivariance at lag zero is called the 'nugget' and the semivariance at a level where the variogram values no longer increase is called the 'sill.' The difference between the sill and the nugget is called the 'partial sill'.  The lag distance out to where the sill is reached is called the 'range.'  These three parameters (nugget, partial sill, and range) are used to model the variogram.
+The variance at lag zero is called the 'nugget' and the variance at a level where the variogram values no longer increase is called the 'sill.' The difference between the sill and the nugget is called the 'partial sill'.  The lag distance out to where the sill is reached is called the 'range.'  These three parameters (nugget, partial sill, and range) are used to model the variogram
 
-Next fit a model to the empirical variogram. The model is a mathematical relationship that defines the semivariance as a function of lag distance. First save the family and the initial parameter guesses in a variogram model (`vmi`) object.
+Next fit a model to the empirical variogram. The model is a mathematical relationship that defines the variance as a function of lag distance. First save the family and the initial parameter guesses in a variogram model (`vmi`) object
 
 ```{r}
 vmi <- vgm(model = "Gau", 
@@ -396,9 +396,9 @@ vmi <- vgm(model = "Gau",
 vmi
 ```
 
-The `psill` argument is the partial sill along the vertical axis. Estimate the parameter values by looking at the empirical variogram. 
+The `psill` argument is the partial sill along the vertical axis. Estimate the parameter values by looking at the empirical variogram
 
-Next use the `fit.variogram()` function to improve the fit over these initial values. Given a set of initial parameter values the method of weighted least squares is used to improve the parameter estimates.
+Next use the `fit.variogram()` function to improve the fit over these initial values. Given a set of initial parameter values the method of weighted least squares is used to improve the parameter estimates
 
 ```{r}
 vm <- fit.variogram(object = v, 
@@ -414,7 +414,7 @@ $$
 \gamma(h)=c\left(1-\exp\left(-\frac{h^2}{r^2}\right)\right)+c_o
 $$
 
-Create a data frame with values of h and gamma using this equation.
+Create a data frame with values of h and gamma using this equation
 
 ```{r}
 nug <- vm$psill[1]
@@ -430,7 +430,7 @@ pv + geom_line(data = vm.df,
                mapping = aes(x = dist, y = gamma))
 ```
 
-Check for anisotropy. Anisotropy refers to a dependence of the variogram shape on the direction of the location pairs used to compute semivariances. Isotropy refers to a directional independence.
+Check for anisotropy. Anisotropy refers to a dependence of the variogram shape on the direction of the location pairs used to compute semivariances. Isotropy refers to a directional independence
 
 ```{r}
 plot(variogram(tpm ~ 1, 
@@ -440,13 +440,13 @@ plot(variogram(tpm ~ 1,
      xlab = "Lag Distance (m)")
 ```
 
-The semivariance values reach the sill at a longer range  (about 300 km) in the north-south direction (0 degrees) compared to the other three directions.
+The semivariance values reach the sill at a longer range  (about 300 km) in the north-south direction (0 degrees) compared to the other three directions
 
-Another way to look at directional dependence in the variogram is through a variogram map. Instead of classifying point pairs Z(s) and Z(s + h) by direction and distance class separately, you classify them jointly.
+Another way to look at directional dependence in the variogram is through a variogram map. Instead of classifying point pairs Z(s) and Z(s + h) by direction and distance class separately, you classify them jointly
 
-If h = {x, y} is the two-dimensional coordinates of the separation vector, in the variogram map the variance contribution of each point pair (Z(s) − Z(s + h))^2 is attributed to the grid cell in which h lies. The map is centered at (0, 0) and h is lag distance. Cutoff and width correspond to map extent and cell size; the semivariance map is point-wise symmetric around (0, 0), as γ(h) = γ(−h).
+If h = {x, y} is the two-dimensional coordinates of the separation vector, in the variogram map the variance contribution of each point pair (Z(s) − Z(s + h))^2 is attributed to the grid cell in which h lies. The map is centered at (0, 0) and h is lag distance. Cutoff and width correspond to map extent and cell size; the semivariance map is point-wise symmetric around (0, 0), as γ(h) = γ(−h)
 
-The variogram map is made with the `variogram()` function by adding the `map = TRUE` argument. Here you set the cutoff to be 200 km (200,000 m) and the width (cell size) to be 20 km.
+The variogram map is made with the `variogram()` function by adding the `map = TRUE` argument. Here you set the cutoff to be 200 km (200,000 m) and the width (cell size) to be 20 km
 
 ```{r}
 vmap <- variogram(tpm ~ 1, 
@@ -457,9 +457,9 @@ vmap <- variogram(tpm ~ 1,
 plot(vmap)
 ```
 
-Along the dx = 0 vertical line in the north-south direction (top-to-bottom on the plot), the semivariance values increase away from dy = 0, but the increase is less compared to along the dy = 0 horizontal line in the east-west direction (left-to-right on the plot) indicative of directional dependency.
+Along the dx = 0 vertical line in the north-south direction (top-to-bottom on the plot), the variance values increase away from dy = 0, but the increase is less compared to along the dy = 0 horizontal line in the east-west direction (left-to-right on the plot) indicative of directional dependency
 
-You refit the variogram model defining an anisotropy ellipse with the `anis =` argument. The first value is the direction of longest range (here north-south) and the second value is the ratio of the shortest to longest ranges. Here about (200/300 = .67, see the directional variogram plot above).
+You refit the variogram model defining an anisotropy ellipse with the `anis =` argument. The first value is the direction of longest range (here north-south) and the second value is the ratio of the shortest to longest ranges. Here about (200/300 = .67, see the directional variogram plot above)
 
 ```{r}
 vmi <- vgm(model = "Gau", 
@@ -470,11 +470,11 @@ vmi <- vgm(model = "Gau",
 vm <- fit.variogram(v, vmi)
 ```
 
-Use the variogram model together with the rainfall values at the observation sites to create an interpolated surface. Here you use ordinary kriging as there are no spatial trends in the rainfall.
+Use the variogram model together with the rainfall values at the observation sites to create an interpolated surface. Here you use ordinary kriging as there are no spatial trends in the rainfall
 
-Interpolation is done using the `krige()` function. The first argument is the model specification and the second is the data. Two other arguments are needed. One is the variogram model using the argument name `model =` and the other is a set of locations identifying where the interpolations are to be made. This is specified with the argument name `newdata =`.
+Interpolation is done using the `krige()` function. The first argument is the model specification and the second is the data. Two other arguments are needed. One is the variogram model using the argument name `model =` and the other is a set of locations identifying where the interpolations are to be made. This is specified with the argument name `newdata =`
 
-Here you interpolate to locations on a regular grid. You create a grid of locations within the borders of the state using the `st_sample()` function.
+Here you interpolate to locations on a regular grid. You create a grid of locations within the borders of the state using the `st_sample()` function
 
 ```{r}
 grid.sfc <- sf::st_sample(FL.sf,
@@ -482,14 +482,14 @@ grid.sfc <- sf::st_sample(FL.sf,
                           type = "regular")
 ```
 
-You specify the number of grid locations using the argument `size =`. Note that the actual number of locations will be somewhat different because of the irregular boundary.
+You specify the number of grid locations using the argument `size =`. Note that the actual number of locations will be somewhat different because of the irregular boundary
 
 ```{r}
 grid.sfc |>
   plot(pch = ".")
 ```
 
-First use the `krige()` function to interpolate the observed rainfall to the grid locations. For a given location, the interpolation is a weighted average of the rainfall across the entire region where the weights are determined by the variogram model.
+First use the `krige()` function to interpolate the observed rainfall to the grid locations. For a given location, the interpolation is a weighted average of the rainfall across the entire region where the weights are determined by the variogram model
 
 ```{r}
 r.int <- krige(tpm ~ 1, 
@@ -498,11 +498,11 @@ r.int <- krige(tpm ~ 1,
                model = vm)
 ```
 
-If the variogram model is not included then inverse distance-weighted interpolation is performed. The function will not work if a location has more than one value.
+If the variogram model is not included then inverse distance-weighted interpolation is performed. The function will not work if a location has more than one value
 
-The saved object (`r.int`) inherits the spatial geometry specified in the `newdata =` argument but extends it to a spatial data frame. The column `var1.pred` in the data frame is the interpolated rainfall and the second `var1.var` is the variability about the interpolated value.
+The saved object (`r.int`) inherits the spatial geometry specified in the `newdata =` argument but extends it to a spatial data frame. The column `var1.pred` in the data frame is the interpolated rainfall and the second `var1.var` is the variability about the interpolated value
 
-Plot the interpolated storm-total rainfall field.
+Plot the interpolated storm-total rainfall field
 
 ```{r}
 tmap::tm_shape(r.int) +
@@ -518,15 +518,15 @@ tmap::tm_shape(r.int) +
                   legend.outside = TRUE)
 ```
 
-Note: a portion of the data locations are outside of the state but interest is only interpolated values within the state border as specified by the `newdata =` argument.
+Note: a portion of the data locations are outside of the state but interest is only interpolated values within the state border as specified by the `newdata =` argument
 
-The spatial interpolation shows that parts of east central and north Florida were deluged by Fay with rainfall totals exceeding 30 cm (12 in).
+The spatial interpolation shows that parts of east central and north Florida were deluged by Fay with rainfall totals exceeding 30 cm (12 in)
 
 The interpolation can also be done as an area average. For example what was the storm-total average rainfall for each county?
 
-County level rainfall is relevant for water resource managers. _Block kriging_ produces an estimate of this area average, which will differ from a simple average over all sites within the county because of the spatial autocorrelation in rainfall observations.
+County level rainfall is relevant for water resource managers. _Block kriging_ produces an estimate of this area average, which will differ from a simple average over all sites within the county because of the spatial autocorrelation in rainfall observations
 
-You use the same function to interpolate but specify the spatial polygons rather than the spatial grid as the new data. Here the spatial polygons are the county borders.
+You use the same function to interpolate but specify the spatial polygons rather than the spatial grid as the new data. Here the spatial polygons are the county borders
 
 ```{r}
 r.int2 <- krige(tpm ~ 1, 
@@ -535,7 +535,7 @@ r.int2 <- krige(tpm ~ 1,
                 model = vm)
 ```
 
-Again plot the interpolations.
+Again plot the interpolations
 
 ```{r}
 tmap::tm_shape(r.int2) +
@@ -549,7 +549,7 @@ tmap::tm_shape(r.int2) +
 
 The overall pattern of rainfall from Fay featuring the largest amounts along the central east coast and over the Big Bend region are similar in both maps but these estimates answer questions like on average how much rain fell over Leon County during TC Fay? 
 
-You compare the kriged average with the simple average at the county level with the `aggregate()` method. The argument `FUN = mean` says to compute the average of the values in `FR.sf` across the polygons in `FL.sf`.
+You compare the kriged average with the simple average at the county level with the `aggregate()` method. The argument `FUN = mean` says to compute the average of the values in `FR.sf` across the polygons in `FL.sf`
 
 ```{r}
 r.int3 <- aggregate(FR.sf, 
@@ -557,7 +557,7 @@ r.int3 <- aggregate(FR.sf,
                     FUN = mean)
 ```
 
-The result is a simple feature data frame of the average rainfall in each county.
+The result is a simple feature data frame of the average rainfall in each county
 
 The state-wide mean of the kriged estimates at the county level is
 
@@ -567,7 +567,7 @@ r.int2$var1.pred |>
   round(2)
 ```
 
-This compares with a state-wide mean from the simple averages.
+This compares with a state-wide mean from the simple averages
 
 ```{r}
 r.int3$tpm |>
@@ -581,7 +581,7 @@ The correlation between the two estimates across the 67 counties is
 round(cor(r.int3$tpm, r.int2$var1.pred), 2)
 ```
 
-The variogram model reduces the standard deviation of the kriged estimate relative to the standard deviation of the simple averages because of local smoothing.
+The variogram model reduces the standard deviation of the kriged estimate relative to the standard deviation of the simple averages because of local smoothing
 
 ```{r}
 r.int2$var1.pred |>
@@ -598,16 +598,16 @@ This can be seen with a scatter plot of simple averages versus kriged averages a
 ```{r}
 compare.df <- data.frame(simpleAvg = r.int3$tpm,
                          krigeAvg = r.int2$var1.pred)
-ggplot(compare.df, aes(x = simpleAvg,
-                       y = krigeAvg)) +
+ggplot(compare.df, aes(x = krigeAvg,
+                       y = simpleAvg)) +
   geom_point() +
   geom_abline(slope = 1) +
   geom_smooth(method = lm, se = FALSE)
 ```
 
-The slope of the blue line is less than the black line (y = x line) indicating kriging over estimates at low amounts and under estimates at high amounts relative to simple averaging.
+The slope of the blue line is greater than the black line (y = x line) indicating simple averaging under estimates at low amounts and over estimates at high amounts relative to kriging
 
-Kriging has the advantage of accompanying uncertainty estimates. The prediction variances are listed in a column in the spatial data frame saved from apply the `krige()` function. Variances are smaller in regions with more rainfall observations.  
+Kriging has the advantage of accompanying uncertainty estimates. The prediction variances are listed in a column in the spatial data frame saved from apply the `krige()` function. Variances are smaller in regions with more rainfall observations
 
 Prediction variances are also smaller with block kriging as much of the variability within the county averages out. To compare the distribution characteristics of the prediction variances for point and block kriging of the rainfall observations, type
 
@@ -621,14 +621,15 @@ r.int2$var1.var |>
   round(1)
 ```
 
-The median prediction variance (in cm$^2$) for the point kriging is close to the value of the nugget.
+The median prediction variance (in cm$^2$) for the point kriging is close to the value of the nugget
 
 ```{r}
 r.int$var1.var |>
   median() |>
   round(1)
 ```
-In contrast, the median prediction variance for our block kriging is a much smaller.
+
+In contrast, the median prediction variance for our block kriging is a much smaller
 
 ```{r} 
 r.int2$var1.var |>
@@ -636,15 +637,13 @@ r.int2$var1.var |>
   round(1)
 ```
 
-## Simulating spatial fields {-}
+Simulations use the interpolated uncertainty to provide additional data for deterministic models. Suppose you have a hydrology model of rainfall runoff. Given a spatial field of rain amounts the model predicts a discharge rate at some location along a river. The uncertainty in the predicted runoff rate at the location is due to the uncertainty in where and how hard the rain fell (in the rainfall field) and not due to the deterministic hydrology model
 
-Simulations use the interpolated uncertainty to provide additional data for deterministic models. Suppose you have a hydrology model of rainfall runoff. Given a spatial field of rain amounts the model predicts a discharge rate at some location along a river. The uncertainty in the predicted runoff rate at the location is due to the uncertainty in where and how hard the rain fell (in the rainfall field) and not due to the deterministic hydrology model.
+The uncertainty in the rainfall field is simulated conditional on the observations with the same `krige()` function by adding the argument `nsim =` that specifies the number of simulations
 
-The uncertainty in the rainfall field is simulated conditional on the observations with the same `krige()` function by adding the argument `nsim =` that specifies the number of simulations.  
+For a large number it may be necessary to limit the number neighbors in the kriging. This is done using the `nmax` argument. For a given location, the weights assigned to observations far away are very small, so it is efficient to limit how many are used in the simulation
 
-For a large number it may be necessary to limit the number neighbors in the kriging. This is done using the `nmax` argument. For a given location, the weights assigned to observations far away are very small, so it is efficient to limit how many are used in the simulation.
-
-As an example, here you generate four realizations of the county-level average storm total rainfall for Fay and limit the neighborhood to 50 of the closest observation sites. This takes a few seconds.
+As an example, here you generate four realizations of the county-level average storm total rainfall for Fay and limit the neighborhood to 50 of the closest observation sites. This takes a few seconds
 
 ```{r}
 r.sim <- krige(tpm ~ 1, 
@@ -655,7 +654,7 @@ r.sim <- krige(tpm ~ 1,
                nmax = 50)
 ```
 
-Given the variogram model, the simulations are conditional on the observed rainfall.
+Given the variogram model, the simulations are conditional on the observed rainfall
 
 ```{r}
 tmap::tm_shape(r.sim) +
@@ -665,4 +664,4 @@ tmap::tm_shape(r.sim) +
     tmap::tm_facets(free.scales = FALSE) 
 ```
 
-The overall pattern of rainfall remains the same, but there are differences especially in counties with fewer observations and in counties where the rainfall gradients are sharp.
+The overall pattern of rainfall remains the same, but there are differences especially in counties with fewer observations and in counties where the rainfall gradients are sharp
