@@ -5,9 +5,9 @@
 
 ## Interpolating multiple variables {-}
 
-Spatial interpolation can be extended to obtain surfaces of multiple variables. The idea is that if two variables are correlated then information about the spatial correlation in one variable can help provide information about values in the other variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to two variables. 
+Kriging can be extended to obtain surfaces of multiple field variables. If two variables are correlated then information about the spatial correlation in one variable can help provide information about values in the other variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to two variables (recall Lee's statistic on areal units). This is called "co-kriging"
 
-Here you consider observations of heavy metal concentrations (ppm) in the top soil in the flood plain of the river Meuse near the village of Stein. The data are available in {sp} package.
+Here you consider measurements of heavy metal concentrations (ppm) in the top soil in the flood plain of the river Meuse near the village of Stein. The data are available as part of the {sp} package
 
 ```{r}
 library(sp)
@@ -16,9 +16,9 @@ data(meuse)
 names(meuse)
 ```
 
-The metals include cadmium, copper, lead, and zinc. Observation locations are given by x and y. Other variables include elevation, soil type and distance to the river (meters).
+The metals include cadmium, copper, lead, and zinc. Measurement locations are given by x and y. Other variables include elevation, soil type and distance to the river (meters)
 
-Create a simple feature data frame with a projected coordinate system for the Netherlands.
+Create a simple feature data frame with a projected coordinate system for the Netherlands
 
 ```{r}
 meuse.sf <- sf::st_as_sf(x = meuse,
@@ -26,9 +26,9 @@ meuse.sf <- sf::st_as_sf(x = meuse,
                          crs = 28992)
 ```
 
-Interest is on a spatial interpolation of all four heavy metals in the soil.
+Interest is on a spatial interpolation of all four heavy metals in the soil
 
-Map the concentrations at the observation locations.
+Map the concentrations at the measurement locations
 
 ```{r}
 tmap::tmap_mode("view")
@@ -36,9 +36,9 @@ tmap::tm_shape(meuse.sf) +
   tmap::tm_dots(col = c("cadmium", "copper", "lead", "zinc"))
 ```
 
-All observations (bulk sampled from an area of approximately 15 m x 15 m) have units of ppm. The most abundant heavy metal is zinc followed by lead and copper. For all metals highest concentrations are found nearest to the river. Thus you want to include distance to river as a covariate (trend term) and use universal kriging.
+All measurements (bulk sampled from an area of approximately 15 m x 15 m) have units of ppm. The most abundant heavy metal is zinc followed by lead and copper. For all metals highest concentrations are found nearest to the river. Thus you want to include distance to river as a covariate (trend term) and use universal kriging
 
-The distribution of concentrations is skewed with many locations having only low levels of heavy metals with a few having very high levels.
+The distribution of concentrations is skewed with many locations having only low levels of heavy metals with a few having very high levels
 
 ```{r}
 ggplot(data = meuse.sf,
@@ -47,11 +47,9 @@ ggplot(data = meuse.sf,
   theme_minimal()
 ```
 
-Thus you use logarithmic transformations.
+Thus you transform the values using natural logarithms and organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the variables into a single object. Ordering is done succession
 
-First you organize the data as a `gstat` object. This is done with the `gstat()` function which orders (and copies) the variables into a single object. Ordering is done succession.
-
-Here you specify the trend using the square root of the distance to river and take the natural logarithm of the heavy metal concentration. You give the dependent variable a new name with the `id =` argument.
+Here you specify the trend using the square root of the distance to river and take the natural logarithm of the heavy metal concentration. You give the dependent variable a new name with the `id =` argument
 
 ```{r}
 g <- gstat(id = "logCd", 
@@ -72,18 +70,22 @@ g <- gstat(g,
 g
 ```
 
-Next you use the `variogram()` function to compute multivariable sample variograms. The function, when operating on a `gstat` object, computes all direct and cross variograms. A direct variogram is the semivariance computed for a single variable ($z$). 
+Each successive use of the `gstat()` function adds a variable and the trend term to the `gstat` list
+
+Next you use the `variogram()` function to compute multi-variable sample variograms. The function, when operating on a `gstat` object, computes all direct and cross variograms. A direct variogram is the semivariance computed for a single variable ($z$)
 
 $$
 \gamma(h) = \frac{1}{2N(h)} \sum^{N(h)} (z_i - z_j)^2
 $$
 
 
-A cross variogram is the semivariance computed between two variables ($z_1$ and $z_2).
+A cross variogram is the semivariance computed between two variables ($z_1$ and $z_2)
 
 $$
 \gamma_c(h) = \frac{1}{2N(h)} \sum^{N(h)} (z_{1i} - z_{2j})^2
 $$
+
+These are computed and plotted as follows
 
 ```{r}
 v <- g |>
@@ -93,23 +95,23 @@ v |>
   plot()
 ```
 
-The individual plots are the direct and cross variograms. The direct variograms are shown in the four panels along the diagonal of the triangle of plots.
+The plots include the "direct" and "cross" variograms. The direct variograms are shown in the four panels along the diagonal in the triangle of plots
 
-The cross variograms are shown in the six panels below the diagonal. For example, the cross variogram between the values of cadmium ($z_1$ = cadmium) and copper ($z_2$ = copper) is given in the second row of the first column and so on. 
+The cross variograms are shown in the six panels below the diagonal. That is, the cross variogram between the values of cadmium ($z_1$ = cadmium) and copper ($z_2$ = copper) is given in the second row of the first column and so on
 
-The cross variogram is analogous to the multi-type $K$ function for analyzing point pattern data.
+The cross variogram is analogous to the multi-type $K$ function for analyzing point pattern data and Lee's statistic for analyzing areal unit data
 
-The cross variograms show small semivariance values at short lag distance with increasing semivariance values at longer lags. Because these variables are co-located, you can also compute direct correlations.
+The cross variograms show small semivariance values at short lag distance with increasing semivariance values at longer lags. Because these variables are co-located, you can also compute direct correlations
 
 ```{r}
 cor(meuse[c("cadmium", "copper", "lead", "zinc")])
 ```
 
-The direct correlation between cadmium and copper is .92 and between cadmium and lead is .8.
+The direct correlation between cadmium and copper is .92 and between cadmium and lead is .8
 
-The correlation matrix confirms strong relationships among the four variables at zero lag. The cross variogram generalizes these correlations across lag distance ($h$). For instance, the cross variogram indicates the strength of the relationship between cadmium at one location and copper at nearby locations.
+The correlation matrix confirms strong relationships among the four variables at zero lag. The cross variogram generalizes these "non-spatial" correlations across lag distance ($h$). For instance, the cross variogram indicates the strength of the relationship between cadmium at one location and copper at nearby locations
 
-You use the `fit.lmc()` function to fit separate variogram models to each of the empirical variograms. The first argument in the function is the multivariable sample variogram and the second argument is the `gstat` object. The third argument is the initial model estimates. Here you set the initial estimates using a spherical model with a nugget of zero, a partial sill of .5 and a range of 800 m.
+You use the `fit.lmc()` function to fit separate variogram models to each of the empirical variograms. The first argument in the function is the multi-variable sample variogram and the second argument is the `gstat` object. The third argument is the initial model estimates. Here you set the initial estimates using a spherical model with a nugget of zero, a partial sill of .5 and a range of 800 m
 
 ```{r}
 vmi <- vgm(model = "Sph", 
@@ -117,14 +119,15 @@ vmi <- vgm(model = "Sph",
            nugget = 0,
            range = 800)
 
-vm <- fit.lmc(v, g, 
+vm <- fit.lmc(v = v, 
+              g = g, 
               model = vmi)
 plot(v, vm)
 ```
 
-The final variogram models (blue line) fit the empirical variogram (direct and cross) well.
+The final variogram models (blue line) fit the empirical variograms (direct and cross) well
 
-Given the variogram models and the observations, co-kriged maps are produced using the `predict()` method after setting the grid locations for the interpolations. The `meuse.grid` data frame is converted to a simple feature data frame and with the CRS for the grid locations matching the CRS of the data.
+Given the variogram models and the observations, co-kriged maps are produced using the `predict()` method after setting the grid locations for the interpolations. The `meuse.grid` data frame is converted to a simple feature data frame and with the CRS for the grid locations matching the CRS of the data
 
 ```{r}
 data(meuse.grid)
@@ -137,9 +140,10 @@ int <- predict(vm, grid.sf)
 
 names(int)
 ```
-The output include the interpolated values for each of the log heavy metals and the uncertainty.
 
-Plot the interpolations.
+The output include the interpolated values for each of the log heavy metals and the uncertainty
+
+Plot the interpolations
 
 ```{r}
 tmap::tmap_mode("plot")
@@ -148,9 +152,9 @@ tmap::tm_shape(int) +
                 size = .2, breaks = seq(-2, 8, by = 1), palette = "Reds", midpoint = NA)
 ```
 
-The pattern of heavy metal concentrations are similar with highest values along the river bank. 
+The pattern of heavy metal concentrations are similar with highest values along the river bank
 
-It is interesting to compare the interpolations using only a single variable against the interpolations of the same variable when all variables are used. Here you do that for copper.
+It is interesting to compare the interpolations using only a single variable against the interpolations of the same variable when all variables are used. Here you do that for copper
 
 ```{r}
 v2 <- variogram(log(copper) ~ sqrt(dist), 
@@ -164,6 +168,7 @@ int2 <- krige(log(copper) ~ sqrt(dist),
               newdata = grid.sf, 
               model = vm2)
 ```
+
 Map together and compute the correlation.
 
 ```{r}
@@ -178,21 +183,21 @@ tmap::tmap_arrange(p1, p2)
 cor(int$logCu.pred, int2$var1.pred)
 ```
 
-Only minor differences are visible on the plot and the correlation between the two interpolations exceeds .98.
+Only minor differences are visible on the plot and the correlation between the two interpolations exceeds .98
 
-Plot the covariances between zinc and cadmium.
+Plot the covariances between zinc and cadmium
 
 ```{r}
 tmap::tm_shape(int) +
   tmap::tm_dots(col = "cov.logCd.logZn", size = .2)
 ```
 
-The map shows areas of the flood plain with high (and low) covariances between cadmium and zinc. Higher values of the covariance indicate lower correlations. There is an inverse relationship between the correlogram and the covariogram.
+The map shows areas of the flood plain with high (and low) covariances between cadmium and zinc. Higher values of the covariance indicate lower correlations. There is an inverse relationship between the correlogram and the covariogram
 
-Kriging is useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations.
+Kriging is useful tool for ‘filling in the gaps’ between sampling sites. Handy if you want to make a map, or need to match up two spatial data sets that overlap in extent, but have samples at different locations
 
-Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your toolbox.
+Obtaining a quality statistical spatial interpolation is a nuanced process but with practice kriging can be an important tool in your spatial statistical toolbox
 
 ## Machine learning for spatial interpolation {-}
 
-See <https://geocompr.robinlovelace.net/spatial-cv.html>
+See <https://r.geocompx.org/spatial-cv.html>
