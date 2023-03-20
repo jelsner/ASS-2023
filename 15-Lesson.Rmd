@@ -4,7 +4,7 @@
 
 ## Evaluating interpolation accuracy {-}
 
-Let's return to the Midwest April temperature example from last time. Get the data into your R session as a data frame and convert it to a simple feature data frame. Attach the spatial coordinates as attributes to the sf
+Let's return to the Midwest April temperature example from last time. Get the data into your R session as a data frame and convert it to a simple feature data frame. Attach the spatial coordinates as attributes to the data frame
 
 ```{r, message=FALSE}
 ( t.df <- "http://myweb.fsu.edu/jelsner/temp/data/MidwestTemps.txt" |>
