@@ -151,7 +151,7 @@ krige.cv(temp ~ 1,
                    mae = mean(abs(var1.pred - observed)))
 ```
 
-Better than the trend-only interpolation but not as good as universal kriging.
+Better than the trend-only interpolation but not as good as universal kriging
 
 All four interpolations result in high correlation between observed and interpolated values that exceed .9 and root-mean-squared errors (RMSE) less than 1.8. But the universal kriging interpolation gives the highest correlation and the lowest RMSE and mean-absolute errors
 
@@ -179,7 +179,7 @@ As you saw, the `nfold =` argument, which by default is set to the number of obs
 
 These skill metrics are based on a fixed variogram model that uses all the observations when fitting. Thus cross validation using the `krige.cv()` function is a _partial_ cross validation
 
-With kriging the data is used in two ways (1) to fit the variogram model, and (2) to interpolate the values. To perform a _full_ LOOCV you need to _refit_ the variogram after removing the observation for which you want the interpolation
+With kriging the data is used in two ways (1) to fit the variogram model to the sample variogram estimates, and (2) to interpolate the values. To perform a _full_ LOOCV you need to _refit_ the variogram after removing the observation for which you want the interpolation
 
 Here is one way to do that using a `for()` loop
 
@@ -214,11 +214,13 @@ data.frame(interpolated = int,
 
 These values are slightly worse (r is lower, and rmse and mae are larger). This will always be the case when using full cross validation but these skill estimates represent how well the procedure will perform on a new set of _independent_ observations
 
+Also see the new {waywiser} package "makes it easier to measure the performance of models fit to 2D spatial data by implementing a number of well-established assessment methods in a consistent, ergonomic toolbox" <https://docs.ropensci.org/waywiser/>
+
 ## Block cross validation {-}
 
 With cross validation in the context of spatial data, the observations are not independent. As such it is better to create spatial areas for training separate from the spatial areas for testing rather than randomly selecting observations to withhold
 
-The function `blockCV::spatialBlock()` function creates spatially separated folds based on a pre-specified distance (cell size of the blocks) from raster and vector spatial data objects. It assigns blocks to the training and testing folds with random, checkerboard, or systematic patterns (default is random). The range must be specified in units of meters. The argument `k =` specifies the number of folds with a default value of 5
+The function `blockCV::cv_spatial()` function creates spatially separated folds based on a pre-specified distance (cell size of the blocks) from raster and vector spatial data objects. It assigns blocks to the training and testing folds with random, checkerboard, or systematic patterns (default is random). The range must be specified in units of meters. The argument `k =` specifies the number of folds with a default value of 5
 
 ```{r}
 sb <- t.sf |>
@@ -302,7 +304,7 @@ Rainfall is an example of geostatistical data. In principle it can be measured a
 
 Storm total rainfall amounts from sites in and around the state are in `FayRain.txt` on my website. The reports are a mix of official weather stations and cooperative sites. The cooperative sites are the Community Collaborative Rain, Hail and Snow Network (CoCoRaHS), a community-based, high density precipitation network made up of volunteers who take measurements of precipitation on their property. The data are from the Florida Climate Center
 
-Get the data into your R sesson
+Get the data into your R session
 
 ```{r}
 ( FR.df <- "http://myweb.fsu.edu/jelsner/temp/data/FayRain.txt" |>
@@ -351,7 +353,7 @@ Two areas of very heavy rainfall are noted. One running north-south along the ea
 
 Rainfall reporting sites are clustered in and around cities and are located only over land. This clustering of station locations will make it hard for deterministic interpolation methods (e.g., IDW or splines) to produce a reasonable surface
 
-The empirical variogram is computed using the `variogram()` function from the {gstat} package. The first argument is the model formula specifying the rainfall column from the data frame and the second argument is the data frame name.  Here `~ 1` in the model formula indicates no covariates or trends in the data. Trends are included by specifying coordinate names through the `st_coordinates()` function
+The sample (empirical) variogram is computed using the `variogram()` function from the {gstat} package. The first argument is the model formula specifying the rainfall column from the data frame and the second argument is the data frame name.  Here `~ 1` in the model formula indicates no covariates or trends in the data. Trends are included by specifying coordinate names through the `st_coordinates()` function
 
 Compute the empirical variogram for these set of rainfall values. Use a cutoff distance of 400 km (400,000 m). The cutoff is the separation distance up to which point pairs are included in the variogram. A smaller cutoff results in more variogram estimates at shorter lag distances
 
