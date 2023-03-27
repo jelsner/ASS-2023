@@ -201,3 +201,22 @@ Obtaining a quality statistical spatial interpolation is a nuanced process but w
 ## Machine learning for spatial interpolation {-}
 
 See <https://r.geocompx.org/spatial-cv.html>
+
+Lab 4 (posted on Canvas) Get a head start now
+
+The data frame `meuse` from the package {sp} contains concentrations of heavy metals in soil samples taken within the flood plain of the Meuse River. Perform a spatial statistical interpolation of the _logarithm_ of zinc concentrations in the flood plain using universal kriging with a trend term based on the _square root_ of the distance (`dist`) to the river. Use the measured values of zinc in the data frame `meuse` available in the {sp} package by typing `data(meuse)`
+
+(a) Start by making a map showing the zinc concentration values at the measured locations (10)
+(b) Estimate the omni-directional variogram on the residuals after removing the trend associated with distance to the river (10)
+(c) Get directional variogram estimates in the four directions (5)
+(d) Fit a directional variogram model specifying the appropriate values for the `anis =` argument (10)
+(e) Use the model to interpolate log zinc concentrations at the locations defined by `meuse.grid` (10)
+(f) Create a map showing the interpolated values (10)
+
+Make the data available by running the following code chunk
+
+```{r}
+library(sp)
+data(meuse)
+data(meuse.grid)
+```
