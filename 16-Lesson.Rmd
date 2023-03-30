@@ -7,7 +7,7 @@
 
 Kriging can be extended to obtain surfaces of multiple field variables. If two variables are correlated then information about the spatial correlation in one variable can help provide information about values in the other variable. The spatial variability of one variable is correlated with the spatial variability of the other variable. And this idea is not limited to two variables (recall Lee's statistic on areal units). This is called "co-kriging"
 
-Here you consider measurements of heavy metal concentrations (ppm) in the top soil in the flood plain of the river Meuse near the village of Stein. The data are available as part of the {sp} package
+Here you consider measurements of heavy metal concentrations (ppm) in the top soil in the flood plain of the river Meuse near the village of Stein, NL. The data are available as part of the {sp} package
 
 ```{r}
 library(sp)
@@ -16,7 +16,7 @@ data(meuse)
 names(meuse)
 ```
 
-The metals include cadmium, copper, lead, and zinc. Measurement locations are given by x and y. Other variables include elevation, soil type and distance to the river (meters)
+The metals include cadmium, copper, lead, and zinc. Measurement locations are given by x and y. Other variables include elevation, soil type and distance (meters) to the river
 
 Create a simple feature data frame with a projected coordinate system for the Netherlands
 
@@ -41,6 +41,8 @@ All measurements (bulk sampled from an area of approximately 15 m x 15 m) have u
 The distribution of concentrations is skewed with many locations having only low levels of heavy metals with a few having very high levels
 
 ```{r}
+library(ggplot2)
+
 ggplot(data = meuse.sf,
        mapping = aes(x = lead)) +
   geom_histogram(bins = 17) +
@@ -52,6 +54,8 @@ Thus you transform the values using natural logarithms and organize the data as 
 Here you specify the trend using the square root of the distance to river and take the natural logarithm of the heavy metal concentration. You give the dependent variable a new name with the `id =` argument
 
 ```{r}
+library(gstat)
+
 g <- gstat(id = "logCd", 
            formula = log(cadmium) ~ sqrt(dist), 
            data = meuse.sf)
@@ -79,7 +83,7 @@ $$
 $$
 
 
-A cross variogram is the semivariance computed between two variables ($z_1$ and $z_2)
+A cross variogram is the semivariance computed between two variables ($z_1$ and $z_2$)
 
 $$
 \gamma_c(h) = \frac{1}{2N(h)} \sum^{N(h)} (z_{1i} - z_{2j})^2
@@ -136,7 +140,8 @@ grid.sf <- sf::st_as_sf(x = meuse.grid,
                         coords = c("x", "y"),
                         crs = 28992)
 
-int <- predict(vm, grid.sf)
+int <- predict(vm, 
+               newdata = grid.sf)
 
 names(int)
 ```
