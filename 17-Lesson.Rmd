@@ -6,9 +6,9 @@
 
 We now turn our attention to analyzing and modeling point pattern data. We start with some theory, then learn how to work with functions from the {spatstat} package before focusing on estimating spatial intensity
 
-We naturally seek patterns within a collection of events. A pattern that often quickly gets our attention is clustering. Clusters of stars in the night sky were defined by the ancients as a constellation
+It is natural to seek patterns within a collection of events. A pattern that quickly gets our attention is clustering. Star clusters in the night sky were defined by the ancients as constellations, which help them explain events in their lives
 
-A cluster of events in a particular region begs for an explanation. Why do events occur more often in one region compared to another region?
+A cluster of events begs for an explanation. Why do events occur more often in one region compared to another region?
 
 Consider tornado reports in the state of Kansas. Let the start position of a tornado be an *event location* and let the damage rating (EF scale) provide a *mark* on the event
 
@@ -201,7 +201,7 @@ class(swedishpines)
 swedishpines
 ```
 
-The data is a planar point pattern object with 71 events
+The data is a planar point pattern data object with 71 events
 
 Note: Unfortunately events in a `ppp` object are called 'points' rather than events. This terminology differs from that used the theoreticians who define a point as a *potential* event not an *observed* event
 
@@ -256,7 +256,7 @@ demopat |>
 
 Here the domain is defined as an irregular concave polygon with a hole. The distinction between inside and outside is important for spatial statistics computed using the events
 
-You print the marks with the `marks()` function.
+You print the marks with the `marks()` function
 
 ```{r}
 demopat |>
