@@ -2,19 +2,13 @@
 
 **"So much complexity in software comes from trying to make one thing do two things."** - Ryan Singer
 
-Last time the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced.
-
-Focus is on natural occurring systems where the geographic location of events is examined through the lens of statistics to better understand physical processes.
-
-<https://www.washingtonpost.com/business/2022/10/21/dead-bugs-on-windshields/>
-
-The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`.
-
-Typical work flow includes importing and munging data as a simple feature data frame and then converting the spatial data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object.
-
 ## Creating `ppp` and `owin` objects from simple feature data frames {.unnumbered}
 
-Consider again the set of Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating) since 1950 whose initial location occurred within the state.
+Last time the terminology of point pattern data including the concept of complete spatial randomness (CSR) was introduced. Focus is on natural occurring systems where the geographic location of events is examined through the lens of statistics to better understand physical processes
+
+The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`. Typical work flow includes importing and munging data as a simple feature data frame and then converting the spatial data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object
+
+Consider again the set of Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating) since 1950 whose initial location occurred within the state
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
@@ -27,23 +21,23 @@ Torn.sf |>
   head()
 ```
 
-The length unit is meters. This is seen by printing the CRS.
+The length unit is meters. This is seen by printing the CRS
 
 ```{r}
 sf::st_crs(Torn.sf)
 ```
 
-You note that some tornadoes are incorrectly coded as Kansas tornadoes by plotting the event locations.
+You note that some tornadoes are incorrectly coded as Kansas tornadoes by plotting the event locations
 
 ```{r}
 plot(Torn.sf$geometry)
 ```
 
-Most events are within the near-rectangle shape of the state border but you also see a few events clearly outside the border.
+Most events are within the near-rectangle shape of the state border but you also see a few events clearly outside the border
 
-Instead of filtering by column name (`st == "KS"`) you can subset by geometry using the `sf::st_intersection()` function as you did earlier in the semester. You also can do this by defining the state border as an `owin` object.
+Instead of filtering by column name (`st == "KS"`) you can subset by geometry using the `sf::st_intersection()` function as you did earlier in the semester. You also can do this by defining the state border as an `owin` object
 
-You get the Kansas border as a simple feature data frame from the {USAboundaries} package and transform the CRS to that of the CRS in the tornado simple feature data frame.
+You get the Kansas border as a simple feature data frame from the {USAboundaries} package and transform the CRS to that of the CRS in the tornado simple feature data frame
 
 ```{r}
 KS.sf <- USAboundaries::us_states(states = "Kansas") |>
@@ -59,20 +53,22 @@ KS.win <- KS.sf |>
   as.owin()
 ```
 
-Next you convert the simple feature data frame of tornado reports to a `ppp` object with the EF damage rating as the marks using the `as.ppp()` function.
+Next you convert the simple feature data frame of tornado reports to a `ppp` object with the EF damage rating as the marks using the `as.ppp()` function
 
 ```{r}
 T.ppp <- Torn.sf |>
   as.ppp()
 
-plot(T.ppp)
+T.ppp |>
+  plot()
 ```
 
 Finally you subset the event locations in the `ppp` object by the Kansas border using the subset operator (`[]`).
 
 ```{r}
 T.ppp <- T.ppp[KS.win]
-plot(T.ppp)
+T.ppp |> 
+  plot()
 ```
 
 With your `T.ppp` object you are ready to analyze the tornado locations as spatial point pattern data.
