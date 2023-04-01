@@ -203,22 +203,22 @@ swedishpines
 
 The data is a planar point pattern object with 71 events
 
-Note: Unfortunately events in a `ppp` object are called 'points' rather than events. This is in contrast to the terminology used by the theoreticians who define a point as a *potential* event not an *observed* event.
+Note: Unfortunately events in a `ppp` object are called 'points' rather than events. This terminology differs from that used the theoreticians who define a point as a *potential* event not an *observed* event
 
-All the events are contained within a rectangle window of size 9.6 by 10 meters.
+All the events are contained within a rectangle window of size 9.6 by 10 meters
 
-There is a `plot()` method for `ppp` objects that provides a quick view of the data and the domain window.
+There is a `plot()` method for `ppp` objects that provides a quick view of the data and the domain window
 
 ```{r}
 swedishpines |>
   plot()
 ```
 
-Events are plotted as open circles inside a bounding box. The plot is labeled with the name of the `ppp` object.
+Events are plotted as open circles inside the domain boundaries. The plot is labeled with the name of the `ppp` object
 
-The function `convexhull()` from the {spatstat.geom} package as part of the {spatstat} family of packages creates a convex hull around the events. A convex hull defines the minimum-area convex polygon that contains all the events.
+The function `convexhull()` from the {spatstat.geom} package as part of the {spatstat} family of packages creates a convex hull around the events. A convex hull defines the minimum-area convex polygon that contains all the events
 
-Here you create the hull and add it to the plot.
+Here you create the hull and add it to the plot
 
 ```{r}
 swedishpines |>
@@ -228,9 +228,7 @@ swedishpines |>
   plot(add = TRUE)
 ```
 
-The domain (window) for analysis and modeling should be somewhat larger than the convex hull. The function `ripras()` computes a spatial domain based on the event locations alone assuming the locations are independent and identically distributed.
-
-Here you also overlay this polygon on the plot.
+The domain (window) for analysis and modeling should be somewhat larger than the convex hull. The function `ripras()` computes a spatial domain based on the event locations alone assuming the locations are independent and identically distributed. Here you also overlay this polygon on the plot
 
 ```{r}
 swedishpines |>
@@ -243,20 +241,20 @@ swedishpines |>
   plot(add = TRUE, lty = "dotted")
 ```
 
-The window can have an arbitrary shape. A rectangle, a polygon, a collection of polygons including holes, or a binary image (mask). A window can be stored as a separate object of class `owin`. See `?owin.object()` for details.
+The window can have an arbitrary shape. A rectangle, a polygon, a collection of polygons including holes, or a binary image (mask). A window can be stored as a separate object of class `owin`. See `?owin.object()` for details
 
-Each event may carry information called a 'mark'. A mark can be continuous (e.g. tree height) or discrete (tree species).
+Each event may carry information called a 'mark'. A mark can be continuous (e.g. tree height) or discrete (tree species)
 
-Multitype point patterns are point patterns in which the events have a discrete mark (e.g., tree species). The mark values are given in a vector of the same length as the vector of locations. That is, `marks[i]` is the mark attached to the location (`x[i]`, `y[i]`).
+Multitype point patterns are point patterns in which the events have a discrete mark (e.g., tree species). The mark values are given in a vector of the same length as the vector of locations. That is, `marks[i]` is the mark attached to the location (`x[i]`, `y[i]`)
 
-Consider the `ppp` object `demopat` from the {spatstat} package.
+Consider the `ppp` object `demopat` from the {spatstat} package
 
 ```{r}
 demopat |>
  plot()
 ```
 
-Here the domain is defined as an irregular concave polygon with a hole. The distinction between inside and outside is important for spatial statistics computed using the events.
+Here the domain is defined as an irregular concave polygon with a hole. The distinction between inside and outside is important for spatial statistics computed using the events
 
 You print the marks with the `marks()` function.
 
@@ -265,7 +263,7 @@ demopat |>
   marks()
 ```
 
-For a multitype pattern (where the marks are factors) you can use the `split()` function to separate the point pattern objects by mark type. Consider the Lansing Woods data set (`lansing`) with marks corresponding to tree species.
+For a multitype pattern (where the marks are factors) you can use the `split()` function to separate the point pattern objects by mark type. Consider the Lansing Woods data set (`lansing`) with marks corresponding to tree species
 
 ```{r}
 data(lansing)
@@ -278,18 +276,18 @@ LW |>
 
 ## Quantifying the spatial intensity of events {-}
 
-The average intensity of events is defined as the number of events per unit area of the domain. The `summary()` method applied to a `ppp` object gives the average intensity.
+The average intensity of events is defined as the number of events per unit area of the domain. The `summary()` method applied to a `ppp` object gives the average intensity
 
 ```{r}
 swedishpines |>
   summary()
 ```
 
-There are 71 events over a window area (spatial domain) of 9600 square units giving an average intensity of 71/9600 = .0074.
+There are 71 events over a window area (spatial domain) of 9600 square units giving an average intensity of 71/9600 = .0074. That is the average intensity is .0074 events per unit area
 
-Average intensity depends on the number of events and on the domain area defined by the `owin` object.
+Average intensity depends on the number of events and on the domain area defined by the `owin` object
 
-The `owin` object is the first element labeled `window` in a `ppp` object.
+The `owin` object is the first element labeled `window` in a `ppp` object
 
 ```{r}
 W0 <- swedishpines$window
@@ -302,7 +300,7 @@ The default window is a rectangle.
 plot(W0)
 ```
 
-Here you change the window to that defined by the event locations using the method of Ripley-Rasson (`ripras()` function) and then make that the window for the Swedish pines by using the subset operator `[`.
+Here you change the window to that defined by the event locations using the method of Ripley-Rasson (`ripras()` function) and then make that the window for the Swedish pines by using the subset operator `[`
 
 ```{r}
 W1 <- swedishpines |>
@@ -311,23 +309,23 @@ W1 <- swedishpines |>
 SP2 <- swedishpines[W1]
 ```
 
-Since the new window area is slightly larger than the default window the summary method shows that the spatial intensity is lower.
+Since the new window area is slightly larger than the default window the summary method shows that the spatial intensity is lower
 
 ```{r}
 SP2 |>
   summary()
 ```
 
-The average intensity might not represent the intensity of events locally. We need a way to describe the expected number of events at any location of the region.
+The average intensity might not represent the intensity of events locally. You need a way to describe the expected number of events at any location of the region
 
-Counting the number of events in equal areas is one way. The quadrat method divides the domain into a grid of rectangular cells and the number of events in each cell is counted. Quadrat counting is done with the `quadratcount()` function.
+Counting the number of events in equal areas is one way. The quadrat method divides the domain into a grid of rectangular cells and the number of events in each cell is counted. Quadrat counting is done with the `quadratcount()` function
 
 ```{r}
 swedishpines |>
   quadratcount()
 ```
 
-By default the function divides the data into a 5 x 5 grid of cells. The event count in each cell is produced. To change the default number of cells in x and y directions you use the `nx =` and `ny =` arguments.
+By default the function divides the data into a 5 x 5 grid of cells. The event count in each cell is produced. To change the default number of cells in x and y directions you use the `nx =` and `ny =` arguments
 
 ```{r}
 swedishpines |>
@@ -335,7 +333,7 @@ swedishpines |>
                ny = 3)
 ```
 
-The plot method applied to the results of the `quadratcount()` functions adds the counts to a plot. Here you add the counts and include the event locations.
+The plot method applied to the results of the `quadratcount()` functions adds the counts to a plot. Here you add the counts and include the event locations
 
 ```{r}
 swedishpines |>
@@ -346,7 +344,7 @@ swedishpines |>
        add = TRUE, main = "")
 ```
 
-Grid cell areas will not be all equal when the domain boundaries are irregular like with the `demopat` ppp object.
+Grid cell areas will not be all equal when the domain boundaries are irregular like with the `demopat` ppp object
 
 ```{r}
 demopat |>
@@ -354,11 +352,11 @@ demopat |>
   plot()
 ```
 
-Areas near the borders are smaller than areas completely within the domain.
+Areas near the borders are smaller than areas completely within the domain
 
-When the number of events is large, hexagon grid cells provide a useful alternative to rectangular grid cells.
+When the number of events is large, hexagon grid cells provide a useful alternative to rectangular grid cells
 
-The process is: (1) tessellate the domain by a regular grid of hexagons, (2) count the number of events in each hexagon, and (3) use a color ramp to display the events per hexagon.
+The process is: (1) tessellate the domain by a regular grid of hexagons, (2) count the number of events in each hexagon, and (3) use a color ramp to display the events per hexagon
 
 As an example here you generate 20K values from the standard normal distribution for the x coordinate and the same number of values for the y coordinate. You then use the `hexbin()` function from the {hexbin} package and specify 10 bins in the x direction to count the number of events in each hexagon and assign the result to the object `hbin`.
 
@@ -371,7 +369,7 @@ hbin <- hexbin::hexbin(x, y, xbins = 10)
 str(hbin)
 ```
 
-The {hexbin} package uses S4 data classes so the output is stored in slots. Use the `plot()` method to make a graph.
+The {hexbin} package uses S4 data classes so the output is stored in slots. Use the `plot()` method to make a graph
 
 ```{r}
 hbin |>
@@ -380,11 +378,9 @@ hbin |>
 
 Hexagons have symmetric nearest neighbors (there is only rook contiguity). They have the most sides of any polygon that can tessellate the plane.
 
-They are generally more efficient than rectangles at covering the events. In other words it takes fewer of them to cover the same number of events.
+They are generally more efficient than rectangles at covering the events. In other words it takes fewer of them to cover the same number of events. They are visually less biased for displaying local event intensity compared to squares/rectangles
 
-They are visually less biased for displaying local event intensity compared to squares/rectangles.
-
-Here you generate a large number of random events in the two-dimensional plane. Use a normal distribution in the x-direction and a student t-distribution in the y-direction.
+Here you generate a large number of random events in the two-dimensional plane. Use a normal distribution in the x-direction and a student t-distribution in the y-direction
 
 ```{r}
 set.seed(131)
@@ -394,12 +390,12 @@ hexbin::hexbin(x, y, xbins = 25) |>
   plot()
 ```
 
-The {ggplot2} package has the `stat_binhex()` function so that also can be used for displaying spatial intensity.
+The {ggplot2} package has the `stat_binhex()` function so that also can be used for displaying spatial intensity
 
 ```{r}
 df <- data.frame(x, y)
 ggplot(data = df, 
-       mapping = aes(x, y)) +
+       mapping = aes(x = x, y = y)) +
   stat_binhex()
 ```
 
@@ -409,7 +405,7 @@ $$
 \hat \lambda (s) = \frac{1}{nh}\sum_{i=1}^nK\Big(\frac{s - s_i}{h}\Big)
 $$
 
-where $K()$ is the kernel function and $h > 0$ is a smoothing parameter called the bandwidth. Typically the kernel function is a Gaussian probability density function.
+where $K()$ is the kernel function and $h > 0$ is a smoothing parameter called the bandwidth. Typically the kernel function is a Gaussian probability density function
 
 To help visualize KDE you generate 25 event locations (`el`) uniformly on the real number line representing a one-dimensional spatial domain between 0 and 1 and then use kernel density estimation to get a continuous intensity function. The density estimation is is done using the function `density()` and here you compare the intensity function for increasing bandwidths specified with the `bw =` argument.
 
@@ -433,20 +429,20 @@ ggplot(data = df,
              color = "red")
 ```
 
-As the bandwidth increases the curve (black line) representing the local intensity becomes smoother. The intensity is estimated at every location, not just at the location of the event.
+As the bandwidth increases the curve (black line) representing the local intensity becomes smoother. The intensity is estimated at every location, not just at the location of the event
 
-The density is a summation of the kernels with one kernel centered on top of each event location. Event locations are marked with a point along the x-axis and the kernel is a Gaussian probability density function. The kernel is placed on each event and the bandwidth specifies the distance between the inflection points of the kernel. The one-dimensional KDE extends to two (or more) dimensions.
+The density is a summation of the kernels with one kernel centered on top of each event location. Event locations are marked with a point along the x-axis and the kernel is a Gaussian probability density function. The kernel is placed on each event and the bandwidth specifies the distance between the inflection points of the kernel. The one-dimensional KDE extends to two (or more) dimensions
 
 Example: The distribution of trees in a tropical forest
 
-The object `bei` is a planar point pattern object from the {spatstat} package containing the locations of trees in a tropical rain forest.
+The object `bei` is a planar point pattern object from the {spatstat} package containing the locations of trees in a tropical rain forest
 
 ```{r}
 bei |>
   summary()
 ```
 
-There are 3604 events (trees) over an area of 500,000 square meters giving an average intensity of .0073 trees per unit area.
+There are 3604 events (trees) over an area of 500,000 square meters giving an average intensity of .0073 trees per unit area
 
 The distribution of trees is not uniform (heterogeneous) as can be seen with a plot
 
@@ -455,30 +451,30 @@ bei |>
   plot()
 ```
 
-The plot shows clusters of trees and large areas with few if any trees.
+The plot shows clusters of trees and large areas with few if any trees
 
-Elevation and elevation slope are factors associated with tree occurrence.
+Elevation and elevation slope are factors associated with tree occurrence
 
-The point pattern data is accompanied by data (`bei.extra`) on elevation (`elev`) and slope of elevation (`grad`) across the region.
+The point pattern data is accompanied by data (`bei.extra`) on elevation (`elev`) and slope of elevation (`grad`) across the region
 
 ```{r}
 bei.extra |>
   plot()
 ```
 
-These data are stored as `im` (image) objects.
+These data are stored as `im` (image) objects
 
 ```{r}
 class(bei.extra$elev)
 ```
 
-The image object contains a list with 10 elements including the matrix of values (`v`).
+The image object contains a list with 10 elements including the matrix of values (`v`)
 
 ```{r}
 str(bei.extra$elev)
 ```
 
-Specifying a spatial domain (window) allows focuses the analysis on a particular region. Suppose you want to model locations of a certain tree type, but only for trees located at elevations above 145 meters. The `levelset()` function creates a window from an image object using `thresh =` and `compare =` arguments.
+Specifying a spatial domain (window) allows focuses the analysis on a particular region. Suppose you want to model locations of a certain tree type, but only for trees located at elevations above 145 meters. The `levelset()` function creates a window from an image object using `thresh =` and `compare =` arguments
 
 ```{r}
 W <- levelset(bei.extra$elev,
@@ -494,7 +490,7 @@ W |>
   plot()
 ```
 
-You subset the `ppp` object by the window using the bracket operator (`[]`). Here you assign the reduced `ppp` object to `beiW` and then make a plot.
+You subset the `ppp` object by the window using the bracket operator (`[]`). Here you assign the reduced `ppp` object to `beiW` and then make a plot
 
 ```{r}
 beiW <- bei[W]
@@ -503,9 +499,9 @@ beiW |>
   plot()
 ```
 
-Now the analysis window is white and the event locations are plotted on top.
+Now the analysis window is white and the event locations are plotted on top
 
-As another example you create a window where altitude is lower than 145 m and slope exceeds .1 degrees. In this case you use the `solutionset()` function.
+As another example you create a window where altitude is lower than 145 m and slope exceeds .1 degrees. In this case you use the `solutionset()` function
 
 ```{r}
 V <- solutionset(bei.extra$elev <= 145 & 
@@ -516,7 +512,7 @@ beiV |>
   plot()
 ```
 
-You compute the spatial intensity function over the domain with the `density()` method using the default Gaussian kernel and fixed bandwidth determined by the window size.
+You compute the spatial intensity function over the domain with the `density()` method using the default Gaussian kernel and fixed bandwidth determined by the window size
 
 ```{r}
 beiV |>
@@ -524,9 +520,9 @@ beiV |>
   plot()
 ```
 
-The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid ($v$) and are returned as a pixel image.
+The units of intensity are events per unit area (here square meters). The intensity values are computed on a grid ($v$) and are returned as a pixel image
 
-There are over 16K cells that have a value of `NA` as a result of the masking by elevation and slope.
+There are over 16K cells that have a value of `NA` as a result of the masking by elevation and slope
 
 ```{r}
 den <- beiV |>
@@ -535,12 +531,12 @@ den <- beiV |>
 sum(is.na(den$v))
 ```
 
-Summarizing: Spatial point patterns play a big role in the analysis of natural occurring systems where the spatial location of events is examined through the lens of statistics in an attempt to understand physical processes.
+Summarizing: Spatial point patterns play a big role in the analysis of natural occurring systems where the spatial location of events is examined through the lens of statistics in an attempt to understand physical processes
 
-Some of the terminology and theory of point pattern data analysis was introduced in this lesson. Including the concept of complete spatial randomness (CSR) and the twin assumptions of stationarity and isotropy.
+Some of the terminology and theory of point pattern data analysis was introduced in this lesson. Including the concept of complete spatial randomness (CSR) and the twin assumptions of stationarity and isotropy
 
-The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`.
+The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`
 
-The typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do at least part of the data munging after conversion to a `ppp` object.
+The typical work flow includes importing and munging data as a simple feature data frame and then converting the simple feature data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do at least part of the data munging after conversion to a `ppp` object
 
-The first-order property of spatial point pattern data is spatial intensity. It is defined as the number of events per unit area of the domain. The spatial intensity can vary with domain area even if the number of events is constant. It can also vary across the domain. Quadrat counting and kernel density estimates are used to quantify the spatial varying intensity.
+The first-order property of spatial point pattern data is spatial intensity. It is defined as the number of events per unit area of the domain. The spatial intensity can vary with domain area even if the number of events is constant. It can also vary across the domain. Quadrat counting and kernel density estimates are used to quantify the spatial varying intensity
