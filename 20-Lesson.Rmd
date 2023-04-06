@@ -4,9 +4,9 @@
 
 ## Removing duplicate events and defining the domain {-}
 
-Functions from the {spatstat} family of packages require the event locations (as a `ppp` object) and a domain over which the spatial statistics are computed (as an `owin` object).
+Functions from the {spatstat} family of packages require the event locations (as a `ppp` object) and a domain over which the spatial statistics are computed (as an `owin` object)
 
-If no `owin` object is specified the default is a rectangular bounding box defined by the northern, southern, eastern, and western most event locations.
+If no `owin` object is specified the default is a rectangular bounding box defined by the northern, southern, eastern, and western most event locations
 
 Consider the Florida wildfire data as a simple feature data frame. Import the Florida wildfire data from here <http://myweb.fsu.edu/jelsner/temp/data/FL_Fires.zip> as a simple feature data frame called `FL_Fires.sf` and transform the native CRS to a Florida GDL Albers projected CRS (EPSG 3086).
 
@@ -15,7 +15,7 @@ FL_Fires.sf <- sf::st_read(dsn = here::here("data", "FL_Fires")) |>
   sf::st_transform(crs = 3086)
 ```
 
-Keep only fires occurring in Baker County (west of Jacksonville).
+Keep only fires occurring in Baker County (west of Jacksonville)
 
 Use the `us_counties()` function with `resolution = "high"` from the {USAboundaries} package to get county boundaries in Florida as a simple feature data frame. Then select on the variable `name` before filtering on the variable `name` to keep only the boundary of Liberty County. Transform the native CRS to EPSG 3086. Assign the resulting simple feature data frame the name `Baker.sf`.
 
@@ -90,7 +90,7 @@ BF.ppp |>
 
 Now the average intensity is 21 wildfires per 10 square kilometers, which is a better estimate of the wildfire occurrence rates at the county level.
 
-## Determining statistical significance of clustering {.unnumbered}
+## Determining statistical significance of clustering {-}
 
 With event distance functions like G, F, and K computed on `ppp` objects from the {statspat} family of packages, the default plot method is to show a black curve and a red curve. The black curve is the function computed from the data and the red curve is the function computed from a model of CSR.
 
@@ -372,7 +372,7 @@ ggplot(Kboot.df, aes(x = r * .1, y = iso * intensity(SP))) +
 
 At short distances (closer than about 1.5 m) the gray ribbon is below the blue line which you interpret to mean that there are fewer pine saplings near other pine saplings than would be expected by chance at this scale indicating regularity.
 
-## Estimating clustering in multi-type event locations {.unnumbered}
+## Estimating clustering in multi-type event locations {-}
 
 Often the interest is on whether the occurrence of one event type influences (or is influenced by) another event type. For example, does the occurrence of one species of tree influence the occurrence of another species of tree?
 
@@ -485,7 +485,7 @@ T.ppp13 |>
 
 Both tests lead you to conclude that EF3 tornadoes are more likely near EF1 tornadoes than would be expected if they were independently CSR.
 
-## Interpolating output from a distance function {.unnumbered}
+## Interpolating output from a distance function {-}
 
 Spatial scale matters. Departures from CSR might depend on the lag distance so it is important to be able to interpolate values that are output from the various distance functions.
 
@@ -524,7 +524,7 @@ approx(x = K.df$r,
        xout = 50)$y
 ```
 
-## Limitations of the distance functions {.unnumbered}
+## Limitations of the distance functions {-}
 
 The distance functions ($G$, $K$, etc) that are used to quantify clustering are defined and estimated under the assumption that the process that produced the events is stationary (homogeneous). If this is true then you can treat any sub-region of the domain as an independent and identically distributed (iid) sample from the entire set of data.
 

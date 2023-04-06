@@ -8,7 +8,7 @@ Last time the terminology of point pattern data including the concept of complet
 
 The {spatstat} family of packages provides a comprehensive set of functions for analyzing, plotting, and modeling point pattern data. The package requires the data be of spatial class `ppp`. Typical work flow includes importing and munging data as a simple feature data frame and then converting the spatial data frame to a `ppp` object for analysis and modeling. But it is sometimes convenient to do some of the data munging after conversion to a `ppp` object
 
-Consider again the set of Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating) since 1950 whose initial location occurred within the state
+Consider again the set of Kansas tornadoes. Import the data as a simple feature data frame and transform the geographic CRS to Lambert conic conformal centered on Kansas (EPSG:6922). Keep all tornadoes (having an EF damage rating greater or equal to zero) since 1950 whose initial location occurred within the state
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2021-torn-initpoint")) |>
@@ -63,7 +63,7 @@ T.ppp |>
   plot()
 ```
 
-Finally you subset the event locations in the `ppp` object by the Kansas border using the subset operator (`[]`)
+Finally you subset the event locations in the `ppp` object by the Kansas border `owin` object using the subset operator (`[]`)
 
 ```{r}
 T.ppp <- T.ppp[KS.win]
@@ -96,7 +96,7 @@ T.ppp |>
 
 Caution here: since you are recycling the object name `T.ppp`, if you run the above code chunk again the scale will change again by a factor of 1000 while the unit name will stay the same
 
-There are 4302 tornado reports with an average intensity of .02 tornadoes per square km over this time period. Nearly 60% of Kansas tornadoes are rated as doing EF0 (lowest damage level). Less than 1% of them are rated as 'violent' (doing EF4 or EF5 level damage). The area of the state is 213,168 square kilometers (km)
+There are 4302 tornado reports with an average intensity of .02 tornadoes per square km over this time period. Nearly 60% of Kansas tornadoes are rated as doing EF0 (lowest damage level). About 1% of them are rated as 'violent' (doing EF4 or EF5 level damage). The area of the state is 213,168 square kilometers (km)
 
 Plot the events separated by the marks using the `plot()` method together with the `split()` function
 
@@ -292,7 +292,7 @@ At points within about 15 km the tornado report intensity is above the statewide
 
 At zero distance from a town, this number is more than 1.7 times higher (85 tornadoes per 100 sq. km). The spatial scale is about 15 km (distance along the spatial axis where the red line falls below the blue line)
 
-At this point in the analysis you need to think that although the plot look reasonable based on your expectations of a population bias in the tornado reports (fewer reports away from cities/towns), could this result be an artifact of the smoothing algorithm?
+At this point in the analysis you need to think that although the plot looks reasonable based on your expectations of a population bias in the tornado reports (fewer reports away from cities/towns), could this result be an artifact of the smoothing algorithm?
 
 You need to know how to apply statistical tools to accomplish specific tasks. But you also need to be a bit skeptical of the tool's outcome. The skepticism provides a critical check against being fooled by randomness (null hypothesis)
 
@@ -330,7 +330,7 @@ Quantifying the report bias with the spatial intensity function works well for K
 
 Things are different in Texas where a significant intensity trend makes it more difficult to estimate the report bias
 
-Convert the tornado reports (EF1 or worse) occurring over Texas as a `ppp` object. Use a Texas-centric Lambert conic conformal projection
+Convert the tornado reports (EF0 or worse) occurring over Texas as a `ppp` object. Use a Texas-centric Lambert conic conformal projection
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2021-torn-initpoint")) |>
