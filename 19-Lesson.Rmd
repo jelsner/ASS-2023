@@ -35,7 +35,7 @@ T.ppp <- T.ppp[W]
 summary(T.ppp)
 ```
 
-The chance that a tornado anywhere in Texas will be at least EF3 or worse is the sum of the proportions for these types: .03605 + .00534 + .00067 = .042 (or 4.2%).
+The chance that a tornado anywhere in Texas will be at least EF3 or worse is the sum of the proportions for these types: .03605 + .00534 + .00067 = .042 (or 4.2%)
 
 As noted last time there is an intensity gradient across the state with fewer tornadoes in the southwest part of the state and more in the northeast part of the state
 
