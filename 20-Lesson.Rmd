@@ -108,7 +108,7 @@ Returning again to the Kansas tornado reports since 1994
 
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", 
-                                  "1950-2020-torn-initpoint")) |>
+                                  "1950-2021-torn-initpoint")) |>
   sf::st_transform(crs = 3082) |>
   dplyr::filter(mag >= 0, yr >= 1994) |>
   dplyr::mutate(EF = as.factor(mag)) |>
