@@ -522,7 +522,7 @@ approx(x = K.df$r,
        xout = 50)$y
 ```
 
-## Limitations of the distance functions {-}
+## Limitations of interpreting the distance functions {-}
 
 The distance functions ($G$, $K$, etc) that are used to quantify clustering are defined and estimated under the assumption that the process that produced the events is stationary (homogeneous). If this is true then you can treat any sub-region of the domain as an independent and identically distributed (iid) sample from the entire set of data
 
