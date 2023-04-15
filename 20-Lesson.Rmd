@@ -17,7 +17,7 @@ FL_Fires.sf <- sf::st_read(dsn = here::here("data", "FL_Fires")) |>
 
 Keep only fires occurring in Baker County (west of Jacksonville)
 
-Use the `us_counties()` function with `resolution = "high"` from the {USAboundaries} package to get county boundaries in Florida as a simple feature data frame. Then select on the variable `name` before filtering on the variable `name` to keep only the boundary of Liberty County. Transform the native CRS to EPSG 3086. Assign the resulting simple feature data frame the name `Baker.sf`
+Use the `us_counties()` function with `resolution = "high"` from the {USAboundaries} package to get county boundaries in Florida as a simple feature data frame. Then select on the variable `name` before filtering on the variable `name` to keep only the boundary of Baker County. Transform the native CRS to EPSG 3086. Assign the resulting simple feature data frame the name `Baker.sf`
 
 ```{r}
 Baker.sf <- USAboundaries::us_counties(states = "FL",
@@ -107,8 +107,7 @@ With the first approach you take a `ppp` object and then compute the curve of in
 Returning again to the Kansas tornado reports since 1994
 
 ```{r}
-Torn.sf <- sf::st_read(dsn = here::here("data", 
-                                  "1950-2021-torn-initpoint")) |>
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2021-torn-initpoint")) |>
   sf::st_transform(crs = 3082) |>
   dplyr::filter(mag >= 0, yr >= 1994) |>
   dplyr::mutate(EF = as.factor(mag)) |>
@@ -363,7 +362,7 @@ ggplot(Kboot.df, aes(x = r * .1, y = iso * intensity(SP))) +
   geom_ribbon(aes(ymin = lo * intensity(SP), 
                   ymax = hi * intensity(SP)), fill = "gray70") +
   geom_line() +
-  geom_line(aes(y = theo * intensity(SP)), color = "blue", lty = 'dashed') +
+  geom_line(aes(y = theo * intensity(SP)), color = "red", lty = 'dashed') +
   xlab("Lag distance (m)") + ylab("K(r)") +
   theme_minimal()
 ```
@@ -410,7 +409,7 @@ ggplot(data = Kc.df,
 
 The vertical axis is the number of hickory trees within a radius r of a maple tree divided by the average intensity of the hickories. So at a distance of .2 (.2 x 924 ft = 180 ft) from a random maple there is an average of roughly 65 hickories (.093 x 703 hickories). If hickory and maple trees are CSR you would expect about 88 maples (.125 x 703) within that distance
 
-The presence of a hickory tree reduces the likelihood that a maple tree is nearby
+The presence of a hickory tree _reduces_ the likelihood that a maple tree is nearby
 
 Make the same plots for the EF1 and EF3 tornadoes in Kansas
 
@@ -634,7 +633,7 @@ ggplot(mapping = aes(x = r, y = obs)) +
 
 You conclude that the point pattern data are more consistent with an inhomogeneous Poisson process
 
-Let's return to the Kansas tornadoes (EF1+). You imported the data and created a point pattern object windowed by the state borders
+Let's return to the Kansas tornadoes (EF2+). You imported the data and created a point pattern object windowed by the state borders
 
 ```{r}
 ST.ppp |>
