@@ -4,15 +4,15 @@
 
 ## Models for point pattern data {-}
 
-Models are helpful in trying to understanding the processes leading to the event locations when event interaction is suspected. Event interaction means that an event at one location changes the probability of an event nearby.
+Models are helpful in trying to understanding the processes leading to the event locations when event interaction is suspected. Event interaction means that an event at one location changes the probability of an event nearby
 
-Cluster models can be derived by starting with a Poisson model. For example, you begin with a homogeneous Poisson model describing a set of events $Y$. Then each individual event $y_i$ in $Y$ is considered a 'parent' that produces 'offspring' events ($x_i$) according to some mechanism. 
+Cluster models can be derived by starting with a Poisson model. For example, you begin with a homogeneous Poisson model describing a set of events $Y$. Then each individual event $y_i$ in $Y$ is considered a 'parent' that produces 'offspring' events ($x_i$) according to some mechanism
 
-The resulting set of offspring forms clustered point pattern data $X$. Said another way, the model is homogeneous Poisson at an unobserved level $Y$ (latent level) but clustered at the level of the observations ($X$).
+The resulting set of offspring forms clustered point pattern data $X$. Said another way, the model is homogeneous Poisson at an unobserved level $Y$ (latent level) but clustered at the level of the observations ($X$)
 
-One example of this parent-child process is the Matérn cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and then each parent has a Poisson ($\mu$) number of offspring that are independent and identically distributed (iid) within a radius $r$ centered on the parent.
+One example of this parent-child process is the Matérn cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and then each parent has a Poisson ($\mu$) number of offspring that are independent and identically distributed (iid) within a radius $r$ centered on the parent
 
-For instance here you use the `rMatClust()` function from the {spatstat} package to produce a clustered `ppp` object. You use a disc radius of .1 units and an offspring rate equal to 5 (`mu = 5`).
+For instance here you use the `rMatClust()` function from the {spatstat} package to produce a clustered `ppp` object. You use a disc radius of .1 units and an offspring rate equal to 5 (`mu = 5`)
 
 ```{r}
 rMatClust(kappa = 10, 
@@ -21,18 +21,18 @@ rMatClust(kappa = 10,
   plot(main = "")
 ```
 
-The result is a set of event locations and the process that produced them is described as _doubly Poisson_. You can vary $\kappa$, $r$, and $\mu$ to generate more or fewer events.
+The result is a set of event locations and the process that produced them is described as _doubly Poisson_. You can vary $\kappa$, $r$, and $\mu$ to generate more or fewer events
 
-Other clustered Poisson models include:
-- Thomas model: each cluster consists of a Poisson number of random events with each event having an isotropic Gaussian displacement from its parent.  
-- Gauss-Poisson model: each cluster is either a single event or a pair of events.  
-- Neyman-Scott model: the cluster mechanism is arbitrary.
+Other clustered Poisson models include
+- Thomas model: each cluster consists of a Poisson number of random events with each event having an isotropic Gaussian displacement from its parent
+- Gauss-Poisson model: each cluster is either a single event or a pair of events. 
+- Neyman-Scott model: the cluster mechanism is arbitrary
 
-A Cox model is a homogeneous Poisson model with a random intensity function. Let $\Lambda(s)$ be a function with non-negative values defined at all points $s$ inside the domain. Then at each point let $X$ be a Poisson model with an intensity $\Lambda$. Then $X$ will be a sample from a Cox model.
+A Cox model is a homogeneous Poisson model with a random intensity function. Let $\Lambda(s)$ be a function with non-negative values defined at all points $s$ inside the domain. Then at each point let $X$ be a Poisson model with an intensity $\Lambda$. Then $X$ will be a sample from a Cox model
 
-A Cox model is doubly Poisson since $\Lambda$ is generated from some distribution that allow only positive numbers and then, conditional on $\Lambda$, a homogeneous point process is generated.
+A Cox model is doubly Poisson since $\Lambda$ is generated from some distribution that allow only positive numbers and then, conditional on $\Lambda$, a homogeneous point process is generated
 
-Following are two samples from a Cox point process.
+Following are two samples from a Cox point process
 
 ```{r}
 set.seed(3042)
@@ -45,17 +45,17 @@ for (i in 1:2){
 par(mfrow = c(1, 1))
 ```
 
-The statistical moments of Cox models are defined in terms of the moments of $\Lambda$. For instance, the intensity function of $X$ is $\lambda(s)$ = E[$\Lambda(s)$], where E[] is the expected value.
+The statistical moments of Cox models are defined in terms of the moments of $\Lambda$. For instance, the intensity function of $X$ is $\lambda(s)$ = E[$\Lambda(s)$], where E[] is the expected value
 
-Cox models are convenient for describing clustered point pattern data. A Cox model is over-dispersed relative to a Poisson model (i.e. the variance of the number of events falling in any region of size A, is greater than the mean number of events in those regions). 
+Cox models are convenient for describing clustered point pattern data. A Cox model is over-dispersed relative to a Poisson model (i.e. the variance of the number of events falling in any region of size A, is greater than the mean number of events in those regions)
 
-The Matérn cluster model and the Thomas models are types of Cox models. Another common type of Cox model is the log-Gaussian Cox processes (LGCP) model in which the logarithm of $\Lambda(s)$ is a Gaussian random function.
+The Matérn cluster model and the Thomas models are types of Cox models. Another common type of Cox model is the log-Gaussian Cox processes (LGCP) model in which the logarithm of $\Lambda(s)$ is a Gaussian random function
 
-If you have a way of generating samples from a random function $\Lambda$ of interest, then you can use the `rpoispp()` function to generate the Cox process. The intensity argument `lambda` of `rpoispp()` can be a function of x or y or a pixel image.
+If you have a way of generating samples from a random function $\Lambda$ of interest, then you can use the `rpoispp()` function to generate the Cox process. The intensity argument `lambda` of `rpoispp()` can be a function of x or y or a pixel image
 
-Another way to generate clustered point pattern data is by 'thinning'. Thinning refers to deleting some of the events. With 'independent thinning' the fate of each event is independent of the fate of the other events. When independent thinning is applied to a homogeneous Poisson point pattern, the resulting point pattern consisting of the retained events is also Poisson.
+Another way to generate clustered point pattern data is by 'thinning'. Thinning refers to deleting some of the events. With 'independent thinning' the fate of each event is independent of the fate of the other events. When independent thinning is applied to a homogeneous Poisson point pattern, the resulting point pattern consisting of the retained events is also Poisson
 
-An example of this is Matérn's Model I model. Here a homogeneous Poisson model first generates a point pattern $Y$, then any event in $Y$ that lies closer than a distance $r$ from another event is deleted. This results in point pattern data whereby close neighbor events do not exist.
+An example of this is Matérn's Model I model. Here a homogeneous Poisson model first generates a point pattern $Y$, then any event in $Y$ that lies closer than a distance $r$ from another event is deleted. This results in point pattern data whereby close neighbor events do not exist
 
 ```{r}
 plot(rMatérnI(kappa = 7, 
@@ -69,19 +69,19 @@ X |>
   plot()
 ```
 
-Changing $\kappa$ and $r$ will change the event intensity.
+Changing $\kappa$ and $r$ will change the event intensity
 
-The various spatial models for event locations can be described with math. For instance, expanding on the earlier notation you write that a homogeneous Poisson model with intensity $\lambda > 0$ has intensity 
+The various spatial models for event locations can be described with math. For instance, expanding on the earlier notation you write that a homogeneous Poisson model with intensity $\lambda > 0$ has intensity
 
-$$\lambda(s, x) = \lambda$$ where $s$ is any location in the window W and $x$ is the set of events.
+$$\lambda(s, x) = \lambda$$ where $s$ is any location in the window W and $x$ is the set of events
 
 Then the inhomogeneous Poisson model has conditional intensity
 
-$$\lambda(s, x) = \lambda(s)$$. 
+$$\lambda(s, x) = \lambda(s)$$
 
-The intensity $\lambda(s)$ depends on a spatial trend or on an explanatory variable.
+The intensity $\lambda(s)$ depends on a spatial trend or on an explanatory variable
 
-There is also a class of 'Markov' point process models that allow for clustering (or inhibition) due to event interaction. Markov refers to the fact that the interaction is limited to nearest neighbors. Said another way, a Markov point process generalizes a Poisson process in the case where events are pairwise dependent.
+There is also a class of 'Markov' point process models that allow for clustering (or inhibition) due to event interaction. Markov refers to the fact that the interaction is limited to nearest neighbors. Said another way, a Markov point process generalizes a Poisson process in the case where events are pairwise dependent
 
 A Markov process with parameters $\beta > 0$ and $0 < \gamma < \infty$ with interaction radius $r > 0$ has conditional intensity $\lambda(s, x)$ given by
 
@@ -104,21 +104,21 @@ $$
 \log\big[\lambda(s, x)\big] = \theta_1 B(s) + \theta_2 C(s, x)
 $$
 
-where the $\theta$'s are model parameters that need to be estimated.  
+where the $\theta$'s are model parameters that need to be estimated
 
-The term $B(s)$ depends only on location so it represents trend and explanatory variable (covariate) effects. It is the 'systematic component' of the model. The term $C(s, x)$ represents stochastic interactions (dependency) between events.
+The term $B(s)$ depends only on location so it represents trend and explanatory variable (covariate) effects. It is the 'systematic component' of the model. The term $C(s, x)$ represents stochastic interactions (dependency) between events
 
 ## Fitting and interpreting inhibition models {-}
 
-The {spatstat} family of packages contains functions for fitting statistical models to point pattern data. Models can include trend, explanatory variables, and event interactions of any order (not restricted to pairwise). Models are fit with the method of maximum likelihood and the method of minimum contrasts.
+The {spatstat} family of packages contains functions for fitting statistical models to point pattern data. Models can include trend, explanatory variables, and event interactions of any order (not restricted to pairwise). Models are fit with the method of maximum likelihood and the method of minimum contrasts
 
-The method of maximum likelihood estimates the probability of the empirical $K$ curve given the theoretical curve for various parameter values. Parameter values are chosen so as to maximize the likelihood of the empirical curve.
+The method of maximum likelihood estimates the probability of the empirical $K$ curve given the theoretical curve for various parameter values. Parameter values are chosen so as to maximize the likelihood of the empirical curve
 
-The method of minimum contrasts derives a cost function as the difference between the theoretical and empirical $K$ curves. Parameter values for the theoretical curve are those that minimize this cost function.
+The method of minimum contrasts derives a cost function as the difference between the theoretical and empirical $K$ curves. Parameter values for the theoretical curve are those that minimize this cost function
 
-The `ppm()` function from {spatstat} is used to fit a spatial point pattern model. The syntax has the form `ppm(X, formula, interaction, ...)` where `X` is the point pattern object of class `ppp`, `formula` describes the systematic (trend and covariate) part of the model, and `interaction` describes the stochastic dependence between events (e.g., Matérn process).
+The `ppm()` function from {spatstat} is used to fit a spatial point pattern model. The syntax has the form `ppm(X, formula, interaction, ...)` where `X` is the point pattern object of class `ppp`, `formula` describes the systematic (trend and covariate) part of the model, and `interaction` describes the stochastic dependence between events (e.g., Matérn process)
 
-Recall a plot the Swedish pine saplings. There was no indication of a trend (no systematic variation in the intensity of saplings).
+Recall a plot the Swedish pine saplings. There was no indication of a trend (no systematic variation in the intensity of saplings)
 
 ```{r}
 SP <- swedishpines
@@ -130,9 +130,9 @@ SP |>
   intensity()
 ```
 
-There is no obvious spatial trend in the distribution of saplings and the average intensity is .0074 saplings per unit area.
+There is no obvious spatial trend in the distribution of saplings and the average intensity is .0074 saplings per unit area
 
-A plot of the Ripley's $K$ function indicated some regularity relative to CSR for distances between .5 and 1.2 meters.
+A plot of the Ripley's $K$ function indicated some regularity relative to CSR for distances between .5 and 1.2 meters
 
 ```{r}
 SP |>
@@ -140,13 +140,13 @@ SP |>
   plot()
 ```
 
-The red dashed line is the $K$ curve under CSR. The black line is the empirical curve. At lag distances of between 5 and 15 units the empirical curve is below the CSR curve indicating there are fewer events within other events at those scales than would be expected by chance.
+The red dashed line is the $K$ curve under CSR. The black line is the empirical curve. At lag distances of between 5 and 15 units the empirical curve is below the CSR curve indicating there are fewer events within other events at those scales than would be expected by chance
 
-This suggests a process of between-event inhibition. A simple inhibition model is a Strauss process when the inhibition is constant with a fixed radius (r) around each event. The amount of inhibition ranges between zero (100% chance of a nearby event) to complete (0% chance of a nearby event). In the case of no inhibition the process is equivalent to a homogeneous Poisson process.
+This suggests a process of between-event inhibition. A simple inhibition model is a Strauss process when the inhibition is constant with a fixed radius (r) around each event. The amount of inhibition ranges between zero (100% chance of a nearby event) to complete (0% chance of a nearby event). In the case of no inhibition the process is equivalent to a homogeneous Poisson process
 
-If you assume the inhibition process is constant across the domain with a fixed interaction radius (r), then you can fit a Strauss model to the data. You use the `ppm()` function from the {spatstat} package and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)`. Finally you use a border correction out to a distance of 10 units from the window with the `rbord =` argument.
+If you assume the inhibition process is constant across the domain with a fixed interaction radius (r), then you can fit a Strauss model to the data. You use the `ppm()` function from the {spatstat} package and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)`. Finally you use a border correction out to a distance of 10 units from the window with the `rbord =` argument
 
-Save the output in the object called `model.in` (inhibition model).
+Save the output in the object called `model.in` (inhibition model)
 
 ```{r}
 model.in <- ppm(SP, 
@@ -155,15 +155,15 @@ model.in <- ppm(SP,
                 rbord = 10)
 ```
 
-The value for `r` in the `Strauss()` function is based on our visual inspection of the plot of `Kest()`. A value is chosen to be the distance at which there is the largest departure from a CSR model. 
+The value for `r` in the `Strauss()` function is based on our visual inspection of the plot of `Kest()`. A value is chosen to be the distance at which there is the largest departure from a CSR model
 
-You inspect the model parameters by typing the object name.
+You inspect the model parameters by typing the object name
 
 ```{r}
 model.in
 ```
 
-The first-order term (`beta`) has a value of .0757. This is the intensity of the 'proposal' events. Beta exceeds the average intensity by a factor of ten. 
+The first-order term (`beta`) has a value of .0757. This is the intensity of the 'proposal' events. Beta exceeds the average intensity by a factor of ten
 
 Recall the intensity of the events is obtained as
 
@@ -172,9 +172,9 @@ SP |>
   intensity()
 ```
 
-The interaction parameter (`gamma`) is .275. It is less than one, indicating an inhibition process. The logarithm of gamma, called the interaction coefficient (`Interaction`), is -1.29. Interaction coefficients less than zero imply inhibition.
+The interaction parameter (`gamma`) is .275. It is less than one, indicating an inhibition process. The logarithm of gamma, called the interaction coefficient (`Interaction`), is -1.29. Interaction coefficients less than zero imply inhibition
 
-A table with the coefficients including the standard errors and uncertainty ranges is obtained with the `coef()` method.
+A table with the coefficients including the standard errors and uncertainty ranges is obtained with the `coef()` method
 
 ```{r}
 model.in |>
@@ -182,19 +182,19 @@ model.in |>
   coef()
 ```
 
-The output includes the `Interaction` coefficient along with it's standard error (`S.E.`) and the associated 95% uncertainty interval. The ratio of the `Interaction` coefficient to its standard error is the `Zval`. A large z-value (in absolute magnitude) translates to a low $p$-value and a rejection of the null hypothesis of no interaction between events.
+The output includes the `Interaction` coefficient along with it's standard error (`S.E.`) and the associated 95% uncertainty interval. The ratio of the `Interaction` coefficient to its standard error is the `Zval`. A large z-value (in absolute magnitude) translates to a low $p$-value and a rejection of the null hypothesis of no interaction between events
 
-Output also shows the value for the `(Intercept)` term. It is the logarithm of the beta value, so exp(-2.58) = .0757 is the intensity of the proposal events.
+Output also shows the value for the `(Intercept)` term. It is the logarithm of the beta value, so exp(-2.58) = .0757 is the intensity of the proposal events
 
-You interpret the model output as follows. The process producing the spatial pattern of pine saplings is such that you should see .0757 saplings per unit area [unobserved (latent) rate]. 
+You interpret the model output as follows. The process producing the spatial pattern of pine saplings is such that you should see .0757 saplings per unit area [unobserved (latent) rate] 
 
-But because of event inhibition, where saplings nearby other saplings fail to grow, the number of saplings is reduced to .0074 per unit area. Thus the spatial pattern is suggestive of sibling-sibling interaction. Adults have many offspring, but only some survive due to limited resources.
+But because of event inhibition, where saplings nearby other saplings fail to grow, the number of saplings is reduced to .0074 per unit area. Thus the spatial pattern is suggestive of sibling-sibling interaction. Adults have many offspring, but only some survive due to limited resources
 
 ## Fitting and interpreting cluster models {-}
 
-Let's compare this inhibition model with a cluster model for describing the Lansing Woods maple trees (in the `ppp` object called `lansing` from the {spatstat} package).
+Let's compare this inhibition model with a cluster model for describing the Lansing Woods maple trees (in the `ppp` object called `lansing` from the {spatstat} package)
 
-Start by extracting the events marked as `maple` and putting them in a separate `ppp` object called `MT`.
+Start by extracting the events marked as `maple` and putting them in a separate `ppp` object called `MT`
 
 ```{r}
 data(lansing)
