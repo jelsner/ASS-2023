@@ -147,7 +147,7 @@ The red dashed line is the $K$ curve under CSR. The black line is the empirical 
 
 This suggests a process of between-event inhibition. A simple inhibition model is a Strauss process when the inhibition is constant with a fixed radius (r) around each event. The amount of inhibition ranges between zero (100% chance of a nearby event) to complete (0% chance of a nearby event). In the case of no inhibition the process is equivalent to a homogeneous Poisson process
 
-If you assume the inhibition process is constant across the domain with a fixed interaction radius (r), then you can fit a Strauss model to the data. You use the `ppm()` function from the {spatstat} package and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)`. Finally you use a border correction out to a distance of 10 units from the window with the `rbord =` argument
+If you assume the inhibition process is constant across the domain with a fixed interaction radius (r), then you can fit a Strauss model to the data. You use the `ppm()` function from the {spatstat} package and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend = ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)`. Finally you use a border correction out to a distance of 10 units from the window with the `rbord =` argument
 
 Save the output in the object called `model.in` (inhibition model)
 
@@ -166,7 +166,7 @@ You inspect the model parameters by typing the object name
 model.in
 ```
 
-The first-order term (`beta`) has a value of .0757. This is the intensity of the 'proposal' events. Beta exceeds the average intensity by a factor of ten
+The first-order term (`beta`) has a value of .0757. This is the intensity of the parent ('proposal') events. Beta exceeds the average intensity by a factor of ten
 
 Recall the intensity of the events is obtained as
 
@@ -237,7 +237,7 @@ library(ggplot2)
 
 ggplot(G.df, aes(x = r, y = km)) +
   geom_line() +
-  geom_line(aes(y = theo), color = "blue") +
+  geom_line(aes(y = theo), color = "red") +
   geom_vline(xintercept = 18, lty = 'dashed') +
   xlab("Lag distance (ft)") + 
   ylab("G(r): Cumulative % of events within a distance r of another maple") +
@@ -280,7 +280,7 @@ Here $\kappa$ is 21.75 and $\bar \mu(s)$ (mean cluster size) is 23.6 trees. The 
 
 The cluster scale parameter indicating the characteristic size (area units) of the clusters is $\sigma^2$ 
 
-A `plot()` method verifies that the cluster process statistically 'explains' the spatial correlation.=
+A `plot()` method verifies that the cluster process statistically 'explains' the spatial correlation
 
 ```{r}
 plot(model.cl, 
@@ -443,7 +443,7 @@ You can get a feel for sensitivity to priors by specifying different priors and 
 
 For example, change the prior range from 150 to 30 and refit the model. Compare the probability density function of the Matérn correlation
 
-You predict on the 'response' scale [i.e. the intensity function $\lambda$(s)] as follows. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method with `data = grid.df` and `formula = ~ exp(spde1D + Intercept`. It takes a few seconds to make predictions at each grid point location
+You predict on the 'response' scale [i.e. the intensity function $\lambda$(s)] as follows. First set up a data frame of explanatory values at which to predict (here `grid.df`). Then use the `predict()` method with `data = grid.df` and `formula = ~ exp(spde1D + Intercept)`. It takes a few seconds to make predictions at each grid point location
 
 ```{r}
 grid.df <- data.frame(x = seq(from = 0, to = 55, by = 1)) 
