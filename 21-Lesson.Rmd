@@ -4,15 +4,15 @@
 
 ## Models for point pattern data {-}
 
-Models are helpful in trying to understanding the processes leading to the event locations when event interaction is suspected. Event interaction means that an event at one location changes the probability of an event nearby
+Event interaction means that an event at one location changes the probability that another event will be nearby. Models for point pattern data can help you understand the processes that led to the event locations especially when event interaction is suspected
 
-Cluster models can be derived by starting with a Poisson model. For example, you begin with a homogeneous Poisson model describing a set of events $Y$. Then each individual event $y_i$ in $Y$ is considered a 'parent' that produces 'offspring' events ($x_i$) according to some mechanism
+Cluster models can be derived by starting with a  Poisson specification. For example, you begin by describing a set of events $Y$ as homogeneous Poisson. Then each individual event $y_i$ in $Y$ is considered a 'parent' that produces 'offspring' events ($x_i$) according to some mechanism
 
-The resulting set of offspring forms clustered point pattern data $X$. Said another way, the model is homogeneous Poisson at an unobserved level $Y$ (latent level) but clustered at the level of the observations ($X$)
+The resulting set of offspring events forms a clustered point pattern data $X$. The model is homogeneous Poisson at an unobserved level $Y$ (latent level) but clustered at the level of the observations ($X$)
 
-One example of this parent-child process is the Matérn cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and then each parent has a Poisson ($\mu$) number of offspring that are independent and identically distributed (iid) within a radius $r$ centered on the parent
+One example of this parent-child process is the Matérn cluster model. Parent events come from a homogeneous Poisson process with intensity $\kappa$ and each parent has a Poisson ($\mu$) number of offspring that are independent and identically distributed (iid) within a radius $r$ centered around the parent
 
-For instance here you use the `rMatClust()` function from the {spatstat} package to produce a clustered `ppp` object. You use a disc radius of .1 units and an offspring rate equal to 5 (`mu = 5`)
+For instance here you use the `rMatClust()` function from the {spatstat} package to produce a clustered `ppp` object. You set the intensity equal to 10 (`kappa = 10`) and use a disc radius of .1 units (`r = .1`) and an offspring rate equal to 5 (`mu = 5`)
 
 ```{r}
 library(spatstat)
@@ -298,7 +298,7 @@ plot(model.cl,
 
 The color ramp is the spatial intensity (number of events per unit area) about an arbitrary single event revealing the spatial scale and extent of clustering
 
-## Fitting a log-Gaussian Cox model {-}
+## Fitting and interpreting a log-Gaussian Cox (cluster) model {-}
 
 The Thomas cluster model is a type of Cox process where the logarithm of the spatial intensity is a sample from a non-negative random variable. If the dispersion of events around other events is uniform rather than Gaussian than you fit a Matérn cluster model
 

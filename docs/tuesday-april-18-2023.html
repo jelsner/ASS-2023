@@ -280,7 +280,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#models-for-point-pattern-data"><i class="fa fa-check"></i>Models for point pattern data</a></li>
 <li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#fitting-and-interpreting-inhibition-models"><i class="fa fa-check"></i>Fitting and interpreting inhibition models</a></li>
 <li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#fitting-and-interpreting-cluster-models"><i class="fa fa-check"></i>Fitting and interpreting cluster models</a></li>
-<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#fitting-a-log-gaussian-cox-model"><i class="fa fa-check"></i>Fitting a log-Gaussian Cox model</a></li>
+<li class="chapter" data-level="" data-path="tuesday-april-18-2023.html"><a href="tuesday-april-18-2023.html#fitting-and-interpreting-a-log-gaussian-cox-cluster-model"><i class="fa fa-check"></i>Fitting and interpreting a log-Gaussian Cox (cluster) model</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tuesday-april-25-2023.html"><a href="tuesday-april-25-2023.html"><i class="fa fa-check"></i>Tuesday April 25, 2023</a>
 <ul>
@@ -585,8 +585,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="ASS-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>The color ramp is the spatial intensity (number of events per unit area) about an arbitrary single event revealing the spatial scale and extent of clustering</p>
 </div>
-<div id="fitting-a-log-gaussian-cox-model" class="section level2 unnumbered hasAnchor">
-<h2>Fitting a log-Gaussian Cox model<a href="tuesday-april-18-2023.html#fitting-a-log-gaussian-cox-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="fitting-and-interpreting-a-log-gaussian-cox-cluster-model" class="section level2 unnumbered hasAnchor">
+<h2>Fitting and interpreting a log-Gaussian Cox (cluster) model<a href="tuesday-april-18-2023.html#fitting-and-interpreting-a-log-gaussian-cox-cluster-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The Thomas cluster model is a type of Cox process where the logarithm of the spatial intensity is a sample from a non-negative random variable. If the dispersion of events around other events is uniform rather than Gaussian than you fit a Matérn cluster model</p>
 <p>A limitation of the Thomas and Matérn cluster models is that the samples are assumed to be <em>spatially independent</em>. Nearby locations might have different spatial intensities</p>
 <p>If there is a systematic trend or covariate influence on the spatial intensity then you can include this in the model</p>
@@ -691,14 +691,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Rows: 56
 ## Columns: 9
 ## $ x               &lt;dbl&gt; 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …
-## $ mean            &lt;dbl&gt; 1.871434, 1.950474, 2.051543, 2.162841, 2.288749, 2.42…
-## $ sd              &lt;dbl&gt; 0.7186603, 0.5968408, 0.5237577, 0.4848486, 0.4607192,…
-## $ q0.025          &lt;dbl&gt; 0.935673, 1.152197, 1.354684, 1.476447, 1.570952, 1.77…
-## $ q0.5            &lt;dbl&gt; 1.740613, 1.826105, 1.958424, 2.095861, 2.231631, 2.38…
-## $ q0.975          &lt;dbl&gt; 3.776087, 3.494608, 3.466516, 3.353110, 3.383208, 3.41…
-## $ median          &lt;dbl&gt; 1.740613, 1.826105, 1.958424, 2.095861, 2.231631, 2.38…
-## $ mean.mc_std_err &lt;dbl&gt; 0.07186603, 0.05968408, 0.05237577, 0.04848486, 0.0460…
-## $ sd.mc_std_err   &lt;dbl&gt; 0.06617097, 0.05172584, 0.04355802, 0.03922731, 0.0373…</code></pre>
+## $ mean            &lt;dbl&gt; 1.889903, 1.965244, 2.079264, 2.192633, 2.317669, 2.44…
+## $ sd              &lt;dbl&gt; 0.7277578, 0.5635577, 0.5140244, 0.4791365, 0.4671477,…
+## $ q0.025          &lt;dbl&gt; 0.9064511, 1.0438830, 1.1939807, 1.3368514, 1.5529105,…
+## $ q0.5            &lt;dbl&gt; 1.736144, 1.906014, 2.050241, 2.132197, 2.288178, 2.45…
+## $ q0.975          &lt;dbl&gt; 3.325537, 3.065726, 3.031495, 3.149327, 3.240703, 3.40…
+## $ median          &lt;dbl&gt; 1.736144, 1.906014, 2.050241, 2.132197, 2.288178, 2.45…
+## $ mean.mc_std_err &lt;dbl&gt; 0.07277578, 0.05635577, 0.05140244, 0.04791365, 0.0467…
+## $ sd.mc_std_err   &lt;dbl&gt; 0.10077055, 0.03425871, 0.02966621, 0.02899213, 0.0287…</code></pre>
 <p>You pass this data frame to the <code>plot()</code> method to produce the following prediction plot using the grammar of graphics</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="tuesday-april-18-2023.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.df, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
 <span id="cb70-2"><a href="tuesday-april-18-2023.html#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> pts2, </span>
@@ -755,10 +755,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="tuesday-april-18-2023.html#cb76-1" aria-hidden="true" tabindex="-1"></a>( Lambda <span class="ot">&lt;-</span> <span class="fu">predict</span>(model.lgcp, </span>
 <span id="cb76-2"><a href="tuesday-april-18-2023.html#cb76-2" aria-hidden="true" tabindex="-1"></a>                    ips, </span>
 <span id="cb76-3"><a href="tuesday-april-18-2023.html#cb76-3" aria-hidden="true" tabindex="-1"></a>                    <span class="sc">~</span> <span class="fu">sum</span>(weight <span class="sc">*</span> <span class="fu">exp</span>(spde1D <span class="sc">+</span> Intercept))) )</span></code></pre></div>
-<pre><code>##       mean       sd   q0.025     q0.5   q0.975   median mean.mc_std_err
-## 1 130.4065 10.75733 111.2944 130.5174 151.1614 130.5174        1.075733
+<pre><code>##       mean       sd   q0.025     q0.5  q0.975   median mean.mc_std_err
+## 1 130.6649 13.20506 108.7045 130.0565 154.991 130.0565        1.320506
 ##   sd.mc_std_err
-## 1     0.6884554</code></pre>
+## 1     0.7423157</code></pre>
 <ul>
 <li><code>mean</code> is the posterior mean abundance</li>
 <li><code>sd</code> is the estimated standard error of the posterior of the abundance</li>
@@ -778,24 +778,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="tuesday-april-18-2023.html#cb79-1" aria-hidden="true" tabindex="-1"></a>Nest <span class="sc">|&gt;</span></span>
 <span id="cb79-2"><a href="tuesday-april-18-2023.html#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>##    N         mean           sd       q0.025         q0.5       q0.975
-## 1 50 6.044130e-11 5.431026e-10 3.865837e-22 4.979824e-16 1.275059e-10
-## 2 51 1.212417e-10 1.082287e-09 1.152331e-21 1.271469e-15 2.705324e-10
-## 3 52 2.386314e-10 2.115346e-09 3.368824e-21 3.183940e-15 5.630189e-10
-## 4 53 4.610348e-10 4.056586e-09 9.662900e-21 7.822612e-15 1.149750e-09
-## 5 54 8.746588e-10 7.635483e-09 2.720316e-20 1.886345e-14 2.304710e-09
-## 6 55 1.630068e-09 1.411107e-08 7.519047e-20 4.466031e-14 4.536406e-09
+## 1 50 5.342594e-12 3.216028e-11 1.755266e-22 8.809126e-16 5.765682e-11
+## 2 51 1.137589e-11 6.782482e-11 5.259628e-22 2.233199e-15 1.242328e-10
+## 3 52 2.376544e-11 1.403077e-10 1.545788e-21 5.552506e-15 2.625566e-10
+## 4 53 4.873052e-11 2.848138e-10 4.457466e-21 1.354497e-14 5.444671e-10
+## 5 54 9.810998e-11 5.675241e-10 1.261609e-20 3.243019e-14 1.108249e-09
+## 6 55 1.940168e-10 1.110459e-09 3.505974e-20 7.623458e-14 2.214981e-09
 ##         median mean.mc_std_err sd.mc_std_err
-## 1 4.979824e-16    5.431026e-11  2.697666e-10
-## 2 1.271469e-15    1.082287e-10  5.371728e-10
-## 3 3.183940e-15    2.115346e-10  1.049008e-09
-## 4 7.822612e-15    4.056586e-10  2.009742e-09
-## 5 1.886345e-14    7.635483e-10  3.778760e-09
-## 6 4.466031e-14    1.411107e-09  6.975112e-09</code></pre>
+## 1 8.809126e-16    3.216028e-12  1.341788e-11
+## 2 2.233199e-15    6.782482e-12  2.811034e-11
+## 3 5.552506e-15    1.403077e-11  5.775262e-11
+## 4 1.354497e-14    2.848138e-11  1.164020e-10
+## 5 3.243019e-14    5.675241e-11  2.302430e-10
+## 6 7.623458e-14    1.110459e-10  4.470928e-10</code></pre>
 <p>You compute the 95% prediction interval and the median with the <code>inla.qmarginal()</code> function</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="tuesday-april-18-2023.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inla.qmarginal</span>(<span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">5</span>, .<span class="dv">975</span>), </span>
 <span id="cb81-2"><a href="tuesday-april-18-2023.html#cb81-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">marginal =</span> <span class="fu">list</span>(<span class="at">x =</span> Nest<span class="sc">$</span>N, </span>
 <span id="cb81-3"><a href="tuesday-april-18-2023.html#cb81-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">y =</span> Nest<span class="sc">$</span>mean))</span></code></pre></div>
-<pre><code>## [1] 100.4717 129.8157 161.9915</code></pre>
+<pre><code>## [1] 101.4664 129.7675 164.2138</code></pre>
 <p>Now compare <code>Lambda</code> to <code>Nest</code> using a plot</p>
 <p>First calculate the posterior distribution conditional on the mean of <code>Lambda</code></p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="tuesday-april-18-2023.html#cb83-1" aria-hidden="true" tabindex="-1"></a>Nest<span class="sc">$</span>plugin_estimate <span class="ot">&lt;-</span> <span class="fu">dpois</span>(Nest<span class="sc">$</span>N, </span>
