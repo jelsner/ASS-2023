@@ -4,13 +4,13 @@
 
 ## Assessing how well a point pattern model fits the data {-}
 
-A model should be capable of generating fake data that are statistically indistinguishable from the real data. With a point pattern model you produce samples of event locations with the `simulate()` function
+A good (useful) model should be capable of generating fake data that are statistically indistinguishable from the real data. With a point pattern model you produce samples of event locations with the `simulate()` function
 
 Let's return to the Swedish pine sapling data and the inhibition model that you fit last time
 
 You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intensity of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one
 
-You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument
+You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend = ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument
 
 ```{r}
 library(spatstat)
@@ -37,7 +37,7 @@ plot(X[[3]])
 
 The three samples of point pattern data all look similar to the actual data providing evidence that the inhibition model is adequate
 
-To quantitatively assess the similarity you can use the `envelope()` function to compute the $K$ function on 99 samples and on the actual data
+To quantitatively assess the similarity you can use the `envelope()` function to compute the $K$ function on 99 samples from the model and on the actual data
 
 The $K$ function values are averaged over all samples and a mean line represents the mean model curve. Uncertainty is assessed with a band that ranges from the minimum to the maximum K at each distance
 
@@ -99,7 +99,7 @@ model.cl2
 
 This is an inhomogeneous cluster point process model. The logarithm of the intensity depends on y (`Log intensity:  ~y`). The fitted trend coefficient is negative as expected, since there are fewer trees as you move north (increasing y direction). There is one spatial unit in the north-south direction so you interpret this coefficient to mean there are 77% fewer trees in the north than in the south. The 77% comes from the formula 1 - exp(-1.486) = .77
 
-The average number of clusters (`kappa`) is higher at about 27 (it was 22 with the stationary model). The cluster scale parameter (`sigma`), indicating the characteristic size of the cluster (in distance units) is lower at .0536. That makes sense since some of the event-to-event distances are accounted for by the trend term
+The average number of clusters (`kappa`) is higher at about 27 (it was 22 with the stationary model). The cluster scale parameter (`sigma`), indicating the characteristic size of the cluster (in distance units) is smaller at .0536. That makes sense since some of the event-to-event distances are accounted for by the trend term
 
 Simulate data using the new model and compare the inhomogeneous $K$ function between the simulations and the observed data
 
@@ -124,7 +124,7 @@ bei |>
   plot()
 ```
 
-Accompanied by covariate data giving the elevation (altitude) and slope of elevation in the study region. The data `bei.extra` is a list containing two pixel images, `elev` (elevation in meters) and `grad` (norm of elevation gradient). These pixel images are objects of class `im`, see `im.object`.
+Accompanied by covariate data giving the elevation (altitude) and slope of elevation in the study region. The data `bei.extra` is a list object containing two pixel images, `elev` (elevation in meters) and `grad` (norm of elevation gradient). These pixel images are objects of class `im`, see `im.object`.
 
 ```{r}
 bei.extra |>
@@ -161,9 +161,9 @@ model.ppm1 |>
   summary()
 ```
 
-The output shows that both elevation and elevation gradient are significant in explaining the spatial varying intensity of the trees. 
+The output shows that both elevation and elevation gradient are significant in explaining the spatial varying intensity of the trees
 
-Since the conditional intensity is on a log scale you interpret the elevation coefficient as follows: For a one meter increase in elevation the local spatial intensity increases by a amount equal to exp(.021) or 2%.
+Since the conditional intensity is on a log scale you interpret the elevation coefficient as follows: For a one meter increase in elevation the local spatial intensity increases by a amount equal to exp(.021) or 2%
 
 Check how well the model fits the data. Again this is done with the `envelope()` function using the model object as the first argument.
 
@@ -204,7 +204,7 @@ The uncertainty band is much wider. The empirical curve fits inside the band so 
 
 The vast majority of tornadoes have winds of less than 60 m/s (120 mph). Violent tornadoes, with winds exceeding 90 m/s, are rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions
 
-The long-term risk of a tornado at a given location is assessed using historical records, however, the rarity of the most violent tornadoes make these rate estimates unstable. Here you use the more stable rate estimates from the larger set of less violent tornadoes to create more reliable estimates of violent tornado frequency.
+The long-term risk of a tornado at a given location is assessed using historical records, however, the rarity of the most violent tornadoes make these rate estimates unstable. Here you use the more stable rate estimates from the larger set of less violent tornadoes to create more reliable estimates of violent tornado frequency
 
 For this exercise attention is restricted to tornadoes occurring in Kansas over the period 1954--2021
 
@@ -265,7 +265,7 @@ V.ppp |>
   plot()
 ```
 
-Early we found that the spatial intensity of tornado reports was a function of distance to nearest city with fewer reports in rural areas
+Earlier we found that the spatial intensity of tornado reports was a function of distance to nearest city with fewer reports in rural areas
 
 So here you include this as an explanatory variable. Import the data, set the CRS, and transform the CRS to match that of the tornadoes. Exclude cities with fewer than 1000 people
 
@@ -474,7 +474,7 @@ model.slr
 
 The model says that the odds of a copper ore deposit along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01
 
-The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments
+The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments (fault)
 
 The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. Values are the probability of finding an ore deposit in each pixel
 
