@@ -4,13 +4,13 @@
 
 ## Assessing how well a point pattern model fits the data {-}
 
-A model should be capable of generating fake data that are statistically indistinguishable from the real data. If your model is a point pattern model you produce samples of event locations with the `simulate()` function.
+A model should be capable of generating fake data that are statistically indistinguishable from the real data. With a point pattern model you produce samples of event locations with the `simulate()` function
 
-Let's return to the Swedish pine sapling data and the inhibition model that you fit last time.
+Let's return to the Swedish pine sapling data and the inhibition model that you fit last time
 
-You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intensity of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one.
+You assume a (stationary) Strauss process with interaction radius r. The parameters $\beta$ and $\gamma$ define the pairwise interaction in which each event contributes a factor $\beta$ to the intensity of the point pattern, and each pair of events closer than r units apart contributes a factor $\gamma$ to the intensity where $\gamma$ is less than one
 
-You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument.
+You use the `ppm()` function and include the point pattern data as the first argument. You set the trend term to a constant (implying a stationary process) with the argument `trend ~ 1` and the interaction radius to 10 units with the argument `interaction = Strauss(r = 10)` and a border correction out to a distance of 10 units from the window with the `rbord =` argument
 
 ```{r}
 library(spatstat)
@@ -23,7 +23,7 @@ model.in <- SP |>
       rbord = 10)
 ```
 
-Here you generate three samples of the Swedish pine sapling data and for comparison plot them alongside the actual data.
+Here you generate three samples of the Swedish pine sapling data and for comparison plot them alongside the actual data
 
 ```{r}
 X <- model.in |>
@@ -35,13 +35,13 @@ plot(X[[2]])
 plot(X[[3]])
 ```
 
-The samples of point pattern data look similar to the actual data providing evidence that the inhibition model is adequate. 
+The three samples of point pattern data all look similar to the actual data providing evidence that the inhibition model is adequate
 
-To quantitatively assess the similarity you can use the `envelope()` function to compute the $K$ function on 99 samples and on the actual data. 
+To quantitatively assess the similarity you can use the `envelope()` function to compute the $K$ function on 99 samples and on the actual data
 
-The $K$ function values are averaged over all samples and a mean line represents the mean model curve. Uncertainty is assessed with a band that ranges from the minimum to the maximum K at each distance.
+The $K$ function values are averaged over all samples and a mean line represents the mean model curve. Uncertainty is assessed with a band that ranges from the minimum to the maximum K at each distance
 
-Do this with the inhibition model for the pine saplings. This takes a few seconds to complete.
+Do this with the inhibition model for the pine saplings. This takes a few seconds to complete
 
 ```{r}
 model.in |>
@@ -51,15 +51,15 @@ model.in |>
   plot(legend = FALSE)
 ```
 
-The black line is the empirical (data) curve and the red line is the average over the 99 samples. The two lines are close and the black line falls nearly completely within the gray uncertainty band indicating the model fits the data well. The kink in the red curve is the result of specifying 10 units for the interaction distance. 
+The black line is the empirical (data) curve and the red line is the average over the 99 samples. The two lines are close and the black line falls nearly completely within the gray uncertainty band indicating the model fits the data well. The kink in the red curve is the result of specifying 10 units for the interaction distance
 
-From this plot you confidently conclude that a homogeneous inhibition model is adequate for describing the pine sapling data.
+From this plot you confidently conclude that a homogeneous inhibition model is adequate for describing the pine sapling data
 
-What about the cluster model for the maple trees? You used a Thomas cluster process which means that centered on each event the chance of a nearby event decays as a two-dimensional Gaussian distribution. The latent rate of a nearby event is a two-dimensional kernel.
+What about the cluster model for the maple trees? You used a Thomas cluster process which means that centered on each event the chance of a nearby event decays as a two-dimensional Gaussian distribution. The latent rate of a nearby event is a two-dimensional kernel
 
-This differs from a Matérn cluster process which means that centered on each event there is an equal chance of a nearby event out to some distance r.
+This differs from a Matérn cluster process which means that centered on each event there is an equal chance of a nearby event out to some distance r
 
-Use use the `kppm()` function and include the point pattern data as the first argument. You assume stationarity so `trend = ~ 1` and the argument `clusters =` is set to `"Thomas"`.
+Use use the `kppm()` function and include the point pattern data as the first argument. You assume stationarity so `trend = ~ 1` and the argument `clusters =` is set to `"Thomas"`
 
 ```{r}
 MT <- lansing |>
@@ -83,11 +83,11 @@ model.cl |>
 
 In the case of the maple trees, a cluster model is adequate. 
 
-However, it might not be satisfying since you know about the potential for inhibition caused by the presence of hickory trees. 
+However, it might not be satisfying since you know about the potential for inhibition caused by the presence of hickory trees
 
-Also there were more trees in the south than in the north so the stationary assumption is suspect.
+Also there were more trees in the south than in the north so the stationary assumption is suspect
 
-You fit a second cluster model where the intensity is a linear function of distance in the north-south direction.
+You fit a second cluster model where the intensity is a linear function of distance in the north-south direction
 
 ```{r}
 model.cl2 <- MT |>
@@ -97,11 +97,11 @@ model.cl2 <- MT |>
 model.cl2
 ```
 
-This is an inhomogeneous cluster point process model. The logarithm of the intensity depends on y (`Log intensity:  ~y`). The fitted trend coefficient is negative as expected, since there are fewer trees as you move north (increasing y direction). There is one spatial unit in the north-south direction so you interpret this coefficient to mean there are 77% fewer trees in the north than in the south. The 77% comes from the formula 1 - exp(-1.486) = .77.
+This is an inhomogeneous cluster point process model. The logarithm of the intensity depends on y (`Log intensity:  ~y`). The fitted trend coefficient is negative as expected, since there are fewer trees as you move north (increasing y direction). There is one spatial unit in the north-south direction so you interpret this coefficient to mean there are 77% fewer trees in the north than in the south. The 77% comes from the formula 1 - exp(-1.486) = .77
 
-The average number of clusters (`kappa`) is higher at about 27 (it was 22 with the stationary model). The cluster scale parameter (`sigma`), indicating the characteristic size of the cluster (in distance units) is lower at .0536. That makes sense since some of the event-to-event distances are accounted for by the trend term.
+The average number of clusters (`kappa`) is higher at about 27 (it was 22 with the stationary model). The cluster scale parameter (`sigma`), indicating the characteristic size of the cluster (in distance units) is lower at .0536. That makes sense since some of the event-to-event distances are accounted for by the trend term
 
-Simulate data using the new model and compare the inhomogenous $K$ function between the simulations and the observed data.
+Simulate data using the new model and compare the inhomogeneous $K$ function between the simulations and the observed data
 
 ```{r}
 model.cl2 |> 
@@ -111,11 +111,11 @@ model.cl2 |>
   plot(legend = FALSE)
 ```
 
-The black line falls within the gray band and the gray band is narrower than the simulations using the homogeneous cluster model.
+The black line falls within the gray band and the gray band is narrower than the simulations using the homogeneous cluster model
 
-If the intensity of events depends on spatial location as it does with the maple trees you can include a trend and covariate term in the model.
+If the intensity of events depends on spatial location as it does with the maple trees you can include a trend and covariate term in the model
 
-For a trend term, the `formula ~ x` corresponds to a spatial trend of the form $\lambda(x) = \exp(a + bx)$, while `~ x + y` corresponds to $\lambda(x, y) = \exp(a + bx + cy)$ where `x`, `y` are the spatial coordinates. For a covariates, the formula is `~ covariate1 + covariate2`.
+For a trend term, the `formula ~ x` corresponds to a spatial trend of the form $\lambda(x) = \exp(a + bx)$, while `~ x + y` corresponds to $\lambda(x, y) = \exp(a + bx + cy)$ where `x`, `y` are the spatial coordinates. For a covariates, the formula is `~ covariate1 + covariate2`
 
 Consider the `bei` data from the {spatstat} package containing the locations of 3605 trees in a tropical rain forest.
 
@@ -131,7 +131,7 @@ bei.extra |>
   image()
 ```
 
-Compute and plot the $L$ function on the `ppp` object `bei`.
+Compute and plot the $L$ function on the `ppp` object `bei`
 
 ```{r}
 bei |>
@@ -142,11 +142,11 @@ bei |>
   plot(legend = FALSE)
 ```
 
-There is significant clustering indicated by the black line sitting far above the CSR line. There are more trees in the vicinity of other trees than expected by chance.
+There is significant clustering indicated by the black line sitting far above the CSR line. There are more trees in the vicinity of other trees than expected by chance
 
 But how much of the clustering is due to variations in terrain?
 
-You start by fitting a model that includes elevation and gradient as covariates without clustering. This is done with the `trend =` argument naming the image variables and including the argument `covariates =` indicating a data frame or, in this case, a list whose entries are image functions.
+You start by fitting a model that includes elevation and gradient as covariates without clustering. This is done with the `trend =` argument naming the image variables and including the argument `covariates =` indicating a data frame or, in this case, a list whose entries are image functions
 
 ```{r}
 model.ppm1 <- bei |>
@@ -178,9 +178,9 @@ E |>
        legend = FALSE)
 ```
 
-You conclude that although elevation and elevation slope are significant in explaining the spatial distribution of trees, they do not explain all the clustering.
+You conclude that although elevation and elevation slope are significant in explaining the spatial distribution of trees, they do not explain the clustering
 
-An improvement is made by adding a cluster process to the model. This is done with the function `kppm()`.
+An improvement is made by adding a cluster process to the model. This is done with the function `kppm()`
 
 ```{r}
 model.ppm2 <- bei |>
@@ -198,18 +198,18 @@ E |>
        legend = FALSE)
 ```
 
-The uncertainty band is much wider. The empirical curve fits inside the band so you conclude that an inhomogeneous cluster process appears to be an adequate description of the point pattern data.
+The uncertainty band is much wider. The empirical curve fits inside the band so you conclude that an inhomogeneous cluster process is an adequate description of the point pattern data
 
 ## An example of a point process model in the wild {-}
 
-The vast majority of tornadoes have winds of less than 60 m/s (120 mph). Violent tornadoes, with winds exceeding 90 m/s, are rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions. 
+The vast majority of tornadoes have winds of less than 60 m/s (120 mph). Violent tornadoes, with winds exceeding 90 m/s, are rare. Most of these potentially destructive and deadly tornadoes occur from rotating thunderstorms called supercells, with formation contingent on local (storm-scale) meteorological conditions
 
 The long-term risk of a tornado at a given location is assessed using historical records, however, the rarity of the most violent tornadoes make these rate estimates unstable. Here you use the more stable rate estimates from the larger set of less violent tornadoes to create more reliable estimates of violent tornado frequency.
 
-For this exercise attention is restricted to tornadoes occurring in Kansas over the period 1954--2020.
+For this exercise attention is restricted to tornadoes occurring in Kansas over the period 1954--2021
 
 ```{r}
-Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint")) |>
+Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2021-torn-initpoint")) |>
   sf::st_transform(crs = 3082) |>
   dplyr::filter(mag >= 0, yr >= 1954) |>
   dplyr::mutate(EF = mag,
@@ -237,9 +237,9 @@ T.ppp <- T.ppp[KS.win]
 summary(T.ppp)
 ```
 
-There are 4139 tornadoes over the period with an average intensity of 192 per 100 square kilometer (multiply the average intensity in square meters by 10^10).
+There are 4160 tornadoes over the period with an average intensity of 193 per 100 square kilometer (multiply the average intensity in square meters by 10^10)
 
-Separate the point pattern data into non-violent tornadoes and violent tornadoes. The non-violent tornadoes include those with an EF rating of 0, 1, 2 or 3. The violent tornadoes include those with an EF rating of 4 or 5.
+Separate the point pattern data into non-violent tornadoes and violent tornadoes. The non-violent tornadoes include those with an EF rating of 0, 1, 2 or 3. The violent tornadoes include those with an EF rating of 4 or 5
 
 ```{r}
 NV.ppp <- T.ppp |>
@@ -256,18 +256,18 @@ V.ppp |>
   summary()
 ```
 
-The spatial intensity of the non-violent tornadoes is 190 per 100 sq km. The spatial intensity of the violent tornadoes is 1.9 per 100 square kilometer.
+The spatial intensity of the non-violent tornadoes is 191 per 100 sq km. The spatial intensity of the violent tornadoes is 1.9 per 100 square kilometer
 
-Plot the locations of the violent tornado events.
+Plot the locations of the violent tornado events
 
 ```{r}
 V.ppp |>
   plot()
 ```
 
-Early we found that the spatial intensity of tornado reports was a function of distance to nearest city with fewer reports in rural areas.
+Early we found that the spatial intensity of tornado reports was a function of distance to nearest city with fewer reports in rural areas
 
-So here you include this as an explanatory variable. Import the data, set the CRS, and transform the CRS to match that of the tornadoes. Exclude cities with fewer than 1000 people.
+So here you include this as an explanatory variable. Import the data, set the CRS, and transform the CRS to match that of the tornadoes. Exclude cities with fewer than 1000 people
 
 ```{r}
 C.sf <- USAboundaries::us_cities() |>
@@ -288,7 +288,7 @@ C.ppp |>
   plot()
 ```
 
-Next create a distance map of the city locations using the `distmap()` function.
+Next create a distance map of the city locations using the `distmap()` function
 
 ```{r}
 Zc <- C.ppp |>
@@ -298,9 +298,9 @@ Zc |>
   plot()
 ```
 
-The pixel values of the `im` object are distances is meters. Blue indicates locations that are less than 20 km from a city.
+The pixel values of the `im` object are distances is meters. Blue indicates locations that are less than 20 km from a city
 
-Interest lies with the distance to nearest non-violent tornado. You check to see if this might be a useful variable in a model so you make a distance map for the non-violent events and then use the `rhohat()` function.
+Interest lies with the distance to nearest non-violent tornado. You check to see if this might be a useful variable in a model so you make a distance map for the non-violent events and then use the `rhohat()` function
 
 ```{r}
 Znv <- NV.ppp |>
@@ -317,6 +317,7 @@ hi <- rhat$hi
 lo <- rhat$lo
 Rho.df <- data.frame(dist = dist, rho = rho, hi = hi, lo = lo)
 
+library(ggplot2)
 ggplot(data = Rho.df) + 
   geom_ribbon(mapping = aes(x = dist, 
                             ymin = lo, 
@@ -328,9 +329,9 @@ ggplot(data = Rho.df) +
   theme_minimal()
 ```
 
-This shows that regions that get non-violent tornadoes also see higher rates of violent tornadoes.
+This shows that regions that get non-violent tornadoes also see higher rates of violent tornadoes
 
-So the model should include two covariates (trend terms), distance to nearest city and distance to nearest non-violent tornado.
+So the model should include two covariates (trend terms), distance to nearest city and distance to nearest non-violent tornado
 
 ```{r}
 model.ppm1 <- V.ppp |>
@@ -342,11 +343,11 @@ model.ppm1 |>
   coef()
 ```
 
-As expected the model shows fewer violent tornadoes with increasing distance from the nearest city (negative coefficient on `Zc`) and fewer violent tornadoes with increasing distance from a non-violent tornado (negative coefficient on `Znv`).
+As expected the model shows fewer violent tornadoes with increasing distance from the nearest city (negative coefficient on `Zc`) and fewer violent tornadoes with increasing distance from a non-violent tornado (negative coefficient on `Znv`)
 
-Since the spatial unit is meters the coefficient of -3.21e-05 is interpreted as a [1 - exp(-.0321)] * 100% or 3% decrease in violent tornado reports per kilometer of distance from a city. Similarly the coefficient on distance from nearest non-violent tornado is interpreted as a 23% decrease in violent tornado reports per kilometer of distance from nearest non-violent tornado.
+Since the spatial unit is meters the coefficient of -3.21e-05 is interpreted as a [1 - exp(-.0321)] * 100% or 3% decrease in violent tornado reports per kilometer of distance from a city. Similarly the coefficient on distance from nearest non-violent tornado is interpreted as a 23% decrease in violent tornado reports per kilometer of distance from nearest non-violent tornado
 
-Check if there is any residual nearest neighbor correlation.
+Check if there is any residual nearest neighbor correlation
 
 ```{r}
 E <- model.ppm1 |>
@@ -358,9 +359,9 @@ E |>
        legend = FALSE)
 ```
 
-There appears to be a bit of regularity at smaller scales. The empirical curve (black line) falls slightly below the model (dashed red line). There are fewer nearby violent tornadoes than one would expect.
+There appears to be a bit of regularity at smaller scales. The empirical curve (black line) falls slightly below the model (dashed red line). There are fewer nearby violent tornadoes than one would expect
 
-To see if this is statistically significant, you add an inhibition process to the model.
+To see if this is statistically significant, you add an inhibition process to the model
 
 ```{r}
 model.ppm2 <- V.ppp |> 
@@ -373,9 +374,9 @@ model.ppm2 |>
   coef()
 ```
 
-The interaction coefficient has a negative sign as expected from the above plot, but the standard error is relatively large so it is not statistically significant.
+The interaction coefficient has a negative sign as expected from the above plot, but the standard error is relatively large so it is not statistically significant. The 95% uncertainty interval contains zero
 
-Remove the inhibition process and add a trend term in the east-west direction.
+Remove the inhibition process and add a trend term in the east-west direction
 
 ```{r}
 model.ppm3 <- V.ppp |>
@@ -389,7 +390,7 @@ model.ppm3 |>
 
 There is a significant eastward trend but it appears to confound the distance to city term because the Zc term is no longer significant. Why is this? 
 
-Settle on the first model and generate simulated data from it.
+Settle on the first model as the best and generate simulated data from it
 
 ```{r}
 model.ppm1 |>
@@ -399,11 +400,11 @@ model.ppm1 |>
 plot(V.ppp)
 ```
 
-The model appears to due a good job simulating data that looks like the actual data.
+The model appears to due a good job simulating data that looks like the actual data
 
 ## Spatial logistic regression {-}
 
-Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise.
+Spatial logistic regression is a popular model for point pattern data. The study domain is divided into a grid of cells; each cell is assigned the value one if it contains at least one event, and zero otherwise
 
 Then a logistic regression is a model for the presence probability $p = P(Y = 1)$ as a function of explanatory variables $X$ in the form 
 
@@ -411,22 +412,19 @@ $$
 \log \frac{p}{1-p} = \beta X
 $$
 
-where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients on the explanatory variables to be determined.
+where the left-hand side is the logit (log of the odds ratio) and the $\beta$ are the coefficients on the explanatory variables to be determined
 
-If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package.
+If your data are stored as `ppp` objects, a spatial logistic model can be fit directly using functions from the {spatstat} package
 
-Let's look at an example from the package (a good strategy when learning a new technique).
+Let's look at an example from the package (a good strategy when learning a new technique)
 
-Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are geological fault lines.
+Consider the locations of 57 copper ore deposits (events) and 146 line segments representing geological 'lineaments.' Lineaments are geological fault lines
 
-Interest centers on being able to predict the probability of a copper ore from the distance to the fault line. 
+Interest centers on being able to predict the probability of a copper ore from the distance to the fault line
 
-The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments.
+The data are stored as a list in `copper`. The list contains a `ppp` object for the ore deposits and a `psp` object for the lineaments
 
 ```{r}
-library(spatstat) |>
-  suppressMessages()
-
 data(copper)
 
 copper$SouthPoints |>
@@ -448,7 +446,7 @@ L |>
   plot(add = TRUE)
 ```
 
-You summarize the planar point pattern data object `C`.
+You summarize the planar point pattern data object `C`
 
 ```{r}
 C |>
@@ -467,18 +465,18 @@ D |>
   plot()
 ```
 
-Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} family of packages.
+Spatial logistic regression models are fit with the `slrm()` function from the {spatstat} family of packages
 
 ```{r}
 model.slr <- slrm(C ~ D)
 model.slr
 ```
 
-The model says that the odds of a copper ore deposit along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01.
+The model says that the odds of a copper ore deposit along a lineament (D = 0) is exp(-4.723) = .00888. This is slightly less than the overall intensity of .01
 
-The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments.
+The model also says that for every one unit (one kilometer) increase in distance from a lineament the expected change in the log odds is .0781 [exp(.0781) = 1.0812] or an 8.1% increase in the odds. Ore deposits are more likely between the lineaments
 
-The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. Values are the probability of finding an ore deposit in each pixel.
+The fitted method produces an image (raster) of the window giving the local probability of an ore deposit. Values are the probability of finding an ore deposit in each pixel
 
 ```{r}
 model.slr |>
@@ -488,7 +486,7 @@ C |>
   plot(add = TRUE)
 ```
 
-Integrating (summing) the predictions over the domain area equals the abundance (number of ore deposits).
+As we saw with the LGCP model, integrating (summing) the predictions over the domain area equals the abundance (number of ore deposits)
 
 ```{r}
 model.slr |>
